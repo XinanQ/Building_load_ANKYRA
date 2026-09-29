@@ -3,7 +3,8 @@
 Primary: the unit-equal log RMS ratio r = mean_i log(R_i^A / R_i^B), where R_i is the RMS of unit i's errors over its
 windows; reported as the improvement 100 [1 - exp(r)] (positive favours A).  Uncertainty: 2,000 paired bootstrap
 replicates resampling units and target-midpoint months independently (UM).  Also: the mean per-unit rank (models ranked
-within each unit by RMSE, ties averaged), which stays defined when some units have exactly zero error.
+within each unit by RMSE, ties averaged), which stays defined when some units have exactly zero error, and the pooled
+MSE ratio, whose relation to the unit-equal estimand is given by ``pooled_ratio_decomposition`` (P19 in docs/THEORY.md).
 """
 from __future__ import annotations
 
@@ -45,6 +46,25 @@ def contrast(a, b, unit, month, rng=None):
     r = log_ratio(a, b, unit)
     return {"log_ratio": r, "improvement_pct": 100 * (1 - math.exp(r)), "pooled_ratio": float(np.mean(a) / np.mean(b)),
             **um_interval(a, b, unit, month, rng)}
+
+
+def pooled_ratio_decomposition(a, b, unit):
+    """Why pooled and unit-equal summaries can disagree in sign.
+
+    With n_i windows and reference RMS R_i^b in unit i, the pooled MSE ratio equals sum_i omega_i rho_i^2 with
+    omega_i proportional to n_i (R_i^b)^2 and rho_i = R_i^a / R_i^b, whereas the unit-equal estimand is mean_i log rho_i.
+    Units with a positive reference error are used; rho_i carries R_i^b in its denominator, so weights and ratios are
+    coupled and the sign of a disagreement does not identify which units benefit.
+    """
+    uu, inv = np.unique(unit, return_inverse=True)
+    n = np.bincount(inv, minlength=len(uu)).astype(float)
+    ra2, rb2 = np.bincount(inv, a, len(uu)) / n, np.bincount(inv, b, len(uu)) / n
+    ok = rb2 > 0
+    omega = n[ok] * rb2[ok] / np.sum(n[ok] * rb2[ok])
+    rho2 = ra2[ok] / rb2[ok]
+    pos = rho2 > 0
+    return {"weights": omega, "ratio_sq": rho2, "pooled_ratio": float(omega @ rho2),
+            "unit_equal_log_ratio": float(np.mean(0.5 * np.log(rho2[pos])))}
 
 
 def mean_unit_rank(window_mse: dict, unit) -> dict:

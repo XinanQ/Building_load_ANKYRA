@@ -1,5 +1,34 @@
 # Method
 
+## Information at the origin
+
+A forecast at origin $o$ is a function of the following, and nothing else:
+
+- load and temperature at hours $t<o$;
+- the calendar type (weekday or public holiday) of the 31 forecast days;
+- the unit's category, which selects a fixed temperature-signature prior. The prior was fitted once on BDG2 windows
+  ending before July 2016 and is never refitted;
+- a fixed temperature-anomaly scale set before the first origin;
+- the foundation model's forecasts from the 1,344 hours before $o$ and before each pseudo-origin $o-744k$.
+
+Weights are estimated at pseudo-origins inside the record.
+
+- Every pseudo-target ends by $o$.
+- Each level pseudo-forecast at $o-744k$ uses only data before $o-744k$.
+- The weekly handover uses the realised daily means of these pseudo-targets.
+
+One exception concerns only the pre-origin record. One daily-path candidate, the path implied by the level
+construction, reuses the weather weight estimated at the origin. Its pseudo-errors are therefore not strictly out of
+sample with respect to that weight, although all of them precede the origin.
+
+Two fixed components come from outside the unit's record: the pretrained foundation model and the signature prior.
+Neither sees the unit's future. Both may, however, reflect data recorded later than the oldest evaluation windows, for
+example the London households of 2011–2014.
+
+[`tests/test_no_future_information.py`](../tests/test_no_future_information.py) changes every value after the origin,
+or after each pseudo-origin, and checks that the forecast, the model's inputs, the pseudo-origin errors and the interval
+are unchanged.
+
 ## Three orthogonal blocks
 
 At origin $o$ a forecast $F_{d,h}$ covers $D=31$ origin-aligned days of $H=24$ hours, $T=744$ hours in all. Define:
@@ -19,7 +48,10 @@ uses this identity as a design rule: each block goes to the source that estimate
 - Weekly effects therefore enter the daily-path and within-day blocks and are represented by day types (Monday = 0 …
   Sunday = 6, holiday = 7).
 
-Code: `ankyra/blocks.py`.
+The four-block refinement behind the Fourier statement, and the replacement calculus built on the identity, are P1–P6
+in [THEORY.md](THEORY.md).
+
+Code: `ankyra/blocks.py`, `ankyra/operators.py`.
 
 ## Level
 
@@ -49,6 +81,15 @@ $$\widetilde w_j=\frac{I_j/\max(s_j,10^{-6})^2}{\sum_r I_r/\max(s_r,10^{-6})^2},
 w_j=\frac{K_{\rm eff}\,\widetilde w_j+K_0\,w_{0j}}{K_{\rm eff}+K_0},\quad K_0=8,$$
 
 where $w_0$ is uniform over the supported candidates and $K_{\rm eff}$ counts pseudo-origins with complete evidence.
+
+- With complete records $K_{\rm eff}(m)=\min\lbrace12,\lfloor(m-1344)/744\rfloor\rbrace_+$ for a history of $m$ hours.
+- Below two errors the weights are equal.
+- The annual candidate needs 10,248 hours (about 14 months) before it can be weighted.
+- In the historical estimator, with matched support and no candidate deleted at the origin, the shrinkage keeps the
+  total weather weight within $[(1-\rho)/2,(1+\rho)/2]$, $\rho=K_{\rm eff}/(K_{\rm eff}+8)$. With the model candidate
+  the prior weather mass is 3/7 once all seven candidates are supported, and the general bound of P8 applies.
+
+These support and shrinkage properties are P7–P9 in [THEORY.md](THEORY.md).
 
 Code: `ankyra/history/` (frozen reference estimator), `ankyra/core.py` (`level_with_model_candidate`).
 
@@ -80,7 +121,7 @@ $$m_d=(1-\alpha_w)\,m^H_d+\alpha_w\,m^T_d,\qquad
 
 $\hat\lambda_w$ is the least-squares combination weight, clipped to $[0,1]$:
 
-$$\hat\lambda_w=\mathrm{clip}\Big(\frac{\sum_k\langle y_k-m^{H0}_k,\,m^T_k-m^{H0}_k\rangle_w}{\sum_k\|m^T_k-m^{H0}_k\|_w^2},\,0,\,1\Big).$$
+$$\hat\lambda_w=\mathrm{clip}\Big(\frac{\sum_k\langle y_k-m^{H0}_k,\,m^T_k-m^{H0}_k\rangle_w}{\sum_k\Vert m^T_k-m^{H0}_k\Vert_w^2},\,0,\,1\Big).$$
 
 It is estimated from the $n\le6$ completed pseudo-origin pairs of the unit, where:
 
@@ -88,6 +129,10 @@ It is estimated from the $n\le6$ completed pseudo-origin pairs of the unit, wher
 - $m^T_k$ is TimesFM's daily means issued at pseudo-origin $k$;
 - $m^{H0}_k$ is the **fixed division's** daily means: the six-candidate level plus the daily path, *without* the model
   candidate.
+
+The weight is a least-squares weight rather than an inverse-MSE weight. Errors shared by the two sources pull
+inverse-MSE weights towards 1/2, whereas least squares depends only on where the sources differ (P10 in
+[THEORY.md](THEORY.md)).
 
 The weights are estimated on the fixed division and applied to $m^H$, which includes the model candidate. Using the
 fixed division at the pseudo-origins avoids nested pseudo-origins. If no pair or no disagreement is available,
@@ -104,7 +149,7 @@ If the last 168 hours before the origin are all at most $10^{-6}$ kW, the TimesF
 
 - The rule adds no new constant.
 - It follows from a measured property of the load: a departure from normal operation is more likely to continue the
-  longer it has lasted.
+  longer it has lasted ([evidence](EVALUATION.md#departures-from-normal-operation-persist)).
 - Without it, the shrinkage of the weights keeps the historical level in play for a meter that is off.
 
 ## Readouts
@@ -137,7 +182,9 @@ This operator has four properties:
 each pseudo-window's origin scale and pooled by hour of day and workday status. Their empirical quantiles are added to
 the forecast and scaled by the origin's scale.
 
-Code: `ankyra/readouts.py`.
+Proofs, counterexamples and an optional day-level projection are P11–P18 in [THEORY.md](THEORY.md).
+
+Code: `ankyra/readouts.py`, `ankyra/operators.py`.
 
 ## Constants
 

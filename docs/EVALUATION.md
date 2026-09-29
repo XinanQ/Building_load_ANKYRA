@@ -77,6 +77,19 @@ PatchTST is channel-independent, so its load forecast is the same function with 
 - Leakage checks (feature time indices, lag indices, normalisation statistics, training-target end) are implemented as
   assertions.
 
+**No future information, on either side.**
+
+- **ANKYRA** uses only pre-origin load and temperature, the forecast month's calendar and a pre-origin temperature
+  expectation ([METHOD.md](METHOD.md#information-at-the-origin)). Tests change every value after the origin and check
+  that nothing moves.
+- **Covariate-informed baselines** receive the same set:
+  - future temperature enters as the same climatological expectation, never as observed weather;
+  - the one-year load lag always precedes the origin.
+- **Trained baselines** are fitted on targets that end before a cutoff and are scored only after it.
+- **Test populations** were scored once, after all development had ended.
+- **Pretraining corpora** of the foundation models are the one exposure no forecaster controls (see
+  [Limitations](#limitations)).
+
 ## Estimands
 
 **Unit-equal log RMS ratio (primary).** For unit $i$, $R_i$ is the RMS of its hourly errors over its windows, and
@@ -90,6 +103,10 @@ where some units have exactly zero error.
 
 **Conventional metrics.** RMSE and MAE (unit mean, kW); CV(RMSE), NMBE and WAPE (unit median, %). See
 [`results/conventional_metrics.csv`](../results/conventional_metrics.csv).
+
+**Why four summaries.** Pooled and unit-equal summaries can disagree in sign for an algebraic reason. The pooled MSE
+ratio weights each unit's squared RMS ratio by its share of the reference error, and those weights are coupled to the
+ratios (P19 in [THEORY.md](THEORY.md)). No single summary is therefore reported alone.
 
 ## Results
 
@@ -189,6 +206,54 @@ store (within-day upper interval bound ≤ +0.01):
 - The remaining harm sat on ordinary days of the Spanish population, whose departures are not predictable from any
   pre-origin source, and in strength estimates from only three pseudo-origins.
 
+### Departures from normal operation persist
+
+The weekly handover and the off-state rule rest on a measured property of the load rather than on tuned thresholds.
+The analyses below are descriptive. They were specified in writing before they were run, and they read only stored
+records and saved forecasts.
+
+**Definition.** A day departs from normal operation when its mean falls outside hysteresis bands around a calendar
+expectation. The expectation is the median of same-type days around the same date one year earlier. The four states
+are off (below 5%), low (below 55%), high (above 150%) and normal. Recurring holidays and school breaks are part of the
+expectation, so a departure is unscheduled by construction.
+
+**Duration dependence.** The statistic compares exit rates in days 1–3 of a departure with days 8–30, within each unit
+(Mantel–Haenszel log ratio). A value above zero means that a departure that has lasted longer is more likely to
+continue.
+
+| Population | Low | Off | High |
+|---|---|---|---|
+| Spanish development (4 categories) | 0.76–1.00 | 0.73–1.14 | 0.81–1.00 |
+| EWELD (3 categories) | 0.65–0.79 | 0.82–1.01 | 0.77–1.02 |
+| Drammen | 1.97 [1.57, 2.48] | — | 0.77 [0.62, 0.95] |
+| Oslo | 1.12 [0.88, 1.36] | — | 0.85 [0.65, 1.06] |
+| Cambridge | 0.75 [0.59, 0.91] | — | 1.05 [0.88, 1.21] |
+| CINELDI | 0.92 [0.63, 1.20] | — | 0.94 [0.54, 1.32] |
+| GoiEner households | 0.42 [0.37, 0.47] | 0.21 [−0.07, 0.42] | 0.67 [0.61, 0.73] |
+
+- Pooled survival curves overstate duration dependence, because mixing units with different constant exit rates
+  produces falling pooled rates. The within-unit ratios are 20–50% smaller than the pooled ones, but remain above zero.
+- Gamma-frailty Weibull shapes are below one in most calendar-referenced cells (0.67–0.97; households 1.03–1.07).
+- Out of time, a semi-Markov model beats a Markov model in 12 of 19 cells, with 5 favouring Markov and 2 ties.
+- After temperature normalisation, the within-unit ratio stays above zero in 27 of 31 estimable cells.
+
+**What this means for the forecast.** If departures were Markov, the value of the foundation model's recent
+information would not depend on how long the current departure had lasted. It does.
+
+- Windows whose departure had lasted at least 15 days at the origin favoured TimesFM over the fixed division more than
+  windows with departures of at most 3 days.
+  - Within units, excluding EWELD, the difference in ½ log MSE ratio was +0.28 [0.15, 0.42] in days 1–7 and
+    +0.16 [0.05, 0.28] in days 15–31. This comparison was written after the pre-specified pooled one (+1.13 and
+    +1.12), which EWELD shutdowns dominate.
+  - Elapsed duration therefore marks the model's relative accuracy over the whole horizon, not a slower decay of it.
+- ANKYRA uses this through its error weights, not through an explicit duration rule.
+  - A rule that raised the model weight with elapsed duration (F1-τ) failed its fixed criterion.
+  - It failed because the weights already move towards the model during long departures. On windows with departures
+    of at least 15 days, the mean ½ log MSE ratio to TimesFM fell from F0 to F1 as follows: development 0.69 → 0.30,
+    Cambridge 0.46 → 0.06, CINELDI 0.30 → 0.05.
+- A zero week is the most persistent departure. 343 of 349 zero months in EWELD were preceded by one, and in that case
+  the off-state rule hands the whole window to the model.
+
 ### Readouts
 
 - **Peak operator:**
@@ -215,7 +280,7 @@ store (within-day upper interval bound ≤ +0.01):
 
 ## Reproduction record
 
-[`results/REPRODUCTION_CHECK.json`](../results/REPRODUCTION_CHECK.json) records four comparisons of this package with
+[`results/REPRODUCTION_CHECK.json`](../results/REPRODUCTION_CHECK.json) records five comparisons of this package with
 the evaluated forecasts, run where the data are available. All match exactly (maximum absolute difference 0.0 kW):
 
 - ANKYRA forecasts on 613 windows of two populations, including every off-state window;

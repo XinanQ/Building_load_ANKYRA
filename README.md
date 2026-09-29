@@ -2,7 +2,7 @@
 
 **Anchoring a time-series foundation model to each unit's own history for month-ahead load forecasting**
 
-[中文说明](README.zh-CN.md) · [Method](docs/METHOD.md) · [Evaluation](docs/EVALUATION.md) · [Results data](results/)
+[中文说明](README.zh-CN.md) · [Method](docs/METHOD.md) · [Exact properties](docs/THEORY.md) · [Evaluation](docs/EVALUATION.md) · [Results data](results/)
 
 ![ANKYRA architecture](figures/fig1_architecture.png)
 
@@ -23,6 +23,37 @@ lets the unit's own forecast record decide where that is.
   - energy from the level;
   - a monthly peak from a historical excursion envelope;
   - a prediction interval from pseudo-forecast residuals.
+- Every step rests on a stated **exact property**: 19 identities and bounds, each implemented and tested, together with
+  the counterexamples that mark their limits ([docs/THEORY.md](docs/THEORY.md)).
+
+## Strictly no future information
+
+At an origin, ANKYRA uses only what is known at that moment.
+
+- **Inputs.** It receives:
+  - load and temperature up to the origin;
+  - the calendar of the forecast month (weekday or public-holiday type);
+  - the unit's category.
+
+  The interface has no argument for future load or weather.
+- **Weather.** Future temperature enters only as an expectation formed before the origin: an annual harmonic of past
+  temperatures plus a fixed anomaly scale. Observed future weather is never used.
+- **Weights.** Every weight is estimated at pseudo-origins inside the record, whose targets end by the origin. Each
+  level pseudo-forecast uses only data before its own pseudo-origin.
+- **Foundation model.** TimesFM receives only the 1,344 hours before each origin or pseudo-origin.
+- **Checked by tests.** [`tests/test_no_future_information.py`](tests/test_no_future_information.py) changes every value
+  after the origin, or after each pseudo-origin. It checks that the forecast, the model's inputs, the pseudo-origin
+  errors and the interval stay bit-identical.
+- **Evaluation.**
+  - The baselines receive the same information set, with leakage assertions on feature and lag time indices,
+    normalisation statistics and training-target ends.
+  - Trained baselines are scored only after their training cutoff.
+  - The six test populations were scored once, after the model was fixed, and nothing was tuned on them.
+
+One exposure is outside any forecaster's control. TimesFM 2.5 and Chronos-2 were pretrained on public corpora that may
+contain some evaluation series; seven BDG2 sites are listed in them. This could favour every forecaster built on these
+models, ANKYRA included ([limitations](docs/EVALUATION.md#limitations)). The information set is detailed in
+[docs/METHOD.md](docs/METHOD.md#information-at-the-origin).
 
 ## Results on six test populations
 
@@ -99,6 +130,10 @@ ANKYRA's history-weighted level anticipates the rise. The handover follows the l
   TimesFM in **every** forecast week.
 - The handover improves on the fixed division on seven of eleven populations (1.7–26.1%) and is never significantly
   worse.
+- **Why weekly, and why an off-state rule.** Departures from normal operation become more likely to continue the
+  longer they have lasted. This holds within units, on seven populations. The longer a departure has lasted at the
+  origin, the more the model's recent information is worth over the whole month
+  ([evidence](docs/EVALUATION.md#departures-from-normal-operation-persist)).
 
 ![Ablation and lead-week profile](figures/fig4_handover_and_ablation.png)
 
@@ -121,6 +156,35 @@ terms, so ANKYRA's level gains carry into the peak.
 
 On GoiEner households the pseudo-origin interval around ANKYRA covers **79.2%** of hours at the nominal 80% level.
 TimesFM's native 0.1–0.9 band covers 36.1%.
+
+## Exact properties
+
+![Exact properties on a test window](figures/fig7_operators.png)
+
+The construction is auditable because each step has a stated property. They are numbered P1–P19 in
+[docs/THEORY.md](docs/THEORY.md), which gives proofs, counterexamples and, where the earlier study measured them, their
+consequences on data.
+
+- **Replacement is exact (P4).** Replacing a block changes the MSE by exactly that block's change. Any division of
+  labour between two forecasters can therefore be scored from block losses. A level-only correction can reduce the MSE
+  by at most the level's share.
+  - In the earlier study, replacing DLinear's level and daily path improved it by 5.0%; for PatchTST the effect was
+    unresolved.
+- **Why a fixed division is not enough (P5).** For one unit, a division's gain is bounded by $\tfrac12\log(1-\pi)$,
+  while its loss is unbounded. A division that is optimal on pooled error can therefore lose for the typical unit.
+  ANKYRA's per-unit weights and weekly handover answer this.
+- **How much history the weights need (P7–P9).** A record of $m$ hours yields $\min\lbrace12,\lfloor(m-1344)/744\rfloor\rbrace_+$
+  completed errors. Below two errors the weights are equal, and the annual candidate needs 10,248 h.
+  - Shrinkage bounds how far the weights can move from equal. Deleting a candidate at the origin can break that bound.
+  - Restricting history to 12, 9 and 6 months worsened the level by 6.2%, 14.2% and 20.6%.
+- **Energy (P11–P12).** Clipping at zero cannot increase any hour's error. No map can keep the energy, return
+  nonnegative load and never increase error, all at once. Energy is therefore read from the level.
+- **Peak (P15–P17).** The peak readout has a scalar form, satisfies $U\ge\max_d\hat L_d\ge\bar F$, and has a four-term
+  error decomposition and a finite-support median property. Counterexamples mark where each stops.
+- **Estimands (P19).** Pooled and unit-equal summaries can disagree in sign for an algebraic reason, so the evaluation
+  reports both, with the mean rank and conventional metrics.
+
+All 19 are implemented in `ankyra/operators.py` and checked by `tests/test_operators.py`.
 
 ## Install and run
 
@@ -167,10 +231,9 @@ See [docs/METHOD.md](docs/METHOD.md) for the equations and all constants.
   See [results/REPRODUCTION_CHECK.json](results/REPRODUCTION_CHECK.json).
 - `results/` holds every scored statistic behind the figures and tables, and `python figures/make_figures.py`
   regenerates all figures from it.
-- `python -m unittest discover -s tests -t .` checks:
-  - the block identity;
-  - the scalar form and bounds of the peak operator;
-  - the projection property;
+- `python -m unittest discover -s tests -t .` runs 53 tests. They check:
+  - that no information from after the origin reaches the forecast, the weights or the interval;
+  - the 19 exact properties of [docs/THEORY.md](docs/THEORY.md), with their counterexamples;
   - the handover's limits and the off-state rule;
   - the reference estimator's documented values.
 - Raw data are not redistributed. The evaluation populations are public; sources are listed in
@@ -182,12 +245,13 @@ ankyra/              the forecaster
   history/           frozen reference estimator of the historical level and daily path
   readouts.py        energy, peak envelope operator, pseudo-origin interval
   blocks.py          orthogonal block decomposition
-  metrics.py         unit-equal log RMS ratio, unit-and-month bootstrap, mean per-unit rank
+  operators.py       the exact properties P1–P19 as operators (replacement, support, shrinkage, projection, peak)
+  metrics.py         unit-equal log RMS ratio, unit-and-month bootstrap, mean per-unit rank, pooled decomposition
   timesfm_adapter.py TimesFM 2.5 as configured in the study
 examples/            quickstart on an artificial building
 figures/             make_figures.py and the figures (PDF and PNG)
 results/             scored results (CSV / JSON) and the reproduction record
-docs/                method and evaluation
+docs/                METHOD.md, THEORY.md (exact properties), EVALUATION.md
 tests/               unit tests
 ```
 
@@ -196,7 +260,7 @@ tests/               unit tests
 The paper is in preparation. Until then, please cite the software ([CITATION.cff](CITATION.cff)):
 
 > Qin, X. (2026). *ANKYRA: anchoring a time-series foundation model to each unit's own history for month-ahead load
-> forecasting* (software, version 1.0.0). https://github.com/XinanQ/Building_load_ANKYRA
+> forecasting* (software, version 1.1.0). https://github.com/XinanQ/Building_load_ANKYRA
 
 ## License and acknowledgements
 

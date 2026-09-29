@@ -69,7 +69,7 @@ def pct(r):
 
 
 def save(fig, stem):
-    fig.savefig(HERE / f"{stem}.pdf", bbox_inches="tight", pad_inches=0.03)
+    fig.savefig(HERE / f"{stem}.pdf", bbox_inches="tight", pad_inches=0.03, metadata={"CreationDate": None})
     fig.savefig(HERE / f"{stem}.png", bbox_inches="tight", pad_inches=0.03, dpi=300)
     plt.close(fig)
 
@@ -389,7 +389,8 @@ def fig_peak():
 
 # ============================================================================ Figure 6: one test window
 def fig_example():
-    ex = rows("example_window_cambridge.csv"); meta = json.loads((RES / "example_window_cambridge.json").read_text(encoding="utf-8"))
+    ex = [r for r in rows("example_window_cambridge.csv") if int(r["hour"]) >= -336]      # last two context weeks
+    meta = json.loads((RES / "example_window_cambridge.json").read_text(encoding="utf-8"))
     h = np.array([int(r["hour"]) for r in ex]); y = np.array([float(r["load_kw"]) for r in ex])
     tf = np.array([float(r["timesfm_kw"]) if r["timesfm_kw"] else np.nan for r in ex])
     an = np.array([float(r["ankyra_kw"]) if r["ankyra_kw"] else np.nan for r in ex])
@@ -428,7 +429,150 @@ def fig_example():
     save(fig, "fig6_example_window")
 
 
+# ============================================================================ Figure 7: exact properties
+def fig_operators():
+    import sys
+    sys.path.insert(0, str(HERE.parent))
+    import torch
+    from ankyra import blocks, operators as op, readouts
+    from ankyra.history import estimate_from_history
+    from ankyra.synthetic import synthetic_history
+    torch.set_num_threads(1)
+    ex = rows("example_window_cambridge.csv"); meta = json.loads((RES / "example_window_cambridge.json").read_text(encoding="utf-8"))
+    h = np.array([int(r["hour"]) for r in ex]); load = np.array([float(r["load_kw"]) for r in ex])
+    fut = h >= 0; y = load[fut]; ctx = load[~fut]
+    T = np.array([float(r["timesfm_kw"]) for r in ex if int(r["hour"]) >= 0])
+    A = np.array([float(r["ankyra_kw"]) for r in ex if int(r["hour"]) >= 0])
+    ct = np.array(meta["context_day_types"])[None]; tt = np.array(meta["target_day_types"])[None]
+    exc = readouts.historical_excursions(ctx[None], ct, tt)[0]
+
+    fig = plt.figure(figsize=(7.2, 4.85))
+    gs = fig.add_gridspec(2, 3, hspace=0.62, wspace=0.52, left=0.075, right=0.985, top=0.9, bottom=0.095)
+
+    # a  exact accounting of block replacement on the test window (P4)
+    ax = fig.add_subplot(gs[0, 0])
+    lvA, bpA = blocks.level(A), blocks.daily_path(A)
+    arms = [("TimesFM", T), ("+ ANKYRA level", op.replace_blocks(T, level=lvA)),
+            ("+ ANKYRA daily path\n(= ANKYRA)", op.replace_blocks(T, level=lvA, daily_path=bpA))]
+    cols = ["#C0762A", "#E8B67A", "#807DBA"]; names = ["level", "daily path", "within-day"]
+    tot0 = sum(blocks.block_losses(T, y))
+    for i, (lab, F) in enumerate(arms):
+        parts = blocks.block_losses(F, y); left = 0.0
+        for j, v in enumerate(parts):
+            ax.barh(i, v, left=left, color=cols[j], height=0.62, label=names[j] if i == 0 else None, lw=0); left += v
+        ax.text(left + tot0 * 0.02, i, f"{left:.0f}", va="center", fontsize=6.2)
+    ax.set_yticks(range(3)); ax.set_yticklabels([a_[0] for a_ in arms], fontsize=6.1); ax.invert_yaxis()
+    ax.set_xlim(0, tot0 * 1.17); ax.set_xlabel("Hourly MSE on the window (kW²)", fontsize=6.6)
+    ax.legend(fontsize=5.7, loc="lower right", handlelength=0.9, borderaxespad=0.1)
+    ax.set_title("a   Replacement: block losses add", fontsize=7.4)
+
+    # b  historical support (P7)
+    bx = fig.add_subplot(gs[0, 1])
+    m = np.arange(0, 24 * 760, 6)
+    share = np.array([op.data_share(op.effective_pseudo_origins(x)) for x in m])
+    bx.step(m / 730.0, share, where="post", color="#4A6FA5", lw=1.1)
+    for k in (2, 4, 8, 12):
+        mm = 1344 + 744 * k
+        bx.plot([mm / 730.0], [op.data_share(k)], "o", ms=2.4, color="#4A6FA5")
+        bx.text(mm / 730.0 + 0.35, op.data_share(k) - 0.045, f"K={k}", fontsize=5.6, color="#4A6FA5")
+    ya = op.annual_support_hours(2) / 730.0
+    bx.axvspan(0, ya, color="#F3F3F3", lw=0, zorder=0)
+    bx.axvline(ya, color=GREY, lw=0.6, ls=(0, (2, 2)))
+    bx.text(ya + 0.4, 0.13, "annual candidate\nweighted from\n10,248 h (14 mo)", fontsize=5.5, color=GREY, va="bottom")
+    bx.text(0.4, 0.66, "equal weights\nbelow 2 errors", fontsize=5.5, color=GREY, va="top")
+    bx.set_xlim(0, 24); bx.set_ylim(0, 0.7)
+    bx.set_xlabel("History before the origin (months)", fontsize=6.6)
+    bx.set_ylabel(r"Data share  $K_{\mathrm{eff}}/(K_{\mathrm{eff}}+8)$", fontsize=6.6)
+    bx.set_title("b   Support: how much history", fontsize=7.4)
+
+    # c  shrinkage bounds of the weather weight (P8, P9)
+    cx = fig.add_subplot(gs[0, 2])
+    ks = np.arange(2, 13); lo = [op.weather_weight_bounds(x)[0] for x in ks]; hi = [op.weather_weight_bounds(x)[1] for x in ks]
+    cx.fill_between(ks, lo, hi, color="#EEF3FA", lw=0, label="bound (P8)")
+    cx.plot(ks, lo, color="#9DB4D6", lw=0.8); cx.plot(ks, hi, color="#9DB4D6", lw=0.8)
+    pts = []
+    for hours in (2900, 3700, 4392, 5200, 6000, 6576, 7400, 8200, 9000, 9800, 10600):
+        dg = estimate_from_history(synthetic_history(hours), group="Office", temp_sigma_std=0.25).diagnostics
+        pts.append((dg["level_k_eff"], dg["weather_weight"]))
+    cx.scatter([p_[0] for p_ in pts], [p_[1] for p_ in pts], s=11, color=ANKYRA, zorder=3, lw=0, label="reference estimator")
+    cx.scatter([2], [2 / 3], s=16, facecolors="white", edgecolors="#1A1A1A", lw=0.8, zorder=4, label="after deletion (P9)")
+    cx.annotate("2/3 > 0.6", (2, 2 / 3), (3.3, 0.9), fontsize=5.6, color="#1A1A1A",
+                arrowprops=dict(arrowstyle="-", lw=0.5, color="#1A1A1A"))
+    cx.axhline(0.5, color="#BDBDBD", lw=0.6, ls=(0, (2, 2)))
+    cx.set_xlabel("Matched error support k", fontsize=6.6); cx.set_ylabel("Total weather weight", fontsize=6.6)
+    cx.set_ylim(0, 1); cx.set_xlim(1.5, 12.5); cx.set_xticks([2, 4, 6, 8, 10, 12])
+    cx.legend(fontsize=5.5, loc="lower left", handlelength=1.0, borderaxespad=0.1)
+    cx.set_title("c   Shrinkage bounds the weights", fontsize=7.4)
+
+    # d  nonnegativity: clipping versus any energy-preserving projection (P10, P11)
+    dx = fig.add_subplot(gs[1, 0])
+    p0, yt = np.array([-1.0, 3.0]), np.array([0.0, 4.0])
+    dx.add_patch(Rectangle((0, 0), 6, 6.1, color="#F4F4F4", lw=0, zorder=0))
+    dx.text(5.85, 0.15, "nonnegative\nload", fontsize=5.5, color=GREY, ha="right", va="bottom")
+    tline = np.linspace(-1.8, 2.8, 50)
+    dx.plot(tline, 2 - tline, color="#7F7F7F", lw=0.7, ls=(0, (3, 2)))
+    dx.plot([0, 2], [2, 0], color=FM, lw=2.0, solid_capstyle="butt")
+    th = np.linspace(0, 2 * np.pi, 200); r0 = np.sqrt(2)
+    dx.plot(yt[0] + r0 * np.cos(th), yt[1] + r0 * np.sin(th), color="#1A1A1A", lw=0.6)
+    dx.plot(*p0, "o", color="#1A1A1A", ms=3.2); dx.text(-1.15, 2.78, "forecast", fontsize=5.8, ha="right", va="top")
+    dx.plot(*yt, "*", color="#1A1A1A", ms=6); dx.text(0.16, 4.18, "truth", fontsize=5.8)
+    dx.plot(0, 3, "o", color=ANKYRA, ms=3.4)
+    dx.annotate("clip: error 1", (0.06, 3.0), (1.75, 3.0), fontsize=5.8, color=ANKYRA, va="center",
+                arrowprops=dict(arrowstyle="-", lw=0.5, color=ANKYRA))
+    dx.plot(0, 2, "o", color=FM, ms=3.2)
+    dx.annotate("best nonnegative point\nwith the same energy:\nerror 4", (0.06, 2.0), (1.75, 2.05), fontsize=5.8, color=FM,
+                va="center", arrowprops=dict(arrowstyle="-", lw=0.5, color=FM))
+    dx.text(1.75, 6.05, "the same-energy line is\ntangent to the no-worse\ndisc at the forecast", fontsize=5.5, color=GREY, va="top")
+    dx.set_xlim(-2.0, 6.0); dx.set_ylim(-0.3, 6.1); dx.set_aspect("equal")
+    dx.axhline(0, color="#BDBDBD", lw=0.5); dx.axvline(0, color="#BDBDBD", lw=0.5)
+    dx.set_xlabel("hour 1 (kW)", fontsize=6.6); dx.set_ylabel("hour 2 (kW)", fontsize=6.6)
+    dx.set_title("d   Energy: clip, never re-balance", fontsize=7.4)
+
+    # e  the peak operator on the test window (P14)
+    ex_ = fig.add_subplot(gs[1, 1])
+    L = A.reshape(31, 24).mean(1); U = readouts.peak_readout(A, ctx[None], ct, tt)[0]
+    d = np.arange(1, 32)
+    ex_.bar(d, L, color="#F3C4C8", width=0.78, lw=0, label=r"daily mean $\hat L_d$")
+    ex_.bar(d, exc, bottom=L, color=ANKYRA, width=0.78, lw=0, alpha=0.85, label=r"+ excursion $A_{\tau_d}$")
+    ex_.axhline(y.max(), color="#1A1A1A", lw=0.9, ls=(0, (4, 2)), label=f"observed peak {y.max():.0f}")
+    ex_.axhline(U, color=ANKYRA, lw=0.9, label=f"peak readout U = {U:.0f}")
+    ex_.axhline(A.max(), color="#9E9E9E", lw=0.8, ls=(0, (1, 1.5)), label=f"trajectory max {A.max():.0f}")
+    ex_.set_xlim(0.3, 31.7); ex_.set_ylim(0, 262)
+    ex_.set_xlabel("Forecast day", fontsize=6.6); ex_.set_ylabel("kW", fontsize=6.6)
+    hnd, lab = ex_.get_legend_handles_labels()
+    order = [3, 4, 2, 0, 1]
+    ex_.legend([hnd[k] for k in order], [lab[k] for k in order], fontsize=5.3, loc="upper left", ncol=2, handlelength=1.3,
+               columnspacing=0.7, borderaxespad=0.1, labelspacing=0.3)
+    ex_.set_title(r"e   Peak: $U=\mathrm{max}_d(\hat L_d+A_{\tau_d})$", fontsize=7.4)
+
+    # f  the peak error decomposition on the same window (P15)
+    fx = fig.add_subplot(gs[1, 2])
+    dec = op.peak_error_decomposition(A, y, exc)
+    terms = [("level", dec["level"], HIST), ("between-day", dec["between_day"], "#E8B67A"),
+             ("amplitude", dec["amplitude"], "#807DBA"), ("selection", dec["selection"], "#9E9E9E")]
+    run = 0.0
+    for i, (nm, v, c) in enumerate(terms):
+        fx.bar(i, v, bottom=run, color=c, width=0.62, lw=0)
+        fx.text(i, run + v + (1.2 if v >= 0 else -1.2), f"{v:+.1f}", ha="center", va="bottom" if v >= 0 else "top", fontsize=5.8)
+        if i < len(terms) - 1:
+            fx.plot([i + 0.31, i + 0.69], [run + v, run + v], color="#7F7F7F", lw=0.5)
+        run += v
+    fx.bar(4, run, color=ANKYRA, width=0.62, lw=0)
+    fx.text(4, run - 1.2, f"{run:+.1f}", ha="center", va="top", fontsize=5.8, color=ANKYRA)
+    fx.axhline(0, color="#1A1A1A", lw=0.6)
+    fx.set_xticks(range(5)); fx.set_xticklabels([t_[0] for t_ in terms] + ["U − peak"], rotation=35, ha="right", fontsize=6.0)
+    cum = np.cumsum([t_[1] for t_ in terms])
+    fx.set_ylim(min(0, cum.min()) - 7, max(0, cum.max()) + 7); fx.set_ylabel("kW", fontsize=6.6)
+    fx.set_title("f   Peak error: four exact terms", fontsize=7.4)
+
+    fig.text(0.075, 0.985, "a, e, f: the Cambridge test window of Figure 6 (University of Cambridge estate archive, CC BY 4.0). "
+             "b–d: exact properties. P-numbers: docs/THEORY.md.",
+             fontsize=6.0, color=GREY, va="top")
+    save(fig, "fig7_operators")
+
+
 if __name__ == "__main__":
+    fig_operators()
     fig_architecture()
     fig_test_ranks()
     fig_test_forest()
