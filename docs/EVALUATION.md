@@ -77,11 +77,12 @@ PatchTST is channel-independent, so its load forecast is the same function with 
 - Leakage checks (feature time indices, lag indices, normalisation statistics, training-target end) are implemented as
   assertions.
 
-**No future information, on either side.**
+**No information after the origin, on either side.**
 
 - **ANKYRA** uses only pre-origin load and temperature, the forecast month's calendar and a pre-origin temperature
   expectation ([METHOD.md](METHOD.md#information-at-the-origin)). Tests change every value after the origin and check
-  that nothing moves.
+  that nothing moves. This establishes input isolation in the implementation, not the absence of later information in
+  the providers' data preparation, the weather archives or the pretraining corpora.
 - **Covariate-informed baselines** receive the same set:
   - future temperature enters as the same climatological expectation, never as observed weather;
   - the one-year load lag always precedes the origin.
@@ -112,21 +113,34 @@ ratios (P19 in [THEORY.md](THEORY.md)). No single summary is therefore reported 
 
 ### Test populations (late windows, 21 forecasters)
 
+Primary estimand first: the unit-equal improvement $100[1-\exp(r)]$ in hourly RMS against each forecaster. The rank
+rows at the bottom are a secondary summary.
+
 | | BDG2 | Cambridge | HEEW | EWELD | GoiEner NH | GoiEner HH |
 |---|---:|---:|---:|---:|---:|---:|
-| ANKYRA mean per-unit rank | **4.9** | 5.6 | **5.1** | **6.5** | **6.2** | 7.3 |
-| ANKYRA position | 1 | 2 | 1 | 1 | 1 | 2 |
 | vs TiDE | +13.6 * | +16.3 * | +18.9 * | +33.1 * | +13.8 * | +14.7 * |
 | vs iTransformer-X | +3.5 | −1.5 | +5.3 * | +20.3 * | +5.8 | +12.0 * |
 | vs GBT-T | +10.6 * | +2.6 | +2.7 | +99.8 * | +67.7 * | +26.0 * |
 | vs Chronos-2-X | −39.6 † | −0.4 | +1.0 | +14.2 * | −2.5 | +0.3 |
 | vs TimesFM-X | +5.6 | +7.1 * | +4.9 | +16.3 * | +4.6 * | +2.9 |
 | vs TimesFM (load only) | −54.8 † | +5.6 * | +2.8 | +2.1 | +1.7 | −3.8 (+) |
+| Resolved better than, of 20 | 10 | 16 | 15 | 18 | 15 | 16 |
+| Resolved worse than, of 20 | 0 | 0 | 0 | 0 | 0 | 1 |
+| ANKYRA mean per-unit rank | **4.9** | 5.6 | **5.1** | **6.5** | **6.2** | 7.3 |
+| ANKYRA position | 1 | 2 | 1 | 1 | 1 | 2 |
 
 \* resolved in ANKYRA's favour; (+) resolved against ANKYRA.
 
-† BDG2 unit means are pulled by three meters reading about 0.0002 kW. Against all nine models of Figure 3 the median unit
-favours ANKYRA (59–92% of units).
+† BDG2 unit means are dominated by three meters reading about 0.0002 kW. The full result is kept, and a sensitivity
+analysis is reported beside it:
+
+- without the three meters (11 of 474 windows), the improvement is +1.6% against TimesFM and −3.0% against Chronos-2-X;
+- the intervals stay wide, because other low-load units also carry extreme ratios;
+- ANKYRA's mean rank is 4.93 with the three meters and 4.70 without them, first either way;
+- against all nine models of Figure 3, the median unit favours ANKYRA (59–92% of units).
+
+The rule defining the three meters and the full table are in the paper's Supplement S30
+(`tools_hcr_bdg2_nearzero_sensitivity_v1.py`).
 
 Mean per-unit rank averaged over the six test populations:
 
@@ -206,6 +220,38 @@ store (within-day upper interval bound ≤ +0.01):
 - The remaining harm sat on ordinary days of the Spanish population, whose departures are not predictable from any
   pre-origin source, and in strength estimates from only three pseudo-origins.
 
+### What the handover contributes
+
+An ablation specified before it was run varied only the weight on the model's daily means. It kept the candidates, the
+within-day shape and the off-state rule fixed, and compared four weights:
+
+- no weight (A0);
+- a fixed half (A½);
+- one weight per unit and month, estimated like the weekly ones (AM);
+- ANKYRA's four weekly weights (AW).
+
+LCL, the reserved set, was not used. The recomputed AW reproduces the evaluated ANKYRA forecasts to within 0.002 kW.
+
+| Test population | A½ vs A0 | AW vs A½ | AW vs AM | Share of AW's gain captured by A½ |
+|---|---:|---:|---:|---:|
+| BDG2 2017 | +3.6 * | +2.0 | +0.4 | 0.64 |
+| Cambridge | +0.1 | +1.2 * | −0.2 | 0.10 |
+| HEEW Arizona | +3.7 * | +0.2 | +0.2 | 0.96 |
+| EWELD | +3.3 * | +1.6 | −0.1 | 0.67 |
+| GoiEner non-household | +1.8 * | +1.0 * | −0.2 (+) | 0.63 |
+| GoiEner households | +2.2 * | +0.8 * | −0.1 | 0.74 |
+
+Unit-equal improvement of the first arm; * resolved in its favour, (+) resolved against it.
+
+- **Mixing.** Mixing in the model's daily means at a fixed half weight gives most of the gain on five test populations.
+- **Per-unit weights.** Estimating the weight per unit adds 0.8–1.2%, resolved on three test populations.
+- **Weekly weights.** Separate weekly weights add nothing over one weight per unit and month.
+- **Preview populations.** On the four preview populations, where the fixed division is already strong, a fixed half
+  weight lowers accuracy (unresolved). The per-unit weights reduce this loss.
+
+The plan fixed the wording in advance: the claim is per-unit, error-weighted mixing, not weekly resolution. All ten
+populations and the weekly breakdown are in [`results/handover_granularity.csv`](../results/handover_granularity.csv).
+
 ### Departures from normal operation persist
 
 The weekly handover and the off-state rule rest on a measured property of the load rather than on tuned thresholds.
@@ -266,6 +312,33 @@ information would not depend on how long the current departure had lasted. It do
     band (both resolved);
   - not distinguishable from Chronos-2's native quantiles.
   See [`results/intervals_households.json`](../results/intervals_households.json).
+
+## Cost
+
+Timed on one machine: RTX 5060 Laptop GPU (8 GB), Ryzen 9 8940HX, 16 GB RAM. The sample is 64 Drammen windows; no
+targets are used. Each value is the median of three timed repeats after a warm-up. CPU parts run on one thread.
+
+| Per 744-hour window | First run | Pseudo-origins reused | Model load (once) | GPU memory |
+|---|---:|---:|---:|---:|
+| TimesFM alone, per-core batch 64 | 15 ms | — | 1.9 s | 3.0 GiB |
+| TimesFM alone, study configuration (per-core batch 1) | 0.50 s | — | 1.9 s | 0.9 GiB |
+| ANKYRA, batch 64 | 0.50 s | 0.11 s | 1.9 s | 3.0 GiB |
+| ANKYRA, study configuration | 3.9 s | 0.60 s | 1.9 s | 0.9 GiB |
+| Chronos-2-X | 55 ms | — | 7.3 s | 0.5 GiB |
+| Per-unit ridge (CPU) | 97 ms | — | — | — |
+
+ANKYRA's parts:
+
+- reference estimator at the origin: 97 ms;
+- six fixed-division pseudo-forecasts: 0.30 s;
+- seven TimesFM contexts at batch 64: 0.10 s;
+- peak readout: 34 µs;
+- interval, when requested: 0.46 s.
+
+The two TimesFM configurations give forecasts within 3×10⁻⁵ kW of each other.
+
+"Pseudo-origins reused" assumes the six pseudo-origin forecasts come from earlier runs. This holds when forecasts are
+issued every 744 hours, or when a window is re-run.
 
 ## Limitations
 

@@ -1,0 +1,26 @@
+item,seconds_per_window
+TimesFM alone (batch 64),0.0147
+TimesFM alone (evaluated configuration),0.500464
+ANKYRA first run (batch 64),0.502467
+ANKYRA with cached pseudo-origins (batch 64),0.111626
+ANKYRA first run (evaluated configuration),3.902625
+ANKYRA with cached pseudo-origins (evaluated configuration),0.59739
+Chronos-2-X,0.055439
+RIDGE-L,0.097303
+"ANKYRA interval, extra",0.462144
+component: timesfm_eval_config_per_window,0.500464
+component: timesfm_b64_per_window,0.0147
+component: timesfm_b64_seven_contexts_per_window,0.103093
+component: ankyra_origin_estimator_per_window,0.096892
+component: ankyra_six_pseudo_forecasts_per_window,0.302447
+component: ankyra_forecast_cpu_per_window,0.394337
+component: peak_readout_per_window,3.4e-05
+component: interval_per_window,0.462144
+component: ridge_l_per_window,0.097303
+component: chronos2x_covariates_per_window,0.000808
+component: chronos2x_inference_per_window,0.054631
+model load: timesfm_load,1.903
+model load: chronos2_load,7.306
+GPU peak GiB: timesfm_eval_config,0.891
+GPU peak GiB: timesfm_b64,2.986
+GPU peak GiB: chronos2x,0.512

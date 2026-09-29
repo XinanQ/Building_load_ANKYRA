@@ -302,54 +302,80 @@ def fig_test_forest():
 
 # ============================================================================ Figure 4: what the handover does
 def fig_mechanism():
-    ab = rows("ablation.csv"); lw_ = rows("lead_weeks_first_read.csv")
+    ab = rows("ablation.csv"); lw_ = rows("lead_weeks_first_read.csv"); hg = rows("handover_granularity.csv")
     order = TEST + PREVIEW + RESERVED
-    fig = plt.figure(figsize=(7.2, 2.85))
-    gs = fig.add_gridspec(1, 3, width_ratios=[1.25, 1, 0.8], wspace=0.42, left=0.105, right=0.99, top=0.83, bottom=0.17)
-    ax = fig.add_subplot(gs[0])
+    fig = plt.figure(figsize=(7.2, 5.3))
+    gs = fig.add_gridspec(2, 2, height_ratios=[1.25, 1], hspace=0.5, wspace=0.34, left=0.105, right=0.985, top=0.905, bottom=0.085)
     y = np.arange(len(order))[::-1]
-    ax.axhspan(y[len(TEST) - 1] - 0.5, y[0] + 0.5, color="#F3F6FA", zorder=0)
-    ax.axvline(0, color="#7F7F7F", lw=0.6)
-    for yy, s in zip(y, order):
-        for key, mk, col, dy in (("fixed division", "o", ANKYRA, 0.17), ("without off-state", "D", "#4D4D4D", -0.17)):
-            r = next(rr for rr in ab if rr["set"] == s and rr["ablation"].startswith(key))
-            p, a, b = float(r["improvement_pct"]), pct(float(r["um_high"])), pct(float(r["um_low"]))
-            sig = float(r["um_high"]) < 0 or float(r["um_low"]) > 0
-            ax.plot([a, b], [yy + dy, yy + dy], color=col, lw=0.9)
-            ax.scatter([p], [yy + dy], marker=mk, s=15 if mk == "o" else 11, color=col if sig else "white", edgecolor=col, lw=0.8, zorder=3)
-    ax.set_yticks(y); ax.set_yticklabels([SHORT[s] for s in order], fontsize=6.4)
-    for t_, s in zip(ax.get_yticklabels(), order):
-        if s in TEST:
-            t_.set_fontweight("bold")
-    ax.tick_params(axis="y", length=0)
-    ax.text(40, y[0] + 0.25, "test sets", fontsize=6, color="#4A6FA5", fontstyle="italic", ha="right", va="center")
-    ax.set_xlabel("ANKYRA improvement (%)", fontsize=6.8)
-    ax.set_title("a   Ablation", fontsize=7.6)
-    ax.legend(handles=[Line2D([], [], marker="o", ls="", color=ANKYRA, markersize=3.8, label="vs fixed division (F0)"),
-                       Line2D([], [], marker="D", ls="", color="#4D4D4D", markersize=3.2, label="vs no off-state rule (F1)")],
-              loc="lower right", fontsize=5.9, handletextpad=0.2, borderaxespad=0.1)
-    bx = fig.add_subplot(gs[1]); cx = fig.add_subplot(gs[2])
+
+    def forest(ax, series, title, xlabel, legend_loc):
+        ax.axhspan(y[len(TEST) - 1] - 0.5, y[0] + 0.5, color="#F3F6FA", zorder=0)
+        ax.axvline(0, color="#7F7F7F", lw=0.6)
+        for yy, s_ in zip(y, order):
+            for get, mk, col, dy, _ in series:
+                r = get(s_)
+                if r is None:
+                    continue
+                p_, a, b = float(r["improvement_pct"]), pct(float(r["um_high"])), pct(float(r["um_low"]))
+                sig = float(r["um_high"]) < 0 or float(r["um_low"]) > 0
+                ax.plot([a, b], [yy + dy, yy + dy], color=col, lw=0.9)
+                ax.scatter([p_], [yy + dy], marker=mk, s=15 if mk == "o" else 11, color=col if sig else "white", edgecolor=col, lw=0.8, zorder=3)
+        ax.set_yticks(y); ax.set_yticklabels([SHORT[s_] for s_ in order], fontsize=6.4)
+        for t_, s_ in zip(ax.get_yticklabels(), order):
+            if s_ in TEST:
+                t_.set_fontweight("bold")
+        ax.tick_params(axis="y", length=0)
+        ax.set_xlabel(xlabel, fontsize=6.8); ax.set_title(title, fontsize=7.6)
+        ax.legend(handles=[Line2D([], [], marker=mk, ls="", color=col, markersize=3.8 if mk == "o" else 3.2, label=lab) for _, mk, col, _, lab in series],
+                  loc=legend_loc, fontsize=5.9, handletextpad=0.2, borderaxespad=0.1)
+
+    def ab_row(key):
+        return lambda s_: next((rr for rr in ab if rr["set"] == s_ and rr["ablation"].startswith(key)), None)
+
+    def hg_row(key):
+        return lambda s_: next((rr for rr in hg if rr["set"] == s_ and rr["contrast"] == key), None)
+
+    ax = fig.add_subplot(gs[0, 0])
+    forest(ax, [(ab_row("fixed division"), "o", ANKYRA, 0.17, "vs fixed division (F0)"), (ab_row("without off-state"), "D", "#4D4D4D", -0.17, "vs no off-state rule (F1)")],
+           "a   Ablation", "ANKYRA improvement (%)", "lower right")
+    ax.text(ax.get_xlim()[1], y[0] + 0.25, "test sets ", fontsize=6, color="#4A6FA5", fontstyle="italic", ha="right", va="center")
+    ax.set_ylim(y[-1] - 0.75, y[0] + 0.65)
+    dx = fig.add_subplot(gs[0, 1])
+    forest(dx, [(hg_row("C1 AW vs Ah"), "o", ANKYRA, 0.17, "vs fixed ½ mixture"), (hg_row("C2 AW vs AM"), "s", FM, -0.17, "vs one weight per month")],
+           "b   Weekly per-unit weights against simpler mixing", "Improvement of ANKYRA's weekly weights (%)", "lower right")
+    labels = [SHORT[s_] if s_ not in RESERVED else f"{SHORT[s_]} (not used)" for s_ in order]
+    dx.set_yticklabels(labels, fontsize=6.4)
+    for t_, s_ in zip(dx.get_yticklabels(), order):
+        t_.set_fontweight("bold" if s_ in TEST else "normal")
+        if s_ in RESERVED:
+            t_.set_color(GREY)
+    dx.set_ylim(y[-1] - 0.75, y[0] + 0.65)
+    dx.legend(handles=[Line2D([], [], marker="o", ls="", color=ANKYRA, markersize=3.8, label="vs fixed ½ mixture"),
+                       Line2D([], [], marker="s", ls="", color=FM, markersize=3.2, label="vs one weight per month")],
+              loc="lower right", ncol=2, fontsize=5.8, handletextpad=0.2, columnspacing=0.8, borderaxespad=0.15)
+
+    bx = fig.add_subplot(gs[1, 0]); cx = fig.add_subplot(gs[1, 1])
     marks = {"Cambridge": "o", "CINELDI": "s", "HEEW Arizona": "^"}
     wk = np.arange(1, 5)
     bx.axhline(0, color="#7F7F7F", lw=0.6)
-    for s, mk in marks.items():
-        rr = [r for r in lw_ if r["set"] == s]
+    for s_, mk in marks.items():
+        rr = [r for r in lw_ if r["set"] == s_]
         bx.plot(wk, [pct(float(r["fixed_division_vs_timesfm_log_ratio"])) for r in rr], color="#9E9E9E", ls=(0, (3, 2)), marker=mk, ms=3.2, mfc="white", lw=0.9)
         bx.plot(wk, [pct(float(r["ankyra_vs_timesfm_log_ratio"])) for r in rr], color=ANKYRA, marker=mk, ms=3.4, lw=1.1)
-        cx.plot(wk, [float(r["mean_weight_on_model"]) for r in rr], color=FM, marker=mk, ms=3.4, lw=1.0, label=SHORT[s])
+        cx.plot(wk, [float(r["mean_weight_on_model"]) for r in rr], color=FM, marker=mk, ms=3.4, lw=1.0, label=SHORT[s_])
     bx.set_xticks(wk); bx.set_xticklabels([f"W{i}" for i in wk]); bx.set_xlabel("Forecast week", fontsize=6.8)
     bx.set_ylabel("Improvement over TimesFM (%)", fontsize=6.8)
-    bx.set_title("b   Lead-week profile vs TimesFM", fontsize=7.6)
+    bx.set_title("c   Lead-week profile vs TimesFM", fontsize=7.6)
     bx.legend(handles=[Line2D([], [], color=ANKYRA, lw=1.1, label="ANKYRA"), Line2D([], [], color="#9E9E9E", ls=(0, (3, 2)), lw=0.9, label="fixed division (F0)")],
               loc="lower right", fontsize=5.9, handlelength=1.8)
     cx.axhline(0.5, color="#BDBDBD", lw=0.6, ls=(0, (2, 2)))
     cx.text(4.15, 0.5, "prior", fontsize=5.5, color="#9E9E9E", va="center")
     cx.set_ylim(0.25, 0.75); cx.set_xticks(wk); cx.set_xticklabels([f"W{i}" for i in wk]); cx.set_xlabel("Forecast week", fontsize=6.8)
     cx.set_ylabel(r"Mean weight on the model  $\alpha_w$", fontsize=6.8)
-    cx.set_title("c   Estimated handover", fontsize=7.6)
+    cx.set_title("d   Estimated handover", fontsize=7.6)
     cx.legend(fontsize=5.9, loc="upper right", handlelength=1.4)
-    fig.text(0.105, 0.985, "b–c: Cambridge, CINELDI and HEEW, scored for the first time after the handover had been fixed. Shaded in a: the six test sets.",
-             fontsize=6.2, color=GREY, va="top")
+    fig.text(0.105, 0.985, "a–b: shaded rows are the six test sets; filled markers exclude zero. c–d: Cambridge, CINELDI and HEEW, scored for the first time "
+             "after the handover had been fixed.", fontsize=6.2, color=GREY, va="top")
     save(fig, "fig4_handover_and_ablation")
 
 

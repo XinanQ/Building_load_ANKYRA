@@ -15,7 +15,7 @@ lets the unit's own forecast record decide where that is.
   orthogonal, so their squared errors add.
 - The within-day shape comes from **TimesFM 2.5** (zero-shot).
 - The level and daily path come from six historical candidates plus the foundation model's own level. Each unit's
-  errors at earlier pseudo-origins weight them, and the **same errors decide, week by week, how much to hand over** to
+  errors at earlier pseudo-origins weight them, and the **same errors decide how much of the month to hand over** to
   the foundation model.
 - A unit that has been **off for a week** is handed to the foundation model entirely.
 - **Nothing is trained on the target series.** Every weight is a function of the unit's completed pseudo-forecasts.
@@ -23,10 +23,10 @@ lets the unit's own forecast record decide where that is.
   - energy from the level;
   - a monthly peak from a historical excursion envelope;
   - a prediction interval from pseudo-forecast residuals.
-- Every step rests on a stated **exact property**: 19 identities and bounds, each implemented and tested, together with
-  the counterexamples that mark their limits ([docs/THEORY.md](docs/THEORY.md)).
+- The design choices and their limits are explained by **exact properties**: identities, bounds and the counterexamples
+  that mark where they stop. Each is implemented and tested ([docs/THEORY.md](docs/THEORY.md)).
 
-## Strictly no future information
+## No information after the origin
 
 At an origin, ANKYRA uses only what is known at that moment.
 
@@ -50,10 +50,17 @@ At an origin, ANKYRA uses only what is known at that moment.
   - Trained baselines are scored only after their training cutoff.
   - The six test populations were scored once, after the model was fixed, and nothing was tuned on them.
 
-One exposure is outside any forecaster's control. TimesFM 2.5 and Chronos-2 were pretrained on public corpora that may
-contain some evaluation series; seven BDG2 sites are listed in them. This could favour every forecaster built on these
-models, ANKYRA included ([limitations](docs/EVALUATION.md#limitations)). The information set is detailed in
-[docs/METHOD.md](docs/METHOD.md#information-at-the-origin).
+**What the tests show, and what they do not.** The tests establish input isolation in the implementation: nothing
+recorded after the origin reaches the computation. They do not by themselves show that the inputs are free of later
+information. Three sources lie outside the implementation:
+
+- the providers' data preparation, such as gap filling (imputed or zero-filled hours are masked where documented);
+- weather archives, whose past values may have been quality-controlled later;
+- the pretraining corpora of TimesFM 2.5 and Chronos-2, which may contain some evaluation series (seven BDG2 sites are
+  listed in them). This could favour every forecaster built on these models, ANKYRA included
+  ([limitations](docs/EVALUATION.md#limitations)).
+
+The information set is detailed in [docs/METHOD.md](docs/METHOD.md#information-at-the-origin).
 
 ## Results on six test populations
 
@@ -71,28 +78,33 @@ Each uses the part its architecture accepts:
 PatchTST is channel-independent, so its forecast is the same with or without these inputs. The six test populations
 were scored **once, after the model had been fixed**.
 
-![Test-set ranks and head-to-head](figures/fig2_test_ranks.png)
+**Primary estimand.** The primary estimand is the unit-equal log RMS ratio, with 95% intervals from resampling units
+and months. A contrast is *resolved* when its interval excludes zero. The mean per-unit rank is a secondary summary: it
+stays defined when some units have zero error, but it does not replace the ratio.
 
-| Test population | Country | Units / windows | ANKYRA rank among 21 |
-|---|---|---:|:---:|
-| BDG2 2017 (commercial and institutional meters) | USA / Europe | 142 / 474 | **1** |
-| University of Cambridge estate | UK | 108 / 730 | 2 |
-| HEEW, Arizona State University campus | USA | 138 / 658 | **1** |
-| EWELD industrial and commercial meters | China | 197 / 523 | **1** |
-| GoiEner non-household supply points | Spain | 481 / 890 | **1** |
-| GoiEner households | Spain | 696 / 696 | 2 |
-| **Mean per-unit rank** | | | **5.94** (next: per-unit ridge 7.21, Chronos-2-X 7.72, iTransformer-X 8.06) |
+| Test population | Country | Units / windows | Resolved better than (of 20) | …of them, same-information (of 5) | Resolved worse than | Rank among 21 |
+|---|---|---:|:---:|:---:|:---:|:---:|
+| BDG2 2017 (commercial and institutional meters) | USA / Europe | 142 / 474 | 10 | 2 | — | 1 |
+| University of Cambridge estate | UK | 108 / 730 | 16 | 2 | — | 2 |
+| HEEW, Arizona State University campus | USA | 138 / 658 | 15 | 2 | — | 1 |
+| EWELD industrial and commercial meters | China | 197 / 523 | 18 | 5 | — | 1 |
+| GoiEner non-household supply points | Spain | 481 / 890 | 15 | 3 | — | 1 |
+| GoiEner households | Spain | 696 / 696 | 16 | 3 | TimesFM (3.8%) | 2 |
 
 Windows are those after each population's training cutoff, where all 21 forecasters are available.
 
-- On the test populations **ANKYRA is never significantly worse than any baseline given its information set**.
-- Among those five baselines, it is significantly better than:
+- On the test populations **ANKYRA is never resolvably worse than any baseline given its information set**.
+- Among those five baselines, it is resolvably better than:
   - TiDE on all six populations;
   - GBT-T on four;
   - iTransformer-X and TimesFM-X on three;
   - Chronos-2-X on one (EWELD).
-- Among the load-only statistical models, it is significantly better than Holt–Winters on all six and MSTL on five.
-- Its only significant deficit on a test population is against zero-shot **TimesFM on households** (3.8%).
+- Among the load-only statistical models, it is resolvably better than Holt–Winters on all six and MSTL on five.
+- Its only resolved deficit on a test population is against zero-shot **TimesFM on households** (3.8%).
+- Mean per-unit rank over the six populations: **5.94**. Next are the per-unit ridge (7.21), Chronos-2-X (7.72) and
+  iTransformer-X (8.06).
+
+![Test-set ranks and head-to-head](figures/fig2_test_ranks.png)
 
 ![Pairwise improvements with intervals](figures/fig3_test_pairwise.png)
 
@@ -106,8 +118,13 @@ Windows are those after each population's training cutoff, where all 21 forecast
   - The diagnosis rests on an oracle bound and on correlations. It narrows down the cause but does not identify the
     operating reasons.
 - **Households.** Zero-shot TimesFM is better (see above).
-- **BDG2.** Three meters read about 0.0002 kW, above the off-state threshold, and pull the unit-mean ratios. The
-  median unit favours ANKYRA against each of the nine models in the figure above (59–92% of units).
+- **BDG2.** Three meters read about 0.0002 kW, above the off-state threshold, and dominate the unit-mean ratios. The
+  full result is kept, with a sensitivity analysis alongside:
+  - with the three meters, ANKYRA's point estimate against TimesFM is −54.8% (late windows);
+  - without them (11 windows), it is +1.6%;
+  - either way the interval stays wide, because other low-load units also carry extreme ratios;
+  - the median unit favours ANKYRA against each of the nine models in the figure above (59–92% of units);
+  - ANKYRA ranks first with and without the three meters.
 - **Conventional metrics.** On median unit CV(RMSE), Chronos-2-X or the per-unit ridge is slightly lower (by 0.2–2.2
   points) on nine of eleven populations. ANKYRA's advantage is on average over units and in rank, not at the median unit.
 
@@ -118,24 +135,33 @@ Full tables, all 11 populations and the evaluation protocol are in [docs/EVALUAT
 ![One test window](figures/fig6_example_window.png)
 
 In September a university building's load rises after the summer. TimesFM carries the recent level forward, while
-ANKYRA's history-weighted level anticipates the rise. The handover follows the lead time:
+ANKYRA's history-weighted level anticipates the rise. The balance between the two sources shifts with the lead time:
 
 - Under a **fixed division** (history's level, the model's shape), the foundation model alone is better in the first
   week and worse later.
-- ANKYRA estimates, for each unit, how much of the model's daily means to use in each week.
+- ANKYRA estimates, for each unit, how much of the model's daily means to use (one weight for each forecast week).
   - The weights are fitted on the unit's completed pseudo-forecasts: the fixed division against TimesFM.
   - They are then applied to ANKYRA's history-side daily means, whose level also contains the model candidate
     ([details](docs/METHOD.md#week-by-week-handover)).
 - On the three populations scored for the first time after the handover was fixed, ANKYRA's point estimate beats
   TimesFM in **every** forecast week.
-- The handover improves on the fixed division on seven of eleven populations (1.7–26.1%) and is never significantly
+- The handover improves on the fixed division on seven of eleven populations (1.7–26.1%) and is never resolvably
   worse.
-- **Why weekly, and why an off-state rule.** Departures from normal operation become more likely to continue the
+- **Which part matters.** An ablation fixed before it was run separates the pieces. On the six test populations:
+  - mixing in the model's daily means at a fixed half weight already gives most of the gain (63–96% on five, 10% on
+    Cambridge);
+  - estimating the weight per unit adds 0.8–1.2%, resolved on three of the six and never resolvably worse;
+  - separate weights for each week add nothing over one weight per unit and month (0.2% worse on GoiEner
+    non-household).
+
+  What carries the gain is per-unit, error-weighted mixing. The weekly weights describe how the balance shifts with
+  lead time ([details](docs/EVALUATION.md#what-the-handover-contributes)).
+- **Why error weights and an off-state rule.** Departures from normal operation become more likely to continue the
   longer they have lasted. This holds within units, on seven populations. The longer a departure has lasted at the
   origin, the more the model's recent information is worth over the whole month
   ([evidence](docs/EVALUATION.md#departures-from-normal-operation-persist)).
 
-![Ablation and lead-week profile](figures/fig4_handover_and_ablation.png)
+![Ablation, handover granularity and lead-week profile](figures/fig4_handover_and_ablation.png)
 
 ## Peak operator
 
@@ -185,6 +211,26 @@ consequences on data.
   reports both, with the mean rank and conventional metrics.
 
 All 19 are implemented in `ankyra/operators.py` and checked by `tests/test_operators.py`.
+
+## Cost
+
+Timed per 744-hour window on one laptop: RTX 5060 Laptop GPU and Ryzen 9 8940HX, with one CPU thread for the history
+side.
+
+| Forecaster | First run | Pseudo-origins reused |
+|---|---:|---:|
+| TimesFM alone | 15 ms | — |
+| ANKYRA | 0.50 s | 0.11 s |
+| Chronos-2-X | 55 ms | — |
+| Per-unit ridge (CPU) | 97 ms | — |
+
+- **Where ANKYRA spends its time.** Most of it goes to the historical estimator at six pseudo-origins (0.30 s), not to
+  the foundation model (seven calls, 0.10 s).
+- **Reuse.** When forecasts are issued every 744 hours, those pseudo-origin results come from earlier runs.
+- **TimesFM configuration.** The study ran TimesFM with its default per-core batch of 1, which takes 0.50 s per call. A
+  per-core batch of 64 gives the same forecasts to within 3×10⁻⁵ kW.
+
+Full timings are in [`results/cost_per_window.csv`](results/cost_per_window.csv).
 
 ## Install and run
 
@@ -260,7 +306,7 @@ tests/               unit tests
 The paper is in preparation. Until then, please cite the software ([CITATION.cff](CITATION.cff)):
 
 > Qin, X. (2026). *ANKYRA: anchoring a time-series foundation model to each unit's own history for month-ahead load
-> forecasting* (software, version 1.1.0). https://github.com/XinanQ/Building_load_ANKYRA
+> forecasting* (software, version 1.1.1). https://github.com/XinanQ/Building_load_ANKYRA
 
 ## License and acknowledgements
 

@@ -29,6 +29,10 @@ example the London households of 2011–2014.
 or after each pseudo-origin, and checks that the forecast, the model's inputs, the pseudo-origin errors and the interval
 are unchanged.
 
+These tests establish input isolation in the implementation. They do not show that the inputs themselves carry no
+later information. Three things lie upstream of the implementation: the providers' gap filling (imputed or zero-filled
+hours are masked where documented), later quality control of weather archives, and the pretraining corpora.
+
 ## Three orthogonal blocks
 
 At origin $o$ a forecast $F_{d,h}$ covers $D=31$ origin-aligned days of $H=24$ hours, $T=744$ hours in all. Define:
@@ -137,6 +141,8 @@ inverse-MSE weights towards 1/2, whereas least squares depends only on where the
 The weights are estimated on the fixed division and applied to $m^H$, which includes the model candidate. Using the
 fixed division at the pseudo-origins avoids nested pseudo-origins. If no pair or no disagreement is available,
 $\alpha_w=1/2$.
+
+An ablation fixed before it was run shows that one weight per unit for the whole month is as accurate as the four weekly weights ([EVALUATION.md](EVALUATION.md#what-the-handover-contributes)). The weekly form is kept as evaluated.
 
 The forecast is $F_{d,h}=m_d+w_{d,h}$, projected onto $F\ge0$. It needs seven TimesFM calls per window (one at the
 origin, six at pseudo-origins).

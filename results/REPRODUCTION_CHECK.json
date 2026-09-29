@@ -1,5 +1,5 @@
 {
- "checked_utc": "2026-09-29T16:39:15.427070+00:00",
+ "checked_utc": "2026-09-29T19:49:56.977830+00:00",
  "what": "The released package (ankyra/) against the evaluated forecasts and the research implementation, run in the research workspace where the evaluation data are available; the data are not redistributed here.",
  "ankyra_forecasts": [
   {
@@ -10,7 +10,7 @@
    "max_abs_diff_kw": 0.0,
    "max_rel_diff": 0.0,
    "median_abs_diff_kw": 0.0,
-   "seconds": 377.99297046661377
+   "seconds": 375.45663595199585
   },
   {
    "set": "lcl",
@@ -20,7 +20,7 @@
    "max_abs_diff_kw": 0.0,
    "max_rel_diff": 0.0,
    "median_abs_diff_kw": 0.0,
-   "seconds": 365.9745399951935
+   "seconds": 329.3921277523041
   }
  ],
  "timesfm_adapter": {
@@ -188,7 +188,7 @@
   }
  },
  "package_files_sha256": {
-  "ankyra/__init__.py": "379c0c128c55e303be06b1ece388b6513516bb3a2912356a820da5758b8b6604",
+  "ankyra/__init__.py": "416c303b72b37b75b240bfe45f05b0696360001c53dde5c30a6a7a0e6cb0915c",
   "ankyra/blocks.py": "0921b6d54028c03d2ff56a21c1574bd811ea8e21076be9902a549b7586d0e8f7",
   "ankyra/core.py": "b9221c0c2862eb8b7c1631069efeeb45354856111ab421866c90a7d12aa0dd02",
   "ankyra/history/__init__.py": "5bb09cefbde842a67cd3bca161dd0a323f0bfa6b74a1ba951114e758904565eb",
