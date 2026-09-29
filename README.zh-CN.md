@@ -2,7 +2,7 @@
 
 **用每个单位自己的历史，给时间序列基础模型“下锚”：月前负荷预测**
 
-[English](README.md) · [方法](docs/METHOD.md) · [精确性质](docs/THEORY.md) · [评估](docs/EVALUATION.md) · [结果数据](results/)
+[English](README.md) · [方法](docs/METHOD.md) · [理论](theory/README.zh-CN.md) · [评估](docs/EVALUATION.md) · [结果数据](results/)
 
 ![ANKYRA 架构](figures/fig1_architecture.png)
 
@@ -17,7 +17,7 @@
   - 电量取自水平；
   - 月峰值取自历史偏移包络；
   - 预测区间取自伪起报残差。
-- **精确性质**：设计选择及其边界由精确性质解释，包括恒等式、界，以及标出适用边界的反例；每条都已实现并测试（[docs/THEORY.md](docs/THEORY.md)）。
+- **精确性质**：设计选择及其边界由精确性质解释，包括恒等式、界，以及标出适用边界的反例。它们单独放在 [theory/](theory/README.zh-CN.md) 文件夹，与预测模型 [ankyra/](ankyra/) 分开，每条都有证明、算子与数值检验。
 
 ## 起报点之后无信息
 
@@ -86,6 +86,37 @@ PatchTST 是通道独立结构，加不加这些输入，预测都相同。六�
 
 ![两两改进与区间](figures/fig3_test_pairwise.png)
 
+**对全部基线的损失指标**：下图是 21 个模型在同一批训练截点后窗口上的常规损失，覆盖六个测试集和苏州工业园区（预览集，4 条汇总序列）。名次随指标而变：
+
+- **RMSE**（单位均值）：ANKYRA 在 BDG2 和苏州园区最低，其余五个集第二或第三。更低的分别是 iTransformer-X（剑桥）、GBT-T（HEEW）、Chronos-2（EWELD）、Chronos-2-X 与逐单位岭回归（GoiEner 非住户），以及住户上低 0.1% 的岭回归。
+- **MAE 与 WAPE** 由预测分布的中位数最小化，平方误差类指标由均值最小化。在这两个指标上，零样本 Chronos-2 或 TimesFM 在 EWELD 与两个 GoiEner 集上低于 ANKYRA，ANKYRA 在这三个集排第二到第五。
+- **中位数单位的 CV(RMSE)**：ANKYRA 在 HEEW 最低，五个集第二，BDG2 第三。
+- 四个指标、七个数据集上，ANKYRA 在 21 个模型中都排第一到第五，没有哪个基线在所有格子上都更低。这些指标对单位的加权方式与主指标不同（[详见评估](docs/EVALUATION.md#loss-metrics-of-every-forecaster)）。
+
+![21 个模型的损失指标](figures/fig8_loss_metrics.png)
+
+**按预测日的损失曲线**：下图把同一批预测按预测日（第 1–31 天）拆开。损失是每天的 CV(RMSE)，在单位间取几何平均，也就是主指标所用的尺度。
+
+- 在每个测试集的每一天，ANKYRA 都在 21 个模型中损失最低的前 6 名之内（苏州园区为前 7 名）。
+- ANKYRA 的损失随预测日增长得比 TimesFM 和 Chronos-2 慢，七个数据集都是如此：从第 1 周到第 4 周，ANKYRA 增长 1.19–1.57 倍，TimesFM 1.24–1.68 倍，Chronos-2 1.25–1.80 倍。
+- 从第 2 周起，在 BDG2、剑桥、HEEW 和苏州园区，ANKYRA 在 24 天里有 13–16 天最低或第二低。
+- 零样本基础模型在第 1 天更低，在两个 GoiEner 集上每天都更低。逐日对比以及它与整月主指标的精确关系见 [docs/EVALUATION.md](docs/EVALUATION.md#loss-by-forecast-day)。
+
+![按预测日的损失](figures/fig9_loss_by_day.png)
+
+**ANKYRA 最强的地方：月电量**：一个月的电量误差是水平误差的 744 倍（P3）。ANKYRA 的设计作用在这个量上：月水平与日路径来自单位自己的历史，日内形状用的是 TimesFM 的。
+
+- 七个数据集上，ANKYRA 的月电量误差从未显著差于 20 个基线中的任何一个，并显著优于其中 4–17 个：GoiEner 非住户 17 个，剑桥与 EWELD 各 14 个，住户 13 个。
+- 在 GoiEner 住户上，逐日小时误差是零样本基础模型每天都更低；但 ANKYRA 的月电量误差比这四个基础模型都低 22–27%，全部显著。
+- 对 ANKYRA 所用日内形状的来源 TimesFM，月电量误差在六个数据集上低 4–25%，在剑桥与两个 GoiEner 集上显著。BDG2 的单位均值被 3 个近零电表主导；去掉它们后低 12%（不显著）。
+- 电量对比是评分之后做的描述（[详见评估](docs/EVALUATION.md#monthly-energy-error)）。
+
+![对全部基线的月电量误差](figures/fig11_energy_error.png)
+
+**跨数据集的稳定性**：在全部六个测试集上，ANKYRA 在 21 个模型中都排第一或第二；没有其他模型在超过两个测试集上进入前两名。稳定性次之的逐单位岭回归排第 1–5 名，Chronos-2-X 最低排到第 11 名，TimesFM 第 12 名，GBT-T 第 21 名。在四个预览集上 ANKYRA 分别排第 1、3、6、7 名。名次按平均单位排名（次要汇总）计算。
+
+![各数据集上的名次](figures/fig12_consistency.png)
+
 **ANKYRA 在哪里落后**（照实报告）：
 
 - **挪威的学校与市政楼宇**（Oslo、Drammen，预览集）：跨单位训练、带日历特征的模型更好，GBT-T 好 18%，iTransformer-X 好 9%。诊断更支持**逐天的活动水平**（假期、类停工日、调休）而非日内形状是主要来源；类停工日在单位之间共享、逐年重复。诊断依据的是上限与相关分析，缩小了原因的范围，但没有识别真实的停业原因。
@@ -96,7 +127,7 @@ PatchTST 是通道独立结构，加不加这些输入，预测都相同。六�
   - 两种情况下区间都很宽，因为还有其他低负荷单位的比值极端；
   - 按中位数，上图九个模型都不如 ANKYRA（59–92% 的单位 ANKYRA 更好）；
   - 含与不含这 3 个电表，ANKYRA 的平均排名都是第一。
-- **常规指标**：按单位中位数 CV(RMSE)，11 个数据集中有 9 个上 Chronos-2-X 或逐单位岭回归略低，差 0.2–2.2 个百分点。ANKYRA 的优势在单位平均与排名上，而不是中位数单位。
+- **常规指标**：在全窗口（14 个模型）上按单位中位数 CV(RMSE)，11 个数据集中有 9 个上 Chronos-2-X 或逐单位岭回归略低，差 0.2–2.2 个百分点。ANKYRA 的优势在单位平均与排名上，而不是中位数单位；21 个模型在训练截点后窗口上的损失见上图。
 
 ## 交接怎样起作用
 
@@ -134,13 +165,19 @@ PatchTST 是通道独立结构，加不加这些输入，预测都相同。六�
 
 ![峰值算子](figures/fig5_peak_operator.png)
 
-**预测区间**：住户上以 ANKYRA 为中心的伪起报区间，在 80% 名义水平下覆盖 **79.2%** 的小时；TimesFM 自带的 0.1–0.9 区间只覆盖 36.1%。
+**预测区间**：住户上以 ANKYRA 为中心的伪起报区间，在 80% 名义水平下覆盖 **79.2%** 的小时，90% 水平下覆盖 88.0%，是唯一接近名义水平的区间：TimesFM 自带的 0.1–0.9 区间只覆盖 36.1%，Chronos-2 自带的 80% 区间覆盖 68.8%。按 Winkler 分数，ANKYRA 的区间比 TimesFM 好 7.5%、比固定分工上的同一区间好 4.3%，均显著；与 Chronos-2 持平（差 0.6%，不显著）。区间只在这一个数据集上评估过。
 
-## 精确性质
+![住户上的预测区间](figures/fig13_intervals.png)
+
+## 理论：精确性质
 
 ![测试窗口上的精确性质](figures/fig7_operators.png)
 
-整个构造可以逐步核查，因为每一步都有写明的性质。[docs/THEORY.md](docs/THEORY.md) 将它们编号为 P1–P19，给出证明和反例；早期研究在数据上测过的后果，也列在相应性质之后。
+整个构造可以逐步核查，因为每一步都有写明的性质。这些数学贡献单独放在 [theory/](theory/README.zh-CN.md) 文件夹，与预测模型分开，模型本身不引用它：
+
+- [theory/README.zh-CN.md](theory/README.zh-CN.md) 列出 P1–P19，写明每条的成立条件、在 ANKYRA 中的用途、代码与检验；
+- [theory/PROOFS.md](theory/PROOFS.md) 给出证明和反例；早期研究在数据上测过的后果，也列在相应性质之后；
+- [theory/operators.py](theory/operators.py) 把每条性质写成函数，[theory/test_operators.py](theory/test_operators.py) 逐条做数值检验。
 
 - **替换是精确的（P4）**：替换一块，MSE 的变化恰好等于这一块损失的变化。
   - 因此，两个预测器之间的任何分工，都可以直接由分块损失打分。
@@ -156,7 +193,7 @@ PatchTST 是通道独立结构，加不加这些输入，预测都相同。六�
 - **峰值（P15–P17）**：峰值读出有标量形式，满足 $U\ge\max_d\hat L_d\ge\bar F$，并有四项误差分解和有限样本中位数性质；每条性质都配有标出适用边界的反例。
 - **估计量（P19）**：合并与单位等权两种汇总可能因代数原因符号相反，所以评估同时报告两者，以及平均排名与常规指标。
 
-19 条性质全部实现于 `ankyra/operators.py`，由 `tests/test_operators.py` 检验。
+每条性质或写成 `theory/operators.py` 中的函数，或由模型自身的函数承载（P1、P3、P15、P19），并由 `python -m unittest discover -s theory -t .` 检验。
 
 ## 成本
 
@@ -190,13 +227,33 @@ python examples/quickstart.py --timesfm       # 使用 TimesFM 2.5（会从 Hugg
 
 - **参考实现逐窗复现了评估中的预测**：613 个测试窗口，最大绝对差 0.0 kW，包括全部关停窗口。TimesFM 适配器、峰值算子与区间函数同样逐位一致。见 [results/REPRODUCTION_CHECK.json](results/REPRODUCTION_CHECK.json)。
 - `results/` 保存全部评分统计量，`python figures/make_figures.py` 可由它重新生成所有图。
-- `python -m unittest discover -s tests -t .` 运行 53 个测试，检验：
-  - 起报点之后的任何信息都不会进入预测、权重或区间；
-  - [docs/THEORY.md](docs/THEORY.md) 的 19 条精确性质及其反例；
-  - 交接的端点与关停规则；
-  - 参考估计器的已发表数值。
+- 两组测试，共 53 个：
+  - `python -m unittest discover -s tests -t .` 运行预测模型的 24 个测试：起报点之后的任何信息都不会进入预测、权重或区间；交接的端点与关停规则；读出；参考估计器的已发表数值；
+  - `python -m unittest discover -s theory -t .` 运行精确性质的 29 项检验（[theory/](theory/README.zh-CN.md)），含反例。
 - 原始数据不在此重新分发，来源见 [docs/EVALUATION.md](docs/EVALUATION.md)。
 
-## 引用与许可
+## 仓库结构
 
-论文在准备中，暂请引用软件（[CITATION.cff](CITATION.cff)）。代码以 MIT 许可发布。TimesFM 2.5 版权归 Google（Apache-2.0），本仓不重新分发。示例窗口数据来自剑桥大学校园能耗档案（CC BY 4.0）。
+```
+ankyra/              预测模型本身
+  core.py            模型水平候选、分周交接、关停规则、forecast()
+  history/           历史水平与日路径的冻结参考估计器
+  readouts.py        电量、峰值包络算子、伪起报区间
+  blocks.py          正交三块分解
+  metrics.py         单位等权 log RMS 比、单位与月份自助法、平均单位排名、合并分解
+  timesfm_adapter.py 研究中所用配置的 TimesFM 2.5
+theory/              精确性质 P1–P19，与预测模型分开
+  README.zh-CN.md    索引：每条性质的成立条件、用途、代码与检验
+  PROOFS.md          陈述、证明、反例与数据上测得的后果
+  operators.py       性质写成的算子
+  test_operators.py  数值检验，含反例
+tests/               预测模型的测试，含起报点之后无信息的测试
+docs/                METHOD.md、EVALUATION.md
+results/             评分结果（CSV / JSON）与复现记录
+figures/             make_figures.py 与全部图（PDF 与 PNG）
+examples/            人工建筑上的快速示例
+```
+
+## 许可
+
+代码以 MIT 许可发布。TimesFM 2.5 版权归 Google（Apache-2.0），本仓不重新分发。示例窗口数据来自剑桥大学校园能耗档案（CC BY 4.0）。

@@ -18,8 +18,10 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
           python -m pip install -e ".[figures]"
-      - name: Unit tests
+      - name: Forecaster tests
         run: python -m unittest discover -s tests -t . -v
+      - name: Exact properties P1-P19
+        run: python -m unittest discover -s theory -t . -v
       - name: Quickstart
         run: python examples/quickstart.py
       - name: Figures regenerate from results/

@@ -2,7 +2,7 @@
 
 **Anchoring a time-series foundation model to each unit's own history for month-ahead load forecasting**
 
-[中文说明](README.zh-CN.md) · [Method](docs/METHOD.md) · [Exact properties](docs/THEORY.md) · [Evaluation](docs/EVALUATION.md) · [Results data](results/)
+[中文说明](README.zh-CN.md) · [Method](docs/METHOD.md) · [Theory](theory/) · [Evaluation](docs/EVALUATION.md) · [Results data](results/)
 
 ![ANKYRA architecture](figures/fig1_architecture.png)
 
@@ -24,7 +24,8 @@ lets the unit's own forecast record decide where that is.
   - a monthly peak from a historical excursion envelope;
   - a prediction interval from pseudo-forecast residuals.
 - The design choices and their limits are explained by **exact properties**: identities, bounds and the counterexamples
-  that mark where they stop. Each is implemented and tested ([docs/THEORY.md](docs/THEORY.md)).
+  that mark where they stop. They are kept in their own folder, [theory/](theory/), apart from the forecaster in
+  [ankyra/](ankyra/): each has a proof, an operator and a numerical check.
 
 ## No information after the origin
 
@@ -108,6 +109,61 @@ Windows are those after each population's training cutoff, where all 21 forecast
 
 ![Pairwise improvements with intervals](figures/fig3_test_pairwise.png)
 
+**Loss metrics against every baseline.** The figure below gives the conventional losses of all 21 forecasters on the
+same late windows, for the six test populations and the Suzhou industrial park (a preview population with four
+aggregate series). The ordering depends on the metric:
+
+- **RMSE** (mean over units): ANKYRA is lowest on BDG2 and the Suzhou park and second or third on the other five. The
+  lower ones are iTransformer-X (Cambridge), GBT-T (HEEW), Chronos-2 (EWELD), Chronos-2-X and the per-unit ridge
+  (GoiEner non-household), and the ridge by 0.1% on households.
+- **MAE and WAPE** are minimised by the median of the predictive distribution, squared-error metrics by its mean. On
+  them, zero-shot Chronos-2 or TimesFM variants are lower than ANKYRA on EWELD and on both GoiEner populations, where
+  ANKYRA ranks second to fifth.
+- **CV(RMSE) at the median unit**: ANKYRA is lowest on HEEW, second on five populations and third on BDG2.
+- Across the four metrics and seven populations ANKYRA ranks between first and fifth of 21, and no baseline is lower on
+  all of them. These metrics weight units differently from the primary estimand
+  ([details](docs/EVALUATION.md#loss-metrics-of-every-forecaster)).
+
+![Loss metrics of all 21 forecasters](figures/fig8_loss_metrics.png)
+
+**Loss by forecast day.** The figure below splits the same forecasts by forecast day, 1 to 31. The loss is each day's
+CV(RMSE), averaged geometrically over units, the scale of the primary estimand.
+
+- On every forecast day of every test population ANKYRA is among the six forecasters with the lowest loss of 21
+  (among the seven on the Suzhou park).
+- Its loss grows less over the month than TimesFM's and Chronos-2's on all seven populations. From week 1 to week 4 it
+  rises ×1.19–1.57, against ×1.24–1.68 and ×1.25–1.80.
+- From the second week it is lowest or second-lowest on 13–16 of the 24 days on BDG2, Cambridge, HEEW and the Suzhou
+  park.
+- The zero-shot foundation models are lower on the first day, and on the two GoiEner populations on every day. The
+  day-by-day comparison and its exact relation to the monthly estimand are in
+  [docs/EVALUATION.md](docs/EVALUATION.md#loss-by-forecast-day).
+
+![Loss by forecast day](figures/fig9_loss_by_day.png)
+
+**Where ANKYRA is strongest: monthly energy.** A month's energy error is 744 times the level error (P3). ANKYRA's
+design acts on that quantity: its level and daily path come from the unit's own history, while its within-day shape is
+TimesFM's.
+
+- On all seven populations ANKYRA is never resolvably worse than any of the 20 baselines on monthly energy error. It is
+  resolvably better than 4–17 of them: 17 on GoiEner non-household, 14 on Cambridge and EWELD, 13 on households.
+- On GoiEner households, where the zero-shot foundation models have the lower hourly error on every day, ANKYRA's
+  monthly energy error is 22–27% lower than all four of them, each resolved.
+- Against TimesFM, whose within-day shape it uses, the energy error is 4–25% lower on six populations, resolved on
+  Cambridge and both GoiEner sets. On BDG2 the unit means are dominated by three near-zero meters; without them the
+  energy error is 12% lower (not resolved).
+- The energy comparison was computed after scoring, as a description
+  ([details](docs/EVALUATION.md#monthly-energy-error)).
+
+![Monthly energy error against every baseline](figures/fig11_energy_error.png)
+
+**Consistency across populations.** ANKYRA is first or second of the 21 forecasters on all six test populations. No
+other forecaster is in the top two on more than two of them. The next most consistent, the per-unit ridge, ranges
+from first to fifth; Chronos-2-X falls to 11th, TimesFM to 12th and GBT-T to 21st. On the four preview populations
+ANKYRA is 1st, 3rd, 6th and 7th. Positions use the mean per-unit rank, the secondary summary.
+
+![Position on every population](figures/fig12_consistency.png)
+
 **Where ANKYRA falls behind.** We report these as findings, not footnotes.
 
 - **Norwegian schools and municipal buildings** (Oslo, Drammen; preview populations). Cross-unit trained models with
@@ -125,8 +181,9 @@ Windows are those after each population's training cutoff, where all 21 forecast
   - either way the interval stays wide, because other low-load units also carry extreme ratios;
   - the median unit favours ANKYRA against each of the nine models in the figure above (59–92% of units);
   - ANKYRA ranks first with and without the three meters.
-- **Conventional metrics.** On median unit CV(RMSE), Chronos-2-X or the per-unit ridge is slightly lower (by 0.2–2.2
-  points) on nine of eleven populations. ANKYRA's advantage is on average over units and in rank, not at the median unit.
+- **Conventional metrics.** Over the full windows (14 forecasters), Chronos-2-X or the per-unit ridge has a slightly
+  lower median unit CV(RMSE) (by 0.2–2.2 points) on nine of eleven populations. ANKYRA's advantage is on average over
+  units and in rank, not at the median unit; the late-window losses of all 21 forecasters are in the figure above.
 
 Full tables, all 11 populations and the evaluation protocol are in [docs/EVALUATION.md](docs/EVALUATION.md).
 
@@ -180,16 +237,27 @@ terms, so ANKYRA's level gains carry into the peak.
 
 ![Peak operator](figures/fig5_peak_operator.png)
 
-On GoiEner households the pseudo-origin interval around ANKYRA covers **79.2%** of hours at the nominal 80% level.
-TimesFM's native 0.1–0.9 band covers 36.1%.
+**Prediction intervals.** On GoiEner households the pseudo-origin interval around ANKYRA covers **79.2%** of hours at
+the nominal 80% level and 88.0% at 90%. It is the only interval close to its nominal level: TimesFM's native 0.1–0.9
+band covers 36.1% and Chronos-2's native 80% band 68.8%. On the Winkler score the ANKYRA interval beats TimesFM's band by
+7.5% and the same interval around the fixed division by 4.3%, both resolved. It ties with Chronos-2's band (0.6%
+behind, unresolved). Intervals were scored on this one population.
 
-## Exact properties
+![Prediction intervals on households](figures/fig13_intervals.png)
+
+## Theory: exact properties
 
 ![Exact properties on a test window](figures/fig7_operators.png)
 
-The construction is auditable because each step has a stated property. They are numbered P1–P19 in
-[docs/THEORY.md](docs/THEORY.md), which gives proofs, counterexamples and, where the earlier study measured them, their
-consequences on data.
+The construction is auditable because each step has a stated property. These mathematical contributions sit beside the
+forecaster in their own folder, [theory/](theory/), which the forecaster does not import:
+
+- [theory/README.md](theory/README.md) lists P1–P19 with the condition under which each holds, what ANKYRA uses it for,
+  its code and its check;
+- [theory/PROOFS.md](theory/PROOFS.md) gives the proofs, the counterexamples and, where the earlier study measured them,
+  their consequences on data;
+- [theory/operators.py](theory/operators.py) writes each property as a function, and
+  [theory/test_operators.py](theory/test_operators.py) checks every one numerically.
 
 - **Replacement is exact (P4).** Replacing a block changes the MSE by exactly that block's change. Any division of
   labour between two forecasters can therefore be scored from block losses. A level-only correction can reduce the MSE
@@ -210,7 +278,8 @@ consequences on data.
 - **Estimands (P19).** Pooled and unit-equal summaries can disagree in sign for an algebraic reason, so the evaluation
   reports both, with the mean rank and conventional metrics.
 
-All 19 are implemented in `ankyra/operators.py` and checked by `tests/test_operators.py`.
+Each is written as a function in `theory/operators.py` or carried by the forecaster's own functions (P1, P3, P15, P19),
+and checked by `python -m unittest discover -s theory -t .`.
 
 ## Cost
 
@@ -277,36 +346,34 @@ See [docs/METHOD.md](docs/METHOD.md) for the equations and all constants.
   See [results/REPRODUCTION_CHECK.json](results/REPRODUCTION_CHECK.json).
 - `results/` holds every scored statistic behind the figures and tables, and `python figures/make_figures.py`
   regenerates all figures from it.
-- `python -m unittest discover -s tests -t .` runs 53 tests. They check:
-  - that no information from after the origin reaches the forecast, the weights or the interval;
-  - the 19 exact properties of [docs/THEORY.md](docs/THEORY.md), with their counterexamples;
-  - the handover's limits and the off-state rule;
-  - the reference estimator's documented values.
+- Two test suites, 53 tests in all:
+  - `python -m unittest discover -s tests -t .` runs the 24 tests of the forecaster: that no information from after
+    the origin reaches the forecast, the weights or the interval; the handover's limits and the off-state rule; the
+    readouts; and the reference estimator's documented values;
+  - `python -m unittest discover -s theory -t .` runs the 29 checks of the exact properties
+    ([theory/](theory/README.md)), with their counterexamples.
 - Raw data are not redistributed. The evaluation populations are public; sources are listed in
   [docs/EVALUATION.md](docs/EVALUATION.md).
 
 ```
-ankyra/              the forecaster
+ankyra/              the forecaster (the model)
   core.py            model level candidate, week-by-week handover, off-state rule, forecast()
   history/           frozen reference estimator of the historical level and daily path
   readouts.py        energy, peak envelope operator, pseudo-origin interval
   blocks.py          orthogonal block decomposition
-  operators.py       the exact properties P1–P19 as operators (replacement, support, shrinkage, projection, peak)
   metrics.py         unit-equal log RMS ratio, unit-and-month bootstrap, mean per-unit rank, pooled decomposition
   timesfm_adapter.py TimesFM 2.5 as configured in the study
-examples/            quickstart on an artificial building
-figures/             make_figures.py and the figures (PDF and PNG)
+theory/              the exact properties P1–P19, apart from the forecaster
+  README.md          index: condition, use, code and check of each property
+  PROOFS.md          statements, proofs, counterexamples and measured consequences
+  operators.py       the properties as operators (replacement, support, shrinkage, projection, peak)
+  test_operators.py  numerical checks, counterexamples included
+tests/               tests of the forecaster, including the no-future-information tests
+docs/                METHOD.md, EVALUATION.md
 results/             scored results (CSV / JSON) and the reproduction record
-docs/                METHOD.md, THEORY.md (exact properties), EVALUATION.md
-tests/               unit tests
+figures/             make_figures.py and the figures (PDF and PNG)
+examples/            quickstart on an artificial building
 ```
-
-## Citation
-
-The paper is in preparation. Until then, please cite the software ([CITATION.cff](CITATION.cff)):
-
-> Qin, X. (2026). *ANKYRA: anchoring a time-series foundation model to each unit's own history for month-ahead load
-> forecasting* (software, version 1.1.1). https://github.com/XinanQ/Building_load_ANKYRA
 
 ## License and acknowledgements
 

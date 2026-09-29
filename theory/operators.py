@@ -1,9 +1,10 @@
 """Exact properties of the blocks, the historical weights and the readouts, written as operators.
 
-Each function states one property used in the paper.  ``docs/THEORY.md`` numbers them P1-P19 and gives the proofs,
-and ``tests/test_operators.py`` checks every one numerically, including the counterexamples that limit what is
-claimed.  The operators do not depend on the foundation model: they apply to any forecaster's 744-hour trajectory and
-to the historical estimator.
+Each function states one property that ANKYRA's design relies on.  ``PROOFS.md`` in this folder numbers them P1-P19
+and gives the proofs, and ``test_operators.py`` checks every one numerically, including the counterexamples that limit
+what is claimed.  The operators do not depend on the foundation model: they apply to any forecaster's 744-hour
+trajectory and to the historical estimator.  They are kept apart from the forecaster (``ankyra/``), which does not
+import them; until release 1.1.1 they were the module ``ankyra.operators``.
 
     Block geometry         four_block_losses, four_block_projections, daily_harmonic_frequencies, has_fourier_bin
     Replacement calculus   replace_blocks, mse_change_by_block, level_share, mse_ratio_from_blocks,
@@ -20,7 +21,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from . import blocks
+from ankyra import blocks
 
 CONTEXT, STEP, HORIZON, K_MAX, K0_LEVEL, MIN_ERRORS = 1344, 744, 744, 12, 8, 2
 ANNUAL_LAG = 8760

@@ -1,12 +1,16 @@
-"""Exact properties P1-P19 of docs/THEORY.md, checked numerically, together with the counterexamples that bound them."""
+"""Exact properties P1-P19 of theory/PROOFS.md, checked numerically, together with the counterexamples that bound them.
+
+    python -m unittest discover -s theory -t .
+"""
 import itertools
 import unittest
 
 import numpy as np
 import torch
 
-from ankyra import blocks, metrics, operators as op
+from ankyra import blocks, metrics
 from ankyra.history import estimate_from_history
+from theory import operators as op
 from ankyra.synthetic import synthetic_history
 
 torch.set_num_threads(1)

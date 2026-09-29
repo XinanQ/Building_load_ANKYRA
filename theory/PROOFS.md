@@ -1,46 +1,26 @@
-# Exact properties
+# Proofs of the exact properties
 
 ANKYRA is assembled from identities and elementary bounds rather than from fitted relationships. This page states
-them, numbered P1–P19 in the order of the pipeline. They make the construction auditable:
+them, numbered P1–P19 in the order of the pipeline, with proofs and counterexamples. They make the construction
+auditable:
 
 - any division of labour between two forecasters can be scored from block losses;
 - every weight has a stated support requirement and a bound on how far it can move;
 - every readout has a guarantee or a counterexample that marks where the guarantee stops.
 
-Each property is implemented in [`ankyra/operators.py`](../ankyra/operators.py) (or `blocks`, `readouts`, `metrics`) and
-checked in [`tests/test_operators.py`](../tests/test_operators.py), counterexamples included. Where a study measured a
-property's consequence on data, the evidence follows the statement.
+The index, with the condition, use, code and check of each property, is in [README.md](README.md). Each property is
+implemented in [`operators.py`](operators.py) (or in the forecaster's `ankyra.blocks`, `ankyra.readouts` and
+`ankyra.metrics`) and checked in [`test_operators.py`](test_operators.py), counterexamples included. Where a study
+measured a property's consequence on data, the evidence follows the statement.
 
 - *Earlier study* means the first version of this model (HCR-Load), evaluated on Spanish supply points and BDG2.
 - Unit-equal log RMS ratios are reported with 95% unit-and-month (UM) bootstrap intervals, and percentages are
   $100[1-\exp(r)]$.
 
 Several statements are standard, and they are marked as such. None of them is an accuracy guarantee: accuracy is
-measured in [EVALUATION.md](EVALUATION.md).
+measured in [docs/EVALUATION.md](../docs/EVALUATION.md).
 
 ![Exact properties on a test window](../figures/fig7_operators.png)
-
-| | Property | Used for | Code |
-|---|---|---|---|
-| P1 | Block identity | assigning each block to a source | `blocks.block_losses` |
-| P2 | Four blocks; no weekly Fourier bin | day types instead of a weekly component | `operators.four_block_losses` |
-| P3 | Energy is the level | the energy readout | `blocks.level` |
-| P4 | Exact replacement and the level-share bound | scoring any division from block losses | `operators.replace_blocks` |
-| P5 | Two-source division: pooled optimum, unit-level asymmetry | why a fixed division is not enough | `operators.division_log_ratio` |
-| P6 | Correction accounting | diagnosing a correction | `operators.correction_accounting` |
-| P7 | Completed error support | how much history the weights need | `operators.completed_windows` |
-| P8 | Shrinkage bounds | how far the weights can move | `operators.mixture_mass_bounds` |
-| P9 | Deletion renormalises the mixture | when the bounds stop holding | `operators.retained_data_share` |
-| P10 | Least squares versus inverse MSE under shared errors | the weekly handover weights | `operators.two_source_weights` |
-| P11 | Clipping cannot increase any hour's error | the delivered trajectory | `operators.clip_nonnegative` |
-| P12 | Energy, nonnegativity and no-harm are incompatible | reading energy from the level | `operators.project_to_mean` |
-| P13 | Day-level projection: a conditional guarantee | an optional projection | `operators.daily_projection` |
-| P14 | A mean path underestimates the expected peak | a separate peak readout | — |
-| P15 | Scalar form and bounds of the peak operator | the peak readout | `readouts.peak_readout` |
-| P16 | Peak error decomposition | how level gains reach the peak | `operators.peak_error_decomposition` |
-| P17 | Finite-support median property | what the envelope estimates | `operators.max_lower_median` |
-| P18 | Asymmetric peak costs | choosing a peak method under a cost | `operators.asymmetric_peak_cost` |
-| P19 | Pooled versus unit-equal summaries | why several estimands are reported | `metrics.pooled_ratio_decomposition` |
 
 ## Blocks
 
@@ -118,7 +98,7 @@ units whose historical daily means fail badly can outweigh a majority that gain.
 ANKYRA's per-unit weights and weekly handover respond to this: each unit's own record decides how much of each source
 it uses.
 
-**P6. Correction accounting.** Let $e=y-\hat y$ be a reference error and $D$ a correction. Then
+**P6. Correction accounting (standard).** Let $e=y-\hat y$ be a reference error and $D$ a correction. Then
 
 $$\Delta\mathrm{MSE}=\mathbb E[D^2]-2\,\mathbb E[eD].$$
 
@@ -299,7 +279,7 @@ Neither assumption can be dropped:
 Under continuous iid sampling, the joint maximum of $m$ historical and $n$ future values is historical with probability
 $m/(m+n)$. This is an unconditional sampling fact, not coverage for a particular building.
 
-**P18. Asymmetric peak costs.** Let $\bar u$ and $\bar o$ be a method's mean under- and over-forecast of the peak.
+**P18. Asymmetric peak costs (standard).** Let $\bar u$ and $\bar o$ be a method's mean under- and over-forecast of the peak.
 Charge $\lambda$ per kW under and 1 per kW over, normalised so that $\lambda=1$ gives the MAE. The cost is
 
 $$\frac{2(\lambda\bar u+\bar o)}{1+\lambda}=2\big[\tau\bar u+(1-\tau)\bar o\big],\qquad \tau=\frac{\lambda}{1+\lambda},$$

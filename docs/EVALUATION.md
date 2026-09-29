@@ -102,12 +102,14 @@ independently (UM). A contrast is *resolved* when its interval excludes zero.
 **Mean per-unit rank.** Models are ranked within each unit by RMSE, with ties averaged. This summary stays defined
 where some units have exactly zero error.
 
-**Conventional metrics.** RMSE and MAE (unit mean, kW); CV(RMSE), NMBE and WAPE (unit median, %). See
-[`results/conventional_metrics.csv`](../results/conventional_metrics.csv).
+**Conventional metrics.** RMSE and MAE (unit mean, kW); CV(RMSE), NMBE and WAPE (unit median, %); WAPE also pooled.
+See [`results/conventional_metrics.csv`](../results/conventional_metrics.csv) for the full windows and
+[`results/conventional_metrics_late.csv`](../results/conventional_metrics_late.csv) for the late windows, where all 21
+forecasters are available.
 
 **Why four summaries.** Pooled and unit-equal summaries can disagree in sign for an algebraic reason. The pooled MSE
 ratio weights each unit's squared RMS ratio by its share of the reference error, and those weights are coupled to the
-ratios (P19 in [THEORY.md](THEORY.md)). No single summary is therefore reported alone.
+ratios (P19 in [theory/PROOFS.md](../theory/PROOFS.md)). No single summary is therefore reported alone.
 
 ## Results
 
@@ -139,8 +141,9 @@ analysis is reported beside it:
 - ANKYRA's mean rank is 4.93 with the three meters and 4.70 without them, first either way;
 - against all nine models of Figure 3, the median unit favours ANKYRA (59–92% of units).
 
-The rule defining the three meters and the full table are in the paper's Supplement S30
-(`tools_hcr_bdg2_nearzero_sensitivity_v1.py`).
+The three meters are the BDG2 units whose largest hourly load over their panel windows is at most 0.001 kW
+(Lamb_education_Harold, Lamb_education_Hillary, Lamb_office_Jo). Both versions of every comparison, full and late
+windows, are in [`results/bdg2_near_zero_sensitivity.csv`](../results/bdg2_near_zero_sensitivity.csv).
 
 Mean per-unit rank averaged over the six test populations:
 
@@ -152,6 +155,12 @@ Mean per-unit rank averaged over the six test populations:
 | iTransformer-X | 8.06 |
 | TimesFM | 8.34 |
 | TimesFM-X | 8.48 |
+
+By position, ANKYRA is first or second on each of the six test populations. No other forecaster is in the top two on
+more than two of them: the per-unit ridge ranges from first to fifth, Chronos-2-X to 11th, TimesFM to 12th and GBT-T to
+21st (Figure 12).
+
+![Position on every population](../figures/fig12_consistency.png)
 
 ### Preview and reserved populations
 
@@ -170,6 +179,113 @@ and Chronos-2-X (7.50).
 - ANKYRA ranks first on seven;
 - its mean rank is 3.09, against 3.88 for the ridge and 4.11 for Chronos-2-X;
 - no contrast is resolved against it.
+
+### Loss metrics of every forecaster
+
+![Loss metrics of all 21 forecasters](../figures/fig8_loss_metrics.png)
+
+Figure 8 gives the conventional losses of all 21 forecasters on the same late windows, for the six test populations and
+the Suzhou industrial park (a preview population with four aggregate series). The values were computed when the panel
+was scored; the export reads them and recomputes nothing. RMSE and MAE are means over units in kW, so larger units weigh
+more; CV(RMSE) and WAPE are taken at the median unit.
+
+| ANKYRA's position among 21 | BDG2 | Cambridge | HEEW | EWELD | GoiEner NH | GoiEner HH | Suzhou park |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| RMSE (unit mean) | 1 | 2 | 2 | 2 | 3 | 2 | 1 |
+| MAE (unit mean) | 1 | 3 | 2 | 3 | 4 | 5 | 1 |
+| CV(RMSE) (median unit) | 3 | 2 | 1 | 2 | 2 | 2 | 2 |
+| WAPE (median unit) | 2 | 2 | 2 | 2 | 4 | 5 | 2 |
+| WAPE (pooled) | 2 | 3 | 3 | 3 | 4 | 5 | 1 |
+
+- ANKYRA is between first and fifth on every metric and population, and first in 5 of the 28 cells of the figure. No
+  baseline is lower on all of them.
+- The forecasters lower than ANKYRA most often are Chronos-2-X (10 of the 28 cells), Chronos-2 (8), the per-unit ridge
+  (6) and TimesFM (4).
+- MAE and WAPE are minimised by the median of the predictive distribution, squared-error metrics by its mean. On MAE and
+  WAPE, zero-shot Chronos-2 or TimesFM variants are lower than ANKYRA on EWELD and on both GoiEner populations.
+- These metrics weight units differently from the unit-equal log ratio, which remains the primary estimand.
+- GBT-T's errors on EWELD are orders of magnitude larger than the other forecasters' (unit-mean RMSE 78,582 kW).
+
+### Loss by forecast day
+
+![Loss by forecast day](../figures/fig9_loss_by_day.png)
+
+![Loss by forecast day relative to ANKYRA](../figures/fig10_loss_by_day_relative.png)
+
+Figures 9 and 10 split the same late-window forecasts by forecast day. For unit $u$ and day $d$, $r_{u,d}$ is the RMSE
+of that day's 24 hours over all the unit's windows and $\bar y_u$ the unit's mean load. The curves are geometric means of
+$100\,r_{u,d}/\bar y_u$ over one fixed set of units whose daily errors are nonzero for all 21 forecasters: 132 of 142
+units on BDG2, 108 of 108 on Cambridge, 133 of 138 on HEEW, 138 of 153 on EWELD, 453 of 477 on GoiEner non-household,
+598 of 679 on households and all four Suzhou series. On this scale the ratio of two curves on day $d$ is the unit-equal
+RMS ratio of the primary estimand restricted to that day.
+
+The values come from the scored forecasts, and pooled over the month they give back the scored metrics and the primary
+estimand exactly. The split was made after scoring; it is a description, and nothing was tuned on it.
+[`results/lead_day_metrics.csv`](../results/lead_day_metrics.csv) also gives unit-mean RMSE and MAE in kW, and
+median-unit CV(RMSE) and normalised MAE, for every day.
+
+- **Position.** On every forecast day of every test population ANKYRA is among the six forecasters with the lowest
+  loss of 21, and among the seven on the Suzhou park.
+- **Growth with lead time.** From week 1 to week 4 ANKYRA's loss grows by ×1.19–1.57. That is less than TimesFM's
+  (×1.24–1.68) and Chronos-2's (×1.25–1.80) on all seven populations.
+- **The first day.** The zero-shot foundation models are lower on day 1 everywhere, and ANKYRA ranks third to fifth of 21.
+- **From the second week.** On BDG2, Cambridge, HEEW and the Suzhou park ANKYRA is lowest or second-lowest on 13–16 of
+  the 24 days from day 8. On EWELD it is on 5 of them.
+- **GoiEner.** On the non-household set zero-shot TimesFM, Chronos-2 and Chronos-2-X are lower on every day; on
+  households all four foundation-model variants are.
+
+**Why the monthly comparison differs.** With $R_u$ the unit's RMS over the whole window, $R_u^2$ is the mean of its 31
+daily MSEs. So $\log R_u$ is the mean of $\log r_{u,d}$ over the days plus $J_u\ge0$ (Jensen), and $J_u$ grows with how
+uneven the unit's daily errors are. Averaged over units, the primary estimand splits exactly:
+
+$$\frac1N\sum_u\log\frac{R_u^{A}}{R_u^{B}}=\frac1{31N}\sum_{u,d}\log\frac{r^{A}_{u,d}}{r^{B}_{u,d}}+\frac1N\sum_u\big(J^{A}_u-J^{B}_u\big).$$
+
+The daily errors of TimesFM, Chronos-2 and Chronos-2-X are more uneven than ANKYRA's on all seven populations. Over the
+month their larger-error days weigh more, so the monthly comparison moves towards ANKYRA. Against TiDE, iTransformer-X,
+GBT-T and the per-unit ridge the unevenness runs the other way, except for GBT-T on EWELD.
+
+| Fixed unit set, improvement $100[1-\exp(r)]$ | vs TimesFM: daily | month | vs Chronos-2: daily | month | vs Chronos-2-X: daily | month |
+|---|---:|---:|---:|---:|---:|---:|
+| BDG2 | +2.0 | +4.9 | +3.4 | +9.3 | −3.3 | +0.5 |
+| Cambridge | +4.0 | +5.6 | +5.5 | +7.2 | −0.5 | −0.4 |
+| HEEW | +1.1 | +2.9 | +3.7 | +5.6 | −0.7 | 0.0 |
+| EWELD | −2.0 | +2.5 | −4.9 | +0.3 | −1.0 | +4.3 |
+| GoiEner non-household | −2.9 | +1.8 | −8.7 | −0.5 | −11.2 | −3.2 |
+| GoiEner households | −7.5 | −0.7 | −10.0 | −0.8 | −9.2 | −0.6 |
+| Suzhou park | +5.2 | +7.3 | +16.9 | +19.9 | +8.7 | +12.1 |
+
+"Daily" is the average of the daily log ratios, "month" the monthly log ratio on the same units; positive favours
+ANKYRA. On all units the month column becomes the primary estimand of the test table. The fixed set leaves out units
+whose error is exactly zero on some day for some forecaster: meters that are off, read near zero or hold a constant
+value. On BDG2 these are 10 units, among them the three near-zero meters. On EWELD they are 59: 44 with a mean load below
+10⁻⁶ kW and 15 that switch off on some days. There the month column differs from the primary estimand on all units.
+
+### Monthly energy error
+
+![Monthly energy error against every baseline](../figures/fig11_energy_error.png)
+
+A month's energy error is $744\,\ell(e)$ kWh, 744 times the level error (P3). ANKYRA's design acts on this quantity:
+its level and daily path come from the unit's own history, and its within-day shape is TimesFM's. On the same late
+windows, Figure 11 compares the monthly energy error of ANKYRA with that of each of the 20 baselines. The estimand is the
+unit-equal RMS ratio of the primary estimand applied to the level error, with the same unit-and-month bootstrap
+intervals. It was computed after scoring and is a description, not a planned test
+([`results/energy_error.csv`](../results/energy_error.csv), which also gives the median-unit absolute percentage energy
+error of every forecaster).
+
+- **No resolved deficit.** On all seven populations ANKYRA is never resolvably worse than any of the 20 baselines. It is
+  resolvably better than 17 of them on GoiEner non-household, 14 on Cambridge and EWELD, 13 on households, 9 on HEEW,
+  6 on the Suzhou park and 4 on BDG2.
+- **Where the hourly view favours the foundation models.** On GoiEner households ANKYRA's monthly energy error is 22–27%
+  lower than that of TimesFM, Chronos-2, Chronos-2-X and TimesFM-X, each resolved; on GoiEner non-household it is 18–25%
+  lower, resolved against three of them. The within-day shape, where the foundation models are as good or better, carries
+  most of these populations' hourly error (about 80% at the median unit), and energy is the part that ANKYRA changes.
+- **Against TimesFM**, whose within-day shape ANKYRA uses, the energy error is 4–25% lower on six populations, resolved
+  on Cambridge and both GoiEner sets.
+- **BDG2.** The unit means are dominated by the three near-zero meters. The comparisons with the three zero-shot
+  foundation models, MSTL and the previous-month profile are negative and unresolved. Without the three meters every
+  point estimate favours ANKYRA, and five are resolved.
+- **Small unresolved deficits** remain against the per-unit ridge and three profile or naive models on households (3–6%),
+  iTransformer-X on Cambridge (4%) and TimesFM-X on the Suzhou park (4%).
 
 ### Why ANKYRA loses on Norwegian schools
 
@@ -311,7 +427,9 @@ information would not depend on how long the current departure had lasted. It do
   - Winkler score 4.3% better than the same interval around the fixed division and 7.5% better than TimesFM's native
     band (both resolved);
   - not distinguishable from Chronos-2's native quantiles.
-  See [`results/intervals_households.json`](../results/intervals_households.json).
+  See [`results/intervals_households.json`](../results/intervals_households.json) and Figure 13.
+
+![Prediction intervals on households](../figures/fig13_intervals.png)
 
 ## Cost
 

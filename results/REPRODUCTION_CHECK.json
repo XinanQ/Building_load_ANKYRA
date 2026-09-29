@@ -1,5 +1,5 @@
 {
- "checked_utc": "2026-09-29T19:49:56.977830+00:00",
+ "checked_utc": "2026-09-29T21:01:32.683271+00:00",
  "what": "The released package (ankyra/) against the evaluated forecasts and the research implementation, run in the research workspace where the evaluation data are available; the data are not redistributed here.",
  "ankyra_forecasts": [
   {
@@ -10,7 +10,7 @@
    "max_abs_diff_kw": 0.0,
    "max_rel_diff": 0.0,
    "median_abs_diff_kw": 0.0,
-   "seconds": 375.45663595199585
+   "seconds": 381.2683777809143
   },
   {
    "set": "lcl",
@@ -20,7 +20,7 @@
    "max_abs_diff_kw": 0.0,
    "max_rel_diff": 0.0,
    "median_abs_diff_kw": 0.0,
-   "seconds": 329.3921277523041
+   "seconds": 357.45788168907166
   }
  ],
  "timesfm_adapter": {
@@ -188,7 +188,7 @@
   }
  },
  "package_files_sha256": {
-  "ankyra/__init__.py": "416c303b72b37b75b240bfe45f05b0696360001c53dde5c30a6a7a0e6cb0915c",
+  "ankyra/__init__.py": "8a5252bc463e07238d840192d3c3c29f5c879c57f20c8ad711ab22fdcd1f30f4",
   "ankyra/blocks.py": "0921b6d54028c03d2ff56a21c1574bd811ea8e21076be9902a549b7586d0e8f7",
   "ankyra/core.py": "b9221c0c2862eb8b7c1631069efeeb45354856111ab421866c90a7d12aa0dd02",
   "ankyra/history/__init__.py": "5bb09cefbde842a67cd3bca161dd0a323f0bfa6b74a1ba951114e758904565eb",
@@ -201,8 +201,7 @@
   "ankyra/history/api.py": "33f7da7716e54ddfe924aabbda44c2fe2630dc329b9abf098b9a29e726eee5ee",
   "ankyra/history/frozen_config.json": "43bb3c054c9ba6bda436c85854b17dddee7d933e5194918151127696ff878caa",
   "ankyra/history/provenance.json": "09056a155a1640f98428f20134bf27d8c84e936f8629ee1e278bf1d85d87b16b",
-  "ankyra/metrics.py": "0573cf4bd03ca67a1028bc298129abe6f785298f63921fbbc6c4aa6fefef0af6",
-  "ankyra/operators.py": "1f1b97ef72dad1c82fd2206d8f72ff62365e9bf577e544f5b4d518716c754890",
+  "ankyra/metrics.py": "903b4621eea355082248f26992f2b39f26dbd13639b4b505f70a4eb9d1f86c5b",
   "ankyra/readouts.py": "51e5f3d661a965789b2dfa0b0ccaed382a3c87ddfd0d07510907d40160131274",
   "ankyra/synthetic.py": "54c0c19de529767b0256a07d5964f252fe973b95b4368f4a50036253f276de79",
   "ankyra/timesfm_adapter.py": "8ff43368ad39565c768bc682560d4f3907c65236c3f1f6a192c9540ef34ee1d5"

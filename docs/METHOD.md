@@ -53,9 +53,9 @@ uses this identity as a design rule: each block goes to the source that estimate
   Sunday = 6, holiday = 7).
 
 The four-block refinement behind the Fourier statement, and the replacement calculus built on the identity, are P1–P6
-in [THEORY.md](THEORY.md).
+in [theory/PROOFS.md](../theory/PROOFS.md).
 
-Code: `ankyra/blocks.py`, `ankyra/operators.py`.
+Code: `ankyra/blocks.py`; the properties as operators: `theory/operators.py`.
 
 ## Level
 
@@ -93,7 +93,7 @@ where $w_0$ is uniform over the supported candidates and $K_{\rm eff}$ counts ps
   total weather weight within $[(1-\rho)/2,(1+\rho)/2]$, $\rho=K_{\rm eff}/(K_{\rm eff}+8)$. With the model candidate
   the prior weather mass is 3/7 once all seven candidates are supported, and the general bound of P8 applies.
 
-These support and shrinkage properties are P7–P9 in [THEORY.md](THEORY.md).
+These support and shrinkage properties are P7–P9 in [theory/PROOFS.md](../theory/PROOFS.md).
 
 Code: `ankyra/history/` (frozen reference estimator), `ankyra/core.py` (`level_with_model_candidate`).
 
@@ -136,7 +136,7 @@ It is estimated from the $n\le6$ completed pseudo-origin pairs of the unit, wher
 
 The weight is a least-squares weight rather than an inverse-MSE weight. Errors shared by the two sources pull
 inverse-MSE weights towards 1/2, whereas least squares depends only on where the sources differ (P10 in
-[THEORY.md](THEORY.md)).
+[theory/PROOFS.md](../theory/PROOFS.md)).
 
 The weights are estimated on the fixed division and applied to $m^H$, which includes the model candidate. Using the
 fixed division at the pseudo-origins avoids nested pseudo-origins. If no pair or no disagreement is available,
@@ -188,9 +188,9 @@ This operator has four properties:
 each pseudo-window's origin scale and pooled by hour of day and workday status. Their empirical quantiles are added to
 the forecast and scaled by the origin's scale.
 
-Proofs, counterexamples and an optional day-level projection are P11–P18 in [THEORY.md](THEORY.md).
+Proofs, counterexamples and an optional day-level projection are P11–P18 in [theory/PROOFS.md](../theory/PROOFS.md).
 
-Code: `ankyra/readouts.py`, `ankyra/operators.py`.
+Code: `ankyra/readouts.py`; the properties as operators: `theory/operators.py`.
 
 ## Constants
 

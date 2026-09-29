@@ -460,8 +460,9 @@ def fig_operators():
     import sys
     sys.path.insert(0, str(HERE.parent))
     import torch
-    from ankyra import blocks, operators as op, readouts
+    from ankyra import blocks, readouts
     from ankyra.history import estimate_from_history
+    from theory import operators as op
     from ankyra.synthetic import synthetic_history
     torch.set_num_threads(1)
     ex = rows("example_window_cambridge.csv"); meta = json.loads((RES / "example_window_cambridge.json").read_text(encoding="utf-8"))
@@ -592,9 +593,343 @@ def fig_operators():
     fx.set_title("f   Peak error: four exact terms", fontsize=7.4)
 
     fig.text(0.075, 0.985, "a, e, f: the Cambridge test window of Figure 6 (University of Cambridge estate archive, CC BY 4.0). "
-             "b–d: exact properties. P-numbers: docs/THEORY.md.",
+             "b–d: exact properties. P-numbers: theory/README.md.",
              fontsize=6.0, color=GREY, va="top")
     save(fig, "fig7_operators")
+
+
+# ============================================================================ Figure 8: loss metrics of every forecaster
+LOSS_SETS = TEST + ["Suzhou park"]
+LOSS_METRICS = [("RMSE_kW", "a   RMSE (kW, mean over units)", "kw"), ("MAE_kW", "b   MAE (kW, mean over units)", "kw"),
+                ("CV_RMSE_pct", "c   CV(RMSE) (%, median unit)", "pct"), ("WAPE_pct", "d   WAPE (%, median unit)", "pct")]
+
+
+def _loss_text(v, kind):
+    if v >= 1000:                                                            # failed forecasters (GBT-T on EWELD)
+        return f"{v:,.0f}"
+    if kind == "pct":
+        return f"{v:.1f}"
+    return f"{v:#.4g}".rstrip(".")
+
+
+def fig_loss_metrics():
+    cm = rows("conventional_metrics_late.csv")
+    rk = [r for r in rows("benchmark_mean_unit_rank.csv") if r["subset"] == "late" and r["tier"] == "test"]
+    cls = {r["model"]: r["model_class"] for r in cm}
+    lab = {r["model"]: r["model_label"] for r in cm}
+    mean_rank = {m: np.mean([float(r["mean_unit_rank"]) for r in rk if r["model"] == m]) for m in {r["model"] for r in rk}}
+    models = sorted(sorted(mean_rank), key=lambda m: mean_rank[m])                 # the order of figure 2
+    n, ns = len(models), len(LOSS_SETS)
+    cmap = LinearSegmentedColormap.from_list("rel", [ANKYRA, "#F4A582", "#F7F7F7", "#92C5DE", "#2166AC"])
+    lim = 30.0
+    fig = plt.figure(figsize=(7.2, 8.4))
+    gs = fig.add_gridspec(2, 2, left=0.175, right=0.99, top=0.885, bottom=0.105, wspace=0.05, hspace=0.13)
+    ia = models.index("ANKYRA")
+    for k, (col, title, kind) in enumerate(LOSS_METRICS):
+        ax = fig.add_subplot(gs[k // 2, k % 2])
+        V = np.array([[next(float(r[col]) for r in cm if r["set"] == s and r["model"] == m) for s in LOSS_SETS] for m in models])
+        rel = 100.0 * (V / V[ia] - 1.0)                                         # loss relative to ANKYRA in the same column
+        ax.imshow(np.clip(rel, -lim, lim), cmap=cmap, vmin=-lim, vmax=lim, aspect="auto", interpolation="nearest")
+        best = V.argmin(0)
+        for i in range(n):
+            for j in range(ns):
+                ax.text(j, i, _loss_text(V[i, j], kind), ha="center", va="center", fontsize=5.0,
+                        color="white" if abs(rel[i, j]) > 21 else "#1A1A1A", fontweight="bold" if best[j] == i else "normal")
+        ax.axvline(len(TEST) - 0.5, color="white", lw=2.4)
+        ax.add_patch(Rectangle((-0.5, ia - 0.5), ns, 1, fill=False, ec=ANKYRA, lw=1.3, zorder=6))
+        ax.set_xticks(range(ns))
+        ax.set_xticklabels([TWO_LINE.get(s, SHORT[s]).replace("Suzhou park", "Suzhou\npark*") for s in LOSS_SETS], fontsize=5.9,
+                           linespacing=1.0)
+        ax.xaxis.tick_top(); ax.tick_params(axis="x", length=0, pad=1.5)
+        ax.set_yticks(range(n)); ax.tick_params(axis="y", length=0, pad=8)
+        if k % 2 == 0:
+            ax.set_yticklabels([label(lab[m]) for m in models], fontsize=6.2)
+            for t_, m in zip(ax.get_yticklabels(), models):
+                if m == "ANKYRA":
+                    t_.set_color(ANKYRA); t_.set_fontweight("bold")
+            for i, m in enumerate(models):
+                c = ANKYRA if m == "ANKYRA" else CLASS_COLOR.get(cls.get(m, ""), "#9E9E9E")
+                ax.scatter([-0.8], [i], s=10, color=c, clip_on=False, marker="s", zorder=5)
+        else:
+            ax.set_yticklabels([])
+        for sp in ax.spines.values():
+            sp.set_visible(False)
+        ax.set_title(title, fontsize=7.4, pad=17)
+    cax = fig.add_axes([0.30, 0.058, 0.40, 0.011])
+    cb = fig.colorbar(plt.cm.ScalarMappable(norm=plt.Normalize(-lim, lim), cmap=cmap), cax=cax, orientation="horizontal")
+    cb.set_ticks([-30, -15, 0, 15, 30]); cb.set_ticklabels(["≤ −30", "−15", "0", "+15", "≥ +30"]); cb.ax.tick_params(labelsize=5.8, length=2)
+    cb.outline.set_linewidth(0.4)
+    cb.set_label("Loss relative to ANKYRA in the same column (%): red lower than ANKYRA, blue higher", fontsize=6.0, labelpad=2)
+    handles = [Line2D([], [], marker="s", ls="", color=c, markersize=4.0, label=t_) for t_, c in CLASS_LEGEND]
+    fig.legend(handles=handles, loc="lower left", bbox_to_anchor=(0.01, -0.005), ncol=4, fontsize=5.7, handletextpad=0.25,
+               columnspacing=0.9)
+    fig.text(0.01, 0.992, "21 forecasters on the same late windows (origins after each set's training cutoff): the six test sets and the Suzhou",
+             fontsize=6.3, color=GREY, va="top")
+    fig.text(0.01, 0.972, "industrial park. a, b: means over units, so larger units weigh more; c, d: the median unit. Bold: lowest in the column.",
+             fontsize=6.3, color=GREY, va="top")
+    fig.text(0.01, 0.952, "* Preview population with four aggregate series; read its values as point values. Rows in the order of figure 2.",
+             fontsize=6.3, color=GREY, va="top")
+    save(fig, "fig8_loss_metrics")
+
+
+# ============================================================================ Figure 9: loss by forecast day
+DAY_LINES = [("TimesFM", "#807DBA", "-"), ("Chronos-2", "#807DBA", "--"), ("Chronos-2-X", "#1D91C0", "-"),
+             ("TimesFM-X", "#1D91C0", "--"), ("TiDE", "#253494", "-"), ("iTransformer-X", "#253494", "--"),
+             ("GBT-T", "#253494", ":"), ("RIDGE-L", "#8C6D31", "-")]
+
+
+def fig_lead_days():
+    ld = rows("lead_day_metrics.csv")
+    lab = {r["model"]: r["model_label"] for r in ld}
+    days = np.arange(1, 32)
+    fig, axs = plt.subplots(4, 2, figsize=(7.2, 9.0))
+    fig.subplots_adjust(left=0.085, right=0.985, top=0.905, bottom=0.045, hspace=0.42, wspace=0.17)
+    for ax, s in zip(axs.ravel(), LOSS_SETS):
+        R = [r for r in ld if r["set"] == s]
+        curve = {m: np.array([float(r["GM_CV_RMSE_pct"]) for r in sorted((r for r in R if r["model"] == m), key=lambda r: int(r["day"]))])
+                 for m in {r["model"] for r in R}}
+        top = 1.6 * curve["ANKYRA"].max()
+        low = 0.88 * min(v.min() for v in curve.values())
+        named = {"ANKYRA"} | {m for m, *_ in DAY_LINES}
+        for m, v in curve.items():
+            if m not in named:
+                ax.plot(days, np.minimum(v, top * 1.2), color="#D0D0D0", lw=0.55, zorder=1)
+        off = []
+        for m, c, ls in DAY_LINES:
+            v = curve[m]
+            if np.median(v) > top:
+                off.append(label(lab[m])); continue
+            ax.plot(days, v, color=c, ls=ls, lw=0.95, zorder=2)
+        ax.plot(days, curve["ANKYRA"], color=ANKYRA, lw=1.9, zorder=3)
+        for x in (7.5, 14.5, 21.5):
+            ax.axvline(x, color="#E6E6E6", lw=0.5, zorder=0)
+        ax.set_xlim(1, 31); ax.set_ylim(low, top)
+        ax.set_xticks([1, 7, 14, 21, 28, 31])
+        n = R[0]["n_units_gm"]
+        title = {"Suzhou park": "Suzhou park* (4 series)"}.get(s, f"{s.replace(' 2017', '')} ({n} units)")
+        ax.set_title(title, fontsize=7.2)
+        if off:
+            ax.text(0.985, 0.97, "off scale: " + ", ".join(off), transform=ax.transAxes, ha="right", va="top", fontsize=5.6,
+                    color=GREY)
+        ax.grid(axis="y", color="#EFEFEF", lw=0.4, zorder=0)
+    for ax in axs[:, 0]:
+        ax.set_ylabel("CV(RMSE) of the day (%)", fontsize=6.6)
+    for ax in axs[-1]:
+        ax.set_xlabel("Forecast day", fontsize=6.8)
+    axs[2, 1].set_xlabel("Forecast day", fontsize=6.8)
+    lg = axs[3, 1]; lg.axis("off")
+    handles = [Line2D([], [], color=ANKYRA, lw=1.9, label="ANKYRA")]
+    handles += [Line2D([], [], color=c, ls=ls, lw=0.95, label=label(lab[m])) for m, c, ls in DAY_LINES]
+    handles += [Line2D([], [], color="#D0D0D0", lw=0.8, label="the other 12 baselines")]
+    lg.legend(handles=handles, loc="center", ncol=2, fontsize=6.4, handlelength=2.4, columnspacing=1.2, labelspacing=0.7)
+    fig.text(0.01, 0.992, "Loss by forecast day, 21 forecasters on the same late windows (origins after each set's training cutoff). For each unit,",
+             fontsize=6.3, color=GREY, va="top")
+    fig.text(0.01, 0.974, "the day's CV(RMSE) is the RMSE of that day's 24 hours over the unit's mean load; curves are geometric means over one fixed set",
+             fontsize=6.3, color=GREY, va="top")
+    fig.text(0.01, 0.956, "of units (all daily errors nonzero), the scale of the primary estimand. Vertical lines: week boundaries. * Preview population.",
+             fontsize=6.3, color=GREY, va="top")
+    save(fig, "fig9_loss_by_day")
+
+
+def fig_lead_days_relative():
+    ld = rows("lead_day_metrics.csv")
+    lab = {r["model"]: r["model_label"] for r in ld}
+    days = np.arange(1, 32)
+    fig, axs = plt.subplots(4, 2, figsize=(7.2, 9.0), sharex=True)
+    fig.subplots_adjust(left=0.085, right=0.985, top=0.905, bottom=0.045, hspace=0.36, wspace=0.17)
+    for ax, s in zip(axs.ravel(), LOSS_SETS):
+        R = [r for r in ld if r["set"] == s]
+        curve = {m: np.array([float(r["GM_CV_RMSE_pct"]) for r in sorted((r for r in R if r["model"] == m), key=lambda r: int(r["day"]))])
+                 for m in {r["model"] for r in R}}
+        rels, off = {}, []
+        for m, c, ls in DAY_LINES:
+            rel = 100.0 * (curve[m] / curve["ANKYRA"] - 1.0)             # the baseline's loss relative to ANKYRA's, day by day
+            if np.median(rel) > 60:
+                off.append(label(lab[m])); continue
+            rels[m] = rel
+        vals = np.concatenate(list(rels.values()))
+        lo, hi = min(-5.0, 5 * np.floor((vals.min() - 2) / 5)), max(5.0, 5 * np.ceil((vals.max() + 2) / 5))   # each panel on its own scale
+        ax.axhspan(0, hi, color="#F3F6FA", zorder=0)
+        ax.axhline(0, color=ANKYRA, lw=1.3, zorder=3)
+        ax.text(30.6, 0, "ANKYRA = 0", color=ANKYRA, fontsize=5.8, ha="right", va="bottom", zorder=1)   # under the lines
+        for m, c, ls in DAY_LINES:
+            if m in rels:
+                ax.plot(days, rels[m], color=c, ls=ls, lw=1.0, zorder=2)
+        for x in (7.5, 14.5, 21.5):
+            ax.axvline(x, color="#E6E6E6", lw=0.5, zorder=1)
+        ax.set_xlim(1, 31); ax.set_ylim(lo, hi); ax.set_xticks([1, 7, 14, 21, 28, 31])
+        title = {"Suzhou park": "Suzhou park* (4 series)"}.get(s, f"{s.replace(' 2017', '')} ({R[0]['n_units_gm']} units)")
+        ax.set_title(title, fontsize=7.2)
+        ax.text(0.015, 0.965, "baseline worse than ANKYRA", transform=ax.transAxes, fontsize=5.5, color=GREY, va="top")
+        ax.text(0.015, 0.035, "baseline better than ANKYRA", transform=ax.transAxes, fontsize=5.5, color=GREY, va="bottom")
+        if off:
+            ax.text(0.985, 0.965, "off scale: " + ", ".join(off), transform=ax.transAxes, ha="right", va="top", fontsize=5.6, color=GREY)
+        ax.grid(axis="y", color="#EFEFEF", lw=0.4, zorder=0)
+    for ax in axs[:, 0]:
+        ax.set_ylabel("Loss relative to ANKYRA (%)", fontsize=6.6)
+    for ax in (axs[3, 0], axs[2, 1]):
+        ax.set_xlabel("Forecast day", fontsize=6.8)
+    axs[2, 1].tick_params(axis="x", labelbottom=True)
+    lg = axs[3, 1]; lg.axis("off")
+    handles = [Line2D([], [], color=ANKYRA, lw=1.3, label="ANKYRA: the reference, 0 by definition")]
+    handles += [Line2D([], [], color=c, ls=ls, lw=1.0, label=label(lab[m])) for m, c, ls in DAY_LINES]
+    lg.legend(handles=handles, loc="center", ncol=2, fontsize=6.4, handlelength=2.4, columnspacing=1.2, labelspacing=0.7)
+    fig.text(0.01, 0.992, "Each baseline's loss relative to ANKYRA's on the same day, 100 (CV_model / CV_ANKYRA − 1), from the curves of figure 9. ANKYRA is the",
+             fontsize=6.3, color=GREY, va="top")
+    fig.text(0.01, 0.974, "zero line by definition; its own loss, rising with the forecast day, is in figure 9. Above zero the baseline has the larger loss. Each panel",
+             fontsize=6.3, color=GREY, va="top")
+    fig.text(0.01, 0.956, "has its own vertical scale. Over the whole month the comparison differs, because the monthly RMS weights days with large errors more.",
+             fontsize=6.3, color=GREY, va="top")
+    save(fig, "fig10_loss_by_day_relative")
+
+
+# ============================================================================ Figure 11: monthly energy error
+ENERGY_COLS = [("BDG2 2017", "all units", "BDG2 †"), ("BDG2 2017", "without the three near-zero meters", "BDG2\nw/o 3"),
+               ("Cambridge", "all units", "Cambridge"), ("HEEW Arizona", "all units", "HEEW"), ("EWELD", "all units", "EWELD"),
+               ("GoiEner non-household", "all units", "GoiEner\nNH"), ("GoiEner households", "all units", "GoiEner\nHH"),
+               ("Suzhou park", "all units", "Suzhou\npark ‡")]
+
+
+def fig_energy():
+    en = rows("energy_error.csv")
+    rk = [r for r in rows("benchmark_mean_unit_rank.csv") if r["subset"] == "late" and r["tier"] == "test"]
+    mean_rank = {m: np.mean([float(r["mean_unit_rank"]) for r in rk if r["model"] == m]) for m in {r["model"] for r in rk}}
+    models = [m for m in sorted(sorted(mean_rank), key=lambda m: mean_rank[m]) if m != "ANKYRA"]      # figure 2 order
+    lab = {r["model"]: r["model_label"] for r in en}
+    cls = {r["model"]: r["model_class"] for r in en}
+    cell = {(r["set"], r["subset"], r["model"]): r for r in en}
+    n, k = len(models), len(ENERGY_COLS)
+    P = np.array([[float(cell[(s, sub, m)]["improvement_pct"]) for s, sub, _ in ENERGY_COLS] for m in models])
+    fig = plt.figure(figsize=(7.2, 4.9))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.8, 0.85], wspace=0.42, left=0.16, right=0.985, top=0.80, bottom=0.16)
+    ax = fig.add_subplot(gs[0]); bx = fig.add_subplot(gs[1], sharey=ax)
+    cmap = LinearSegmentedColormap.from_list("energy", [ANKYRA, "#F4A582", "#F7F7F7", "#92C5DE", "#2166AC"])
+    ax.imshow(np.clip(P, -50, 50), cmap=cmap, vmin=-50, vmax=50, aspect="auto", interpolation="nearest")
+    for i, m in enumerate(models):
+        for j, (s, sub, _) in enumerate(ENERGY_COLS):
+            r = cell[(s, sub, m)]
+            tag = "*" if float(r["um_high"]) < 0 else ("(+)" if float(r["um_low"]) > 0 else "")
+            v = P[i, j]
+            ax.text(j, i, f"{v:+.0f}{tag}" if abs(v) < 999.5 else f"{v:+,.0f}{tag}", ha="center", va="center", fontsize=5.2,
+                    color="white" if abs(v) > 35 else "#1A1A1A", fontweight="bold" if tag == "*" else "normal")
+    ax.axvline(1.5, color="white", lw=2.4); ax.axvline(k - 1.5, color="white", lw=2.4)
+    ax.set_xticks(range(k)); ax.set_xticklabels([c[2] for c in ENERGY_COLS], fontsize=5.9, linespacing=1.0)
+    ax.xaxis.tick_top(); ax.tick_params(axis="x", length=0, pad=2)
+    ax.set_yticks(range(n)); ax.set_yticklabels([label(lab[m]) for m in models], fontsize=6.3); ax.tick_params(axis="y", length=0, pad=8)
+    for i, m in enumerate(models):
+        ax.scatter([-0.8], [i], s=10, color=CLASS_COLOR.get(cls.get(m, ""), "#9E9E9E"), clip_on=False, marker="s", zorder=5)
+    for sp in ax.spines.values():
+        sp.set_visible(False)
+    ax.set_title("a   ANKYRA's improvement in monthly energy error over each baseline (%)", fontsize=7.4, pad=24)
+    cols = [c for c in ENERGY_COLS if c[1] == "all units"]
+    better = np.array([sum(float(cell[(s, sub, m)]["um_high"]) < 0 for m in models) for s, sub, _ in cols])
+    worse = np.array([sum(float(cell[(s, sub, m)]["um_low"]) > 0 for m in models) for s, sub, _ in cols])
+    tie = len(models) - better - worse
+    bx.remove(); bx = fig.add_subplot(gs[1])
+    y = np.arange(len(cols))
+    bx.barh(y, better, color="#2166AC", height=0.62); bx.barh(y, tie, left=better, color="#D9D9D9", height=0.62)
+    bx.barh(y, worse, left=better + tie, color=ANKYRA, height=0.62)
+    for i in range(len(cols)):
+        bx.text(better[i] - 0.3, i, f"{better[i]}", va="center", ha="right", fontsize=6.0, color="white", fontweight="bold")
+    bx.set_yticks(y); bx.set_yticklabels([c[2].replace("\n", " ") for c in cols], fontsize=6.3); bx.invert_yaxis()
+    bx.set_xlim(0, len(models)); bx.set_xticks([0, 5, 10, 15, 20]); bx.set_xlabel("Number of the 20 baselines", fontsize=6.8)
+    bx.set_title("b   Head-to-head on energy", fontsize=7.4, pad=24)
+    bx.legend(handles=[Patch(fc="#2166AC", label="ANKYRA better"), Patch(fc="#D9D9D9", label="not resolved"),
+                       Patch(fc=ANKYRA, label="ANKYRA worse")], loc="lower left", bbox_to_anchor=(-0.02, 1.0), ncol=3,
+              fontsize=5.8, handlelength=1.0, handleheight=0.8, columnspacing=0.7, handletextpad=0.3)
+    handles = [Line2D([], [], marker="s", ls="", color=c, markersize=4.0, label=t_) for t_, c in CLASS_LEGEND]
+    fig.legend(handles=handles, loc="lower left", bbox_to_anchor=(0.01, 0.0), ncol=4, fontsize=5.8, handletextpad=0.25, columnspacing=0.9)
+    fig.text(0.01, 0.99, "Monthly energy error, 744 × the mean hourly error (P3), on the same late windows. Unit-equal RMS ratio with 95% unit-and-month",
+             fontsize=6.3, color=GREY, va="top")
+    fig.text(0.01, 0.967, "bootstrap intervals; * resolved in ANKYRA's favour, (+) against it. Computed after scoring. † Three near-zero meters dominate the",
+             fontsize=6.3, color=GREY, va="top")
+    fig.text(0.01, 0.944, "BDG2 unit means; the next column leaves them out. ‡ Suzhou park: preview population, four series.",
+             fontsize=6.3, color=GREY, va="top")
+    save(fig, "fig11_energy_error")
+
+
+# ============================================================================ Figure 12: position on every population
+def fig_consistency():
+    rk = [r for r in rows("benchmark_mean_unit_rank.csv") if r["subset"] == "late" and r["tier"] in ("test", "preview")]
+    lab = {r["model"]: r["model_label"] for r in rk}
+    cls = {r["model"]: r["model_class"] for r in rows("benchmark_pairwise.csv")}
+    pos = {}
+    for s in TEST + PREVIEW:
+        order = sorted((r for r in rk if r["set"] == s), key=lambda r: float(r["mean_unit_rank"]))
+        assert len(order) == 21, s
+        for i, r in enumerate(order):
+            pos.setdefault(r["model"], {})[s] = i + 1
+    models = sorted(pos, key=lambda m: (np.mean([pos[m][s] for s in TEST]), m))
+    fig, ax = plt.subplots(figsize=(7.2, 4.9))
+    fig.subplots_adjust(left=0.2, right=0.985, top=0.86, bottom=0.1)
+    for i, m in enumerate(models):
+        c = ANKYRA if m == "ANKYRA" else CLASS_COLOR.get(cls.get(m, ""), "#9E9E9E")
+        t = [pos[m][s] for s in TEST]; p = [pos[m][s] for s in PREVIEW]
+        ax.plot([min(t), max(t)], [i, i], color=c, lw=2.2 if m == "ANKYRA" else 1.2, alpha=0.35, solid_capstyle="round", zorder=1)
+        ax.scatter(t, [i - 0.13] * len(t), s=26 if m == "ANKYRA" else 16, color=c, zorder=3, lw=0)
+        ax.scatter(p, [i + 0.17] * len(p), s=22 if m == "ANKYRA" else 14, facecolor="white", edgecolor=c, lw=0.9, zorder=3)
+    ax.set_yticks(range(len(models))); ax.set_yticklabels([label(lab[m]) for m in models], fontsize=6.5)
+    for t_, m in zip(ax.get_yticklabels(), models):
+        if m == "ANKYRA":
+            t_.set_color(ANKYRA); t_.set_fontweight("bold")
+    ax.set_ylim(len(models) - 0.5, -0.6)
+    ax.set_xlim(0.5, 21.5); ax.set_xticks([1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21])
+    ax.set_xlabel("Position among the 21 forecasters (1 = lowest mean per-unit rank)", fontsize=6.9)
+    ax.grid(axis="x", color="#EFEFEF", lw=0.5, zorder=0)
+    ax.axvspan(0.5, 2.5, color="#F3F6FA", zorder=0)
+    ax.legend(handles=[Line2D([], [], marker="o", ls="", color=GREY, markersize=4.5, label="test population (scored once)"),
+                       Line2D([], [], marker="o", ls="", markerfacecolor="white", markeredgecolor=GREY, markersize=4.5,
+                              label="preview population"),
+                       Line2D([], [], color=GREY, lw=1.6, alpha=0.4, label="range over the six test populations")],
+              loc="upper right", fontsize=6.2, handletextpad=0.3, frameon=True, facecolor="white", edgecolor="#DDDDDD")
+    fig.text(0.01, 0.985, "Where each forecaster lands on each population, late windows (all 21 forecasters on the same windows). ANKYRA is first or",
+             fontsize=6.3, color=GREY, va="top")
+    fig.text(0.01, 0.962, "second on all six test populations; no other forecaster is in the top two on more than two of them. The position uses the mean",
+             fontsize=6.3, color=GREY, va="top")
+    fig.text(0.01, 0.939, "per-unit rank, a secondary summary; the primary estimand is in the test table and figure 3. Rows: mean position on the test populations.",
+             fontsize=6.3, color=GREY, va="top")
+    save(fig, "fig12_consistency")
+
+
+# ============================================================================ Figure 13: intervals on households
+def fig_intervals():
+    iv = json.loads((RES / "intervals_households.json").read_text(encoding="utf-8"))
+    arms = [("ours_around_ANKYRA", "ANKYRA interval", ANKYRA), ("ours_around_F0", "same interval,\nfixed division", HIST),
+            ("chronos_native", "Chronos-2\nnative", "#807DBA"), ("timesfm_native", "TimesFM\nnative 0.1–0.9", "#5E4FA2")]
+    fig, (ax, bx) = plt.subplots(1, 2, figsize=(7.2, 2.7), gridspec_kw={"width_ratios": [1.35, 1.0], "wspace": 0.32})
+    fig.subplots_adjust(left=0.075, right=0.985, top=0.78, bottom=0.2)
+    x = np.arange(len(arms)); w = 0.36
+    for j, (key, name, c) in enumerate(arms):
+        a = iv["arms"][key]
+        ax.bar(j - w / 2, 100 * a["cov80"], width=w, color=c, alpha=0.95)
+        ax.text(j - w / 2, 100 * a["cov80"] + 1.5, f"{100 * a['cov80']:.1f}", ha="center", fontsize=5.8)
+        if "cov90" in a:
+            ax.bar(j + w / 2, 100 * a["cov90"], width=w, color=c, alpha=0.45)
+            ax.text(j + w / 2, 100 * a["cov90"] + 1.5, f"{100 * a['cov90']:.1f}", ha="center", fontsize=5.8)
+        else:
+            ax.text(j + w / 2, 3, "n/a", ha="center", fontsize=5.6, color=GREY)
+    ax.axhline(80, color="#1A1A1A", lw=0.7, ls="--"); ax.axhline(90, color="#1A1A1A", lw=0.7, ls=":")
+    ax.text(3.62, 80.5, "nominal 80%", fontsize=5.6, ha="right", va="bottom"); ax.text(3.62, 90.5, "nominal 90%", fontsize=5.6, ha="right", va="bottom")
+    ax.set_xticks(x); ax.set_xticklabels([a[1] for a in arms], fontsize=6.0); ax.set_ylim(0, 100); ax.set_ylabel("Coverage of hours (%)", fontsize=6.6)
+    ax.set_title("a   Coverage (dark: 80% band, light: 90% band)", fontsize=7.2)
+    wk = [iv["arms"][k]["winkler80"] for k, *_ in arms]
+    bx.bar(x, wk, color=[a[2] for a in arms], width=0.6)
+    notes = {"ours_around_F0": "winkler80_oursANKYRA_vs_ours_around_F0", "chronos_native": "winkler80_oursANKYRA_vs_chronos_native",
+             "timesfm_native": "winkler80_oursANKYRA_vs_timesfm_native"}
+    for j, (key, *_rest) in enumerate(arms):
+        bx.text(j, wk[j] + 0.012, f"{wk[j]:.3f}", ha="center", fontsize=5.8)
+        if key in notes:
+            c = iv["contrasts"][notes[key]]
+            tag = "*" if c["UM"][1] < 0 else ("(+)" if c["UM"][0] > 0 else "")
+            bx.text(j, 0.03, f"ANKYRA\n{c['pct']:+.1f}%{tag}", ha="center", fontsize=5.4, color="white", fontweight="bold")
+    bx.set_xticks(x); bx.set_xticklabels([a[1] for a in arms], fontsize=6.0); bx.set_ylabel("Winkler score, 80% (kW)", fontsize=6.6)
+    bx.set_ylim(0, max(wk) * 1.18)
+    bx.set_title("b   Winkler score (lower is better)", fontsize=7.2)
+    fig.text(0.01, 0.985, f"Prediction intervals on GoiEner households ({iv['units']:,} units, {iv['windows']:,} windows), the one population where intervals were scored.",
+             fontsize=6.3, color=GREY, va="top")
+    fig.text(0.01, 0.93, "b: ANKYRA's improvement in the unit-equal Winkler score over each interval; * 95% unit-and-month interval excludes zero.",
+             fontsize=6.3, color=GREY, va="top")
+    save(fig, "fig13_intervals")
 
 
 if __name__ == "__main__":
@@ -605,4 +940,10 @@ if __name__ == "__main__":
     fig_mechanism()
     fig_peak()
     fig_example()
+    fig_loss_metrics()
+    fig_lead_days()
+    fig_lead_days_relative()
+    fig_energy()
+    fig_consistency()
+    fig_intervals()
     print("figures written to", HERE)

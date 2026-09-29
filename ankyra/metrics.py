@@ -4,7 +4,7 @@ Primary: the unit-equal log RMS ratio r = mean_i log(R_i^A / R_i^B), where R_i i
 windows; reported as the improvement 100 [1 - exp(r)] (positive favours A).  Uncertainty: 2,000 paired bootstrap
 replicates resampling units and target-midpoint months independently (UM).  Also: the mean per-unit rank (models ranked
 within each unit by RMSE, ties averaged), which stays defined when some units have exactly zero error, and the pooled
-MSE ratio, whose relation to the unit-equal estimand is given by ``pooled_ratio_decomposition`` (P19 in docs/THEORY.md).
+MSE ratio, whose relation to the unit-equal estimand is given by ``pooled_ratio_decomposition`` (P19 in theory/PROOFS.md).
 """
 from __future__ import annotations
 
