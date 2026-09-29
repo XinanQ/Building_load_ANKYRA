@@ -1,0 +1,22 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.env
+.idea/
+.vscode/
+.pytest_cache/
+.DS_Store
+Thumbs.db
+# raw data, arrays and model weights are never committed
+*.npz
+*.npy
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.parquet
+*.zip

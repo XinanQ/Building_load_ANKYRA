@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ankyra"
+version = "1.0.0"
+description = "ANKYRA: anchoring a time-series foundation model to each unit's own history for month-ahead load forecasting"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Xinan Qin" }]
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.26", "scipy>=1.11", "torch>=2.4"]
+keywords = ["load forecasting", "time-series foundation models", "forecast combination", "building energy", "TimesFM"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Scientific/Engineering",
+]
+
+[project.optional-dependencies]
+timesfm = ["timesfm>=2.0"]
+figures = ["matplotlib>=3.8"]
+
+[project.urls]
+Repository = "https://github.com/XinanQ/Building_load_ANKYRA"
+
+[tool.setuptools.packages.find]
+include = ["ankyra*"]
+
+[tool.setuptools.package-data]
+"ankyra.history" = ["*.json"]

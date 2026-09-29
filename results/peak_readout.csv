@@ -1,0 +1,45 @@
+set,tier,comparator,log_ratio,um_low,um_high,improvement_pct,median_peak_ape_ankyra_pct,median_peak_ape_previous_peak_pct
+GoiEner non-household,test,trajectory maximum,-0.616243,-0.973612,-0.483783,46.003,14.48,15.02
+GoiEner non-household,test,same readout on TimesFM,-0.037774,-0.094324,0.000903,3.707,14.48,15.02
+GoiEner non-household,test,previous-window peak,0.234197,-0.024278,0.399672,-26.389,14.48,15.02
+GoiEner non-household,test,same readout on fixed division (F0),0.005405,-0.108866,0.048375,-0.542,14.48,15.02
+Drammen,preview,trajectory maximum,-0.41517,-0.505937,-0.334509,33.977,13.34,17.16
+Drammen,preview,same readout on TimesFM,-0.064937,-0.10565,-0.025583,6.287,13.34,17.16
+Drammen,preview,previous-window peak,-0.128464,-0.279177,-0.008719,12.055,13.34,17.16
+Drammen,preview,same readout on fixed division (F0),-0.001457,-0.056106,0.038529,0.146,13.34,17.16
+Oslo,preview,trajectory maximum,-0.336485,-0.523879,-0.174151,28.572,11.1,10.28
+Oslo,preview,same readout on TimesFM,-0.05343,-0.088797,-0.01537,5.203,11.1,10.28
+Oslo,preview,previous-window peak,-0.173901,-0.271313,-0.083788,15.962,11.1,10.28
+Oslo,preview,same readout on fixed division (F0),0.012403,-0.032273,0.037281,-1.248,11.1,10.28
+EWELD,test,trajectory maximum,-0.458366,-0.735551,-0.253922,36.768,9.84,7.94
+EWELD,test,same readout on TimesFM,-0.026724,-0.128952,0.061463,2.637,9.84,7.94
+EWELD,test,previous-window peak,0.185393,-0.001097,0.399504,-20.369,9.84,7.94
+EWELD,test,same readout on fixed division (F0),-0.293336,-0.537081,-0.097084,25.423,9.84,7.94
+GoiEner households,test,trajectory maximum,-1.070563,-1.294228,-0.717311,65.718,20.53,20.48
+GoiEner households,test,same readout on TimesFM,-0.026967,-0.097381,0.027516,2.661,20.53,20.48
+GoiEner households,test,previous-window peak,-0.003336,-0.112132,0.086158,0.333,20.53,20.48
+GoiEner households,test,same readout on fixed division (F0),0.017751,-0.022737,0.051924,-1.791,20.53,20.48
+Suzhou park,preview,trajectory maximum,-0.243872,-0.403146,-0.122764,21.641,15.95,17.66
+Suzhou park,preview,same readout on TimesFM,-0.078324,-0.139647,0.011864,7.534,15.95,17.66
+Suzhou park,preview,previous-window peak,-0.133762,-0.382914,0.004388,12.52,15.95,17.66
+Suzhou park,preview,same readout on fixed division (F0),0.033345,-0.050047,0.085042,-3.391,15.95,17.66
+BDG2 2017,test,trajectory maximum,-0.498611,-0.639837,-0.400356,39.263,9.21,6.96
+BDG2 2017,test,same readout on TimesFM,0.359996,-0.026807,1.433969,-43.332,9.21,6.96
+BDG2 2017,test,previous-window peak,0.07892,-0.058622,0.239917,-8.212,9.21,6.96
+BDG2 2017,test,same readout on fixed division (F0),-0.031068,-0.14157,0.013241,3.059,9.21,6.96
+LCL households,reserved,trajectory maximum,-1.482072,-1.623276,-1.402144,77.283,15.74,15.89
+LCL households,reserved,same readout on TimesFM,-0.017964,-0.071051,0.04016,1.78,15.74,15.89
+LCL households,reserved,previous-window peak,0.020787,-0.094397,0.107843,-2.1,15.74,15.89
+LCL households,reserved,same readout on fixed division (F0),0.011711,-0.030569,0.048501,-1.178,15.74,15.89
+Cambridge,test,trajectory maximum,-0.484424,-0.628493,-0.424214,38.395,8.35,8.09
+Cambridge,test,same readout on TimesFM,-0.043108,-0.076378,0.002452,4.219,8.35,8.09
+Cambridge,test,previous-window peak,0.071052,-0.049841,0.178832,-7.364,8.35,8.09
+Cambridge,test,same readout on fixed division (F0),-0.021601,-0.071263,0.015953,2.137,8.35,8.09
+CINELDI,preview,trajectory maximum,-0.637934,-0.829677,-0.450744,47.162,9.66,8.04
+CINELDI,preview,same readout on TimesFM,-0.038791,-0.100364,0.023302,3.805,9.66,8.04
+CINELDI,preview,previous-window peak,0.177161,0.030259,0.350436,-19.382,9.66,8.04
+CINELDI,preview,same readout on fixed division (F0),-0.009379,-0.078153,0.031193,0.934,9.66,8.04
+HEEW Arizona,test,trajectory maximum,-0.406347,-0.59901,-0.311287,33.392,5.47,5.97
+HEEW Arizona,test,same readout on TimesFM,-0.03308,-0.085233,0.034869,3.254,5.47,5.97
+HEEW Arizona,test,previous-window peak,-0.137707,-0.246693,-0.028491,12.865,5.47,5.97
+HEEW Arizona,test,same readout on fixed division (F0),-0.079936,-0.165946,-0.006634,7.682,5.47,5.97
