@@ -4,7 +4,7 @@ BDG2 2017,test,all units,474,142,Chronos-2,Chronos-2,"load only, zero-shot found
 BDG2 2017,test,all units,474,142,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",0.31535,-0.109692,1.112841,-37.074,4.999
 BDG2 2017,test,all units,474,142,DLinear,DLinear,"load only, trained",-0.121777,-0.411747,0.020526,11.465,7.36
 BDG2 2017,test,all units,474,142,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.295952,-0.548226,0.133229,25.618,9.051
-BDG2 2017,test,all units,474,142,GBT-T,GBT-T,"same information, trained",-0.051962,-0.30145,0.102523,5.064,5.39
+BDG2 2017,test,all units,474,142,GBT-T,GBT-T,"same information, trained",-0.168537,-0.487855,0.065856,15.51,5.245
 BDG2 2017,test,all units,474,142,Holt-Winters,Holt-Winters,"load only, statistical",-0.471104,-0.68314,-0.272345,37.569,8.913
 BDG2 2017,test,all units,474,142,LSTM,LSTM,"load only, trained",-0.219139,-0.525224,-0.079681,19.679,8.314
 BDG2 2017,test,all units,474,142,LYR-profile,Last-year profile,profile,-0.201971,-0.47569,0.00312,18.288,7.144
@@ -25,7 +25,7 @@ BDG2 2017,test,without the three near-zero meters,464,139,Chronos-2,Chronos-2,"l
 BDG2 2017,test,without the three near-zero meters,464,139,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.003617,-0.240203,0.789911,0.361,5.1
 BDG2 2017,test,without the three near-zero meters,464,139,DLinear,DLinear,"load only, trained",-0.075939,-0.340361,0.051637,7.313,7.303
 BDG2 2017,test,without the three near-zero meters,464,139,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.468001,-0.626051,-0.032341,37.375,9.003
-BDG2 2017,test,without the three near-zero meters,464,139,GBT-T,GBT-T,"same information, trained",-0.066229,-0.314267,0.100212,6.408,5.278
+BDG2 2017,test,without the three near-zero meters,464,139,GBT-T,GBT-T,"same information, trained",-0.090076,-0.412736,0.145969,8.614,4.862
 BDG2 2017,test,without the three near-zero meters,464,139,Holt-Winters,Holt-Winters,"load only, statistical",-0.471104,-0.687545,-0.264711,37.569,9.187
 BDG2 2017,test,without the three near-zero meters,464,139,LSTM,LSTM,"load only, trained",-0.179997,-0.469149,-0.037095,16.473,8.251
 BDG2 2017,test,without the three near-zero meters,464,139,LYR-profile,Last-year profile,profile,-0.18705,-0.469169,0.014595,17.06,7.207
@@ -67,7 +67,7 @@ HEEW Arizona,test,all units,658,138,Chronos-2,Chronos-2,"load only, zero-shot fo
 HEEW Arizona,test,all units,658,138,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.037727,-0.16292,0.179534,3.702,5.203
 HEEW Arizona,test,all units,658,138,DLinear,DLinear,"load only, trained",-0.36663,-0.612079,-0.230977,30.693,8.078
 HEEW Arizona,test,all units,658,138,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.254628,-0.401583,-0.090634,22.48,6.467
-HEEW Arizona,test,all units,658,138,GBT-T,GBT-T,"same information, trained",-0.015801,-0.176234,0.152848,1.568,5.052
+HEEW Arizona,test,all units,658,138,GBT-T,GBT-T,"same information, trained",-0.077188,-0.25263,0.085602,7.428,5.376
 HEEW Arizona,test,all units,658,138,Holt-Winters,Holt-Winters,"load only, statistical",-0.274612,-0.449723,-0.05235,24.013,7.447
 HEEW Arizona,test,all units,658,138,LSTM,LSTM,"load only, trained",-0.461054,-0.718082,-0.319784,36.938,8.877
 HEEW Arizona,test,all units,658,138,LYR-profile,Last-year profile,profile,-0.722607,-0.973236,-0.482642,51.452,10.044
@@ -88,7 +88,7 @@ EWELD,test,all units,523,197,Chronos-2,Chronos-2,"load only, zero-shot foundatio
 EWELD,test,all units,523,197,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.380551,-0.571045,-0.095249,31.652,17.206
 EWELD,test,all units,523,197,DLinear,DLinear,"load only, trained",-0.691475,-1.045987,-0.390031,49.916,19.981
 EWELD,test,all units,523,197,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.274688,-0.598615,0.141195,24.019,20.715
-EWELD,test,all units,523,197,GBT-T,GBT-T,"same information, trained",-5.378873,-5.878279,-4.652645,99.539,2181.301
+EWELD,test,all units,523,197,GBT-T,GBT-T,"same information, trained",-0.603987,-0.900919,-0.185284,45.337,17.326
 EWELD,test,all units,523,197,Holt-Winters,Holt-Winters,"load only, statistical",-0.705316,-1.003894,-0.411448,50.605,29.839
 EWELD,test,all units,523,197,LSTM,LSTM,"load only, trained",-0.832465,-1.179028,-0.481434,56.502,21.442
 EWELD,test,all units,523,197,LYR-profile,Last-year profile,profile,-1.240456,-1.586478,-0.835635,71.075,43.306
@@ -109,7 +109,7 @@ GoiEner non-household,test,all units,890,481,Chronos-2,Chronos-2,"load only, zer
 GoiEner non-household,test,all units,890,481,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.197543,-0.334343,-0.004652,17.926,19.474
 GoiEner non-household,test,all units,890,481,DLinear,DLinear,"load only, trained",-0.376259,-0.524243,-0.201413,31.358,15.659
 GoiEner non-household,test,all units,890,481,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.628147,-0.745244,-0.361687,46.642,18.899
-GoiEner non-household,test,all units,890,481,GBT-T,GBT-T,"same information, trained",-1.268992,-1.466139,-0.844042,71.889,37.118
+GoiEner non-household,test,all units,890,481,GBT-T,GBT-T,"same information, trained",-0.673347,-0.913347,-0.249567,49.0,19.001
 GoiEner non-household,test,all units,890,481,Holt-Winters,Holt-Winters,"load only, statistical",-0.553716,-0.688311,-0.386659,42.519,20.898
 GoiEner non-household,test,all units,890,481,LSTM,LSTM,"load only, trained",-0.312822,-0.482359,-0.147782,26.862,15.077
 GoiEner non-household,test,all units,890,481,LYR-profile,Last-year profile,profile,-0.331086,-0.520992,-0.084323,28.186,16.753
@@ -130,7 +130,7 @@ GoiEner households,test,all units,696,696,Chronos-2,Chronos-2,"load only, zero-s
 GoiEner households,test,all units,696,696,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.305554,-0.485265,-0.114026,26.328,25.452
 GoiEner households,test,all units,696,696,DLinear,DLinear,"load only, trained",-0.152788,-0.303064,-0.030889,14.169,15.806
 GoiEner households,test,all units,696,696,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.50736,-0.711965,-0.332377,39.792,23.925
-GoiEner households,test,all units,696,696,GBT-T,GBT-T,"same information, trained",-0.258785,-0.454383,-0.069815,22.801,16.614
+GoiEner households,test,all units,696,696,GBT-T,GBT-T,"same information, trained",-0.17365,-0.423849,0.002645,15.941,15.611
 GoiEner households,test,all units,696,696,Holt-Winters,Holt-Winters,"load only, statistical",-0.416196,-0.650589,-0.238426,34.045,24.033
 GoiEner households,test,all units,696,696,LSTM,LSTM,"load only, trained",-0.117603,-0.323263,0.042814,11.095,16.091
 GoiEner households,test,all units,696,696,LYR-profile,Last-year profile,profile,-0.171416,-0.374508,0.004107,15.753,16.737
@@ -151,7 +151,7 @@ Suzhou park,preview,all units,64,4,Chronos-2,Chronos-2,"load only, zero-shot fou
 Suzhou park,preview,all units,64,4,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.248214,-0.649905,0.183352,21.981,12.264
 Suzhou park,preview,all units,64,4,DLinear,DLinear,"load only, trained",-0.039295,-0.323424,0.185256,3.853,8.316
 Suzhou park,preview,all units,64,4,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.58985,-1.107184,-0.117029,44.559,13.548
-Suzhou park,preview,all units,64,4,GBT-T,GBT-T,"same information, trained",-0.134543,-0.539442,0.447466,12.589,6.804
+Suzhou park,preview,all units,64,4,GBT-T,GBT-T,"same information, trained",-0.128937,-0.555177,0.386111,12.097,9.216
 Suzhou park,preview,all units,64,4,Holt-Winters,Holt-Winters,"load only, statistical",-0.838479,-1.244129,-0.428198,56.763,19.092
 Suzhou park,preview,all units,64,4,LSTM,LSTM,"load only, trained",-0.147416,-0.498663,0.226882,13.707,8.44
 Suzhou park,preview,all units,64,4,LYR-profile,Last-year profile,profile,-0.498596,-0.87566,-0.044446,39.262,11.454

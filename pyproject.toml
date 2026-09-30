@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ankyra"
-version = "1.2.0"
+version = "1.2.1"
 description = "ANKYRA: anchoring a time-series foundation model to each unit's own history for month-ahead load forecasting"
 readme = "README.md"
 license = { text = "MIT" }

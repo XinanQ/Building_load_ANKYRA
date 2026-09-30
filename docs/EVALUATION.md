@@ -91,6 +91,27 @@ PatchTST is channel-independent, so its load forecast is the same function with 
 - **Pretraining corpora** of the foundation models are the one exposure no forecaster controls (see
   [Limitations](#limitations)).
 
+### Correction of the GBT-T baseline
+
+GBT-T is our own implementation: scikit-learn's histogram gradient boosting on 21 features from the shared set, trained
+across the units of each population. Its first version normalised every window by the window's own context mean and
+standard deviation, with a floor of max(1% of the mean, 10⁻³ kW). On flat or all-zero contexts the floor produced
+training targets 10⁵–10⁷ times too large, and the trees then forecast loads up to 18,500,000 kW on EWELD, whose largest
+observed load is 13,427 kW. This affected 96% of EWELD's late windows, 12% on GoiEner non-household, 7% on BDG2 and 1%
+on households.
+
+The defect was found after the test populations had been scored. Two corrections were written before each was run:
+
+- The first replaced the window scale by each unit's pre-cutoff scale everywhere. It removed the failure but also
+  weakened GBT-T where it had worked, for example on Cambridge, HEEW and Oslo.
+- The second, reported here, keeps the original scaling and uses the unit's pre-cutoff standard deviation only where
+  the floor was active.
+
+GBT-T was therefore scored three times on the test populations; ANKYRA and the other 19 forecasters once. On EWELD the
+per-window scaling still overshoots in 41% of windows. There the contexts are almost entirely zero with isolated spikes,
+so read GBT-T's EWELD result as a limit of that design, not as an advantage of ANKYRA. The Norwegian diagnostics below
+were recomputed with the corrected GBT-T.
+
 ## Estimands
 
 **Unit-equal log RMS ratio (primary).** For unit $i$, $R_i$ is the RMS of its hourly errors over its windows, and
@@ -122,24 +143,25 @@ rows at the bottom are a secondary summary.
 |---|---:|---:|---:|---:|---:|---:|
 | vs TiDE | +13.6 * | +16.3 * | +18.9 * | +33.1 * | +13.8 * | +14.7 * |
 | vs iTransformer-X | +3.5 | −1.5 | +5.3 * | +20.3 * | +5.8 | +12.0 * |
-| vs GBT-T | +10.6 * | +2.6 | +2.7 | +99.8 * | +67.7 * | +26.0 * |
+| vs GBT-T ‡ | +15.2 * | +2.6 | +5.6 * | +46.0 * | +29.6 * | +16.0 * |
 | vs Chronos-2-X | −39.6 † | −0.4 | +1.0 | +14.2 * | −2.5 | +0.3 |
 | vs TimesFM-X | +5.6 | +7.1 * | +4.9 | +16.3 * | +4.6 * | +2.9 |
 | vs TimesFM (load only) | −54.8 † | +5.6 * | +2.8 | +2.1 | +1.7 | −3.8 (+) |
-| Resolved better than, of 20 | 10 | 16 | 15 | 18 | 15 | 16 |
+| Resolved better than, of 20 | 10 | 16 | 16 | 18 | 15 | 16 |
 | Resolved worse than, of 20 | 0 | 0 | 0 | 0 | 0 | 1 |
-| ANKYRA mean per-unit rank | **4.9** | 5.6 | **5.1** | **6.5** | **6.2** | 7.3 |
+| ANKYRA mean per-unit rank | **5.0** | 5.6 | **5.1** | **6.7** | **6.4** | 7.3 |
 | ANKYRA position | 1 | 2 | 1 | 1 | 1 | 2 |
 
-\* resolved in ANKYRA's favour; (+) resolved against ANKYRA.
+\* resolved in ANKYRA's favour; (+) resolved against ANKYRA. ‡ Corrected implementation; see
+[Correction of the GBT-T baseline](#correction-of-the-gbt-t-baseline).
 
 † BDG2 unit means are dominated by three meters reading about 0.0002 kW. The full result is kept, and a sensitivity
 analysis is reported beside it:
 
 - without the three meters (11 of 474 windows), the improvement is +1.6% against TimesFM and −3.0% against Chronos-2-X;
 - the intervals stay wide, because other low-load units also carry extreme ratios;
-- ANKYRA's mean rank is 4.93 with the three meters and 4.70 without them, first either way;
-- against all nine models of Figure 3, the median unit favours ANKYRA (59–92% of units).
+- ANKYRA's mean rank is 4.95 with the three meters and 4.73 without them, first either way;
+- against all nine models of Figure 3, the median unit favours ANKYRA (58–92% of units).
 
 The three meters are the BDG2 units whose largest hourly load over their panel windows is at most 0.001 kW
 (Lamb_education_Harold, Lamb_education_Hillary, Lamb_office_Jo). Both versions of every comparison, full and late
@@ -149,30 +171,30 @@ Mean per-unit rank averaged over the six test populations:
 
 | Forecaster | Mean rank |
 |---|---:|
-| **ANKYRA** | **5.94** |
-| per-unit ridge | 7.21 |
-| Chronos-2-X | 7.72 |
-| iTransformer-X | 8.06 |
-| TimesFM | 8.34 |
-| TimesFM-X | 8.48 |
+| **ANKYRA** | **6.00** |
+| per-unit ridge | 7.25 |
+| Chronos-2-X | 7.80 |
+| iTransformer-X | 8.13 |
+| TimesFM | 8.42 |
+| TimesFM-X | 8.55 |
 
 By position, ANKYRA is first or second on each of the six test populations. No other forecaster is in the top two on
 more than two of them: the per-unit ridge ranges from first to fifth, Chronos-2-X to 11th, TimesFM to 12th and GBT-T to
-21st (Figure 12).
+18th (Figure 12).
 
 ![Position on every population](../figures/fig12_consistency.png)
 
 ### Preview and reserved populations
 
-- **Oslo:** GBT-T (−18.0%) and iTransformer-X (−9.2%) are resolvably better than ANKYRA. ANKYRA ranks 6th of 21 in
+- **Oslo:** GBT-T (−18.0%) and iTransformer-X (−9.2%) are resolvably better than ANKYRA. ANKYRA ranks 5th of 21 in
   the late windows.
 - **Drammen:** several trained models have small unresolved leads (7th of 21).
 - **CINELDI:** 3rd of 21.
 - **Suzhou park:** 1st of 21.
 - **LCL** (load-only comparison): 3rd of 14.
 
-Across all ten scored populations ANKYRA's mean rank is 5.85, ahead of the per-unit ridge (6.83), iTransformer-X (6.99)
-and Chronos-2-X (7.50).
+Across all ten scored populations ANKYRA's mean rank is 5.88, ahead of the per-unit ridge (6.85), iTransformer-X (7.02)
+and Chronos-2-X (7.54).
 
 **Full windows.** The comparison without the trained models covers 14 forecasters on all 11 populations:
 
@@ -204,7 +226,8 @@ more; CV(RMSE) and WAPE are taken at the median unit.
 - MAE and WAPE are minimised by the median of the predictive distribution, squared-error metrics by its mean. On MAE and
   WAPE, zero-shot Chronos-2 or TimesFM variants are lower than ANKYRA on EWELD and on both GoiEner populations.
 - These metrics weight units differently from the unit-equal log ratio, which remains the primary estimand.
-- GBT-T's errors on EWELD are orders of magnitude larger than the other forecasters' (unit-mean RMSE 78,582 kW).
+- GBT-T's EWELD errors remain the largest among the same-information models (unit-mean RMSE 153.9 kW, against 99.5
+  for ANKYRA), because its per-window scaling still overshoots there (see the GBT-T correction below).
 
 ### Loss by forecast day
 
@@ -273,7 +296,7 @@ intervals. It was computed after scoring and is a description, not a planned tes
 error of every forecaster).
 
 - **No resolved deficit.** On all seven populations ANKYRA is never resolvably worse than any of the 20 baselines. It is
-  resolvably better than 17 of them on GoiEner non-household, 14 on Cambridge and EWELD, 13 on households, 9 on HEEW,
+  resolvably better than 17 of them on GoiEner non-household, 14 on Cambridge and EWELD, 12 on households, 9 on HEEW,
   6 on the Suzhou park and 4 on BDG2.
 - **Where the hourly view favours the foundation models.** On GoiEner households ANKYRA's monthly energy error is 22–27%
   lower than that of TimesFM, Chronos-2, Chronos-2-X and TimesFM-X, each resolved; on GoiEner non-household it is 18–25%
@@ -295,8 +318,8 @@ by:
 | Day type (Oslo) | ANKYRA's within-day error vs GBT-T |
 |---|---:|
 | ordinary working days | +22% |
-| closure-like working days | +40% |
-| public holidays | +54% |
+| closure-like working days | +42% |
+| public holidays | +53% |
 | weekends | level |
 
 Closure-like days are calendar working days whose load fell below half of the recent working-day level. They are

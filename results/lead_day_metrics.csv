@@ -464,37 +464,37 @@ BDG2 2017,test,474,142,DLinear,DLinear,"load only, trained",28,30.6511,25.022,22
 BDG2 2017,test,474,142,DLinear,DLinear,"load only, trained",29,31.1435,25.5478,21.07,16.75,21.24,132
 BDG2 2017,test,474,142,DLinear,DLinear,"load only, trained",30,30.4826,25.0847,21.35,17.72,21.01,132
 BDG2 2017,test,474,142,DLinear,DLinear,"load only, trained",31,32.3563,26.4303,24.95,19.53,22.98,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",1,21.9965,15.7946,13.61,10.52,16.3,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",2,23.6172,17.0935,13.58,10.14,16.19,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",3,29.426,21.5968,15.17,11.98,16.9,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",4,26.9654,19.3174,15.74,11.84,19.09,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",5,27.0435,19.8229,15.69,12.07,19.15,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",6,24.2871,18.1932,15.82,12.14,17.35,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",7,26.5558,19.257,15.1,12.4,18.51,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",8,22.7429,17.2644,14.55,11.34,16.26,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",9,28.0761,21.9565,16.52,13.07,18.08,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",10,29.9256,22.9223,17.28,13.27,20.14,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",11,28.5957,22.0216,15.68,11.91,18.23,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",12,31.2453,24.224,18.22,14.19,20.41,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",13,26.9511,20.6929,14.53,11.51,17.4,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",14,28.4446,21.8603,16.9,12.69,18.34,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",15,29.2007,22.4719,16.96,13.5,18.39,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",16,29.0436,22.8167,16.1,12.33,18.12,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",17,27.6971,21.6271,14.8,11.95,16.3,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",18,28.8299,22.0879,14.81,11.89,17.42,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",19,29.9115,22.3799,15.91,12.2,18.06,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",20,29.6735,22.7189,16.56,12.97,18.72,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",21,29.322,22.88,16.83,12.36,18.74,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",22,40.3595,29.691,19.51,14.58,22.11,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",23,38.4278,29.247,19.7,15.09,21.06,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",24,36.0364,28.0015,19.46,15.45,20.33,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",25,39.5754,29.2278,20.83,15.98,20.93,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",26,39.4311,29.2233,19.87,15.29,21.03,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",27,36.7531,27.3548,18.4,15.5,20.81,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",28,37.0359,27.1507,19.09,15.93,22.3,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",29,34.0562,26.559,18.67,14.23,21.13,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",30,34.3709,27.0165,19.85,14.47,21.23,132
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",31,38.1999,29.3916,21.39,16.85,23.2,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",1,20.2805,15.1422,13.03,9.82,15.55,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",2,22.3755,16.8389,12.9,9.89,15.75,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",3,28.0518,20.633,14.61,10.98,16.66,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",4,25.2963,18.48,14.95,11.98,18.28,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",5,26.6722,19.6946,15.62,12.12,19.54,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",6,23.5134,17.9957,15.05,11.38,17.55,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",7,26.9612,20.1436,17.0,13.21,18.96,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",8,24.0199,18.6736,14.2,10.76,16.76,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",9,28.6728,22.5956,17.58,13.54,18.43,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",10,28.7703,22.3204,19.3,14.35,19.95,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",11,28.424,22.8803,16.81,13.33,18.7,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",12,31.8962,25.5475,18.46,14.19,21.49,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",13,27.1167,21.4256,14.34,11.28,17.93,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",14,28.8031,22.8012,17.26,13.21,19.47,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",15,29.3858,23.1041,17.57,13.67,19.03,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",16,28.1243,22.6263,17.19,12.94,18.61,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",17,26.751,21.2307,15.0,11.6,16.75,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",18,27.1558,21.5877,14.97,11.65,17.43,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",19,27.0899,21.2672,15.78,11.96,17.95,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",20,27.6591,22.2249,16.12,12.67,18.55,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",21,27.8296,22.0825,17.08,13.03,18.84,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",22,36.2334,27.0975,19.84,15.72,21.14,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",23,33.7787,25.9342,18.51,14.41,19.72,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",24,30.5251,24.0991,17.51,13.89,19.0,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",25,28.5889,22.3763,18.48,14.74,19.54,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",26,30.7151,24.2429,19.07,15.1,19.79,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",27,29.497,23.1384,18.26,14.92,19.39,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",28,29.0031,22.2517,20.57,15.56,20.8,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",29,28.3448,22.3364,19.08,14.81,20.2,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",30,28.4733,22.7059,19.68,15.28,20.82,132
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",31,32.9866,25.6462,21.57,17.6,23.36,132
 BDG2 2017,test,474,142,iTransformer-X,iTransformer-X,"same information, trained",1,17.9289,13.2913,11.77,8.46,13.23,132
 BDG2 2017,test,474,142,iTransformer-X,iTransformer-X,"same information, trained",2,21.0367,15.613,13.77,10.7,14.76,132
 BDG2 2017,test,474,142,iTransformer-X,iTransformer-X,"same information, trained",3,27.2883,20.2135,15.65,11.21,15.55,132
@@ -1766,37 +1766,37 @@ HEEW Arizona,test,658,138,DLinear,DLinear,"load only, trained",28,41.8077,34.672
 HEEW Arizona,test,658,138,DLinear,DLinear,"load only, trained",29,40.4206,33.2247,23.4,19.1,23.23,133
 HEEW Arizona,test,658,138,DLinear,DLinear,"load only, trained",30,39.2604,32.5421,23.48,19.09,23.18,133
 HEEW Arizona,test,658,138,DLinear,DLinear,"load only, trained",31,40.4768,33.4601,25.22,19.74,23.45,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",1,21.7058,16.5259,13.92,10.15,12.81,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",2,24.2358,18.6969,12.87,9.7,12.56,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",3,23.6787,17.3525,14.6,10.26,13.22,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",4,22.0017,16.9498,15.07,10.94,13.45,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",5,20.9241,15.5038,14.4,10.97,13.4,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",6,20.5399,15.3205,14.69,10.43,13.15,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",7,21.4624,15.9628,14.55,10.52,13.28,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",8,21.3993,16.1512,14.67,10.8,14.03,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",9,21.9475,16.2041,15.41,11.31,15.1,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",10,23.482,17.8793,15.68,11.78,14.75,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",11,23.3194,17.1134,16.18,11.89,14.85,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",12,23.3409,17.9166,16.04,11.29,14.76,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",13,24.6855,18.6566,16.68,11.83,15.15,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",14,24.8718,18.7778,15.49,11.12,14.39,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",15,26.3756,19.4509,14.98,10.63,14.55,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",16,23.7416,18.1243,15.09,10.9,14.62,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",17,27.0361,20.5446,15.32,11.82,14.54,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",18,25.0742,19.1829,15.57,11.15,14.71,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",19,24.1437,17.8771,15.4,11.41,14.49,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",20,22.7942,17.2338,16.19,11.66,14.3,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",21,22.7767,17.3967,16.78,11.54,14.64,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",22,23.572,17.6988,17.2,12.34,15.46,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",23,24.2836,18.6475,16.7,13.15,15.58,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",24,30.3384,22.8551,16.94,13.45,16.51,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",25,28.8111,20.9008,18.05,13.38,16.07,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",26,26.3546,19.5813,17.69,12.73,16.7,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",27,28.7808,21.8954,17.62,12.95,17.03,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",28,26.8158,20.8973,17.93,13.57,17.11,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",29,26.3087,19.0185,19.63,14.43,18.25,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",30,26.4433,20.1393,18.53,13.95,17.81,133
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",31,28.8071,22.1527,18.8,13.54,18.03,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",1,22.5329,17.305,13.51,9.54,12.83,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",2,24.0556,18.3458,13.26,9.76,12.55,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",3,23.9477,17.4433,15.01,10.34,13.29,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",4,22.3291,16.7667,14.99,10.55,13.44,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",5,21.0741,15.6724,14.6,10.63,13.53,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",6,20.8232,15.4522,15.06,11.13,13.25,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",7,21.1413,15.5572,14.67,11.24,13.34,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",8,22.2797,17.2256,14.34,10.95,14.14,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",9,22.3991,16.7881,16.18,11.49,15.27,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",10,23.4848,17.9121,16.53,12.42,14.93,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",11,23.695,17.1391,16.7,12.2,14.97,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",12,23.4871,17.9778,15.9,11.7,15.05,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",13,24.4187,18.2881,16.73,12.08,15.39,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",14,24.6411,18.5106,16.88,11.98,14.75,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",15,25.9197,18.9663,15.74,10.98,14.78,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",16,23.5773,17.8475,15.24,11.32,14.88,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",17,26.2301,20.1052,16.18,11.72,14.83,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",18,24.2619,18.4023,15.49,11.17,15.05,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",19,23.4163,17.555,15.96,11.7,14.84,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",20,22.2566,16.9054,16.38,12.04,14.74,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",21,22.4306,17.2663,16.74,11.96,14.93,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",22,23.4772,17.869,17.4,13.06,15.78,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",23,24.6102,18.9142,17.06,13.2,15.9,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",24,30.1482,22.9213,17.35,13.44,16.6,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",25,28.3535,20.8809,18.07,13.24,16.23,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",26,25.4246,19.2362,17.67,12.91,16.85,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",27,27.9269,21.4324,17.52,13.16,17.02,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",28,25.7011,19.9135,17.87,13.61,17.06,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",29,26.1733,18.7083,19.87,14.22,18.32,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",30,26.3276,20.2005,18.04,13.53,17.83,133
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",31,29.1762,22.7006,18.65,13.43,18.02,133
 HEEW Arizona,test,658,138,iTransformer-X,iTransformer-X,"same information, trained",1,21.563,15.733,11.26,8.7,11.34,133
 HEEW Arizona,test,658,138,iTransformer-X,iTransformer-X,"same information, trained",2,22.6758,17.2253,12.26,8.6,11.82,133
 HEEW Arizona,test,658,138,iTransformer-X,iTransformer-X,"same information, trained",3,23.7212,17.3196,13.94,10.25,12.68,133
@@ -2417,37 +2417,37 @@ EWELD,test,523,197,DLinear,DLinear,"load only, trained",28,146.9452,128.2871,59.
 EWELD,test,523,197,DLinear,DLinear,"load only, trained",29,146.2235,125.9074,60.49,48.46,57.16,138
 EWELD,test,523,197,DLinear,DLinear,"load only, trained",30,152.6306,132.223,64.7,52.87,57.4,138
 EWELD,test,523,197,DLinear,DLinear,"load only, trained",31,158.4085,138.4433,68.56,56.82,59.29,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",1,37285.2506,21782.1375,7840.44,4814.0,10882.02,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",2,23669.6966,16795.4564,5274.03,3395.14,6510.96,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",3,22624.6713,15823.8197,4851.27,3073.09,6278.61,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",4,19779.0079,13700.7725,6101.18,3753.41,6170.65,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",5,17482.3387,12632.0099,5062.15,3438.71,5769.34,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",6,18691.3723,12975.98,5596.17,3311.03,6182.92,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",7,21096.3457,14097.1005,5812.6,3394.35,6595.19,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",8,24594.3376,17488.1134,4709.59,3062.32,6058.85,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",9,24367.8072,14667.289,4135.4,2822.31,6305.52,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",10,30582.4098,17372.3046,7209.47,3520.27,8342.41,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",11,30176.3892,17597.5293,7134.3,3758.59,8585.36,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",12,31501.2348,21824.4506,5168.93,3086.5,6703.83,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",13,32117.9453,21718.8665,5254.71,3045.99,6592.3,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",14,30004.3349,21514.7781,4216.65,2660.04,5555.9,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",15,31700.1835,22251.5999,4441.64,2598.29,5719.58,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",16,35215.6854,25252.6643,4511.97,2899.5,5880.85,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",17,36334.4263,25887.4181,3991.48,2728.83,6433.97,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",18,36627.8027,26112.6347,4591.89,2585.89,6275.39,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",19,44016.8831,28905.9553,12628.92,5729.63,10598.28,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",20,40309.469,29411.6158,5130.85,3363.99,7131.99,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",21,47426.8357,32307.4454,5072.51,3272.66,7929.27,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",22,45001.511,27181.5317,4691.5,3139.28,8030.74,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",23,56786.3459,37046.0174,4995.47,3218.21,8455.71,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",24,60217.1876,39722.4675,5538.06,3228.62,8899.01,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",25,75628.1546,49921.9039,5285.35,3156.86,9701.89,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",26,76401.0949,55189.936,13953.83,7410.19,13711.81,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",27,85207.1084,59387.4743,16707.75,7726.71,17458.16,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",28,91437.9788,64401.4942,10760.54,7446.41,16761.17,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",29,106160.4149,66567.0942,25745.32,13590.59,25835.98,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",30,117045.3271,76844.9476,36331.55,20455.14,39082.69,138
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",31,256880.4083,180367.5047,72734.09,42356.76,68518.79,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",1,91.8849,66.0862,47.52,32.76,45.08,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",2,91.4504,65.0719,43.78,30.0,42.69,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",3,88.7113,63.3114,44.62,31.7,43.85,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",4,93.9366,65.6432,47.56,33.53,47.59,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",5,87.8958,61.1485,43.36,29.26,44.59,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",6,90.0408,61.9379,45.36,31.07,44.15,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",7,90.5031,63.974,44.75,31.26,44.51,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",8,88.7141,63.4852,43.85,31.05,44.8,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",9,92.12,63.4379,46.71,32.28,46.11,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",10,93.3404,67.5316,47.94,32.3,46.61,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",11,94.5008,68.0089,48.25,32.8,48.95,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",12,97.5175,69.1944,52.01,36.63,49.66,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",13,99.76,72.4495,54.13,35.98,51.29,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",14,103.0839,73.4487,58.25,41.02,53.5,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",15,110.3854,78.8351,57.47,39.6,53.17,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",16,114.7765,79.9764,61.84,40.68,55.38,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",17,137.6562,98.3783,57.68,41.15,55.21,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",18,146.4785,106.0448,65.31,41.62,58.64,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",19,139.5839,100.5625,59.89,41.53,56.05,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",20,145.0219,101.146,61.38,40.28,56.46,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",21,143.2675,99.2945,59.39,38.22,53.53,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",22,147.3185,102.7507,58.87,39.99,55.21,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",23,168.0346,114.8565,72.99,44.13,63.79,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",24,153.0574,107.2981,62.64,43.81,58.4,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",25,156.8212,110.6513,70.27,47.94,59.11,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",26,154.4894,108.3405,71.02,48.91,59.91,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",27,152.7622,107.4216,72.75,50.57,60.13,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",28,154.5141,107.2218,72.18,48.03,59.63,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",29,192.0402,122.8641,86.76,58.81,68.51,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",30,297.0053,184.8266,88.73,67.56,85.04,138
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",31,244.9474,159.2195,92.15,54.89,84.5,138
 EWELD,test,523,197,iTransformer-X,iTransformer-X,"same information, trained",1,69.1569,50.4532,34.27,23.26,36.83,138
 EWELD,test,523,197,iTransformer-X,iTransformer-X,"same information, trained",2,75.2707,53.1152,37.64,26.61,36.58,138
 EWELD,test,523,197,iTransformer-X,iTransformer-X,"same information, trained",3,73.2102,51.4924,37.39,24.77,35.95,138
@@ -3037,37 +3037,37 @@ GoiEner non-household,test,890,481,DLinear,DLinear,"load only, trained",28,0.649
 GoiEner non-household,test,890,481,DLinear,DLinear,"load only, trained",29,0.5819,0.4384,65.55,48.86,63.19,453
 GoiEner non-household,test,890,481,DLinear,DLinear,"load only, trained",30,0.7756,0.5649,76.34,54.37,70.3,453
 GoiEner non-household,test,890,481,DLinear,DLinear,"load only, trained",31,0.757,0.5816,73.62,55.72,69.92,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",1,1.0115,0.6297,106.74,58.62,101.5,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",2,1.2724,0.7203,124.83,68.64,109.06,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",3,1.387,0.7884,137.15,77.17,127.64,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",4,1.1452,0.6843,114.82,65.61,109.75,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",5,1.6816,0.9306,120.21,67.59,118.38,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",6,1.8754,1.0235,147.09,83.71,143.85,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",7,1.7908,1.0081,138.59,77.98,129.28,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",8,1.3909,0.78,127.84,71.24,122.25,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",9,1.9357,1.088,144.44,82.67,134.68,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",10,1.9441,1.0162,142.28,82.23,138.88,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",11,1.8021,0.9742,122.75,73.54,123.7,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",12,1.8673,1.0151,128.63,71.28,129.32,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",13,2.2514,1.1878,164.39,87.04,154.43,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",14,1.8926,0.9782,139.26,78.33,138.67,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",15,1.66,0.8901,133.11,77.84,129.91,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",16,1.9794,1.1273,157.44,88.6,150.73,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",17,2.1621,1.2023,158.55,91.09,149.54,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",18,1.8543,1.082,137.28,77.11,125.93,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",19,2.0035,1.1172,136.63,83.93,131.41,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",20,2.3304,1.3209,166.9,93.89,156.93,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",21,2.0532,1.1683,135.02,76.73,143.82,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",22,1.6316,0.9165,146.29,81.92,139.26,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",23,2.1304,1.2643,176.98,101.53,177.08,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",24,2.2644,1.3317,181.77,106.34,171.75,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",25,1.6894,1.0872,136.89,83.88,139.78,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",26,1.9607,1.1282,131.43,81.98,137.54,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",27,2.4256,1.5322,161.65,99.24,170.36,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",28,2.7419,1.685,132.91,86.09,153.51,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",29,2.0878,1.3784,136.23,86.26,145.3,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",30,3.602,2.1978,166.16,104.98,188.12,453
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",31,5.029,3.6016,174.68,117.96,200.49,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",1,0.5928,0.4162,57.41,38.37,61.41,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",2,0.6089,0.4339,66.48,44.43,62.63,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",3,0.6969,0.462,69.18,45.21,66.11,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",4,0.5786,0.4059,61.94,40.76,60.15,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",5,0.5736,0.4046,57.78,39.07,59.9,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",6,0.7294,0.4824,72.77,47.69,68.18,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",7,0.5842,0.396,63.87,41.85,63.17,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",8,0.5546,0.3817,59.78,38.68,62.59,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",9,0.6795,0.4789,72.13,46.16,68.91,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",10,0.7068,0.4956,72.17,49.69,70.22,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",11,0.6203,0.4349,65.07,42.76,65.06,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",12,0.6069,0.4306,59.12,40.66,61.23,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",13,0.76,0.5138,69.46,48.67,70.23,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",14,0.6733,0.4525,65.78,42.26,64.75,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",15,0.5902,0.4143,62.32,42.24,64.48,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",16,0.7327,0.5057,73.48,49.28,72.42,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",17,0.8208,0.5345,78.21,51.91,77.11,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",18,0.7256,0.5026,69.44,46.18,70.08,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",19,0.7302,0.5083,66.18,44.12,69.02,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",20,0.7727,0.5363,75.87,50.77,75.37,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",21,0.6566,0.4616,71.75,46.76,69.45,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",22,0.6403,0.4377,68.31,44.39,70.38,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",23,0.8524,0.5786,80.91,52.31,78.15,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",24,0.8212,0.573,83.67,54.56,79.77,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",25,0.8194,0.5363,71.19,48.91,73.18,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",26,0.8113,0.5447,68.75,47.47,70.16,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",27,0.83,0.5719,73.94,50.01,77.58,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",28,0.843,0.5218,73.89,48.15,76.51,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",29,0.6565,0.4405,71.1,46.13,72.94,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",30,0.8975,0.6133,82.27,54.7,85.06,453
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",31,1.0705,0.7027,82.66,58.41,85.8,453
 GoiEner non-household,test,890,481,iTransformer-X,iTransformer-X,"same information, trained",1,0.5662,0.3818,59.2,39.03,49.14,453
 GoiEner non-household,test,890,481,iTransformer-X,iTransformer-X,"same information, trained",2,0.4643,0.3186,57.63,38.92,50.34,453
 GoiEner non-household,test,890,481,iTransformer-X,iTransformer-X,"same information, trained",3,0.5128,0.3548,57.33,37.63,51.4,453
@@ -3719,37 +3719,37 @@ GoiEner households,test,696,696,DLinear,DLinear,"load only, trained",28,0.1687,0
 GoiEner households,test,696,696,DLinear,DLinear,"load only, trained",29,0.1618,0.1143,86.62,60.03,77.26,598
 GoiEner households,test,696,696,DLinear,DLinear,"load only, trained",30,0.1616,0.1153,84.86,61.51,76.84,598
 GoiEner households,test,696,696,DLinear,DLinear,"load only, trained",31,0.1666,0.1172,87.57,62.82,78.4,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",1,0.2164,0.1635,74.92,53.48,67.38,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",2,0.2148,0.1619,73.01,53.13,67.56,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",3,0.2143,0.1631,74.43,53.11,67.7,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",4,0.207,0.1555,75.75,53.95,68.79,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",5,0.2145,0.161,76.5,54.85,69.39,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",6,0.2093,0.1541,79.22,56.93,70.87,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",7,0.2116,0.1546,79.73,55.93,71.22,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",8,0.2125,0.1603,80.79,57.12,72.97,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",9,0.2109,0.159,79.51,55.4,71.59,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",10,0.2196,0.1687,79.76,57.63,71.87,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",11,0.2457,0.183,85.72,58.89,76.15,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",12,0.2653,0.2115,81.69,57.28,75.91,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",13,0.271,0.2174,81.35,55.61,75.96,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",14,0.2944,0.2352,91.45,62.36,82.83,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",15,0.2893,0.2322,83.91,59.69,78.18,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",16,0.2867,0.2288,86.43,59.48,79.37,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",17,0.2762,0.2231,77.39,56.95,76.52,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",18,0.2816,0.2249,83.1,57.82,77.07,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",19,0.2669,0.2049,82.08,57.66,76.92,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",20,0.2649,0.2016,82.93,58.75,79.77,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",21,0.2611,0.2012,82.34,58.4,76.26,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",22,0.291,0.2264,93.1,64.2,85.75,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",23,0.2804,0.2199,90.62,62.61,84.45,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",24,0.2833,0.2214,89.88,63.62,84.74,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",25,0.2956,0.2331,90.09,64.38,85.62,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",26,0.2997,0.238,88.86,64.15,87.02,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",27,0.3012,0.237,92.36,64.92,87.98,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",28,0.3071,0.2403,98.03,68.08,91.66,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",29,0.2752,0.2132,94.86,66.2,86.03,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",30,0.269,0.2102,92.48,67.39,85.15,598
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",31,0.2678,0.2082,97.21,66.74,86.38,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",1,0.1496,0.1027,73.83,52.61,65.72,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",2,0.1476,0.1015,73.36,51.75,65.49,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",3,0.1469,0.1025,73.79,51.89,65.17,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",4,0.1455,0.0999,74.36,52.41,65.84,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",5,0.1518,0.1049,76.6,53.63,66.88,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",6,0.1519,0.1066,77.72,56.02,69.65,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",7,0.1523,0.106,79.98,55.68,69.64,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",8,0.1602,0.1107,81.11,55.7,70.93,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",9,0.1605,0.1118,79.14,54.32,71.06,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",10,0.1619,0.1137,82.64,57.26,72.01,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",11,0.1717,0.1164,83.26,58.61,74.37,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",12,0.1663,0.1159,80.32,56.63,73.67,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",13,0.1645,0.1144,77.88,55.39,72.89,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",14,0.1712,0.1183,89.31,59.12,75.68,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",15,0.1761,0.1221,84.51,58.46,74.59,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",16,0.1764,0.1208,85.25,57.96,76.14,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",17,0.1667,0.1158,79.94,55.85,72.34,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",18,0.1648,0.113,82.28,56.1,72.1,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",19,0.1695,0.1161,82.41,55.44,72.61,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",20,0.1745,0.1192,83.05,57.43,76.61,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",21,0.1694,0.117,81.93,57.62,72.89,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",22,0.1727,0.1178,85.49,56.72,74.94,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",23,0.1694,0.1175,84.73,57.74,75.65,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",24,0.1704,0.1183,81.89,59.2,74.36,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",25,0.1618,0.114,84.18,57.66,72.49,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",26,0.1611,0.1151,81.98,57.02,73.15,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",27,0.1669,0.1179,81.53,57.55,74.82,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",28,0.1686,0.1182,87.58,60.03,77.45,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",29,0.163,0.1152,85.66,58.51,75.94,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",30,0.1604,0.1135,82.12,58.7,74.98,598
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",31,0.173,0.123,92.38,64.23,80.92,598
 GoiEner households,test,696,696,iTransformer-X,iTransformer-X,"same information, trained",1,0.1346,0.0901,69.61,47.61,59.8,598
 GoiEner households,test,696,696,iTransformer-X,iTransformer-X,"same information, trained",2,0.1366,0.0923,70.3,48.76,61.34,598
 GoiEner households,test,696,696,iTransformer-X,iTransformer-X,"same information, trained",3,0.1361,0.0929,67.82,48.98,61.08,598
@@ -4370,37 +4370,37 @@ Suzhou park,preview,64,4,DLinear,DLinear,"load only, trained",28,161.7067,116.44
 Suzhou park,preview,64,4,DLinear,DLinear,"load only, trained",29,159.0219,116.9932,38.33,27.19,35.6,4
 Suzhou park,preview,64,4,DLinear,DLinear,"load only, trained",30,145.0214,110.8522,31.12,23.2,33.29,4
 Suzhou park,preview,64,4,DLinear,DLinear,"load only, trained",31,189.8425,132.8304,41.57,29.32,42.49,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",1,110.9977,77.5618,22.9,16.75,26.12,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",2,115.0375,80.2824,24.39,16.66,26.68,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",3,115.2165,81.4188,25.2,17.23,26.47,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",4,100.0411,72.7429,21.23,15.92,22.06,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",5,109.1493,76.4872,26.6,18.31,23.24,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",6,102.0358,72.9388,23.22,16.81,21.52,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",7,107.3619,72.8205,23.18,16.03,23.01,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",8,110.7046,75.4941,22.41,15.83,24.21,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",9,115.6932,82.5169,24.78,17.42,26.27,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",10,110.8771,82.0863,24.78,18.59,24.54,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",11,100.4481,73.9915,22.0,16.43,22.52,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",12,113.0166,79.6818,25.52,18.19,25.31,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",13,115.8472,84.1225,25.06,18.73,25.93,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",14,119.5567,84.6086,23.43,17.69,26.8,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",15,109.2605,80.5827,24.26,18.63,25.14,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",16,137.0386,95.2788,27.84,19.99,30.99,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",17,120.1884,85.9909,25.28,18.07,27.5,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",18,126.7957,85.3867,26.53,18.89,28.54,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",19,145.6255,94.068,28.99,20.32,32.72,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",20,147.2396,99.4377,31.77,22.19,32.35,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",21,151.7482,103.9305,31.01,22.46,31.58,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",22,150.6583,103.1272,30.41,22.55,30.21,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",23,167.6228,107.3584,31.33,22.8,33.32,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",24,163.5368,105.01,31.42,22.57,32.26,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",25,166.9763,104.9301,31.2,21.61,32.59,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",26,153.6119,97.4905,31.29,21.55,31.01,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",27,152.8579,97.7502,30.29,21.23,31.05,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",28,152.5472,99.242,33.31,22.46,33.05,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",29,149.4109,97.7488,35.83,22.4,32.94,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",30,141.3832,99.7773,26.07,19.43,30.93,4
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",31,155.1694,105.3118,27.15,20.31,33.31,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",1,106.8368,74.613,21.41,15.56,25.2,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",2,115.3132,79.0246,24.27,16.26,26.8,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",3,113.7637,79.3022,24.6,16.63,26.24,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",4,97.5054,70.1506,20.39,15.17,21.59,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",5,110.2365,76.7235,27.1,18.47,23.51,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",6,102.5402,72.6697,23.93,16.99,21.61,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",7,108.0947,74.6234,23.76,16.6,23.18,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",8,113.5541,77.7594,23.35,16.51,24.55,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",9,121.9725,87.2415,26.7,19.01,27.17,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",10,120.6957,88.6937,27.37,20.27,26.2,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",11,107.3287,78.1959,23.7,17.44,23.86,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",12,119.3502,84.3902,27.5,19.57,26.18,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",13,118.6946,87.8912,26.3,20.03,26.04,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",14,122.1384,86.5407,24.25,18.41,27.23,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",15,110.3289,81.8249,24.3,18.73,25.34,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",16,137.8398,98.3916,27.57,20.5,31.31,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",17,120.7868,87.266,25.06,18.35,27.57,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",18,125.8533,85.3324,26.1,18.89,28.1,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",19,145.4436,94.3624,29.71,20.76,32.25,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",20,144.431,97.5029,31.35,22.34,31.63,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",21,150.9307,102.7615,32.06,22.76,31.37,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",22,152.436,103.2673,31.3,22.69,30.09,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",23,173.1548,112.1395,33.1,23.91,33.8,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",24,169.1268,109.939,32.74,23.55,33.06,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",25,171.0322,108.5406,31.76,22.22,33.77,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",26,157.3474,100.9136,32.1,22.38,31.69,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",27,154.8701,99.7764,31.25,21.98,31.26,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",28,170.8277,105.269,33.82,22.97,36.65,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",29,153.2086,98.0586,36.0,22.08,33.82,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",30,151.7529,104.4592,28.17,20.68,32.51,4
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",31,161.9981,108.6218,27.8,20.64,33.86,4
 Suzhou park,preview,64,4,iTransformer-X,iTransformer-X,"same information, trained",1,131.1185,88.1481,29.71,21.76,26.95,4
 Suzhou park,preview,64,4,iTransformer-X,iTransformer-X,"same information, trained",2,148.1729,98.2882,36.56,24.01,32.57,4
 Suzhou park,preview,64,4,iTransformer-X,iTransformer-X,"same information, trained",3,139.3341,95.2942,34.66,23.74,30.36,4

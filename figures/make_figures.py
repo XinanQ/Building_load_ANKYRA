@@ -296,7 +296,7 @@ def fig_test_forest():
     handles = [Line2D([], [], marker="o", ls="", color=c, markersize=4, label=t_) for t_, c in CLASS_LEGEND[:4]]
     fig.legend(handles=handles, loc="lower center", ncol=4, fontsize=6.1, bbox_to_anchor=(0.55, 0.035), handletextpad=0.2, columnspacing=1.0)
     fig.text(0.125, 0.004, "† The BDG2 unit mean is pulled by three meters reading ≈0.0002 kW (above the off-state threshold). Against all nine models the median unit "
-             "favours ANKYRA (59–92% of units).", fontsize=5.8, color="#7F7F7F")
+             "favours ANKYRA (58–92% of units).", fontsize=5.8, color="#7F7F7F")
     save(fig, "fig3_test_pairwise")
 
 
@@ -617,7 +617,7 @@ def fig_loss_metrics():
     rk = [r for r in rows("benchmark_mean_unit_rank.csv") if r["subset"] == "late" and r["tier"] == "test"]
     cls = {r["model"]: r["model_class"] for r in cm}
     lab = {r["model"]: r["model_label"] for r in cm}
-    mean_rank = {m: np.mean([float(r["mean_unit_rank"]) for r in rk if r["model"] == m]) for m in {r["model"] for r in rk}}
+    mean_rank = {m: np.mean([float(r["mean_unit_rank"]) for r in rk if r["model"] == m]) for m in sorted({r["model"] for r in rk})}
     models = sorted(sorted(mean_rank), key=lambda m: mean_rank[m])                 # the order of figure 2
     n, ns = len(models), len(LOSS_SETS)
     cmap = LinearSegmentedColormap.from_list("rel", [ANKYRA, "#F4A582", "#F7F7F7", "#92C5DE", "#2166AC"])
@@ -687,7 +687,7 @@ def fig_lead_days():
     for ax, s in zip(axs.ravel(), LOSS_SETS):
         R = [r for r in ld if r["set"] == s]
         curve = {m: np.array([float(r["GM_CV_RMSE_pct"]) for r in sorted((r for r in R if r["model"] == m), key=lambda r: int(r["day"]))])
-                 for m in {r["model"] for r in R}}
+                 for m in sorted({r["model"] for r in R})}
         top = 1.6 * curve["ANKYRA"].max()
         low = 0.88 * min(v.min() for v in curve.values())
         named = {"ANKYRA"} | {m for m, *_ in DAY_LINES}
@@ -740,7 +740,7 @@ def fig_lead_days_relative():
     for ax, s in zip(axs.ravel(), LOSS_SETS):
         R = [r for r in ld if r["set"] == s]
         curve = {m: np.array([float(r["GM_CV_RMSE_pct"]) for r in sorted((r for r in R if r["model"] == m), key=lambda r: int(r["day"]))])
-                 for m in {r["model"] for r in R}}
+                 for m in sorted({r["model"] for r in R})}
         rels, off = {}, []
         for m, c, ls in DAY_LINES:
             rel = 100.0 * (curve[m] / curve["ANKYRA"] - 1.0)             # the baseline's loss relative to ANKYRA's, day by day
@@ -793,7 +793,7 @@ ENERGY_COLS = [("BDG2 2017", "all units", "BDG2 †"), ("BDG2 2017", "without th
 def fig_energy():
     en = rows("energy_error.csv")
     rk = [r for r in rows("benchmark_mean_unit_rank.csv") if r["subset"] == "late" and r["tier"] == "test"]
-    mean_rank = {m: np.mean([float(r["mean_unit_rank"]) for r in rk if r["model"] == m]) for m in {r["model"] for r in rk}}
+    mean_rank = {m: np.mean([float(r["mean_unit_rank"]) for r in rk if r["model"] == m]) for m in sorted({r["model"] for r in rk})}
     models = [m for m in sorted(sorted(mean_rank), key=lambda m: mean_rank[m]) if m != "ANKYRA"]      # figure 2 order
     lab = {r["model"]: r["model_label"] for r in en}
     cls = {r["model"]: r["model_class"] for r in en}

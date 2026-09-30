@@ -74,7 +74,8 @@ Each uses the part its architecture accepts:
 - iTransformer-X takes no future covariates;
 - Chronos-2-X takes no static features;
 - TimesFM-X uses the covariates through a linear regression;
-- GBT-T receives 21 features derived from the set.
+- GBT-T receives 21 features derived from the set. Its first implementation mis-scaled flat or all-zero contexts; the
+  corrected version is reported ([details](docs/EVALUATION.md#correction-of-the-gbt-t-baseline)).
 
 PatchTST is channel-independent, so its forecast is the same with or without these inputs. The six test populations
 were scored **once, after the model had been fixed**.
@@ -87,7 +88,7 @@ stays defined when some units have zero error, but it does not replace the ratio
 |---|---|---:|:---:|:---:|:---:|:---:|
 | BDG2 2017 (commercial and institutional meters) | USA / Europe | 142 / 474 | 10 | 2 | — | 1 |
 | University of Cambridge estate | UK | 108 / 730 | 16 | 2 | — | 2 |
-| HEEW, Arizona State University campus | USA | 138 / 658 | 15 | 2 | — | 1 |
+| HEEW, Arizona State University campus | USA | 138 / 658 | 16 | 3 | — | 1 |
 | EWELD industrial and commercial meters | China | 197 / 523 | 18 | 5 | — | 1 |
 | GoiEner non-household supply points | Spain | 481 / 890 | 15 | 3 | — | 1 |
 | GoiEner households | Spain | 696 / 696 | 16 | 3 | TimesFM (3.8%) | 2 |
@@ -97,13 +98,13 @@ Windows are those after each population's training cutoff, where all 21 forecast
 - On the test populations **ANKYRA is never resolvably worse than any baseline given its information set**.
 - Among those five baselines, it is resolvably better than:
   - TiDE on all six populations;
-  - GBT-T on four;
+  - GBT-T on five;
   - iTransformer-X and TimesFM-X on three;
   - Chronos-2-X on one (EWELD).
 - Among the load-only statistical models, it is resolvably better than Holt–Winters on all six and MSTL on five.
 - Its only resolved deficit on a test population is against zero-shot **TimesFM on households** (3.8%).
-- Mean per-unit rank over the six populations: **5.94**. Next are the per-unit ridge (7.21), Chronos-2-X (7.72) and
-  iTransformer-X (8.06).
+- Mean per-unit rank over the six populations: **6.00**. Next are the per-unit ridge (7.25), Chronos-2-X (7.80) and
+  iTransformer-X (8.13).
 
 ![Test-set ranks and head-to-head](figures/fig2_test_ranks.png)
 
@@ -146,7 +147,7 @@ design acts on that quantity: its level and daily path come from the unit's own 
 TimesFM's.
 
 - On all seven populations ANKYRA is never resolvably worse than any of the 20 baselines on monthly energy error. It is
-  resolvably better than 4–17 of them: 17 on GoiEner non-household, 14 on Cambridge and EWELD, 13 on households.
+  resolvably better than 4–17 of them: 17 on GoiEner non-household, 14 on Cambridge and EWELD, 12 on households.
 - On GoiEner households, where the zero-shot foundation models have the lower hourly error on every day, ANKYRA's
   monthly energy error is 22–27% lower than all four of them, each resolved.
 - Against TimesFM, whose within-day shape it uses, the energy error is 4–25% lower on six populations, resolved on
@@ -159,8 +160,8 @@ TimesFM's.
 
 **Consistency across populations.** ANKYRA is first or second of the 21 forecasters on all six test populations. No
 other forecaster is in the top two on more than two of them. The next most consistent, the per-unit ridge, ranges
-from first to fifth; Chronos-2-X falls to 11th, TimesFM to 12th and GBT-T to 21st. On the four preview populations
-ANKYRA is 1st, 3rd, 6th and 7th. Positions use the mean per-unit rank, the secondary summary.
+from first to fifth; Chronos-2-X falls to 11th, TimesFM to 12th and GBT-T to 18th. On the four preview populations
+ANKYRA is 1st, 3rd, 5th and 7th. Positions use the mean per-unit rank, the secondary summary.
 
 ![Position on every population](figures/fig12_consistency.png)
 
@@ -179,7 +180,7 @@ ANKYRA is 1st, 3rd, 6th and 7th. Positions use the mean per-unit rank, the secon
   - with the three meters, ANKYRA's point estimate against TimesFM is −54.8% (late windows);
   - without them (11 windows), it is +1.6%;
   - either way the interval stays wide, because other low-load units also carry extreme ratios;
-  - the median unit favours ANKYRA against each of the nine models in the figure above (59–92% of units);
+  - the median unit favours ANKYRA against each of the nine models in the figure above (58–92% of units);
   - ANKYRA ranks first with and without the three meters.
 - **Conventional metrics.** Over the full windows (14 forecasters), Chronos-2-X or the per-unit ridge has a slightly
   lower median unit CV(RMSE) (by 0.2–2.2 points) on nine of eleven populations. ANKYRA's advantage is on average over

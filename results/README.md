@@ -2,7 +2,8 @@
 
 Scored statistics behind the figures and tables. Everything was exported from the study's evaluation outputs, and
 nothing was tuned. Two files are descriptions computed after scoring from the scored forecasts: `lead_day_metrics.csv`
-and `energy_error.csv`. The raw data are not included.
+and `energy_error.csv`. The raw data are not included. GBT-T appears in its corrected implementation, re-scored after a defect in its scaling was
+found ([details](../docs/EVALUATION.md#correction-of-the-gbt-t-baseline)).
 
 | File | Content |
 |---|---|

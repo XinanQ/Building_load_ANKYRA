@@ -14,7 +14,7 @@ BDG2 2017,test,474,142,SP-profile,Previous-month profile,profile,36.8916,28.2339
 BDG2 2017,test,474,142,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",32.0013,22.571,22.97,0.37,15.85,12.84,0
 BDG2 2017,test,474,142,WeekProf4,4-week profile,profile,34.8288,25.122,24.54,0.65,17.84,14.68,0
 BDG2 2017,test,474,142,DLinear,DLinear,"load only, trained",30.7133,22.3961,22.98,-0.78,16.64,13.47,0
-BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",34.1481,23.2859,19.16,0.82,14.0,13.47,0
+BDG2 2017,test,474,142,GBT-T,GBT-T,"same information, trained",30.5849,21.9072,19.51,0.74,14.57,12.88,0
 BDG2 2017,test,474,142,iTransformer-X,iTransformer-X,"same information, trained",32.8566,23.5095,23.19,0.85,16.73,13.35,0
 BDG2 2017,test,474,142,iTransformer,iTransformer,"load only, trained",33.2296,23.9952,22.92,0.73,17.13,13.71,0
 BDG2 2017,test,474,142,LSTM,LSTM,"load only, trained",32.9308,24.5956,25.04,-0.92,18.48,14.71,0
@@ -56,7 +56,7 @@ HEEW Arizona,test,658,138,SP-profile,Previous-month profile,profile,39.8762,29.4
 HEEW Arizona,test,658,138,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",27.6819,19.2954,18.09,0.03,12.25,10.95,0
 HEEW Arizona,test,658,138,WeekProf4,4-week profile,profile,38.17,27.3003,21.04,-0.31,14.0,15.14,0
 HEEW Arizona,test,658,138,DLinear,DLinear,"load only, trained",32.2119,24.5548,19.72,-4.61,14.69,13.99,0
-HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",25.6376,18.4712,18.37,-1.18,12.61,10.6,0
+HEEW Arizona,test,658,138,GBT-T,GBT-T,"same information, trained",25.4569,18.3938,18.62,-1.3,12.99,10.57,0
 HEEW Arizona,test,658,138,iTransformer-X,iTransformer-X,"same information, trained",31.0906,22.2416,18.3,0.3,13.28,12.48,0
 HEEW Arizona,test,658,138,iTransformer,iTransformer,"load only, trained",30.7541,22.145,19.26,0.5,13.3,12.45,0
 HEEW Arizona,test,658,138,LSTM,LSTM,"load only, trained",39.6945,30.5349,25.27,-4.48,18.31,17.71,0
@@ -77,7 +77,7 @@ EWELD,test,523,197,SP-profile,Previous-month profile,profile,109.9382,73.9283,57
 EWELD,test,523,197,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",101.7689,65.0837,56.33,-1.05,33.64,32.65,44
 EWELD,test,523,197,WeekProf4,4-week profile,profile,110.554,72.7913,56.52,-2.83,36.7,36.79,44
 EWELD,test,523,197,DLinear,DLinear,"load only, trained",121.2035,93.6543,56.78,1.4,41.21,47.26,44
-EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",78581.8043,35056.4617,32088.4,221.24,9627.5,15189.96,44
+EWELD,test,523,197,GBT-T,GBT-T,"same information, trained",153.8831,90.7877,68.56,2.33,42.39,49.72,44
 EWELD,test,523,197,iTransformer-X,iTransformer-X,"same information, trained",103.3929,69.7065,55.06,2.22,35.55,34.16,44
 EWELD,test,523,197,iTransformer,iTransformer,"load only, trained",104.7662,70.0839,57.69,2.51,36.87,34.92,44
 EWELD,test,523,197,LSTM,LSTM,"load only, trained",144.1369,117.8089,65.85,2.9,49.39,58.34,44
@@ -97,7 +97,7 @@ GoiEner non-household,test,890,481,SP-profile,Previous-month profile,profile,0.7
 GoiEner non-household,test,890,481,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",0.606,0.3584,77.98,7.71,43.24,29.63,4
 GoiEner non-household,test,890,481,WeekProf4,4-week profile,profile,0.7289,0.4301,83.55,0.81,44.93,35.48,4
 GoiEner non-household,test,890,481,DLinear,DLinear,"load only, trained",0.64,0.4182,80.29,-2.32,49.7,34.81,4
-GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",2.4206,1.1889,175.01,-18.82,91.83,97.23,4
+GoiEner non-household,test,890,481,GBT-T,GBT-T,"same information, trained",0.8091,0.4894,89.26,0.68,50.66,40.93,4
 GoiEner non-household,test,890,481,iTransformer-X,iTransformer-X,"same information, trained",0.6411,0.4028,74.78,3.74,45.41,33.19,4
 GoiEner non-household,test,890,481,iTransformer,iTransformer,"load only, trained",0.6328,0.3979,76.15,3.1,44.26,32.82,4
 GoiEner non-household,test,890,481,LSTM,LSTM,"load only, trained",0.6916,0.4667,84.97,-2.54,52.5,38.98,4
@@ -119,7 +119,7 @@ GoiEner households,test,696,696,SP-profile,Previous-month profile,profile,0.1846
 GoiEner households,test,696,696,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",0.1761,0.0963,101.69,17.69,54.42,52.17,17
 GoiEner households,test,696,696,WeekProf4,4-week profile,profile,0.1876,0.1086,106.93,3.17,61.75,58.81,17
 GoiEner households,test,696,696,DLinear,DLinear,"load only, trained",0.1796,0.1115,102.1,1.12,62.27,60.37,17
-GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",0.3026,0.2004,104.13,-1.61,63.57,108.55,17
+GoiEner households,test,696,696,GBT-T,GBT-T,"same information, trained",0.1827,0.1135,102.92,-3.31,61.47,61.5,17
 GoiEner households,test,696,696,iTransformer-X,iTransformer-X,"same information, trained",0.1798,0.1089,101.01,4.35,60.36,59.01,17
 GoiEner households,test,696,696,iTransformer,iTransformer,"load only, trained",0.1829,0.1102,102.95,8.41,60.98,59.71,17
 GoiEner households,test,696,696,LSTM,LSTM,"load only, trained",0.1824,0.1146,102.36,-0.88,63.03,62.09,17
@@ -140,7 +140,7 @@ Oslo,preview,581,41,SP-profile,Previous-month profile,profile,36.4131,28.0641,45
 Oslo,preview,581,41,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",29.0277,19.7984,37.52,2.26,25.22,26.54,0
 Oslo,preview,581,41,WeekProf4,4-week profile,profile,31.5887,20.9919,41.33,-4.53,28.37,28.04,0
 Oslo,preview,581,41,DLinear,DLinear,"load only, trained",29.4745,20.3971,37.15,-0.97,25.82,26.99,0
-Oslo,preview,581,41,GBT-T,GBT-T,"same information, trained",23.0874,15.6446,30.16,-0.99,20.99,21.07,0
+Oslo,preview,581,41,GBT-T,GBT-T,"same information, trained",23.1298,15.6509,30.37,-0.75,20.73,21.12,0
 Oslo,preview,581,41,iTransformer-X,iTransformer-X,"same information, trained",25.1535,16.8086,31.95,1.5,20.59,22.47,0
 Oslo,preview,581,41,iTransformer,iTransformer,"load only, trained",26.8583,17.7611,33.0,-1.64,21.83,23.39,0
 Oslo,preview,581,41,LSTM,LSTM,"load only, trained",39.3621,29.2537,42.91,-1.6,30.66,36.06,0
@@ -161,7 +161,7 @@ Drammen,preview,689,43,SP-profile,Previous-month profile,profile,20.3698,15.3026
 Drammen,preview,689,43,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",15.7807,11.0438,35.35,3.84,25.3,23.8,0
 Drammen,preview,689,43,WeekProf4,4-week profile,profile,18.9359,13.4712,42.26,4.13,30.37,29.01,0
 Drammen,preview,689,43,DLinear,DLinear,"load only, trained",15.3708,10.481,34.87,5.57,23.59,22.56,0
-Drammen,preview,689,43,GBT-T,GBT-T,"same information, trained",14.7401,10.0937,33.56,2.74,22.81,21.75,0
+Drammen,preview,689,43,GBT-T,GBT-T,"same information, trained",14.8066,10.1548,33.56,2.74,22.84,21.9,0
 Drammen,preview,689,43,iTransformer-X,iTransformer-X,"same information, trained",14.9219,10.1993,32.82,4.98,22.84,21.91,0
 Drammen,preview,689,43,iTransformer,iTransformer,"load only, trained",15.2825,10.2517,32.37,1.53,21.59,22.1,0
 Drammen,preview,689,43,LSTM,LSTM,"load only, trained",18.2692,12.5552,42.79,8.96,28.97,27.05,0
@@ -203,7 +203,7 @@ Suzhou park,preview,64,4,SP-profile,Previous-month profile,profile,171.3761,123.
 Suzhou park,preview,64,4,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",131.3904,81.7763,27.99,0.83,17.71,19.12,0
 Suzhou park,preview,64,4,WeekProf4,4-week profile,profile,160.2207,102.5033,33.78,-1.08,22.22,23.97,0
 Suzhou park,preview,64,4,DLinear,DLinear,"load only, trained",138.1487,94.3143,30.1,-2.9,20.7,22.05,0
-Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",133.7208,89.0057,27.27,-0.47,19.12,20.81,0
+Suzhou park,preview,64,4,GBT-T,GBT-T,"same information, trained",136.9654,90.8467,27.98,-0.94,19.57,21.24,0
 Suzhou park,preview,64,4,iTransformer-X,iTransformer-X,"same information, trained",139.8735,95.1431,31.47,-2.1,21.63,22.25,0
 Suzhou park,preview,64,4,iTransformer,iTransformer,"load only, trained",156.0433,97.4612,31.5,-3.94,21.05,22.79,0
 Suzhou park,preview,64,4,LSTM,LSTM,"load only, trained",157.313,108.8316,37.86,-1.17,27.05,25.45,0
