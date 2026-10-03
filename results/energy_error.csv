@@ -1,46 +1,46 @@
 set,tier,subset,windows,units,model,model_label,model_class,log_ratio,um_low,um_high,improvement_pct,median_energy_ape_pct
-BDG2 2017,test,all units,474,142,ANKYRA,ANKYRA,,0.0,0.0,0.0,0.0,6.254
-BDG2 2017,test,all units,474,142,Chronos-2,Chronos-2,"load only, zero-shot foundation model",0.373487,-0.134829,1.604768,-45.279,5.817
-BDG2 2017,test,all units,474,142,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",0.315364,-0.109692,1.112933,-37.076,4.999
-BDG2 2017,test,all units,474,142,DLinear,DLinear,"load only, trained",-0.121763,-0.411711,0.020536,11.464,7.36
-BDG2 2017,test,all units,474,142,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.295938,-0.548193,0.133236,25.617,9.051
-BDG2 2017,test,all units,474,142,GBT-T,GBT-T,"same information, trained",-0.168523,-0.487855,0.065856,15.509,5.245
-BDG2 2017,test,all units,474,142,Holt-Winters,Holt-Winters,"load only, statistical",-0.47109,-0.68314,-0.272345,37.568,8.913
-BDG2 2017,test,all units,474,142,LSTM,LSTM,"load only, trained",-0.219125,-0.525218,-0.079628,19.678,8.314
-BDG2 2017,test,all units,474,142,LYR-profile,Last-year profile,profile,-0.201956,-0.47569,0.003147,18.287,7.144
-BDG2 2017,test,all units,474,142,MSTL,MSTL,"load only, statistical",0.619216,-0.245257,2.899805,-85.747,6.662
-BDG2 2017,test,all units,474,142,PatchTST,PatchTST,"load only, trained",-0.00738,-0.229376,0.387749,0.735,6.882
-BDG2 2017,test,all units,474,142,RIDGE-L,Ridge (per unit),per-unit regression,-0.103137,-0.18465,0.101299,9.8,6.349
-BDG2 2017,test,all units,474,142,SN-day,Seasonal naive (day),naive,-0.554532,-0.904169,-0.305592,42.566,8.939
-BDG2 2017,test,all units,474,142,SN-week,Seasonal naive (week),naive,-0.193806,-0.32095,0.025066,17.618,5.991
-BDG2 2017,test,all units,474,142,SP-profile,Previous-month profile,profile,0.887574,-0.152407,3.1129,-142.923,7.186
-BDG2 2017,test,all units,474,142,TiDE,TiDE,"same information, trained",-0.115753,-0.423842,0.023718,10.93,7.394
-BDG2 2017,test,all units,474,142,TimesFM,TimesFM,"load only, zero-shot foundation model",0.326783,-0.126318,1.449469,-38.65,5.924
-BDG2 2017,test,all units,474,142,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.165828,-0.447686,0.010046,15.281,7.802
-BDG2 2017,test,all units,474,142,WeekProf4,4-week profile,profile,-0.326751,-0.466177,-0.139809,27.874,7.091
-BDG2 2017,test,all units,474,142,iTransformer,iTransformer,"load only, trained",-0.082711,-0.255509,0.261701,7.938,7.273
-BDG2 2017,test,all units,474,142,iTransformer-X,iTransformer-X,"same information, trained",-0.119172,-0.289053,0.132772,11.234,7.306
-BDG2 2017,test,without the three near-zero meters,464,139,ANKYRA,ANKYRA,,0.0,0.0,0.0,0.0,5.992
-BDG2 2017,test,without the three near-zero meters,464,139,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.135015,-0.261144,1.10463,12.63,5.846
-BDG2 2017,test,without the three near-zero meters,464,139,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.003603,-0.240198,0.789912,0.36,5.1
-BDG2 2017,test,without the three near-zero meters,464,139,DLinear,DLinear,"load only, trained",-0.075925,-0.340361,0.051639,7.311,7.303
-BDG2 2017,test,without the three near-zero meters,464,139,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.467987,-0.626028,-0.032302,37.374,9.003
-BDG2 2017,test,without the three near-zero meters,464,139,GBT-T,GBT-T,"same information, trained",-0.090062,-0.412712,0.145969,8.613,4.862
-BDG2 2017,test,without the three near-zero meters,464,139,Holt-Winters,Holt-Winters,"load only, statistical",-0.47109,-0.687545,-0.264711,37.568,9.187
-BDG2 2017,test,without the three near-zero meters,464,139,LSTM,LSTM,"load only, trained",-0.179982,-0.469128,-0.037096,16.472,8.251
-BDG2 2017,test,without the three near-zero meters,464,139,LYR-profile,Last-year profile,profile,-0.187035,-0.469169,0.014596,17.059,7.207
-BDG2 2017,test,without the three near-zero meters,464,139,MSTL,MSTL,"load only, statistical",-0.271563,-0.460604,2.192497,23.781,7.012
-BDG2 2017,test,without the three near-zero meters,464,139,PatchTST,PatchTST,"load only, trained",-0.127363,-0.324479,0.256909,11.959,6.414
-BDG2 2017,test,without the three near-zero meters,464,139,RIDGE-L,Ridge (per unit),per-unit regression,-0.08362,-0.160306,0.130681,8.022,6.13
-BDG2 2017,test,without the three near-zero meters,464,139,SN-day,Seasonal naive (day),naive,-0.554532,-0.92378,-0.313419,42.566,9.526
-BDG2 2017,test,without the three near-zero meters,464,139,SN-week,Seasonal naive (week),naive,-0.193806,-0.324921,0.021076,17.618,6.335
-BDG2 2017,test,without the three near-zero meters,464,139,SP-profile,Previous-month profile,profile,-0.01334,-0.459083,2.22723,1.325,7.344
-BDG2 2017,test,without the three near-zero meters,464,139,TiDE,TiDE,"same information, trained",-0.069671,-0.341953,0.06468,6.73,7.079
-BDG2 2017,test,without the three near-zero meters,464,139,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.129908,-0.223725,0.970596,12.182,6.066
-BDG2 2017,test,without the three near-zero meters,464,139,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.174728,-0.465319,0.016517,16.032,7.541
-BDG2 2017,test,without the three near-zero meters,464,139,WeekProf4,4-week profile,profile,-0.326751,-0.462913,-0.125707,27.874,7.418
-BDG2 2017,test,without the three near-zero meters,464,139,iTransformer,iTransformer,"load only, trained",-0.180357,-0.335529,0.167424,16.503,7.141
-BDG2 2017,test,without the three near-zero meters,464,139,iTransformer-X,iTransformer-X,"same information, trained",-0.206768,-0.335434,0.013144,18.679,7.042
+BDG2 2017,test,all units,474,142,ANKYRA,ANKYRA,,0.0,0.0,0.0,0.0,5.264
+BDG2 2017,test,all units,474,142,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.079681,-0.21702,0.311482,7.659,5.817
+BDG2 2017,test,all units,474,142,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.137804,-0.465785,0.115125,12.873,4.999
+BDG2 2017,test,all units,474,142,DLinear,DLinear,"load only, trained",-0.57493,-1.726315,-0.089339,43.726,7.36
+BDG2 2017,test,all units,474,142,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.749106,-1.261424,-0.388548,52.721,9.051
+BDG2 2017,test,all units,474,142,GBT-T,GBT-T,"same information, trained",-0.62169,-1.720094,-0.052901,46.296,5.245
+BDG2 2017,test,all units,474,142,Holt-Winters,Holt-Winters,"load only, statistical",-0.470294,-0.683267,-0.270355,37.518,8.913
+BDG2 2017,test,all units,474,142,LSTM,LSTM,"load only, trained",-0.672292,-1.766695,-0.190682,48.946,8.314
+BDG2 2017,test,all units,474,142,LYR-profile,Last-year profile,profile,-0.358699,-1.178957,-0.036126,30.142,7.144
+BDG2 2017,test,all units,474,142,MSTL,MSTL,"load only, statistical",0.166048,-0.27004,1.552811,-18.063,6.662
+BDG2 2017,test,all units,474,142,PatchTST,PatchTST,"load only, trained",-0.460548,-1.116227,-0.065444,36.906,6.882
+BDG2 2017,test,all units,474,142,RIDGE-L,Ridge (per unit),per-unit regression,-0.556304,-1.435234,-0.043433,42.668,6.349
+BDG2 2017,test,all units,474,142,SN-day,Seasonal naive (day),naive,-0.55373,-0.90215,-0.30314,42.52,8.939
+BDG2 2017,test,all units,474,142,SN-week,Seasonal naive (week),naive,-0.193005,-0.320334,0.025849,17.552,5.991
+BDG2 2017,test,all units,474,142,SP-profile,Previous-month profile,profile,0.434407,-0.249176,1.868851,-54.405,7.186
+BDG2 2017,test,all units,474,142,TiDE,TiDE,"same information, trained",-0.568921,-1.603256,-0.082676,43.386,7.394
+BDG2 2017,test,all units,474,142,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.126384,-0.233033,0.233403,11.872,5.924
+BDG2 2017,test,all units,474,142,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.618995,-1.558733,-0.148674,46.151,7.802
+BDG2 2017,test,all units,474,142,WeekProf4,4-week profile,profile,-0.32595,-0.463164,-0.139722,27.816,7.091
+BDG2 2017,test,all units,474,142,iTransformer,iTransformer,"load only, trained",-0.535878,-1.20762,-0.119524,41.484,7.273
+BDG2 2017,test,all units,474,142,iTransformer-X,iTransformer-X,"same information, trained",-0.572339,-1.319394,-0.216429,43.58,7.306
+BDG2 2017,test,without the three near-zero meters,464,139,ANKYRA,ANKYRA,,0.0,0.0,0.0,0.0,5.278
+BDG2 2017,test,without the three near-zero meters,464,139,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.134219,-0.26272,0.294534,12.56,5.846
+BDG2 2017,test,without the three near-zero meters,464,139,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.002807,-0.336829,0.218098,0.28,5.1
+BDG2 2017,test,without the three near-zero meters,464,139,DLinear,DLinear,"load only, trained",-0.075129,-1.042698,0.045558,7.238,7.303
+BDG2 2017,test,without the three near-zero meters,464,139,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.467191,-0.987109,-0.254394,37.324,9.003
+BDG2 2017,test,without the three near-zero meters,464,139,GBT-T,GBT-T,"same information, trained",-0.089266,-1.243552,0.13423,8.54,4.862
+BDG2 2017,test,without the three near-zero meters,464,139,Holt-Winters,Holt-Winters,"load only, statistical",-0.470294,-0.687517,-0.262238,37.518,9.187
+BDG2 2017,test,without the three near-zero meters,464,139,LSTM,LSTM,"load only, trained",-0.179187,-1.200111,-0.064042,16.405,8.251
+BDG2 2017,test,without the three near-zero meters,464,139,LYR-profile,Last-year profile,profile,-0.186239,-1.104473,0.015446,16.993,7.207
+BDG2 2017,test,without the three near-zero meters,464,139,MSTL,MSTL,"load only, statistical",-0.270767,-0.463294,1.343914,23.721,7.012
+BDG2 2017,test,without the three near-zero meters,464,139,PatchTST,PatchTST,"load only, trained",-0.126567,-0.736621,0.045945,11.889,6.414
+BDG2 2017,test,without the three near-zero meters,464,139,RIDGE-L,Ridge (per unit),per-unit regression,-0.082825,-0.919973,0.109824,7.949,6.13
+BDG2 2017,test,without the three near-zero meters,464,139,SN-day,Seasonal naive (day),naive,-0.55373,-0.922145,-0.309806,42.52,9.526
+BDG2 2017,test,without the three near-zero meters,464,139,SN-week,Seasonal naive (week),naive,-0.193005,-0.323813,0.023734,17.552,6.335
+BDG2 2017,test,without the three near-zero meters,464,139,SP-profile,Previous-month profile,profile,-0.012544,-0.456206,1.377031,1.247,7.344
+BDG2 2017,test,without the three near-zero meters,464,139,TiDE,TiDE,"same information, trained",-0.068875,-1.08839,0.058496,6.656,7.079
+BDG2 2017,test,without the three near-zero meters,464,139,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.129112,-0.235794,0.250739,12.112,6.066
+BDG2 2017,test,without the three near-zero meters,464,139,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.173933,-1.158839,0.013385,15.965,7.541
+BDG2 2017,test,without the three near-zero meters,464,139,WeekProf4,4-week profile,profile,-0.32595,-0.463189,-0.123621,27.816,7.418
+BDG2 2017,test,without the three near-zero meters,464,139,iTransformer,iTransformer,"load only, trained",-0.179561,-0.783409,0.008772,16.436,7.141
+BDG2 2017,test,without the three near-zero meters,464,139,iTransformer-X,iTransformer-X,"same information, trained",-0.205972,-0.967171,-0.110463,18.614,7.042
 Cambridge,test,all units,730,108,ANKYRA,ANKYRA,,0.0,0.0,0.0,0.0,5.337
 Cambridge,test,all units,730,108,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.242327,-0.349723,-0.097446,21.52,6.149
 Cambridge,test,all units,730,108,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.09517,-0.217265,0.096475,9.078,5.001

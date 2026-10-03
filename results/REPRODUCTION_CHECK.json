@@ -1,117 +1,136 @@
 {
- "utc": "2026-10-03T02:53:50.919163+00:00",
- "package_version": "1.2.1",
+ "utc": "2026-10-03T20:17:45.678514+00:00",
+ "package_version": "2.0.1",
  "faces": {
-  "cambridge": {
+  "cambridge_late": {
    "subset": "late",
-   "windows_checked": 25,
+   "windows_checked": 30,
+   "micro_load_windows_checked": 0,
+   "micro_load_windows_in_subset": 0,
    "v6_reference": "round-2 test file (stored as float32)",
-   "max_rel_diff_v6": 5.601670181476542e-08,
-   "median_rel_diff_v6": 3.9450975809560894e-08,
-   "max_abs_diff_1x_vs_flagship_kw": 1.1368683772161603e-13,
-   "mean_trust": [
-    0.1692678641192329,
-    0.21243293118642786,
-    0.23076650941290855,
-    0.2959497233836068
-   ],
-   "share_kept": 1.0,
-   "mean_pairs": 3.0,
-   "median_seconds_cpu_side": 0.6537432670593262
+   "max_rel_diff_2_0_0_mode": 5.601670181476542e-08,
+   "max_abs_diff_1x_mode_kw": 3.410605131648481e-13,
+   "max_rel_diff_2_0_0_mode_vs_panel_arm": 5.6202705935132645e-08,
+   "max_rel_diff_2_0_1_vs_panel": 5.6202705935132645e-08,
+   "flag_agrees_with_rule": true,
+   "non_micro_windows_identical_to_2_0_0": true,
+   "micro_windows_equal_timesfm": null,
+   "median_seconds_cpu_side": 0.6148568391799927
   },
-  "households": {
+  "households_late": {
    "subset": "late",
-   "windows_checked": 25,
+   "windows_checked": 30,
+   "micro_load_windows_checked": 0,
+   "micro_load_windows_in_subset": 0,
    "v6_reference": "round-2 test file (stored as float32)",
-   "max_rel_diff_v6": 5.5419203177740973e-08,
-   "median_rel_diff_v6": 3.964879973190946e-08,
-   "max_abs_diff_1x_vs_flagship_kw": 0.0,
-   "mean_trust": [
-    0.07187643005866144,
-    0.05764315068739309,
-    0.06918237984211047,
-    0.06964349930130814
-   ],
-   "share_kept": 0.96,
-   "mean_pairs": 2.88,
-   "median_seconds_cpu_side": 0.3498506546020508
+   "max_rel_diff_2_0_0_mode": 5.05038268294905e-08,
+   "max_abs_diff_1x_mode_kw": 0.0,
+   "max_rel_diff_2_0_0_mode_vs_panel_arm": 5.05038268294905e-08,
+   "max_rel_diff_2_0_1_vs_panel": 5.05038268294905e-08,
+   "flag_agrees_with_rule": true,
+   "non_micro_windows_identical_to_2_0_0": true,
+   "micro_windows_equal_timesfm": null,
+   "median_seconds_cpu_side": 0.42804956436157227
   },
-  "goiener_confirm": {
+  "goiener_confirm_late": {
    "subset": "late",
-   "windows_checked": 25,
+   "windows_checked": 30,
+   "micro_load_windows_checked": 0,
+   "micro_load_windows_in_subset": 0,
    "v6_reference": "round-2 test file (stored as float32)",
-   "max_rel_diff_v6": 5.001399159111079e-08,
-   "median_rel_diff_v6": 3.749085942964765e-08,
-   "max_abs_diff_1x_vs_flagship_kw": 0.0,
-   "mean_trust": [
-    0.13797439949794382,
-    0.1706947102879377,
-    0.18357565615424692,
-    0.19078222891937496
-   ],
-   "share_kept": 0.96,
-   "mean_pairs": 3.0,
-   "median_seconds_cpu_side": 0.5138306617736816
+   "max_rel_diff_2_0_0_mode": 5.72053285679099e-08,
+   "max_abs_diff_1x_mode_kw": 0.0,
+   "max_rel_diff_2_0_0_mode_vs_panel_arm": 6.558650907266474e-08,
+   "max_rel_diff_2_0_1_vs_panel": 6.558650907266474e-08,
+   "flag_agrees_with_rule": true,
+   "non_micro_windows_identical_to_2_0_0": true,
+   "micro_windows_equal_timesfm": null,
+   "median_seconds_cpu_side": 0.48539793491363525
   },
-  "bdg2": {
+  "bdg2_late": {
    "subset": "late",
-   "windows_checked": 25,
+   "windows_checked": 60,
+   "micro_load_windows_checked": 33,
+   "micro_load_windows_in_subset": 33,
    "v6_reference": "round-2 test file (stored as float32)",
-   "max_rel_diff_v6": 5.647054032945841e-08,
-   "median_rel_diff_v6": 4.309989959311528e-08,
-   "max_abs_diff_1x_vs_flagship_kw": 0.0,
-   "mean_trust": [
-    0.1544799574378,
-    0.17022181010880452,
-    0.12715190153298653,
-    0.19627858662103287
-   ],
-   "share_kept": 0.88,
-   "mean_pairs": 3.0,
-   "median_seconds_cpu_side": 0.42538976669311523
+   "max_rel_diff_2_0_0_mode": 5.604768777787105e-08,
+   "max_abs_diff_1x_mode_kw": 0.0,
+   "max_rel_diff_2_0_0_mode_vs_panel_arm": 5.685494653762211e-08,
+   "max_rel_diff_2_0_1_vs_panel": 5.685494653762211e-08,
+   "flag_agrees_with_rule": true,
+   "non_micro_windows_identical_to_2_0_0": true,
+   "micro_windows_equal_timesfm": true,
+   "median_seconds_cpu_side": 0.0004993677139282227
   },
-  "oslo": {
-   "subset": "all",
-   "windows_checked": 25,
+  "bdg2_early": {
+   "subset": "early",
+   "windows_checked": 43,
+   "micro_load_windows_checked": 13,
+   "micro_load_windows_in_subset": 13,
    "v6_reference": "rebuilt from the round-3 build (stored as float32)",
-   "max_rel_diff_v6": 1.966585624569967e-08,
-   "median_rel_diff_v6": 7.181848668498126e-09,
-   "max_abs_diff_1x_vs_flagship_kw": 0.0,
-   "mean_trust": [
-    0.24815957487599655,
-    0.2834948928982336,
-    0.27875547903673764,
-    0.314505913050052
-   ],
-   "share_kept": 1.0,
-   "mean_pairs": 3.0,
-   "median_seconds_cpu_side": 0.600224494934082
+   "max_rel_diff_2_0_0_mode": 1.8613060683519952e-08,
+   "max_abs_diff_1x_mode_kw": 0.0,
+   "max_rel_diff_2_0_0_mode_vs_panel_arm": 6.038947214893706e-08,
+   "max_rel_diff_2_0_1_vs_panel": 6.038947214893706e-08,
+   "flag_agrees_with_rule": true,
+   "non_micro_windows_identical_to_2_0_0": true,
+   "micro_windows_equal_timesfm": true,
+   "median_seconds_cpu_side": 0.3197643756866455
   },
-  "park": {
+  "eweld_late": {
+   "subset": "late",
+   "windows_checked": 231,
+   "micro_load_windows_checked": 217,
+   "micro_load_windows_in_subset": 217,
+   "v6_reference": "round-2 test file (stored as float32)",
+   "max_rel_diff_2_0_0_mode": 5.40658301748629e-08,
+   "max_abs_diff_1x_mode_kw": 0.0,
+   "max_rel_diff_2_0_0_mode_vs_panel_arm": 5.40658301748629e-08,
+   "max_rel_diff_2_0_1_vs_panel": 5.40658301748629e-08,
+   "flag_agrees_with_rule": true,
+   "non_micro_windows_identical_to_2_0_0": true,
+   "micro_windows_equal_timesfm": true,
+   "median_seconds_cpu_side": 0.0
+  },
+  "oslo_all": {
    "subset": "all",
-   "windows_checked": 25,
+   "windows_checked": 30,
+   "micro_load_windows_checked": 0,
+   "micro_load_windows_in_subset": 0,
    "v6_reference": "rebuilt from the round-3 build (stored as float32)",
-   "max_rel_diff_v6": 1.4413817841042979e-08,
-   "median_rel_diff_v6": 7.573340899468878e-09,
-   "max_abs_diff_1x_vs_flagship_kw": 0.0,
-   "mean_trust": [
-    0.27158359538377747,
-    0.3291185670243228,
-    0.2865767004384157,
-    0.3424578561841628
-   ],
-   "share_kept": 1.0,
-   "mean_pairs": 3.0,
-   "median_seconds_cpu_side": 0.33623456954956055
+   "max_rel_diff_2_0_0_mode": 1.525448427674723e-08,
+   "max_abs_diff_1x_mode_kw": 0.0,
+   "max_rel_diff_2_0_0_mode_vs_panel_arm": 5.686250865409495e-08,
+   "max_rel_diff_2_0_1_vs_panel": 5.686250865409495e-08,
+   "flag_agrees_with_rule": true,
+   "non_micro_windows_identical_to_2_0_0": true,
+   "micro_windows_equal_timesfm": null,
+   "median_seconds_cpu_side": 0.6008173227310181
+  },
+  "park_all": {
+   "subset": "all",
+   "windows_checked": 30,
+   "micro_load_windows_checked": 0,
+   "micro_load_windows_in_subset": 0,
+   "v6_reference": "rebuilt from the round-3 build (stored as float32)",
+   "max_rel_diff_2_0_0_mode": 1.2224320875410879e-08,
+   "max_abs_diff_1x_mode_kw": 0.0,
+   "max_rel_diff_2_0_0_mode_vs_panel_arm": 6.067249407338436e-08,
+   "max_rel_diff_2_0_1_vs_panel": 6.067249407338436e-08,
+   "flag_agrees_with_rule": true,
+   "non_micro_windows_identical_to_2_0_0": true,
+   "micro_windows_equal_timesfm": null,
+   "median_seconds_cpu_side": 0.3690814971923828
   }
  },
  "pass": true,
- "criterion": "v6: relative to each window's largest value, <= 1e-5 (the references were stored as float32); 1.x: absolute <= 1e-6 kW against the float64 flagship",
+ "micro_load_windows_checked_total": 263,
+ "criterion": "2.0.0 mode and 2.0.1 vs panel: relative to each window's largest value, <= 1e-5 (references stored as float32); 1.x mode: absolute <= 1e-6 kW; non-micro windows: 2.0.1 bit-identical to the package's 2.0.0 mode; micro-load windows: bit-identical to the TimesFM forecast at the origin",
  "package_files": {
-  "__init__.py": "51f3e09e806920c9f556415ee94dc1748527013663be95cbcdca44e0bdbb3357",
+  "__init__.py": "d6aee3c5ad83db902482b720a2e8d93ad4b61c0cf41c449d53ef8dbd210ac728",
   "analog.py": "e8a1bf58db9a1ca06c91565a92985cc543d294ab414d2176147a844ea2684e7a",
   "blocks.py": "0921b6d54028c03d2ff56a21c1574bd811ea8e21076be9902a549b7586d0e8f7",
-  "core.py": "a01bad5eed6c1c2660508942c52ad865d60286fd6c1c03492d692bc5cb1ca096",
+  "core.py": "6eb89242b610e70d4fbb6be8c57f51107d702cd1fa688b6b80f1eaaa972743be",
   "metrics.py": "903b4621eea355082248f26992f2b39f26dbd13639b4b505f70a4eb9d1f86c5b",
   "readouts.py": "51e5f3d661a965789b2dfa0b0ccaed382a3c87ddfd0d07510907d40160131274",
   "synthetic.py": "54c0c19de529767b0256a07d5964f252fe973b95b4368f4a50036253f276de79",

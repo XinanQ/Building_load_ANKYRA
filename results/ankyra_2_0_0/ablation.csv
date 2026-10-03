@@ -1,0 +1,31 @@
+set,tier,ablation,log_ratio,um_low,um_high,improvement_pct
+BDG2 2017,test,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.009332,-0.012987,-0.00373,0.929
+BDG2 2017,test,without off-state rule (F1),-0.009332,-0.012987,-0.00373,0.929
+BDG2 2017,test,fixed division (F0),-0.09081,-0.164373,-0.053301,8.681
+Cambridge,test,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.035836,-0.044877,-0.026173,3.52
+Cambridge,test,without off-state rule (F1),-0.035836,-0.044877,-0.026173,3.52
+Cambridge,test,fixed division (F0),-0.062968,-0.091865,-0.043154,6.103
+HEEW Arizona,test,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.013031,-0.018291,-0.008429,1.295
+HEEW Arizona,test,without off-state rule (F1),-0.013031,-0.018291,-0.008429,1.295
+HEEW Arizona,test,fixed division (F0),-0.080222,-0.130252,-0.055,7.709
+EWELD,test,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.004247,-0.008165,-0.001382,0.424
+EWELD,test,without off-state rule (F1),-0.145794,-0.293587,-0.032555,13.566
+EWELD,test,fixed division (F0),-0.306353,-0.494405,-0.144571,26.387
+GoiEner non-household,test,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.025608,-0.05436,-0.002347,2.528
+GoiEner non-household,test,without off-state rule (F1),-0.043953,-0.087181,-0.010054,4.3
+GoiEner non-household,test,fixed division (F0),-0.092885,-0.158886,-0.049808,8.87
+GoiEner households,test,"ANKYRA 1.x: foundation within-day block, no anchoring",0.000515,-0.000749,0.003629,-0.052
+GoiEner households,test,without off-state rule (F1),-0.043177,-0.102493,-0.014179,4.226
+GoiEner households,test,fixed division (F0),-0.100782,-0.202993,-0.056313,9.587
+Oslo,preview,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.04308,-0.054889,-0.033944,4.217
+Oslo,preview,without off-state rule (F1),-0.04308,-0.054889,-0.033944,4.217
+Oslo,preview,fixed division (F0),-0.03401,-0.057702,-0.014462,3.344
+Drammen,preview,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.034061,-0.046764,-0.02437,3.349
+Drammen,preview,without off-state rule (F1),-0.034061,-0.046764,-0.02437,3.349
+Drammen,preview,fixed division (F0),-0.037979,-0.064395,-0.012056,3.727
+CINELDI,preview,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.02018,-0.031649,-0.010391,1.998
+CINELDI,preview,without off-state rule (F1),-0.02018,-0.031649,-0.010391,1.998
+CINELDI,preview,fixed division (F0),-0.035216,-0.069561,-0.011453,3.46
+Suzhou park,preview,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.029343,-0.059626,-0.006509,2.892
+Suzhou park,preview,without off-state rule (F1),-0.029343,-0.059626,-0.006509,2.892
+Suzhou park,preview,fixed division (F0),-0.011585,-0.077751,0.047693,1.152

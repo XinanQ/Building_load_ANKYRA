@@ -162,9 +162,9 @@ def fig_architecture():
     txt(86.5, 39.8, "no training on the\ntarget series", fs=5.9)
     h = np.arange(24 * 6)
     spark(86.6, 30.6, 11.6, 3.8, 1 + 0.55 * np.clip(np.sin(2 * np.pi * (h - 7) / 24), 0, None) * (h // 24 < 5), ANKYRA, lw=0.6)
-    ax.add_patch(FancyBboxPatch((86.3, 20.0), 12.2, 7.6, boxstyle="round,pad=0.15,rounding_size=0.8", fc="#FBEDEE", ec="#E3A0A6", lw=0.6, zorder=2))
-    txt(86.9, 27.0, "off-state switch", color=ANKYRA, fs=5.8, fontweight="bold")
-    txt(86.9, 24.6, r"last 168 h $\leq 10^{-6}$ kW" + "\n→ TimesFM unchanged", fs=5.5)
+    ax.add_patch(FancyBboxPatch((86.3, 19.4), 12.2, 9.4, boxstyle="round,pad=0.15,rounding_size=0.8", fc="#FBEDEE", ec="#E3A0A6", lw=0.6, zorder=2))
+    txt(86.9, 28.3, "off / micro-load switch", color=ANKYRA, fs=5.6, fontweight="bold")
+    txt(86.9, 26.1, r"last 168 h $\leq 10^{-6}$ kW, or" + "\n" + r"all 1,344 h $\leq 10^{-3}$ kW" + "\n→ TimesFM unchanged", fs=5.3)
     box(85.4, 2, 14.0, 14.5, "Readouts", "#FFFFFF", "#9E9E9E")
     txt(86.5, 12.4, r"energy  $744\,\ell$", color=ink, fs=5.9)
     txt(86.5, 9.4, r"peak  $\mathrm{max}_d\,(\hat L_d+A_{\tau_d})$", color=ink, fs=5.9)
@@ -252,8 +252,8 @@ def fig_test_ranks():
     fig.legend(handles=handles, loc="lower left", bbox_to_anchor=(0.01, 0.0), ncol=4, fontsize=6.0, handletextpad=0.25, columnspacing=1.0)
     fig.text(0.01, 0.985, "21 forecasters on the late windows (origins after each set's training cutoff). Five baselines are given ANKYRA's information set;",
              fontsize=6.3, color=GREY, va="top")
-    fig.text(0.01, 0.955, "the six test sets were scored once, after the model had been fixed. NH: non-household; HH: households. "
-             "b: 95% unit-and-month bootstrap interval of the unit-equal log RMS ratio.", fontsize=6.3, color=GREY, va="top")
+    fig.text(0.01, 0.955, "ANKYRA 2.0.1, re-evaluated on test sets first scored for 1.x; BDG2 includes the micro-load rule, written after its "
+             "result was seen. NH/HH: non-/households. b: 95% bootstrap interval.", fontsize=6.3, color=GREY, va="top")
     save(fig, "fig2_test_ranks")
 
 
@@ -264,7 +264,7 @@ def fig_test_forest():
     cls = {r["model"]: r["model_class"] for r in pw}
     lo_x, hi_x = -30, 45
     fig, axs = plt.subplots(2, 3, figsize=(7.2, 4.35), sharex=True, sharey=True)
-    fig.subplots_adjust(left=0.125, right=0.99, top=0.86, bottom=0.155, hspace=0.34, wspace=0.08)
+    fig.subplots_adjust(left=0.125, right=0.99, top=0.86, bottom=0.175, hspace=0.34, wspace=0.08)
     y = np.arange(len(models))[::-1].astype(float)
     for ax, s in zip(axs.ravel(), TEST):
         ax.axvspan(0, hi_x, color="#F3F6FA", zorder=0)
@@ -297,9 +297,12 @@ def fig_test_forest():
     fig.text(0.125, 0.945, "Above the dashed line: the five baselines given ANKYRA's information set. Below: foundation models and statistical models on load only.",
              fontsize=6.3, color=GREY, va="top")
     handles = [Line2D([], [], marker="o", ls="", color=c, markersize=4, label=t_) for t_, c in CLASS_LEGEND[:4]]
-    fig.legend(handles=handles, loc="lower center", ncol=4, fontsize=6.1, bbox_to_anchor=(0.55, 0.035), handletextpad=0.2, columnspacing=1.0)
-    fig.text(0.125, 0.004, "† The BDG2 unit mean is pulled by three meters reading ≈0.0002 kW (above the off-state threshold). Against all nine models the median unit "
-             "favours ANKYRA (58–92% of units).", fontsize=5.8, color="#7F7F7F")
+    fig.legend(handles=handles, loc="lower center", ncol=4, fontsize=6.1, bbox_to_anchor=(0.55, 0.058), handletextpad=0.2, columnspacing=1.0)
+    nz = {r["model"]: float(r["improvement_pct"]) for r in rows("bdg2_near_zero_sensitivity.csv") if r["units"] == "without_near_zero" and r["subset"] == "late"}
+    fig.text(0.125, 0.030, "† BDG2 includes the micro-load rule of 2.0.1, written after the 2.0.0 result was seen: meters reading 0.0002–0.0005 kW are handed to TimesFM. Three of them "
+             "still dominate the unit", fontsize=5.6, color="#7F7F7F")
+    fig.text(0.125, 0.006, "means: for ANKYRA against models that do poorly on them, against it versus MSTL. Without the three meters: "
+             + ", ".join(f"{label(m)} {nz[m]:+.0f}%" for m in ("TiDE", "iTransformer-X", "GBT-T", "Chronos-2-X", "TimesFM-X", "TimesFM")) + ".", fontsize=5.6, color="#7F7F7F")
     save(fig, "fig3_test_pairwise")
 
 
@@ -308,10 +311,10 @@ def fig_mechanism():
     ab = rows("ablation.csv"); lw_ = rows("lead_weeks_first_read.csv"); hg = rows("handover_granularity.csv")
     order = TEST + PREVIEW + RESERVED
     fig = plt.figure(figsize=(7.2, 5.3))
-    gs = fig.add_gridspec(2, 2, height_ratios=[1.25, 1], hspace=0.5, wspace=0.34, left=0.105, right=0.985, top=0.905, bottom=0.085)
+    gs = fig.add_gridspec(2, 2, height_ratios=[1.25, 1], hspace=0.5, wspace=0.34, left=0.105, right=0.985, top=0.895, bottom=0.085)
     y = np.arange(len(order))[::-1]
 
-    def forest(ax, series, title, xlabel, legend_loc):
+    def forest(ax, series, title, xlabel, legend_loc, xmax=None):
         ax.axhspan(y[len(TEST) - 1] - 0.5, y[0] + 0.5, color="#F3F6FA", zorder=0)
         ax.axvline(0, color="#7F7F7F", lw=0.6)
         for yy, s_ in zip(y, order):
@@ -321,6 +324,8 @@ def fig_mechanism():
                     continue
                 p_, a, b = float(r["improvement_pct"]), pct(float(r["um_high"])), pct(float(r["um_low"]))
                 sig = float(r["um_high"]) < 0 or float(r["um_low"]) > 0
+                if xmax is not None and b > xmax:                         # interval runs past the axis: clip and mark
+                    ax.annotate("", xy=(xmax, yy + dy), xytext=(xmax - 2.5, yy + dy), arrowprops=dict(arrowstyle="-|>", color=col, lw=0.7, mutation_scale=4)); b = xmax
                 ax.plot([a, b], [yy + dy, yy + dy], color=col, lw=0.9)
                 ax.scatter([p_], [yy + dy], marker=mk, s=15 if mk == "o" else 11, color=col if sig else "white", edgecolor=col, lw=0.8, zorder=3)
         ax.set_yticks(y); ax.set_yticklabels([SHORT[s_] for s_ in order], fontsize=6.4)
@@ -329,6 +334,8 @@ def fig_mechanism():
                 t_.set_fontweight("bold")
         ax.tick_params(axis="y", length=0)
         ax.set_xlabel(xlabel, fontsize=6.8); ax.set_title(title, fontsize=7.6)
+        if xmax is not None:
+            ax.set_xlim(right=xmax)
         ax.legend(handles=[Line2D([], [], marker=mk, ls="", color=col, markersize=3.8 if mk == "o" else 3.2, label=lab) for _, mk, col, _, lab in series],
                   loc=legend_loc, fontsize=5.9, handletextpad=0.2, borderaxespad=0.1)
 
@@ -339,10 +346,10 @@ def fig_mechanism():
         return lambda s_: next((rr for rr in hg if rr["set"] == s_ and rr["contrast"] == key), None)
 
     ax = fig.add_subplot(gs[0, 0])
-    forest(ax, [(ab_row("fixed division"), "o", ANKYRA, 0.22, "vs fixed division (F0)"), (ab_row("without off-state"), "D", "#4D4D4D", 0.0, "vs no off-state rule (F1)"),
-                (ab_row("ANKYRA 1.x"), "s", HIST, -0.22, "vs 1.x (no within-day anchoring)")],
-           "a   Ablation", "ANKYRA 2.0 improvement (%)", "lower right")
-    ax.text(ax.get_xlim()[1], y[0] + 0.25, "test sets ", fontsize=6, color="#4A6FA5", fontstyle="italic", ha="right", va="center")
+    forest(ax, [(ab_row("fixed division"), "o", ANKYRA, 0.27, "vs F0 (1.x fixed division)"), (ab_row("without off-state"), "D", "#4D4D4D", 0.09, "vs F1 (1.x without off-state rule)"),
+                (ab_row("ANKYRA 1.x"), "s", HIST, -0.09, "vs 1.x (no within-day anchoring)"), (ab_row("ANKYRA 2.0.0"), "^", "#8C6D31", -0.27, "vs 2.0.0 (no micro-load rule)")],
+           "a   Ablation", "ANKYRA 2.0.1 improvement (%)", "lower right", xmax=45.0)
+    ax.text(ax.get_xlim()[1], y[len(TEST) - 1] - 0.22, "test sets ", fontsize=6, color="#4A6FA5", fontstyle="italic", ha="right", va="center")
     ax.set_ylim(y[-1] - 0.75, y[0] + 0.65)
     dx = fig.add_subplot(gs[0, 1])
     forest(dx, [(hg_row("C1 AW vs Ah"), "o", ANKYRA, 0.17, "vs fixed ½ mixture"), (hg_row("C2 AW vs AM"), "s", FM, -0.17, "vs one weight per month")],
@@ -371,7 +378,7 @@ def fig_mechanism():
     bx.set_xticks(wk); bx.set_xticklabels([f"W{i}" for i in wk]); bx.set_xlabel("Forecast week", fontsize=6.8)
     bx.set_ylabel("Improvement over TimesFM (%)", fontsize=6.8)
     bx.set_title("c   Lead-week profile vs TimesFM", fontsize=7.6)
-    bx.legend(handles=[Line2D([], [], color=ANKYRA, lw=1.1, label="ANKYRA 2.0"), Line2D([], [], color=HIST, ls=(0, (1.5, 1.5)), lw=0.9, label="ANKYRA 1.x"),
+    bx.legend(handles=[Line2D([], [], color=ANKYRA, lw=1.1, label="ANKYRA 2.0.1"), Line2D([], [], color=HIST, ls=(0, (1.5, 1.5)), lw=0.9, label="ANKYRA 1.x"),
                        Line2D([], [], color="#9E9E9E", ls=(0, (3, 2)), lw=0.9, label="fixed division (F0)")],
               loc="lower right", fontsize=5.6, handlelength=1.8, labelspacing=0.25)
     cx.axhline(0.5, color="#BDBDBD", lw=0.6, ls=(0, (2, 2)))
@@ -380,8 +387,10 @@ def fig_mechanism():
     cx.set_ylabel(r"Mean weight on the model  $\alpha_w$", fontsize=6.8)
     cx.set_title("d   Estimated handover", fontsize=7.6)
     cx.legend(fontsize=5.9, loc="upper right", handlelength=1.4)
-    fig.text(0.105, 0.985, "a: 2.0 against its reduced versions (shaded rows: test sets; filled markers exclude zero). b, d: the daily-mean handover, unchanged since 1.x, "
-             "on the populations scored first after it was fixed. c: 2.0 and 1.x against TimesFM by forecast week on the same populations.", fontsize=6.2, color=GREY, va="top")
+    fig.text(0.105, 0.985, "a: 2.0.1 against its reduced versions (shaded: test sets; filled: interval excludes zero). F0, F1 and 1.x all lack the within-day anchoring; "
+             "the micro-load rule acts on BDG2 only and was written after its result was seen.", fontsize=6.2, color=GREY, va="top")
+    fig.text(0.105, 0.962, "b, d: the daily-mean handover, unchanged since 1.x, on the populations scored first after it was fixed. c: 2.0.1 and 1.x against TimesFM by forecast week "
+             "on the same populations.", fontsize=6.2, color=GREY, va="top")
     save(fig, "fig4_handover_and_ablation")
 
 
@@ -678,7 +687,7 @@ def fig_loss_metrics():
     save(fig, "fig8_loss_metrics")
 
 
-# ============================================================================ Figure 9: loss by forecast day
+# ============================================================================ Figure 9: hourly loss by forecast day; Figure 9b: energy to date
 DAY_LINES = [("TimesFM", "#807DBA", "-"), ("Chronos-2", "#807DBA", "--"), ("Chronos-2-X", "#1D91C0", "-"),
              ("TimesFM-X", "#1D91C0", "--"), ("TiDE", "#253494", "-"), ("iTransformer-X", "#253494", "--"),
              ("GBT-T", "#253494", ":"), ("RIDGE-L", "#8C6D31", "-")]
@@ -734,11 +743,11 @@ def fig_lead_days():
              fontsize=6.3, color=GREY, va="top")
     fig.text(0.01, 0.956, "of units (all daily errors nonzero), the scale of the primary estimand. Vertical lines: week boundaries. * Preview population.",
              fontsize=6.3, color=GREY, va="top")
-    save(fig, "fig9b_hourly_loss_by_day")
+    save(fig, "fig9_loss_by_day")
 
 
 def fig_energy_by_day():
-    """Figure 9: error of the energy delivered through each forecast day (the quantity ANKYRA's level and daily path act on)."""
+    """Figure 9b: error of the energy delivered through each forecast day (the quantity ANKYRA's level and daily path act on)."""
     ld = rows("lead_day_energy.csv")
     lab = {r["model"]: r["model_label"] for r in ld}
     days = np.arange(1, 32)
@@ -785,9 +794,9 @@ def fig_energy_by_day():
              fontsize=6.3, color=GREY, va="top")
     fig.text(0.01, 0.974, "windows of the error of the mean load over days 1..d, divided by the unit's mean load; curves are geometric means over one fixed set of units, the",
              fontsize=6.3, color=GREY, va="top")
-    fig.text(0.01, 0.956, "aggregation of figure 9b applied to energy instead of hourly load. Day 31 is the monthly energy error of figure 11. Computed after scoring. * Preview population.",
+    fig.text(0.01, 0.956, "aggregation of figure 9 applied to energy instead of hourly load. Day 31 is the monthly energy error of figure 11. Computed after scoring. * Preview population.",
              fontsize=6.3, color=GREY, va="top")
-    save(fig, "fig9_energy_by_day")
+    save(fig, "fig9b_energy_by_day")
 
 
 def fig_lead_days_relative():
@@ -833,9 +842,9 @@ def fig_lead_days_relative():
     handles = [Line2D([], [], color=ANKYRA, lw=1.3, label="ANKYRA: the reference, 0 by definition")]
     handles += [Line2D([], [], color=c, ls=ls, lw=1.0, label=label(lab[m])) for m, c, ls in DAY_LINES]
     lg.legend(handles=handles, loc="center", ncol=2, fontsize=6.4, handlelength=2.4, columnspacing=1.2, labelspacing=0.7)
-    fig.text(0.01, 0.992, "Each baseline's loss relative to ANKYRA's on the same day, 100 (CV_model / CV_ANKYRA − 1), from the curves of figure 9b. ANKYRA is the",
+    fig.text(0.01, 0.992, "Each baseline's loss relative to ANKYRA's on the same day, 100 (CV_model / CV_ANKYRA − 1), from the curves of figure 9. ANKYRA is the",
              fontsize=6.3, color=GREY, va="top")
-    fig.text(0.01, 0.974, "zero line by definition; its own loss, rising with the forecast day, is in figure 9b. Above zero the baseline has the larger loss. Each panel",
+    fig.text(0.01, 0.974, "zero line by definition; its own loss, rising with the forecast day, is in figure 9. Above zero the baseline has the larger loss. Each panel",
              fontsize=6.3, color=GREY, va="top")
     fig.text(0.01, 0.956, "has its own vertical scale. Over the whole month the comparison differs, because the monthly RMS weights days with large errors more.",
              fontsize=6.3, color=GREY, va="top")
@@ -900,9 +909,9 @@ def fig_energy():
     fig.legend(handles=handles, loc="lower left", bbox_to_anchor=(0.01, 0.0), ncol=4, fontsize=5.8, handletextpad=0.25, columnspacing=0.9)
     fig.text(0.01, 0.99, "Monthly energy error, 744 × the mean hourly error (P3), on the same late windows. Unit-equal RMS ratio with 95% unit-and-month",
              fontsize=6.3, color=GREY, va="top")
-    fig.text(0.01, 0.967, "bootstrap intervals; * resolved in ANKYRA's favour, (+) against it. Computed after scoring. † Three near-zero meters dominate the",
+    fig.text(0.01, 0.967, "bootstrap intervals; * resolved in ANKYRA's favour, (+) against it. Computed after scoring. † BDG2 includes the micro-load rule (2.0.1), written",
              fontsize=6.3, color=GREY, va="top")
-    fig.text(0.01, 0.944, "BDG2 unit means; the next column leaves them out. ‡ Suzhou park: preview population, four series.",
+    fig.text(0.01, 0.944, "after its result was seen; three near-zero meters still dominate its unit means and the next column leaves them out. ‡ Suzhou park: preview, four series.",
              fontsize=6.3, color=GREY, va="top")
     save(fig, "fig11_energy_error")
 
@@ -936,7 +945,7 @@ def fig_consistency():
     ax.set_xlabel("Position among the 21 forecasters (1 = lowest mean per-unit rank)", fontsize=6.9)
     ax.grid(axis="x", color="#EFEFEF", lw=0.5, zorder=0)
     ax.axvspan(0.5, 2.5, color="#F3F6FA", zorder=0)
-    ax.legend(handles=[Line2D([], [], marker="o", ls="", color=GREY, markersize=4.5, label="test population (scored once)"),
+    ax.legend(handles=[Line2D([], [], marker="o", ls="", color=GREY, markersize=4.5, label="test population"),
                        Line2D([], [], marker="o", ls="", markerfacecolor="white", markeredgecolor=GREY, markersize=4.5,
                               label="preview population"),
                        Line2D([], [], color=GREY, lw=1.6, alpha=0.4, label="range over the six test populations")],
@@ -998,7 +1007,7 @@ def fig_block_shares():
     for r in bs:
         if r["set"] not in sets:
             sets.append(r["set"])
-    arms = [("ANKYRA", "ANKYRA 2.0", ANKYRA), ("ANKYRA 1.x", "ANKYRA 1.x", HIST), ("TimesFM", "TimesFM", FM)]
+    arms = [("ANKYRA", "ANKYRA 2.0.1", ANKYRA), ("ANKYRA 1.x", "ANKYRA 1.x", HIST), ("TimesFM", "TimesFM", FM)]
     blocks = [("level", "level", "#1A1A1A"), ("daily path", "daily path", "#7F7F7F"), ("within-day", "within-day", "#D9D9D9")]
     val = {(r["set"], r["model"], r["quantity"], r["block"]): float(r["value"]) for r in bs}
     fig = plt.figure(figsize=(7.2, 4.6))
@@ -1019,7 +1028,7 @@ def fig_block_shares():
     ax.set_title("a   Which block carries the error", fontsize=7.2)
     ax.legend(handles=[Patch(fc=c, label=n) for _, n, c in arms] + [Patch(fc="#7F7F7F", alpha=a, label=f"{n} block") for (_, n, _), a in zip(blocks, [1.0, 0.62, 0.3])],
               loc="upper left", bbox_to_anchor=(0.0, 1.0), ncol=3, fontsize=5.6, handlelength=1.0, handleheight=0.8, columnspacing=0.8, frameon=False)
-    # b: ANKYRA 2.0's improvement over TimesFM by block
+    # b: ANKYRA's improvement over TimesFM by block
     y = np.arange(len(sets))[::-1]; h = 0.2
     for k, (blk, name, shade) in enumerate(blocks + [("hourly", "hourly total", ANKYRA)]):
         v = np.array([val[(s, "ANKYRA vs TimesFM", "improvement_pct", blk)] for s in sets])
@@ -1029,17 +1038,17 @@ def fig_block_shares():
                 bx.text(np.sign(v[i]) * 61, y[i] + (1.5 - k) * h, f"{v[i]:+.0f}", fontsize=4.8, va="center", ha="left" if v[i] > 0 else "right")
     bx.axvline(0, color="#7F7F7F", lw=0.6)
     bx.set_yticks(y); bx.set_yticklabels([SHORT[s] for s in sets], fontsize=6.2); bx.tick_params(axis="y", length=0)
-    bx.set_xlim(-65, 65); bx.set_xlabel("ANKYRA 2.0 improvement over TimesFM by block (%)", fontsize=6.6)
+    bx.set_xlim(-65, 65); bx.set_xlabel("ANKYRA 2.0.1 improvement over TimesFM by block (%)", fontsize=6.6)
     bx.set_title("b   Where the gain over TimesFM comes from", fontsize=7.2)
     bx.legend(handles=[Patch(fc=c, label=n) for _, n, c in blocks] + [Patch(fc=ANKYRA, label="hourly total")], loc="lower right", fontsize=5.6,
               handlelength=1.0, handleheight=0.8, framealpha=0.9)
     fig.text(0.01, 0.985, "Block attribution on the late windows of the six test populations and the Suzhou park (the windows of Figures 8–11). The three blocks are orthogonal (P1),",
              fontsize=6.3, color=GREY, va="top")
-    fig.text(0.01, 0.962, "so a forecast's hourly MSE is the sum of its level, daily-path and within-day MSE. a: the median over units of each block's share (bars: ANKYRA 2.0, 1.x,",
+    fig.text(0.01, 0.962, "so a forecast's hourly MSE is the sum of its level, daily-path and within-day MSE. a: the median over units of each block's share (bars: ANKYRA 2.0.1, 1.x,",
              fontsize=6.3, color=GREY, va="top")
-    fig.text(0.01, 0.939, "TimesFM; medians of three shares need not add to 100). b: unit-equal RMS improvement of ANKYRA 2.0 over TimesFM in each block; BDG2's unit means are",
+    fig.text(0.01, 0.939, "TimesFM; medians of three shares need not add to 100). b: unit-equal RMS improvement of ANKYRA 2.0.1 over TimesFM in each block; BDG2 includes the",
              fontsize=6.3, color=GREY, va="top")
-    fig.text(0.01, 0.916, "dominated by three near-zero meters. Descriptive, computed after scoring.", fontsize=6.3, color=GREY, va="top")
+    fig.text(0.01, 0.916, "micro-load rule, written after its result was seen. Descriptive, computed after scoring.", fontsize=6.3, color=GREY, va="top")
     save(fig, "fig14_block_attribution")
 
 
@@ -1122,7 +1131,7 @@ def fig_intervals_all():
     cx.axhline(80, color="#1A1A1A", lw=0.7, ls="--"); cx.set_ylim(10, 95); cx.set_xticks(wk); cx.set_xticklabels([f"W{i}" for i in wk]); cx.set_xlabel("Forecast week", fontsize=6.6)
     fig.text(0.01, 0.985, "Prediction intervals on the ten scored populations (all windows; bold: test populations). The ANKYRA interval adds pooled residual quantiles of the unit's pseudo-forecasts",
              fontsize=6.3, color=GREY, va="top")
-    fig.text(0.01, 0.945, "to the 2.0 trajectory. Each line in b and c is one population; the dashed line is the nominal level. Computed after scoring, as a description.",
+    fig.text(0.01, 0.945, "to the ANKYRA trajectory. Each line in b and c is one population; the dashed line is the nominal level. Computed after scoring, as a description.",
              fontsize=6.3, color=GREY, va="top")
     save(fig, "fig16_intervals_ten_populations")
 
@@ -1139,8 +1148,8 @@ if __name__ == "__main__":
     fig_peak()
     fig_example()
     fig_loss_metrics()
-    fig_energy_by_day()
     fig_lead_days()
+    fig_energy_by_day()
     fig_lead_days_relative()
     fig_energy()
     fig_consistency()

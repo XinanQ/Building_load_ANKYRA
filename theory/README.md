@@ -66,7 +66,8 @@ P1, P3, P15 and P19. Check names are test classes in [test_operators.py](test_op
   errors; below two the weights are equal. Shrinkage bounds how far they move, and the handover uses least-squares
   weights because shared errors pull inverse-MSE weights towards one half.
 - **Energy and nonnegativity (P11–P13).** Clipping cannot hurt any hour, but no map keeps energy, nonnegativity and
-  no-harm together, so energy is read before the clip.
+  no-harm together, so energy is read before the clip. (On off-state and micro-load windows the forecaster returns the
+  foundation model's trajectory unchanged, without the clip.)
 - **Peak (P14–P18).** The maximum of a smooth forecast underestimates the peak, so the peak is read from a historical
   excursion envelope with an exact scalar form, an error decomposition and a median property under a stated working
   distribution.

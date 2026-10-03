@@ -1,25 +1,25 @@
 set,tier,units,model,model_label,mean_rank,friedman_p,nemenyi_cd,wilcoxon_holm_p_vs_ankyra
-BDG2 2017,test,142,ANKYRA,ANKYRA,4.599,3.07e-172,2.628,
-BDG2 2017,test,142,RIDGE-L,Ridge (per unit),6.669,3.07e-172,2.628,3.02e-06
-BDG2 2017,test,142,Chronos-2-X,Chronos-2-X,7.106,3.07e-172,2.628,0.000925
-BDG2 2017,test,142,GBT-T,GBT-T,7.986,3.07e-172,2.628,0.00686
-BDG2 2017,test,142,DLinear,DLinear,8.394,3.07e-172,2.628,3.75e-08
-BDG2 2017,test,142,TimesFM,TimesFM,8.5,3.07e-172,2.628,1.5e-11
-BDG2 2017,test,142,TimesFM-X,TimesFM-X,8.514,3.07e-172,2.628,7.03e-15
-BDG2 2017,test,142,TiDE,TiDE,8.62,3.07e-172,2.628,3.11e-08
-BDG2 2017,test,142,Chronos-2,Chronos-2,9.704,3.07e-172,2.628,5.37e-14
-BDG2 2017,test,142,iTransformer,iTransformer,10.387,3.07e-172,2.628,8.02e-16
-BDG2 2017,test,142,PatchTST,PatchTST,10.542,3.07e-172,2.628,1.26e-14
-BDG2 2017,test,142,iTransformer-X,iTransformer-X,10.768,3.07e-172,2.628,1.29e-16
-BDG2 2017,test,142,LYR-profile,Last-year profile,12.275,3.07e-172,2.628,2.78e-08
-BDG2 2017,test,142,LSTM,LSTM,12.423,3.07e-172,2.628,1.78e-12
-BDG2 2017,test,142,WeekProf4,4-week profile,12.838,3.07e-172,2.628,3.4e-20
-BDG2 2017,test,142,MSTL,MSTL,14.06,3.07e-172,2.628,2.19e-20
-BDG2 2017,test,142,Holt-Winters,Holt-Winters,14.472,3.07e-172,2.628,2.53e-21
-BDG2 2017,test,142,SN-week,Seasonal naive (week),14.528,3.07e-172,2.628,1.38e-21
-BDG2 2017,test,142,SP-profile,Previous-month profile,14.778,3.07e-172,2.628,1.13e-20
-BDG2 2017,test,142,SN-day,Seasonal naive (day),16.599,3.07e-172,2.628,3.49e-22
-BDG2 2017,test,142,GBT,GBT (zero-shot),17.239,3.07e-172,2.628,7.31e-23
+BDG2 2017,test,142,ANKYRA,ANKYRA,4.535,1.17e-172,2.628,
+BDG2 2017,test,142,RIDGE-L,Ridge (per unit),6.669,1.17e-172,2.628,2.78e-06
+BDG2 2017,test,142,Chronos-2-X,Chronos-2-X,7.127,1.17e-172,2.628,0.00069
+BDG2 2017,test,142,GBT-T,GBT-T,7.986,1.17e-172,2.628,0.00691
+BDG2 2017,test,142,DLinear,DLinear,8.394,1.17e-172,2.628,3.62e-08
+BDG2 2017,test,142,TimesFM,TimesFM,8.5,1.17e-172,2.628,9.61e-12
+BDG2 2017,test,142,TimesFM-X,TimesFM-X,8.528,1.17e-172,2.628,4.18e-15
+BDG2 2017,test,142,TiDE,TiDE,8.62,1.17e-172,2.628,2.99e-08
+BDG2 2017,test,142,Chronos-2,Chronos-2,9.69,1.17e-172,2.628,3.04e-14
+BDG2 2017,test,142,iTransformer,iTransformer,10.408,1.17e-172,2.628,4.45e-16
+BDG2 2017,test,142,PatchTST,PatchTST,10.563,1.17e-172,2.628,7.43e-15
+BDG2 2017,test,142,iTransformer-X,iTransformer-X,10.789,1.17e-172,2.628,7.88e-17
+BDG2 2017,test,142,LYR-profile,Last-year profile,12.275,1.17e-172,2.628,2.37e-08
+BDG2 2017,test,142,LSTM,LSTM,12.423,1.17e-172,2.628,1.73e-12
+BDG2 2017,test,142,WeekProf4,4-week profile,12.831,1.17e-172,2.628,2.3e-20
+BDG2 2017,test,142,MSTL,MSTL,14.053,1.17e-172,2.628,1.42e-20
+BDG2 2017,test,142,Holt-Winters,Holt-Winters,14.465,1.17e-172,2.628,1.76e-21
+BDG2 2017,test,142,SN-week,Seasonal naive (week),14.521,1.17e-172,2.628,1.15e-21
+BDG2 2017,test,142,SP-profile,Previous-month profile,14.771,1.17e-172,2.628,8.05e-21
+BDG2 2017,test,142,SN-day,Seasonal naive (day),16.592,1.17e-172,2.628,2.9e-22
+BDG2 2017,test,142,GBT,GBT (zero-shot),17.261,1.17e-172,2.628,5.23e-23
 Cambridge,test,108,ANKYRA,ANKYRA,4.648,1.41e-178,3.014,
 Cambridge,test,108,iTransformer-X,iTransformer-X,5.63,1.41e-178,3.014,0.977
 Cambridge,test,108,Chronos-2-X,Chronos-2-X,6.787,1.41e-178,3.014,0.133
@@ -209,24 +209,24 @@ Suzhou park,preview,4,SP-profile,Previous-month profile,15.75,0.000237,15.659,1
 Suzhou park,preview,4,LYR-profile,Last-year profile,16.75,0.000237,15.659,1
 Suzhou park,preview,4,GBT,GBT (zero-shot),18.75,0.000237,15.659,1
 Suzhou park,preview,4,Holt-Winters,Holt-Winters,19.25,0.000237,15.659,1
-six test populations pooled,test,1762,ANKYRA,ANKYRA,6.043,0,0.746,
-six test populations pooled,test,1762,RIDGE-L,Ridge (per unit),7.066,0,0.746,3.73e-16
-six test populations pooled,test,1762,iTransformer-X,iTransformer-X,8.111,0,0.746,5.15e-33
-six test populations pooled,test,1762,Chronos-2-X,Chronos-2-X,8.418,0,0.746,1.54e-25
-six test populations pooled,test,1762,iTransformer,iTransformer,8.523,0,0.746,1.09e-44
-six test populations pooled,test,1762,TimesFM-X,TimesFM-X,8.538,0,0.746,2.49e-67
-six test populations pooled,test,1762,Chronos-2,Chronos-2,8.798,0,0.746,1.57e-54
-six test populations pooled,test,1762,TimesFM,TimesFM,8.83,0,0.746,4.92e-94
-six test populations pooled,test,1762,PatchTST,PatchTST,9.032,0,0.746,6.13e-54
-six test populations pooled,test,1762,DLinear,DLinear,9.646,0,0.746,1e-79
-six test populations pooled,test,1762,TiDE,TiDE,10.04,0,0.746,1.15e-83
+six test populations pooled,test,1762,ANKYRA,ANKYRA,6.037,0,0.746,
+six test populations pooled,test,1762,RIDGE-L,Ridge (per unit),7.066,0,0.746,3.68e-16
+six test populations pooled,test,1762,iTransformer-X,iTransformer-X,8.113,0,0.746,9.94e-34
+six test populations pooled,test,1762,Chronos-2-X,Chronos-2-X,8.419,0,0.746,4.53e-26
+six test populations pooled,test,1762,iTransformer,iTransformer,8.525,0,0.746,1.65e-45
+six test populations pooled,test,1762,TimesFM-X,TimesFM-X,8.539,0,0.746,3.56e-68
+six test populations pooled,test,1762,Chronos-2,Chronos-2,8.797,0,0.746,4.25e-55
+six test populations pooled,test,1762,TimesFM,TimesFM,8.83,0,0.746,7.04e-95
+six test populations pooled,test,1762,PatchTST,PatchTST,9.033,0,0.746,9.07e-55
+six test populations pooled,test,1762,DLinear,DLinear,9.646,0,0.746,1.01e-79
+six test populations pooled,test,1762,TiDE,TiDE,10.04,0,0.746,1.16e-83
 six test populations pooled,test,1762,GBT-T,GBT-T,11.029,0,0.746,4.09e-62
-six test populations pooled,test,1762,LSTM,LSTM,11.478,0,0.746,3.35e-113
-six test populations pooled,test,1762,SP-profile,Previous-month profile,12.419,0,0.746,1.6e-141
-six test populations pooled,test,1762,WeekProf4,4-week profile,12.608,0,0.746,2.06e-157
-six test populations pooled,test,1762,Holt-Winters,Holt-Winters,12.885,0,0.746,1.28e-154
-six test populations pooled,test,1762,SN-day,Seasonal naive (day),15.016,0,0.746,1.32e-193
-six test populations pooled,test,1762,MSTL,MSTL,15.167,0,0.746,2.76e-204
-six test populations pooled,test,1762,SN-week,Seasonal naive (week),15.406,0,0.746,1.4e-219
-six test populations pooled,test,1762,GBT,GBT (zero-shot),15.545,0,0.746,4.56e-231
-six test populations pooled,test,1762,LYR-profile,Last-year profile,16.403,0,0.746,7.39e-187
+six test populations pooled,test,1762,LSTM,LSTM,11.478,0,0.746,3.32e-113
+six test populations pooled,test,1762,SP-profile,Previous-month profile,12.418,0,0.746,7.54e-143
+six test populations pooled,test,1762,WeekProf4,4-week profile,12.607,0,0.746,5.23e-159
+six test populations pooled,test,1762,Holt-Winters,Holt-Winters,12.884,0,0.746,4.17e-156
+six test populations pooled,test,1762,SN-day,Seasonal naive (day),15.016,0,0.746,3.01e-195
+six test populations pooled,test,1762,MSTL,MSTL,15.166,0,0.746,3.14e-206
+six test populations pooled,test,1762,SN-week,Seasonal naive (week),15.406,0,0.746,1.63e-221
+six test populations pooled,test,1762,GBT,GBT (zero-shot),15.547,0,0.746,5.15e-233
+six test populations pooled,test,1762,LYR-profile,Last-year profile,16.403,0,0.746,8.42e-188

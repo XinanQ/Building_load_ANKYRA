@@ -1,8 +1,14 @@
 # Method
 
-This document describes ANKYRA 2.0. Version 1.x differs in one block only: its within-day shape was the foundation
-model's, unchanged. Section [Within-day shape](#within-day-shape) gives the 2.0 rule; `forecast(..., within_anchor=False)`
-reproduces 1.x exactly.
+This document describes ANKYRA 2.0.1. The versions differ in two places:
+
+- 1.x used the foundation model's within-day shape unchanged. Section [Within-day shape](#within-day-shape) gives the
+  rule introduced in 2.0.
+- 2.0.1 adds the [micro-load rule](#off-state-and-micro-load-rules) to 2.0.0. It changes the forecast only when the
+  whole 1,344-hour context stays within $10^{-3}$ kW of zero.
+
+`forecast(..., micro_load_rule=False)` reproduces 2.0.0 exactly, and
+`forecast(..., within_anchor=False, micro_load_rule=False)` reproduces 1.x exactly.
 
 ## Information at the origin
 
@@ -112,7 +118,9 @@ Code: `ankyra/blocks.py`; the properties as operators: `theory/operators.py`.
 ## Level
 
 Load is normalised by the mean $l_0$ and standard deviation $s_0$ of the 744 hours before the origin, with $s_0$
-floored at $\max(0.01|l_0|,10^{-3})$ kW.
+floored at $\max(0.01|l_0|,10^{-3})$ kW. A record whose whole context stays within the $10^{-3}$ kW floor of zero
+is not normalised by its own scale; since 2.0.1 it is handled by the
+[micro-load rule](#off-state-and-micro-load-rules).
 
 **Six historical candidates.** Each of three means comes with and without weather adjustment:
 
@@ -178,9 +186,9 @@ absolute context value the whole window keeps $w^T$ (a guard against scale floor
 **Anchoring.** For the lead blocks $k$ = days 1–7, 8–14, 15–21, 22–31,
 
 $$w_{d,h}=w^T_{d,h}+\omega_k\,(S_{d,h}-w^T_{d,h}),\qquad
-\omega_k=\min\Big(\mathrm{clip}(\hat\lambda_k,0,1)\,rac{n}{n+2},\ 	frac12\Big),$$
+\omega_k=\min\Big(\mathrm{clip}(\hat\lambda_k,0,1)\,\frac{n}{n+2},\ \tfrac12\Big),$$
 
-$$\hat\lambda_k=rac{\sum_q\langle S_q-w^T_q,\ y_q-w^T_qangle_k}{\sum_q\Vert S_q-w^T_q\Vert_k^2},$$
+$$\hat\lambda_k=\frac{\sum_q\langle S_q-w^T_q,\ y_q-w^T_q\rangle_k}{\sum_q\Vert S_q-w^T_q\Vert_k^2},$$
 
 estimated over the unit's $n\le3$ completed pseudo-origin windows $q=o-744k'$, $k'=1,2,3$, where $S_q$ is the analog
 shape built from data before $q$, $w^T_q$ the foundation shape issued at $q$ and $y_q$ the realised within-day block.
@@ -199,7 +207,8 @@ The weight is a least-squares weight on the disagreement between the two shapes,
 
 **History-only configuration.** `forecast(..., foundation=None)` returns the fixed division with the same-day-type
 within-day default (eight most recent days of each type) and no handover: a reduced configuration for ablation and for
-offline use without a foundation model. It was not part of the benchmark.
+offline use without a foundation model. It was not part of the benchmark. The off-state and micro-load rules return
+the foundation model's forecast, so they do not apply in this configuration.
 
 Code: `ankyra/analog.py` (`AnalogShapes`, `within_trust`, `anchored_within_day`), `ankyra/core.py` (`forecast`).
 
@@ -237,14 +246,47 @@ origin, six at pseudo-origins).
 
 Code: `ankyra/core.py` (`lead_week_weights`, `lead_week_transition`, `forecast`).
 
-## Off-state rule
+## Off-state and micro-load rules
 
-If the last 168 hours before the origin are all at most $10^{-6}$ kW, the TimesFM forecast is returned unchanged.
+Two rules return the TimesFM forecast unchanged. Both look only at load before the origin.
+
+**Off-state rule.** If the last 168 hours before the origin are all at most $10^{-6}$ kW, the TimesFM forecast is
+returned.
 
 - The rule adds no new constant.
 - It follows from a measured property of the load: a departure from normal operation is more likely to continue the
   longer it has lasted ([evidence](EVALUATION.md#departures-from-normal-operation-persist)).
 - Without it, the shrinkage of the weights keeps the historical level in play for a meter that is off.
+
+**Micro-load rule (2.0.1).** If all 1,344 hours of the context are within $10^{-3}$ kW of zero
+($\max|{\rm load}|\le10^{-3}$ kW), the TimesFM forecast is returned.
+
+- The threshold reuses the value of the floor of the normalisation scale $s_0$ (see [Level](#level)); it is not a new
+  constant. A record that stays inside that floor for eight weeks is treated as switched off, like a record that reads
+  zero. The off-state rule does not catch it, because its readings are small but not zero.
+- **What it corrects.** On the meters that prompted it the context read 0.0002–0.0005 kW, yet 2.0.0 forecast 0.35 kW on
+  average: the historical candidates still carried the load of earlier months, and the shrinkage of the weights kept
+  them in play, as for a meter that is off.
+- **What it does not do.** It is a sufficient condition chosen after that failure was seen, not a derived boundary. A
+  record slightly above the threshold is not covered, although its scale may also be at the floor. The rule cannot
+  foresee a restart: in 5 of the 46 windows it changes, the meter resumed during the forecast month, and there 2.0.0
+  was marginally better.
+- The condition uses the whole context, so a unit with ordinary load anywhere in its last eight weeks is not affected.
+  The context must be completely observed, and the inputs must pass the estimator's checks, as in 2.0.0.
+- The threshold is an absolute value in kW, like the off-state threshold and the scale floor, and is compared in double
+  precision. Loads must be supplied in kW; rescaling a record across the threshold changes which branch is taken.
+- **Where it acts.** On the ten scored populations the rule changes 46 windows of nine meters at one BDG2 site (13
+  before and 33 after the training cutoff of the trained baselines). On EWELD every micro-load window is already an
+  off-state window, and no window of the other eight populations qualifies.
+- **Status.** The rule was written after the BDG2 test result of 2.0.0 had been seen, in response to it. Its effect on
+  BDG2 describes what the rule changes; it is not a test of the rule. The 2.0.0 results are kept beside the 2.0.1
+  results ([EVALUATION.md](EVALUATION.md#the-near-zero-meters-and-the-micro-load-rule-201)).
+
+On off-state and micro-load windows the returned trajectory is the foundation model's, without the projection onto
+nonnegative load that the other windows receive.
+
+Code: `ankyra/core.py` (`ZERO_KW`, `MICRO_KW`, `forecast`); the output fields `off_state` and `micro_load` report which
+rule fired.
 
 ## Readouts
 
@@ -290,4 +332,5 @@ Code: `ankyra/readouts.py`; the properties as operators: `theory/operators.py`.
 | Within-day anchoring (2.0): pseudo-origins, shrinkage, cap | 3, $K_0=2$ towards 0, $\omega\le1/2$ | the candidate family of the second within-day round; selected on development populations and the pre-cutoff test windows |
 | Analog days: window, kept, required, guard | ±14 days of year, 8, 4, $3\times\max\lvert\text{context}\rvert$ | the similar-day definition of the earlier A-series rules (unchanged) |
 | Off-state threshold | $10^{-6}$ kW | the pre-existing zero-load threshold |
+| Micro-load threshold (2.0.1) | $10^{-3}$ kW on the magnitude of the load, over the 1,344-hour context | the pre-existing floor of the normalisation scale; the rule was added after the BDG2 test result of 2.0.0 had been seen |
 | Peak envelope | 4 most recent same-type days, $\kappa=1$ | earlier peak-operator study |

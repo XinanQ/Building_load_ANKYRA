@@ -23,10 +23,10 @@ Suzhou park,preview,trajectory maximum,-0.201033,-0.347427,-0.089396,18.211,15.9
 Suzhou park,preview,same readout on TimesFM,-0.078324,-0.139646,0.011864,7.534,15.95,17.66
 Suzhou park,preview,previous-window peak,-0.133762,-0.382914,0.004388,12.52,15.95,17.66
 Suzhou park,preview,same readout on fixed division (F0),0.033345,-0.050047,0.085042,-3.391,15.95,17.66
-BDG2 2017,test,trajectory maximum,-0.466186,-0.609437,-0.382873,37.261,9.21,6.96
-BDG2 2017,test,same readout on TimesFM,0.359996,-0.026807,1.433969,-43.332,9.21,6.96
-BDG2 2017,test,previous-window peak,0.07892,-0.058622,0.239917,-8.212,9.21,6.96
-BDG2 2017,test,same readout on fixed division (F0),-0.031068,-0.14157,0.013241,3.059,9.21,6.96
+BDG2 2017,test,trajectory maximum,-0.466136,-0.609653,-0.382791,37.258,8.33,6.96
+BDG2 2017,test,same readout on TimesFM,-0.033803,-0.114382,0.221563,3.324,8.33,6.96
+BDG2 2017,test,previous-window peak,0.078989,-0.058479,0.23991,-8.219,8.33,6.96
+BDG2 2017,test,same readout on fixed division (F0),-0.424867,-1.373283,-0.037433,34.614,8.33,6.96
 Cambridge,test,trajectory maximum,-0.446642,-0.590948,-0.394258,36.023,8.35,8.09
 Cambridge,test,same readout on TimesFM,-0.043135,-0.07637,0.002457,4.222,8.35,8.09
 Cambridge,test,previous-window peak,0.071025,-0.049841,0.17881,-7.361,8.35,8.09

@@ -20,11 +20,14 @@ weights shrunk towards 1/2 (K0 = 2).  They are estimated on up to six completed 
 division* (six-candidate level plus daily path, without the model candidate) against the model's daily means, and
 applied at the origin to the history-side daily means that include the model candidate.  Using the fixed division at
 the pseudo-origins avoids nested pseudo-origins.  If the last 168 hours are all at or below 1e-6 kW the foundation-model trajectory is returned
-unchanged (off-state rule).  The delivered trajectory is projected onto nonnegative load.
+unchanged (off-state rule).  Since 2.0.1 the same is done when the whole 1,344-hour context stays within 1e-3 kW of
+zero (micro-load rule): that value is the floor of the scale in which the historical estimator normalises load, and a
+record that never leaves it for eight weeks is treated as switched off.  Otherwise the delivered trajectory is
+projected onto nonnegative load.
 
 Nothing is trained on the target series.  The historical estimator is the frozen reference implementation shipped in
-``ankyra.history``; this module adds the foundation-model level candidate, the week-by-week handover and the off-state
-rule exactly as evaluated in the study.
+``ankyra.history``; this module adds the foundation-model level candidate, the week-by-week handover, the off-state
+rule and the micro-load rule exactly as evaluated in the study.
 """
 from __future__ import annotations
 
@@ -47,6 +50,7 @@ STEP = 744                # spacing of pseudo-origins
 K_FM = 6                  # pseudo-origins with foundation-model forecasts
 K0_WEEK = 2.0             # shrinkage of the lead-week weights towards 1/2
 ZERO_KW = 1e-6            # off-state threshold (kW)
+MICRO_KW = 1e-3           # micro-load threshold (kW, on |load|, compared in float64): the floor of the estimator's normalisation scale
 WEEKS = ((0, 7), (7, 14), (14, 21), (21, 31))
 GROUPS = ("Industrial", "Office", "Public", "Residential", "Commercial")
 
@@ -56,7 +60,7 @@ Foundation = Union[Mapping[int, np.ndarray], Callable[[np.ndarray], np.ndarray]]
 @dataclass(frozen=True)
 class AnkyraForecast:
     """Output of :func:`forecast`.  All quantities in kW; the energy readout is ``744 * level_kw`` kWh."""
-    trajectory_kw: np.ndarray                 # (744,) delivered trajectory (nonnegative unless off-state)
+    trajectory_kw: np.ndarray                 # (744,) delivered trajectory (nonnegative unless off-state or micro-load)
     level_kw: float                           # window mean before the nonnegativity projection
     daily_means_kw: np.ndarray                # (31,) after the week-by-week handover
     within_day_kw: np.ndarray                 # (744,) day-demeaned foundation-model shape
@@ -70,6 +74,7 @@ class AnkyraForecast:
     within_trust: tuple = (0.0, 0.0, 0.0, 0.0)             # w_k on the analog shape, lead blocks 1-7, 8-14, 15-21, 22-31
     within_pseudo_pairs: int = 0              # completed pseudo-origin triples behind the within-day trust
     analog_kept: bool = False                 # False when the whole-window sanity fallback applied
+    micro_load: bool = False                  # True when the whole 1,344-hour context stayed within 1e-3 kW of zero and the model was used unchanged
 
     @property
     def energy_kwh(self) -> float:
@@ -211,7 +216,7 @@ def _foundation_map(foundation: Foundation, load_kw) -> dict:
 
 
 def forecast(history: History, *, group: str, temp_sigma_std: float, foundation: Foundation, dst_region: str = "none",
-             within_anchor: bool = True) -> AnkyraForecast:
+             within_anchor: bool = True, micro_load_rule: bool = True) -> AnkyraForecast:
     """ANKYRA forecast for the 744 hours after the end of ``history``.
 
     history         pre-origin hourly load and temperature and the calendar through the horizon (``ankyra.History``)
@@ -222,7 +227,8 @@ def forecast(history: History, *, group: str, temp_sigma_std: float, foundation:
                     None for the history-only configuration (no foundation model: within-day default, no model
                     candidate, no handover; a reduced configuration kept for ablation and offline use)
     dst_region      daylight-saving rule used to match analog days: "EU", "US" or "none"
-    within_anchor   False reproduces the 1.x forecast (foundation model's within-day block unchanged)
+    within_anchor   False leaves the foundation model's within-day block unchanged (with micro_load_rule False: the 1.x forecast)
+    micro_load_rule False reproduces the 2.0.0 forecast (no hand-over of contexts that stay within 1e-3 kW of zero)
     """
     load = np.asarray(history.load_kw, dtype=np.float64)
     temp = np.asarray(history.temperature_c, dtype=np.float32)
@@ -237,9 +243,15 @@ def forecast(history: History, *, group: str, temp_sigma_std: float, foundation:
     T0 = T[0]
     wT0 = within_day(T0)
 
-    if np.nanmax(load[o - 168:o]) <= ZERO_KW:                         # off-state rule
+    off = bool(np.nanmax(load[o - 168:o]) <= ZERO_KW)                                 # off-state rule
+    ctx = load[max(o - CONTEXT, 0):o]                                                 # micro-load rule (2.0.1): a completely observed
+    micro = bool(micro_load_rule and len(ctx) == CONTEXT and obs.shape == load.shape and obs[o - len(ctx):o].all()   # context that stays within
+                 and np.isfinite(ctx).all() and np.abs(ctx).max() <= MICRO_KW)        # the scale floor of zero
+    if micro and not off:                                                            # the inputs must be ones the estimator would accept
+        _check_inputs(history, group, temp_sigma_std)
+    if off or micro:
         return AnkyraForecast(trajectory_kw=T0.copy(), level_kw=float(T0.mean()), daily_means_kw=T0.reshape(D, HR).mean(1),
-                              within_day_kw=wT0, off_state=True, foundation_within_day_kw=wT0)
+                              within_day_kw=wT0, off_state=off, micro_load=micro, foundation_within_day_kw=wT0)
 
     parts = _level_parts(history, group, temp_sigma_std)
     est = estimate_from_history(history, group=group, temp_sigma_std=temp_sigma_std)
@@ -281,6 +293,15 @@ def forecast(history: History, *, group: str, temp_sigma_std: float, foundation:
                           within_day_kw=W, off_state=False, lead_week_weights=tuple(float(a) for a in alphas),
                           level_weights=w_level, fixed_division_daily_means_kw=daily_f0, pseudo_pairs=len(pairs),
                           foundation_within_day_kw=wT0, analog_shape_kw=S0, within_trust=trust, within_pseudo_pairs=n_w, analog_kept=kept)
+
+
+def _check_inputs(history, group, temp_sigma_std) -> None:
+    """The estimator's own input checks, for the path that returns before the estimator runs."""
+    if not np.isscalar(temp_sigma_std) or not np.isfinite(temp_sigma_std) or temp_sigma_std <= 0:
+        raise _api.InputError("temp_sigma_std must be a finite, positive, pre-origin fixed scalar")
+    if group not in GROUPS:
+        raise _api.InputError("group must have a declared source mapping: " + ", ".join(GROUPS))
+    _api._validate_history(history)
 
 
 def _history_only(history, load, temp, types, group, temp_sigma_std) -> AnkyraForecast:

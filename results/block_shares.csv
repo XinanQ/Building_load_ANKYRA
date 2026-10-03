@@ -23,29 +23,29 @@ BDG2 2017,474,142,Chronos-2-X,pooled_share,within-day,0.2295
 BDG2 2017,474,142,Chronos-2-X,median_unit_share,level,0.2268
 BDG2 2017,474,142,Chronos-2-X,median_unit_share,daily path,0.3308
 BDG2 2017,474,142,Chronos-2-X,median_unit_share,within-day,0.3945
-BDG2 2017,474,142,ANKYRA vs TimesFM,improvement_pct,level,-38.65
-BDG2 2017,474,142,ANKYRA vs TimesFM,log_ratio,level,0.326783
+BDG2 2017,474,142,ANKYRA vs TimesFM,improvement_pct,level,11.872
+BDG2 2017,474,142,ANKYRA vs TimesFM,log_ratio,level,-0.126384
 BDG2 2017,474,142,ANKYRA vs TimesFM,units_in_ratio,level,142
-BDG2 2017,474,142,ANKYRA vs TimesFM,improvement_pct,daily path,-52.381
-BDG2 2017,474,142,ANKYRA vs TimesFM,log_ratio,daily path,0.421216
+BDG2 2017,474,142,ANKYRA vs TimesFM,improvement_pct,daily path,0.603
+BDG2 2017,474,142,ANKYRA vs TimesFM,log_ratio,daily path,-0.006051
 BDG2 2017,474,142,ANKYRA vs TimesFM,units_in_ratio,daily path,142
-BDG2 2017,474,142,ANKYRA vs TimesFM,improvement_pct,within-day,9.148
-BDG2 2017,474,142,ANKYRA vs TimesFM,log_ratio,within-day,-0.095943
-BDG2 2017,474,142,ANKYRA vs TimesFM,units_in_ratio,within-day,140
-BDG2 2017,474,142,ANKYRA vs TimesFM,improvement_pct,hourly,-53.368
-BDG2 2017,474,142,ANKYRA vs TimesFM,log_ratio,hourly,0.427667
+BDG2 2017,474,142,ANKYRA vs TimesFM,improvement_pct,within-day,1.359
+BDG2 2017,474,142,ANKYRA vs TimesFM,log_ratio,within-day,-0.013679
+BDG2 2017,474,142,ANKYRA vs TimesFM,units_in_ratio,within-day,142
+BDG2 2017,474,142,ANKYRA vs TimesFM,improvement_pct,hourly,2.459
+BDG2 2017,474,142,ANKYRA vs TimesFM,log_ratio,hourly,-0.024896
 BDG2 2017,474,142,ANKYRA vs TimesFM,units_in_ratio,hourly,142
-BDG2 2017,474,142,ANKYRA vs Chronos-2-X,improvement_pct,level,-37.076
-BDG2 2017,474,142,ANKYRA vs Chronos-2-X,log_ratio,level,0.315364
+BDG2 2017,474,142,ANKYRA vs Chronos-2-X,improvement_pct,level,12.873
+BDG2 2017,474,142,ANKYRA vs Chronos-2-X,log_ratio,level,-0.137804
 BDG2 2017,474,142,ANKYRA vs Chronos-2-X,units_in_ratio,level,142
-BDG2 2017,474,142,ANKYRA vs Chronos-2-X,improvement_pct,daily path,-33.563
-BDG2 2017,474,142,ANKYRA vs Chronos-2-X,log_ratio,daily path,0.289403
+BDG2 2017,474,142,ANKYRA vs Chronos-2-X,improvement_pct,daily path,12.878
+BDG2 2017,474,142,ANKYRA vs Chronos-2-X,log_ratio,daily path,-0.137864
 BDG2 2017,474,142,ANKYRA vs Chronos-2-X,units_in_ratio,daily path,142
-BDG2 2017,474,142,ANKYRA vs Chronos-2-X,improvement_pct,within-day,12.293
-BDG2 2017,474,142,ANKYRA vs Chronos-2-X,log_ratio,within-day,-0.131169
-BDG2 2017,474,142,ANKYRA vs Chronos-2-X,units_in_ratio,within-day,140
-BDG2 2017,474,142,ANKYRA vs Chronos-2-X,improvement_pct,hourly,-38.297
-BDG2 2017,474,142,ANKYRA vs Chronos-2-X,log_ratio,hourly,0.324235
+BDG2 2017,474,142,ANKYRA vs Chronos-2-X,improvement_pct,within-day,16.373
+BDG2 2017,474,142,ANKYRA vs Chronos-2-X,log_ratio,within-day,-0.178804
+BDG2 2017,474,142,ANKYRA vs Chronos-2-X,units_in_ratio,within-day,142
+BDG2 2017,474,142,ANKYRA vs Chronos-2-X,improvement_pct,hourly,12.043
+BDG2 2017,474,142,ANKYRA vs Chronos-2-X,log_ratio,hourly,-0.128328
 BDG2 2017,474,142,ANKYRA vs Chronos-2-X,units_in_ratio,hourly,142
 Cambridge,730,108,ANKYRA,pooled_share,level,0.251
 Cambridge,730,108,ANKYRA,pooled_share,daily path,0.1864

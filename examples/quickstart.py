@@ -41,6 +41,7 @@ def main():
     print(json.dumps({
         "foundation_model": "TimesFM 2.5" if args.timesfm else "stand-in (last week repeated)",
         "off_state": f.off_state,
+        "micro_load": f.micro_load,
         "energy_kwh": round(f.energy_kwh, 3),
         "level_kw": round(f.level_kw, 4),
         "peak_kw": round(float(peak), 3),
