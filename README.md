@@ -86,14 +86,49 @@ information. Three sources lie outside the implementation:
 
 The information set is detailed in [docs/METHOD.md](docs/METHOD.md#information-at-the-origin).
 
-**Inputs and features, the same for every forecaster.** The shared information set was fixed in writing before the
-baselines were run: hourly load and temperature up to the origin, the climatological temperature of the horizon
-(fitted on pre-origin temperature only), the load one year earlier with its availability mask, hour / weekday /
-day-of-year harmonics, a holiday or non-working-day flag, and two static features (the unit's category and the log
-ratio of its long-history to its recent mean). ANKYRA receives it as the raw record and forms its own quantities;
-the same-information baselines receive it as 11 past, 10 future and 6 static features, each taking the part its
-architecture accepts; load-only baselines receive the load alone. Observed future weather, other meteorological
-variables and hand-made signal transforms are excluded everywhere. Feature by feature, with how ANKYRA uses each,
+## Inputs and features: one information set for every forecaster
+
+A comparison is only meaningful when the forecasters are given the same information. The shared information set was
+fixed in writing before the baselines were run. ANKYRA receives it as the raw record (load, temperature, day types,
+category) and forms its own quantities from it; the same-information baselines receive it as engineered features.
+**Nothing in the set is observed after the origin.**
+
+**Hourly features** (past = the 1,344-hour context, future = the 744-hour horizon):
+
+| # | Feature | Past | Future | Construction | What ANKYRA makes of it |
+|---|---|:---:|:---:|---|---|
+| 1 | load | observed | — | per-unit z-score; statistics from the context or from before the training cutoff | level and daily-path candidates, analog-day shapes, pseudo-origin errors, the foundation model's context |
+| 2 | temperature | observed | climatology | horizon values are an annual harmonic fitted on pre-origin temperature; **observed future temperature is never used** | weather-adjusted level and path candidates, analog-day selection |
+| 3 | load one year earlier | ✓ | ✓ | $t-8{,}736$ h (52 weeks, weekday-aligned; always before the origin), 0 where missing | the annual level and path candidates |
+| 4 | availability of 3 | ✓ | ✓ | 1 where feature 3 is observed | annual candidates switched off without support |
+| 5–6 | hour of day | sin, cos | sin, cos | period 24 | the hour grid of every block |
+| 7–8 | weekday | sin, cos | sin, cos | period 7 | day types Monday … Sunday |
+| 9–10 | day of year | sin, cos | sin, cos | period 365.25 | climatology phase, analog-day window (±14 days) |
+| 11 | holiday / non-working day | ✓ | ✓ | public holiday or Saturday/Sunday | day type 7 in every day-typed quantity |
+
+That is 11 past and 10 future dimensions (features 2–11). **Static features** (6 dimensions): the unit's category
+(Industrial, Office, Public, Residential, Commercial; one-hot) and the log ratio of its long-history mean to its
+context mean. ANKYRA 2.0 has one further input, the daylight-saving rule of the region (EU, US or none), a calendar
+fact used only to keep analog days in the same daylight-saving state.
+
+**How each forecaster receives the set**
+
+| Forecaster | Receives | Not accepted by the architecture |
+|---|---|---|
+| ANKYRA | the raw record behind all 11 + 10 + 6 features, plus the foundation model's forecasts at the origin and pseudo-origins | — |
+| TiDE | 11 past, 10 future, 6 static | — |
+| iTransformer-X | 11 past as variable channels, 6 static as constant channels | future covariates |
+| GBT-T | 21 features per forecast hour derived from the set (load aggregates, features 3–4, temperature, calendar, lead time, static) | raw sequences |
+| Chronos-2-X | features 2–11 as past and known-future covariates | static features |
+| TimesFM-X | features 2–11 through its linear covariate regression, the category as a categorical covariate | nonlinear covariate effects |
+| PatchTST | the same channels, but it is channel-independent: its load forecast equals the load-only one | information between channels |
+| load-only models (TimesFM, Chronos-2, DLinear, iTransformer, LSTM, Holt–Winters, MSTL, naive and profile forecasters) | feature 1 only | — |
+| per-unit ridge | calendar and climatological temperature, refitted at every origin | — |
+
+**Deliberately excluded everywhere:** observed future weather; humidity and other meteorological variables
+(available for one population only); hand-made signal transforms (smoothing, wavelet, Fourier or EMD decompositions),
+which add no information and are a common source of look-ahead. Every feature's time index is checked by assertions
+(lags, normalisation statistics and training-target ends before the origin or the cutoff). The full specification is
 in [docs/METHOD.md](docs/METHOD.md#inputs-and-features-the-shared-information-set).
 
 ## Results on six test populations
@@ -163,28 +198,34 @@ aggregate series). The ordering depends on the metric:
 
 ![Loss metrics of all 21 forecasters](figures/fig8_loss_metrics.png)
 
-**Loss by forecast day.** The figure below splits the same forecasts by forecast day, 1 to 31. The loss is each day's
-CV(RMSE), averaged geometrically over units, the scale of the primary estimand.
+**Energy as the month accumulates.** The figure below follows, for all 21 forecasters on the same late windows, the
+error of the energy delivered through each forecast day (the mean load over days 1 to *d*), averaged geometrically
+over a fixed set of units, the scale of the primary estimand. This is the quantity ANKYRA's level and daily path act
+on, and day 31 is the monthly energy error.
 
-- On every forecast day of every population in the figure ANKYRA is among the six forecasters with the lowest loss
-  of 21. It is the lowest on 9–16 of the 31 days on BDG2, Cambridge, HEEW and the Suzhou park (1.x: 7–11).
-- Its loss grows less over the month than TimesFM's and Chronos-2's on all seven populations. From week 1 to week 4 it
-  rises ×1.19–1.55, against ×1.24–1.68 and ×1.25–1.80.
-- From the second week it is lowest or second-lowest on 17–21 of the 24 days on BDG2, Cambridge, HEEW and the Suzhou
-  park (1.x: 13–16). The within-day anchoring's gain grows with lead time.
-- The zero-shot foundation models are lower on the first day everywhere, and on the GoiEner households on every day;
-  on GoiEner non-household 2.0 is below TimesFM on 19 days but Chronos-2 and Chronos-2-X stay lower on every day. The
-  day-by-day comparison and its exact relation to the monthly estimand are in
-  [docs/EVALUATION.md](docs/EVALUATION.md#loss-by-forecast-day).
+- **ANKYRA has the lowest error of the 21 forecasters** on 29 of the 31 days on GoiEner non-household, 25 on BDG2,
+  20 on EWELD, 19 on Cambridge and 18 on HEEW. At day 31 it is first on four of the six test populations (GoiEner
+  non-household 11.5% against 13.1% for the next forecaster; BDG2, HEEW, EWELD) and second on Cambridge.
+- **From the second week it is below all four zero-shot foundation-model variants** on every day on Cambridge and on
+  both GoiEner populations, and on 18–22 of the 24 days on BDG2, HEEW and EWELD. The foundation models' energy error
+  grows as their level drifts; the historical anchor keeps ANKYRA's flat.
+- On GoiEner households ANKYRA's energy error (11.7% at day 31) is a third below the foundation models' (15.5–17.4%),
+  but the per-unit ridge and three profile forecasters are lower still (10.0–11.4%), so it ranks sixth there. On the
+  Suzhou park (four series) covariate-conditioned TimesFM is lower on every day.
+- **Hourly loss by forecast day is a different picture**, because the hourly error is dominated by the within-day
+  shape, which is still mostly the foundation model's. There ANKYRA is among the six lowest of 21 on every day and
+  lowest on 9–16 of the 31 days on BDG2, Cambridge, HEEW and the Suzhou park, but the zero-shot foundation models are
+  lower on the first day everywhere and on every day on GoiEner households (Figures 9b and 10 in
+  [docs/EVALUATION.md](docs/EVALUATION.md#loss-by-forecast-day)).
 
-![Loss by forecast day](figures/fig9_loss_by_day.png)
+![Energy error as the month accumulates](figures/fig9_energy_by_day.png)
 
 **Where ANKYRA is strongest: monthly energy.** A month's energy error is 744 times the level error (P3). ANKYRA's
 design acts on that quantity: its level and daily path come from the unit's own history, while its within-day shape is
 TimesFM's.
 
 - On all seven populations ANKYRA is never resolvably worse than any of the 20 baselines on monthly energy error. It is
-  resolvably better than 4–17 of them: 17 on GoiEner non-household, 14 on Cambridge and EWELD, 12 on households.
+  resolvably better than 4–17 of them: 17 on GoiEner non-household, 14 on Cambridge and EWELD, 11 on households.
 - On GoiEner households, where the zero-shot foundation models have the lower hourly error on every day, ANKYRA's
   monthly energy error is 22–27% lower than all four of them, each resolved.
 - Against TimesFM, whose within-day shape it uses, the energy error is 4–25% lower on six populations, resolved on
@@ -202,6 +243,15 @@ Positions use the mean per-unit rank, the secondary summary.
 
 ![Position on every population](figures/fig12_consistency.png)
 
+**Rank tests.** The standard tests of the forecasting literature agree. On per-unit RMSE over the 1,762 units of the
+six test populations, Friedman's test rejects equal ranks; ANKYRA's mean rank (6.04) is separated from every other
+forecaster's by more than the Nemenyi critical difference (0.75; the next is the per-unit ridge at 7.07), and
+Holm-corrected Wilcoxon tests put it ahead of all 20. Per population it is significantly better than 17–20 of the 20
+baselines on the test populations. Three baselines are significantly better somewhere: the per-unit ridge on
+households, GBT-T on Oslo and Chronos-2-X on Drammen ([details](docs/EVALUATION.md#rank-significance-tests)).
+
+![Rank tests](figures/fig15_rank_tests.png)
+
 **Where ANKYRA falls behind.** We report these as findings, not footnotes.
 
 - **Norwegian schools** (Oslo; a preview population). GBT-T, a cross-unit trained model with calendar features, is
@@ -214,6 +264,16 @@ Positions use the mean per-unit rank, the secondary summary.
     operating reasons.
 - **Households.** Zero-shot TimesFM is better (see above). The within-day anchoring finds no reliable analog-day
   signal there (mean trust 0.08) and leaves the forecast as in 1.x.
+  By per-unit rank the per-unit ridge is ahead of ANKYRA there, significantly so in a paired test; by block, the
+  deficit to TimesFM sits in the daily path (−9%), not in the within-day shape.
+- **Short histories.** With less than two years of history ANKYRA is not separated from the foundation model alone
+  (−0.8% and −1.4% in the two shortest strata, pooled over ten populations); with two or more years it is 6–8% better,
+  resolved ([details](docs/EVALUATION.md#history-length)).
+- **A single large spike in the context.** A stress test on corrupted contexts shows ANKYRA at least as robust as the
+  foundation model to gaps, zero-filled blocks and clock shifts, and exactly scale-equivariant; but one spike at ten
+  times the context maximum raises its hourly error by 17% (TimesFM: 3%) and ruins the peak readout, which takes the
+  largest recent excursion. A spike guard that removes the effect is described in the evaluation but is not part of
+  the released forecaster ([details](docs/EVALUATION.md#robustness-to-corrupted-contexts)).
 - **BDG2.** Three meters read about 0.0002 kW, above the off-state threshold, and dominate the unit-mean ratios. The
   full result is kept, with a sensitivity analysis alongside:
   - with the three meters, ANKYRA's point estimate against TimesFM is −53.4% (late windows);
@@ -308,6 +368,23 @@ band covers 36.1% and Chronos-2's native 80% band 68.8%. On the Winkler score th
 behind, unresolved). Intervals were scored on this one population.
 
 ![Prediction intervals on households](figures/fig13_intervals.png)
+
+Applied afterwards to all ten scored populations, the same interval covers **75.8–82.2%** of hours at the nominal 80%
+level and 84.8–89.1% at 90%, against 65–79% for Chronos-2's native 80% band and 35–57% for TimesFM's. It is not sharper
+than Chronos-2's quantiles: on the Winkler score ANKYRA is resolvably better than TimesFM's band on eight populations
+but not separated from Chronos-2's on five and resolvably worse on five. Its coverage also falls with lead time (first
+week 81–87%, fourth week 72–79%), because the residuals are pooled over the whole window, and it should not be used for
+units that switch off, where its width explodes ([details](docs/EVALUATION.md#readouts)).
+
+![Interval coverage on ten populations](figures/fig16_intervals_ten_populations.png)
+
+**Where the error sits.** Because the three blocks are orthogonal, each forecast's hourly MSE splits exactly into its
+level, daily-path and within-day parts. On the late windows the within-day block carries 33–48% of the median unit's
+error on the building populations (38% on EWELD) and 80–85% on the Spanish populations; ANKYRA's gain over TimesFM comes from the
+level on every population, from the daily path on the buildings, and in 2.0 also from the within-day block
+(`results/block_shares.csv`, Figure 14).
+
+![Block attribution](figures/fig14_block_attribution.png)
 
 ## Theory: exact properties
 
@@ -448,6 +525,10 @@ examples/            quickstart on an artificial building
 
 ## Version history
 
+- **2.0.0, results addenda (3 October 2026; forecaster unchanged)** — energy error by forecast day (Figure 9; the
+  hourly loss by day is now Figure 9b), block attribution (14), rank tests (15), intervals on ten populations (16),
+  scaled errors, history length, robustness to corrupted contexts, sensitivity to the constants; the lead-week file
+  recomputed for 2.0; the shared information set tabulated in this README.
 - **2.0.0** — within-day anchoring (`ankyra/analog.py`): the unit's analog-day shape competes with the foundation
   model's shape, weighted by the unit's pseudo-origin errors; `dst_region` input; history-only configuration
   (`foundation=None`); `within_anchor=False` for 1.x. Results, figures and documents re-exported for 2.0; the 1.x
