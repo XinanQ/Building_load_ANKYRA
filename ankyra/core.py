@@ -9,6 +9,11 @@ For a forecast origin o the 744-hour trajectory is assembled from three orthogon
                       weights (K0 = 8);
 * centred daily path  seven historical candidate paths weighted the same way (K0 = 2).
 
+Since 2.0 the within-day block is anchored as well (``ankyra.analog``): the unit's own analog-day shape competes with
+the foundation model's shape, with a per-lead-block weight set by the unit's own errors at three completed
+pseudo-origins, shrunk towards the foundation model and capped at one half.  Both shapes have zero daily means, so the
+level, the daily path and the energy and peak readouts are exactly those of the 1.x division of labour.
+
 The history-side daily means (level with the model candidate, plus the daily path) are then mixed with the foundation
 model's daily means week by week (days 1-7, 8-14, 15-21, 22-31).  The weekly weights are least-squares combination
 weights shrunk towards 1/2 (K0 = 2).  They are estimated on up to six completed pseudo-origin pairs of the *fixed
@@ -35,6 +40,7 @@ from .history import History, estimate_from_history
 from .history import api as _api
 from .history import _level
 from .blocks import within_day, HORIZON, D, HR
+from . import analog as _analog
 
 CONTEXT = 1344            # hours of load given to the foundation model
 STEP = 744                # spacing of pseudo-origins
@@ -59,6 +65,11 @@ class AnkyraForecast:
     level_weights: dict = field(default_factory=dict)      # candidate -> weight, including 'fm'
     fixed_division_daily_means_kw: Optional[np.ndarray] = None   # F0 (history level + daily path), for ablation
     pseudo_pairs: int = 0                     # completed pseudo-origin pairs behind the lead-week weights
+    foundation_within_day_kw: Optional[np.ndarray] = None  # (744,) the foundation model's own within-day block
+    analog_shape_kw: Optional[np.ndarray] = None           # (744,) the unit's analog-day shape (None when not built)
+    within_trust: tuple = (0.0, 0.0, 0.0, 0.0)             # w_k on the analog shape, lead blocks 1-7, 8-14, 15-21, 22-31
+    within_pseudo_pairs: int = 0              # completed pseudo-origin triples behind the within-day trust
+    analog_kept: bool = False                 # False when the whole-window sanity fallback applied
 
     @property
     def energy_kwh(self) -> float:
@@ -199,20 +210,27 @@ def _foundation_map(foundation: Foundation, load_kw) -> dict:
     return {int(k): np.asarray(v, dtype=np.float64) for k, v in foundation.items() if v is not None}
 
 
-def forecast(history: History, *, group: str, temp_sigma_std: float, foundation: Foundation) -> AnkyraForecast:
+def forecast(history: History, *, group: str, temp_sigma_std: float, foundation: Foundation, dst_region: str = "none",
+             within_anchor: bool = True) -> AnkyraForecast:
     """ANKYRA forecast for the 744 hours after the end of ``history``.
 
     history         pre-origin hourly load and temperature and the calendar through the horizon (``ankyra.History``)
     group           category used by the temperature-signature prior: Industrial, Office, Public, Residential, Commercial
     temp_sigma_std  fixed temperature-anomaly scale (units of 10 degC), estimated before the first origin
     foundation      either {k: 744-hour forecast issued at o - 744k} for k = 0..6 (k = 0 required), or a callable that maps
-                    an (N, 1344) array of contexts to (N, 744) point forecasts (e.g. ``ankyra.timesfm_adapter``)
+                    an (N, 1344) array of contexts to (N, 744) point forecasts (e.g. ``ankyra.timesfm_adapter``), or
+                    None for the history-only configuration (no foundation model: within-day default, no model
+                    candidate, no handover; a reduced configuration kept for ablation and offline use)
+    dst_region      daylight-saving rule used to match analog days: "EU", "US" or "none"
+    within_anchor   False reproduces the 1.x forecast (foundation model's within-day block unchanged)
     """
     load = np.asarray(history.load_kw, dtype=np.float64)
     temp = np.asarray(history.temperature_c, dtype=np.float32)
     types = np.asarray(history.day_types)
     obs = np.isfinite(load) if history.observed is None else np.asarray(history.observed, dtype=bool)
     o = len(load)
+    if foundation is None:
+        return _history_only(history, load, temp, types, group, temp_sigma_std)
     T = _foundation_map(foundation, load)
     if 0 not in T or T[0].shape != (HORIZON,):
         raise ValueError("a 744-hour foundation-model forecast at the origin (k = 0) is required")
@@ -221,7 +239,7 @@ def forecast(history: History, *, group: str, temp_sigma_std: float, foundation:
 
     if np.nanmax(load[o - 168:o]) <= ZERO_KW:                         # off-state rule
         return AnkyraForecast(trajectory_kw=T0.copy(), level_kw=float(T0.mean()), daily_means_kw=T0.reshape(D, HR).mean(1),
-                              within_day_kw=wT0, off_state=True)
+                              within_day_kw=wT0, off_state=True, foundation_within_day_kw=wT0)
 
     parts = _level_parts(history, group, temp_sigma_std)
     est = estimate_from_history(history, group=group, temp_sigma_std=temp_sigma_std)
@@ -244,7 +262,38 @@ def forecast(history: History, *, group: str, temp_sigma_std: float, foundation:
     alphas = lead_week_weights(pairs) if pairs else [0.5] * 4
     daily = lead_week_transition(daily_level, T0.reshape(D, HR).mean(1), alphas)
 
-    raw = np.repeat(daily, HR) + wT0
+    W, S0, trust, n_w, kept = wT0, None, (0.0, 0.0, 0.0, 0.0), 0, False
+    if within_anchor:                                                 # within-day anchoring (2.0)
+        shapes = _analog.AnalogShapes(load, temp, types, history.start_timestamp, dst_region, origin=o)
+        S0, kept = shapes.shape_with_sanity(o, wT0)
+        triples = []
+        for k in range(1, _analog.K_WITHIN + 1):
+            q = o - k * STEP
+            if k not in T or q - CONTEXT < 0 or not (obs[q - CONTEXT:q + HORIZON].all() and np.isfinite(load[q - CONTEXT:q + HORIZON]).all()):
+                continue
+            wTq = within_day(T[k]); Sq, _ = shapes.shape_with_sanity(q, wTq)
+            triples.append((Sq, wTq, within_day(load[q:q + HORIZON])))
+        w, n_w = _analog.within_trust(triples); trust = tuple(float(x) for x in w)
+        W = _analog.anchored_within_day(wT0, S0, w)
+
+    raw = np.repeat(daily, HR) + W
     return AnkyraForecast(trajectory_kw=np.maximum(raw, 0.0), level_kw=float(daily.mean()), daily_means_kw=daily,
-                          within_day_kw=wT0, off_state=False, lead_week_weights=tuple(float(a) for a in alphas),
-                          level_weights=w_level, fixed_division_daily_means_kw=daily_f0, pseudo_pairs=len(pairs))
+                          within_day_kw=W, off_state=False, lead_week_weights=tuple(float(a) for a in alphas),
+                          level_weights=w_level, fixed_division_daily_means_kw=daily_f0, pseudo_pairs=len(pairs),
+                          foundation_within_day_kw=wT0, analog_shape_kw=S0, within_trust=trust, within_pseudo_pairs=n_w, analog_kept=kept)
+
+
+def _history_only(history, load, temp, types, group, temp_sigma_std) -> AnkyraForecast:
+    """History-only configuration: fixed division with the same-day-type within-day default (no foundation model)."""
+    from .readouts import within_day_default
+    o = len(load)
+    est = estimate_from_history(history, group=group, temp_sigma_std=temp_sigma_std)
+    daily = est.level_kw + np.asarray(est.daily_path_kw, dtype=np.float64)
+    ctx = load[o - CONTEXT:o]
+    if not np.isfinite(ctx).all():
+        raise ValueError("the history-only configuration needs a complete 1,344-hour context")
+    ct = types[o - CONTEXT + 12 + HR * np.arange(CONTEXT // HR)]; tt = types[o + 12 + HR * np.arange(D)]
+    W = within_day_default(ctx[None], ct[None], tt[None])[0]
+    raw = np.repeat(daily, HR) + W
+    return AnkyraForecast(trajectory_kw=np.maximum(raw, 0.0), level_kw=float(daily.mean()), daily_means_kw=daily, within_day_kw=W,
+                          off_state=False, fixed_division_daily_means_kw=daily)

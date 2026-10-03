@@ -1,0 +1,150 @@
+set,tier,model,RMSE_kW,MAE_kW,CV_RMSE_pct,NMBE_pct,WAPE_pct,WAPE_pooled_pct
+BDG2 2017,test,TimesFM,32.7834,21.733,22.99,1.27,14.57,14.68
+BDG2 2017,test,RIDGE-L,31.6778,22.0012,23.39,-0.05,16.19,14.29
+BDG2 2017,test,Chronos-2-X,31.5559,20.6458,20.33,1.56,14.03,13.95
+BDG2 2017,test,Chronos-2,34.2103,22.7044,24.64,1.95,16.32,15.27
+BDG2 2017,test,ANKYRA,30.9478,21.5929,22.31,-0.79,14.87,14.22
+BDG2 2017,test,GBT,48.9822,30.1405,35.72,-1.42,22.9,19.92
+BDG2 2017,test,Holt-Winters,36.6413,25.8318,26.84,1.32,18.97,17.38
+BDG2 2017,test,LYR-profile,45.5782,32.1011,27.4,-3.53,18.92,21.41
+BDG2 2017,test,MSTL,37.4779,25.4746,28.06,0.15,19.46,16.74
+BDG2 2017,test,SN-day,42.0381,28.0927,35.09,0.12,23.63,18.31
+BDG2 2017,test,SN-week,37.9331,24.672,26.82,0.48,17.42,16.48
+BDG2 2017,test,SP-profile,37.293,27.8333,28.01,-0.01,20.87,18.67
+BDG2 2017,test,TimesFM-X,33.3073,22.6469,24.75,1.0,16.38,15.25
+BDG2 2017,test,WeekProf4,35.3681,24.5211,25.32,0.14,17.73,16.58
+Cambridge,test,TimesFM,15.5754,9.3944,20.52,3.08,13.11,9.0
+Cambridge,test,RIDGE-L,15.0299,9.4279,21.35,3.14,13.96,9.03
+Cambridge,test,Chronos-2-X,14.0039,8.5045,19.0,2.57,11.51,8.13
+Cambridge,test,Chronos-2,16.0485,9.6411,24.37,4.23,13.42,9.29
+Cambridge,test,ANKYRA,14.3117,8.7973,19.51,2.18,12.25,8.38
+Cambridge,test,GBT,19.2029,12.3205,27.49,1.56,17.69,12.0
+Cambridge,test,Holt-Winters,16.667,10.6196,24.24,1.15,14.98,10.25
+Cambridge,test,LYR-profile,20.2641,13.4914,26.82,-0.01,18.17,12.77
+Cambridge,test,MSTL,18.2289,11.4101,26.83,3.19,16.21,10.97
+Cambridge,test,SN-day,23.7174,15.0899,32.4,2.21,20.9,14.63
+Cambridge,test,SN-week,18.4605,11.256,26.79,3.49,16.05,10.81
+Cambridge,test,SP-profile,16.6902,11.7352,25.21,0.21,18.54,11.39
+Cambridge,test,TimesFM-X,16.0401,9.8897,23.24,4.03,13.77,9.47
+Cambridge,test,WeekProf4,14.9407,9.1273,22.72,0.24,13.87,8.71
+HEEW Arizona,test,TimesFM,34.7461,23.7034,17.87,0.08,10.92,11.84
+HEEW Arizona,test,RIDGE-L,35.0172,25.2403,17.33,-0.39,11.77,12.49
+HEEW Arizona,test,Chronos-2-X,34.8817,24.0403,16.84,0.2,10.55,11.92
+HEEW Arizona,test,Chronos-2,35.8952,24.459,18.88,0.52,11.26,12.22
+HEEW Arizona,test,ANKYRA,32.4032,22.5519,17.04,-0.41,11.14,11.17
+HEEW Arizona,test,GBT,49.7275,33.0478,27.13,-2.4,17.3,16.8
+HEEW Arizona,test,Holt-Winters,46.3151,32.116,20.5,0.13,13.99,16.32
+HEEW Arizona,test,LYR-profile,47.2123,32.1771,26.5,-2.7,18.88,16.43
+HEEW Arizona,test,MSTL,41.4256,28.5142,20.26,-0.46,13.05,14.11
+HEEW Arizona,test,SN-day,48.4723,32.518,24.13,-0.91,16.31,16.11
+HEEW Arizona,test,SN-week,40.2748,27.1349,20.68,-0.59,12.92,13.58
+HEEW Arizona,test,SP-profile,45.4096,33.5078,21.7,-0.32,15.77,16.67
+HEEW Arizona,test,TimesFM-X,35.3479,24.6393,17.7,-0.22,11.62,12.25
+HEEW Arizona,test,WeekProf4,43.4881,30.9698,19.6,-0.27,12.66,15.21
+EWELD,test,TimesFM,115.7802,70.5527,55.19,-0.23,32.2,36.74
+EWELD,test,RIDGE-L,111.0468,70.7166,50.76,-0.16,31.12,36.43
+EWELD,test,Chronos-2-X,112.0705,68.755,54.97,5.62,31.42,33.58
+EWELD,test,Chronos-2,110.5124,67.1395,54.0,2.28,31.25,34.45
+EWELD,test,ANKYRA,113.8179,71.3894,53.03,3.58,31.98,36.57
+EWELD,test,GBT,147.4885,90.782,73.97,-5.24,41.97,46.99
+EWELD,test,Holt-Winters,129.4814,86.7741,68.97,5.64,42.78,44.06
+EWELD,test,LYR-profile,224.6771,169.6295,86.34,2.08,57.25,84.38
+EWELD,test,MSTL,122.0608,78.215,62.59,0.9,40.19,39.7
+EWELD,test,SN-day,133.9189,78.5119,65.07,2.47,38.88,40.55
+EWELD,test,SN-week,127.8346,76.846,61.09,0.02,36.82,39.35
+EWELD,test,SP-profile,124.5651,80.2643,59.25,-0.22,38.8,42.47
+EWELD,test,TimesFM-X,113.7153,70.6154,52.93,0.3,31.16,36.3
+EWELD,test,WeekProf4,124.7706,78.3925,59.35,-0.34,36.21,41.22
+GoiEner non-household,test,TimesFM,0.711,0.3986,83.49,12.8,43.18,30.94
+GoiEner non-household,test,Chronos-2-X,0.7141,0.3829,82.21,13.86,42.07,30.43
+GoiEner non-household,test,Chronos-2,0.7399,0.4031,85.32,13.62,41.36,31.07
+GoiEner non-household,test,ANKYRA,0.6812,0.4001,82.07,6.29,44.16,31.16
+GoiEner non-household,test,GBT,0.9169,0.5602,101.87,-2.17,59.15,44.59
+GoiEner non-household,test,Holt-Winters,0.7985,0.4938,86.73,4.61,50.91,38.56
+GoiEner non-household,test,LYR-profile,0.8058,0.4628,104.77,-0.16,56.28,35.83
+GoiEner non-household,test,MSTL,0.8344,0.5055,97.11,5.23,56.82,39.81
+GoiEner non-household,test,SN-day,0.9308,0.5316,109.44,5.29,59.09,42.63
+GoiEner non-household,test,SN-week,0.856,0.4637,99.79,3.31,51.12,36.56
+GoiEner non-household,test,SP-profile,0.8187,0.5493,87.2,1.54,54.84,42.74
+GoiEner non-household,test,TimesFM-X,0.696,0.409,83.29,10.92,44.44,31.95
+GoiEner non-household,test,WeekProf4,0.7791,0.4551,85.17,2.19,46.13,35.01
+GoiEner households,test,TimesFM,0.193,0.1019,105.59,20.51,55.59,53.32
+GoiEner households,test,RIDGE-L,0.188,0.1116,101.5,0.51,60.64,58.43
+GoiEner households,test,Chronos-2-X,0.1933,0.1001,105.58,21.29,54.58,52.65
+GoiEner households,test,Chronos-2,0.1995,0.104,105.4,20.27,53.99,55.91
+GoiEner households,test,ANKYRA,0.1884,0.1072,103.28,8.13,58.6,56.09
+GoiEner households,test,GBT,0.2375,0.1431,121.71,-7.58,73.2,75.41
+GoiEner households,test,Holt-Winters,0.2151,0.1365,112.27,1.87,69.4,71.97
+GoiEner households,test,LYR-profile,0.2631,0.1473,141.86,0.65,79.18,77.49
+GoiEner households,test,MSTL,0.2364,0.1485,128.88,2.3,80.51,78.16
+GoiEner households,test,SN-day,0.2431,0.136,131.15,6.78,73.19,71.18
+GoiEner households,test,SN-week,0.2391,0.1291,131.58,1.18,71.6,67.55
+GoiEner households,test,SP-profile,0.2,0.1209,106.8,-0.78,64.98,63.55
+GoiEner households,test,TimesFM-X,0.1921,0.1038,104.34,18.19,56.34,54.47
+GoiEner households,test,WeekProf4,0.2058,0.1185,110.99,-0.63,64.53,62.16
+Oslo,preview,TimesFM,31.7049,20.5827,38.67,-0.79,25.29,24.85
+Oslo,preview,RIDGE-L,31.0079,21.3558,38.14,1.36,26.42,25.86
+Oslo,preview,Chronos-2-X,27.9393,17.6678,33.58,0.6,21.65,21.34
+Oslo,preview,Chronos-2,31.9311,20.0563,39.23,3.46,24.44,24.29
+Oslo,preview,ANKYRA,29.196,19.3203,35.71,-0.27,24.07,23.45
+Oslo,preview,GBT,45.6479,28.7061,48.1,-0.94,34.53,33.59
+Oslo,preview,Holt-Winters,35.9318,24.2475,44.64,-4.91,29.45,29.15
+Oslo,preview,LYR-profile,34.3771,22.824,41.26,-2.58,27.78,28.45
+Oslo,preview,MSTL,37.0828,24.5743,45.05,4.9,30.98,29.59
+Oslo,preview,SN-day,50.9164,32.7144,61.91,4.19,40.1,38.98
+Oslo,preview,SN-week,37.6786,23.7896,44.73,2.75,28.98,28.69
+Oslo,preview,SP-profile,38.1025,29.4272,46.47,-5.68,36.06,35.16
+Oslo,preview,TimesFM-X,31.049,21.1561,37.2,1.39,25.64,25.56
+Oslo,preview,WeekProf4,33.9055,22.6187,41.49,-5.29,27.79,27.16
+Drammen,preview,TimesFM,15.4021,10.3162,39.94,1.9,26.81,24.55
+Drammen,preview,RIDGE-L,13.5735,9.454,35.68,1.49,25.47,22.53
+Drammen,preview,Chronos-2-X,13.5002,9.014,35.17,0.83,23.39,21.43
+Drammen,preview,Chronos-2,14.8523,9.6785,38.69,4.99,25.08,22.96
+Drammen,preview,ANKYRA,13.9459,9.3761,36.37,1.56,24.28,22.34
+Drammen,preview,GBT,18.7358,12.9002,50.81,1.93,35.3,30.77
+Drammen,preview,Holt-Winters,17.2139,11.9503,47.18,-0.15,30.85,28.39
+Drammen,preview,LYR-profile,17.3183,11.6609,44.65,1.32,28.86,27.66
+Drammen,preview,MSTL,17.0898,11.4817,46.25,-0.42,30.27,27.43
+Drammen,preview,SN-day,22.196,14.5122,60.97,6.87,40.54,34.55
+Drammen,preview,SN-week,16.9819,11.2471,45.5,2.6,29.66,26.8
+Drammen,preview,SP-profile,18.563,13.9198,50.75,0.48,38.27,33.1
+Drammen,preview,TimesFM-X,14.8263,10.4608,39.85,1.46,28.22,24.92
+Drammen,preview,WeekProf4,17.3868,12.2112,45.39,-0.13,32.24,29.03
+CINELDI,preview,TimesFM,20.828,12.2566,46.91,6.51,27.62,25.31
+CINELDI,preview,RIDGE-L,20.414,13.8726,44.47,1.87,30.34,28.35
+CINELDI,preview,Chronos-2-X,18.5947,10.4251,43.05,5.15,27.68,21.98
+CINELDI,preview,Chronos-2,18.9925,10.2638,43.88,5.9,26.62,21.31
+CINELDI,preview,ANKYRA,17.7665,11.686,43.69,3.89,27.23,24.12
+CINELDI,preview,GBT,25.3737,18.3061,60.11,0.8,40.64,36.21
+CINELDI,preview,Holt-Winters,25.8985,17.9104,52.44,0.79,36.63,35.98
+CINELDI,preview,LYR-profile,21.3224,12.9389,69.54,0.3,42.04,26.55
+CINELDI,preview,MSTL,25.1978,16.623,53.49,0.78,35.28,34.53
+CINELDI,preview,SN-day,32.5714,21.6253,75.35,2.85,48.32,42.81
+CINELDI,preview,SN-week,24.0552,14.1168,51.61,1.79,32.49,29.49
+CINELDI,preview,SP-profile,22.21,17.4315,49.28,0.84,38.52,34.59
+CINELDI,preview,TimesFM-X,21.0855,13.7727,47.27,6.56,30.73,28.75
+CINELDI,preview,WeekProf4,19.7191,12.3093,47.05,0.68,30.08,26.0
+Suzhou park,preview,TimesFM,137.0332,83.3976,29.16,1.13,18.29,19.32
+Suzhou park,preview,RIDGE-L,126.9993,81.5922,25.89,-0.11,17.73,18.79
+Suzhou park,preview,Chronos-2-X,144.2283,86.1711,30.29,7.44,19.53,19.96
+Suzhou park,preview,Chronos-2,151.4372,90.5759,32.79,4.43,20.34,21.03
+Suzhou park,preview,ANKYRA,125.7424,80.1499,26.56,0.73,17.48,18.56
+Suzhou park,preview,GBT,217.8498,133.4018,49.45,-8.62,30.59,31.05
+Suzhou park,preview,Holt-Winters,188.6328,127.4415,38.08,2.59,27.01,29.34
+Suzhou park,preview,LYR-profile,166.9853,108.3407,37.95,-0.71,24.45,25.12
+Suzhou park,preview,MSTL,153.2504,95.9769,33.62,0.01,21.27,22.23
+Suzhou park,preview,SN-day,190.8836,115.034,46.38,1.64,28.55,26.73
+Suzhou park,preview,SN-week,164.1557,96.8615,33.85,-2.02,20.98,22.37
+Suzhou park,preview,SP-profile,167.6252,121.7166,36.65,-0.05,28.66,28.22
+Suzhou park,preview,TimesFM-X,142.631,87.9228,31.61,1.59,19.53,20.41
+Suzhou park,preview,WeekProf4,157.2803,101.0514,33.28,-0.31,21.81,23.37
+LCL households,reserved,TimesFM,0.3099,0.1828,73.29,13.69,42.52,42.86
+LCL households,reserved,RIDGE-L,0.3037,0.1967,72.48,0.37,46.07,46.23
+LCL households,reserved,Chronos-2,0.3096,0.1807,73.25,13.57,41.6,42.21
+LCL households,reserved,ANKYRA,0.3019,0.1889,72.0,5.04,44.42,44.31
+LCL households,reserved,GBT,0.4629,0.3233,95.41,-12.01,61.4,75.53
+LCL households,reserved,LYR-profile,0.414,0.2517,98.48,-1.65,59.31,59.31
+LCL households,reserved,SN-day,0.4019,0.2457,95.34,1.56,56.11,57.48
+LCL households,reserved,SN-week,0.4019,0.2409,96.48,0.26,56.28,56.46
+LCL households,reserved,SP-profile,0.313,0.2016,73.84,0.74,47.4,47.39
+LCL households,reserved,WeekProf4,0.322,0.2014,76.73,0.9,47.02,47.27

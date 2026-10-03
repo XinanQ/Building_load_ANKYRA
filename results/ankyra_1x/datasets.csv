@@ -1,0 +1,12 @@
+set,tier,country,population,ankyra_design_status
+BDG2 2017,test,USA / Europe,commercial and institutional building meters,seen
+Cambridge,test,UK,university estate buildings,first read
+HEEW Arizona,test,USA,university campus buildings,first read
+EWELD,test,China,industrial and commercial meters,seen
+GoiEner non-household,test,Spain,non-household supply points,seen
+GoiEner households,test,Spain,households,seen
+Oslo,preview,Norway,public schools,seen
+Drammen,preview,Norway,municipal buildings,seen
+CINELDI,preview,Norway,industrial customers,first read
+Suzhou park,preview,China,industrial-park category aggregates,seen
+LCL households,reserved,UK,households,seen

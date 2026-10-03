@@ -50,10 +50,13 @@ class ForecastTests(unittest.TestCase):
         self.assertAlmostEqual(f.level_kw, f.daily_means_kw.mean(), places=12)
         self.assertAlmostEqual(f.energy_kwh, 744 * f.level_kw, places=9)
 
-    def test_within_day_block_is_the_foundation_models(self):
+    def test_within_day_block_is_the_anchored_foundation_shape(self):
         T0 = seasonal_naive(self.h.load_kw[-1344:][None])[0]
-        self.assertTrue((np.repeat(self.f.daily_means_kw, 24) + blocks.within_day(T0) >= 0).all())   # no projection needed here
-        np.testing.assert_allclose(blocks.within_day(self.f.trajectory_kw), blocks.within_day(T0), atol=1e-10)
+        np.testing.assert_array_equal(self.f.foundation_within_day_kw, blocks.within_day(T0))
+        self.assertTrue((np.repeat(self.f.daily_means_kw, 24) + self.f.within_day_kw >= 0).all())   # no projection needed here
+        np.testing.assert_allclose(blocks.within_day(self.f.trajectory_kw), self.f.within_day_kw, atol=1e-10)
+        f1 = ankyra.forecast(self.h, group="Office", temp_sigma_std=0.25, foundation=seasonal_naive, within_anchor=False)
+        np.testing.assert_allclose(blocks.within_day(f1.trajectory_kw), blocks.within_day(T0), atol=1e-10)   # 1.x mode
 
     def test_callable_and_mapping_foundation_agree(self):
         T = {k: seasonal_naive(v[None])[0] for k, v in pseudo_origin_contexts(self.h.load_kw).items()}

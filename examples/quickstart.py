@@ -29,7 +29,7 @@ def main():
         from ankyra.timesfm_adapter import load_timesfm, timesfm_forecaster
         foundation = timesfm_forecaster(load_timesfm(args.checkpoint))
 
-    f = ankyra.forecast(history, group="Office", temp_sigma_std=0.25, foundation=foundation)
+    f = ankyra.forecast(history, group="Office", temp_sigma_std=0.25, foundation=foundation, dst_region="EU")
 
     o = len(history.load_kw)
     types = history.day_types
@@ -47,6 +47,9 @@ def main():
         "lead_week_weights_on_model": [round(a, 3) for a in f.lead_week_weights],
         "level_weights": {k: round(v, 3) for k, v in f.level_weights.items()},
         "pseudo_origin_pairs": f.pseudo_pairs,
+        "within_day_trust_on_analog_shape": [round(w, 3) for w in f.within_trust],       # 2.0: lead blocks 1-7, 8-14, 15-21, 22-31
+        "within_day_pseudo_origin_triples": f.within_pseudo_pairs,
+        "analog_shape_kept": f.analog_kept,
         "trajectory_first_day_kw": np.round(f.trajectory_kw[:24], 2).tolist(),
     }, indent=1))
 

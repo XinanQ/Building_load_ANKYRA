@@ -1,5 +1,9 @@
 # Method
 
+This document describes ANKYRA 2.0. Version 1.x differs in one block only: its within-day shape was the foundation
+model's, unchanged. Section [Within-day shape](#within-day-shape) gives the 2.0 rule; `forecast(..., within_anchor=False)`
+reproduces 1.x exactly.
+
 ## Information at the origin
 
 A forecast at origin $o$ is a function of the following, and nothing else:
@@ -9,6 +13,7 @@ A forecast at origin $o$ is a function of the following, and nothing else:
 - the unit's category, which selects a fixed temperature-signature prior. The prior was fitted once on BDG2 windows
   ending before July 2016 and is never refitted;
 - a fixed temperature-anomaly scale set before the first origin;
+- the daylight-saving rule of the unit's region (EU, US or none), used only to match analog days;
 - the foundation model's forecasts from the 1,344 hours before $o$ and before each pseudo-origin $o-744k$.
 
 Weights are estimated at pseudo-origins inside the record.
@@ -32,6 +37,53 @@ are unchanged.
 These tests establish input isolation in the implementation. They do not show that the inputs themselves carry no
 later information. Three things lie upstream of the implementation: the providers' gap filling (imputed or zero-filled
 hours are masked where documented), later quality control of weather archives, and the pretraining corpora.
+
+## Inputs and features: the shared information set
+
+Every forecaster in the evaluation — ANKYRA and the five same-information baselines — was given the same information,
+fixed in writing before the baselines were run. ANKYRA receives it as the raw record (load, temperature, day types,
+category) and forms its own quantities from it; the baselines receive it as the engineered features their
+architectures accept. Nothing in the set is observed after the origin.
+
+**Hourly features** (past = the 1,344-hour context, future = the 744-hour horizon):
+
+| # | Feature | Past | Future | Construction | What ANKYRA makes of it |
+|---|---|:---:|:---:|---|---|
+| 1 | load | observed | — | per-unit z-score; statistics from the context or from before the training cutoff | level candidates, daily-path candidates, analog-day shapes, pseudo-origin errors, the foundation model's context |
+| 2 | temperature | observed | climatology | horizon values are the frozen annual harmonic fitted on pre-origin temperature; **observed future temperature is never used** | weather-adjusted level and path candidates (signature response), analog-day selection |
+| 3 | load one year earlier | ✓ | ✓ | $t-8{,}736$ h (52 weeks, weekday-aligned; always before $o$), same normalisation as 1, 0 where missing | the annual level and path candidates |
+| 4 | availability of 3 | ✓ | ✓ | 1 where feature 3 is observed | annual candidates switched off without support |
+| 5–6 | hour of day | sin, cos | sin, cos | period 24 | the hour grid of every block |
+| 7–8 | weekday | sin, cos | sin, cos | period 7 | day types Monday … Sunday |
+| 9–10 | day of year | sin, cos | sin, cos | period 365.25 | climatology phase, analog-day window (±14 days) |
+| 11 | holiday / non-working day | ✓ | ✓ | day type 7 (public holiday) or Saturday/Sunday | day type 7 in every day-typed quantity |
+
+Dimensions: 11 past, 10 future (features 2–11).
+
+**Static features** (one set per unit): the category (Industrial, Office, Public, Residential, Commercial; one-hot,
+the same label ANKYRA uses for its signature prior) and the log ratio of the long-history mean (at most 8,760 h) to the
+context mean. Six dimensions.
+
+**How each forecaster receives the set**
+
+| Forecaster | Receives | Not accepted by the architecture |
+|---|---|---|
+| ANKYRA | the raw record behind all 11 + 10 + 6 features, plus the foundation model's forecasts at $o$ and $o-744k$ | — |
+| TiDE | 11 past, 10 future, 6 static | — |
+| iTransformer-X | 11 past as variable channels, 6 static as constant channels | future covariates |
+| GBT-T | 21 features per forecast hour: three load aggregates, features 3–4, two temperature values, seven calendar values, the lead time, six static | — |
+| Chronos-2-X | features 2–11 as past and known-future covariates | static features |
+| TimesFM-X | features 2–11 through its linear covariate regression, the category as a categorical covariate | — |
+| PatchTST | 11 past + 6 static as channels, but channel-independent: its load forecast equals the load-only one | information between channels |
+| load-only models (TimesFM, Chronos-2, DLinear, iTransformer, LSTM, Holt–Winters, MSTL, naive and profile forecasters) | feature 1 only | — |
+| per-unit ridge | calendar and climatological temperature, refitted at every origin | — |
+
+**Deliberately excluded**: observed future weather; humidity and other meteorological variables (available for one
+population only); hand-made signal transforms (smoothing, wavelet, Fourier or EMD decompositions), which add no
+information and are a common source of look-ahead; load-derived statistics (used only inside GBT-T, which cannot read
+a sequence). The full specification, including the leakage assertions on every feature's time index, is in the study
+record (`EO_FAIR_BASELINES_SPEC_v1_20260928`); the evaluation summary is in
+[EVALUATION.md](EVALUATION.md#baselines).
 
 ## Three orthogonal blocks
 
@@ -112,8 +164,44 @@ without changing the level.
 
 ## Within-day shape
 
-The within-day block is the day-demeaned TimesFM 2.5 point forecast from the same 1,344 hours of load. No covariates
-or fine-tuning are used.
+**Foundation shape.** $w^T$ is the day-demeaned TimesFM 2.5 point forecast from the same 1,344 hours of load. No
+covariates or fine-tuning are used. In 1.x this was the within-day block.
+
+**Analog-day shape (2.0).** For each horizon day $d$, the unit's own *analog days* are the complete pre-origin days with
+the same calendar type, within ±14 days of the same day of year, in the same daylight-saving state, and preceded by a
+complete 744-hour window. Up to eight are kept: those closest in daily-mean temperature to the frozen climatology of
+day $d$ (ties: the more recent). An analog day's shape is its hourly load minus its own daily mean, divided by the raw
+standard deviation of the 744 hours before it; the target day's shape $S_d$ is the mean of the kept shapes times the
+origin scale $s_0$. A day with fewer than four analogs keeps $w^T_d$. If $\max|S|$ exceeds three times the largest
+absolute context value the whole window keeps $w^T$ (a guard against scale floors on near-constant records).
+
+**Anchoring.** For the lead blocks $k$ = days 1–7, 8–14, 15–21, 22–31,
+
+$$w_{d,h}=w^T_{d,h}+\omega_k\,(S_{d,h}-w^T_{d,h}),\qquad
+\omega_k=\min\Big(\mathrm{clip}(\hat\lambda_k,0,1)\,rac{n}{n+2},\ 	frac12\Big),$$
+
+$$\hat\lambda_k=rac{\sum_q\langle S_q-w^T_q,\ y_q-w^T_qangle_k}{\sum_q\Vert S_q-w^T_q\Vert_k^2},$$
+
+estimated over the unit's $n\le3$ completed pseudo-origin windows $q=o-744k'$, $k'=1,2,3$, where $S_q$ is the analog
+shape built from data before $q$, $w^T_q$ the foundation shape issued at $q$ and $y_q$ the realised within-day block.
+The weight is a least-squares weight on the disagreement between the two shapes, shrunk towards the foundation model
+(zero) and capped at one half. No pseudo-origin, or no disagreement, gives $\omega_k=0$ and the 1.x forecast.
+
+- Both $w^T$ and $S$ have zero daily means, so the level, the daily path, the energy readout and the peak readout are
+  unchanged by the anchoring (the delivered trajectory differs only where the projection onto $F\ge0$ acts).
+- The three pseudo-origin forecasts are among the six that ANKYRA already computes for the handover: no further
+  foundation-model call is needed.
+- The analog shape needs a previous year at the same dates. Records shorter than about 13 months give no analogs and
+  the block stays the foundation model's.
+- The rule was selected, from a family written down in advance, on three development populations and on the
+  pre-cutoff windows of the six test cohorts; its evaluation is described in
+  [EVALUATION.md](EVALUATION.md#within-day-anchoring-20).
+
+**History-only configuration.** `forecast(..., foundation=None)` returns the fixed division with the same-day-type
+within-day default (eight most recent days of each type) and no handover: a reduced configuration for ablation and for
+offline use without a foundation model. It was not part of the benchmark.
+
+Code: `ankyra/analog.py` (`AnalogShapes`, `within_trust`, `anchored_within_day`), `ankyra/core.py` (`forecast`).
 
 ## Week-by-week handover
 
@@ -199,5 +287,7 @@ Code: `ankyra/readouts.py`; the properties as operators: `theory/operators.py`.
 | Context / horizon | 1,344 h / 744 h | before any evaluation |
 | Pseudo-origins (history / model) | 12 / 6 | household development aggregates / Spanish development store |
 | $K_0$ level, daily path, handover | 8, 2, 2 | development data; never changed afterwards |
+| Within-day anchoring (2.0): pseudo-origins, shrinkage, cap | 3, $K_0=2$ towards 0, $\omega\le1/2$ | the candidate family of the second within-day round; selected on development populations and the pre-cutoff test windows |
+| Analog days: window, kept, required, guard | ±14 days of year, 8, 4, $3\times\max\lvert\text{context}\rvert$ | the similar-day definition of the earlier A-series rules (unchanged) |
 | Off-state threshold | $10^{-6}$ kW | the pre-existing zero-load threshold |
 | Peak envelope | 4 most recent same-type days, $\kappa=1$ | earlier peak-operator study |

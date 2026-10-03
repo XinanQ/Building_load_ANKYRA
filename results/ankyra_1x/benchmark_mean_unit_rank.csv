@@ -1,0 +1,374 @@
+set,tier,subset,model,model_label,mean_unit_rank,n_models
+BDG2 2017,test,full,TimesFM,TimesFM,5.4382,14
+BDG2 2017,test,full,RIDGE-L,Ridge (per unit),4.2247,14
+BDG2 2017,test,full,Chronos-2-X,Chronos-2-X,4.2416,14
+BDG2 2017,test,full,Chronos-2,Chronos-2,6.0393,14
+BDG2 2017,test,full,ANKYRA,ANKYRA,3.1236,14
+BDG2 2017,test,full,GBT,GBT (zero-shot),11.7697,14
+BDG2 2017,test,full,Holt-Winters,Holt-Winters,8.4185,14
+BDG2 2017,test,full,LYR-profile,Last-year profile,9.7388,14
+BDG2 2017,test,full,MSTL,MSTL,9.823,14
+BDG2 2017,test,full,SN-day,Seasonal naive (day),11.2135,14
+BDG2 2017,test,full,SN-week,Seasonal naive (week),9.7949,14
+BDG2 2017,test,full,SP-profile,Previous-month profile,8.632,14
+BDG2 2017,test,full,TimesFM-X,TimesFM-X,5.4213,14
+BDG2 2017,test,full,WeekProf4,4-week profile,7.1208,14
+BDG2 2017,test,late,TimesFM,TimesFM,8.4789,21
+BDG2 2017,test,late,RIDGE-L,Ridge (per unit),6.6479,21
+BDG2 2017,test,late,Chronos-2-X,Chronos-2-X,7.0775,21
+BDG2 2017,test,late,Chronos-2,Chronos-2,9.6901,21
+BDG2 2017,test,late,ANKYRA,ANKYRA,4.9507,21
+BDG2 2017,test,late,GBT,GBT (zero-shot),17.2324,21
+BDG2 2017,test,late,Holt-Winters,Holt-Winters,14.4859,21
+BDG2 2017,test,late,LYR-profile,Last-year profile,12.2465,21
+BDG2 2017,test,late,MSTL,MSTL,14.0,21
+BDG2 2017,test,late,SN-day,Seasonal naive (day),16.6197,21
+BDG2 2017,test,late,SN-week,Seasonal naive (week),14.5493,21
+BDG2 2017,test,late,SP-profile,Previous-month profile,14.7254,21
+BDG2 2017,test,late,TimesFM-X,TimesFM-X,8.507,21
+BDG2 2017,test,late,WeekProf4,4-week profile,12.8592,21
+BDG2 2017,test,late,DLinear,DLinear,8.331,21
+BDG2 2017,test,late,GBT-T,GBT-T,7.9577,21
+BDG2 2017,test,late,iTransformer-X,iTransformer-X,10.757,21
+BDG2 2017,test,late,iTransformer,iTransformer,10.3521,21
+BDG2 2017,test,late,LSTM,LSTM,12.4085,21
+BDG2 2017,test,late,PatchTST,PatchTST,10.5387,21
+BDG2 2017,test,late,TiDE,TiDE,8.5845,21
+Cambridge,test,full,TimesFM,TimesFM,5.3109,14
+Cambridge,test,full,RIDGE-L,Ridge (per unit),4.4622,14
+Cambridge,test,full,Chronos-2-X,Chronos-2-X,2.9328,14
+Cambridge,test,full,Chronos-2,Chronos-2,6.1345,14
+Cambridge,test,full,ANKYRA,ANKYRA,3.1849,14
+Cambridge,test,full,GBT,GBT (zero-shot),10.8067,14
+Cambridge,test,full,Holt-Winters,Holt-Winters,7.3529,14
+Cambridge,test,full,LYR-profile,Last-year profile,10.3782,14
+Cambridge,test,full,MSTL,MSTL,10.3445,14
+Cambridge,test,full,SN-day,Seasonal naive (day),12.8908,14
+Cambridge,test,full,SN-week,Seasonal naive (week),10.8992,14
+Cambridge,test,full,SP-profile,Previous-month profile,8.4118,14
+Cambridge,test,full,TimesFM-X,TimesFM-X,6.3277,14
+Cambridge,test,full,WeekProf4,4-week profile,5.563,14
+Cambridge,test,late,TimesFM,TimesFM,8.8889,21
+Cambridge,test,late,RIDGE-L,Ridge (per unit),7.1759,21
+Cambridge,test,late,Chronos-2-X,Chronos-2-X,6.7222,21
+Cambridge,test,late,Chronos-2,Chronos-2,9.4352,21
+Cambridge,test,late,ANKYRA,ANKYRA,5.6296,21
+Cambridge,test,late,GBT,GBT (zero-shot),14.8611,21
+Cambridge,test,late,Holt-Winters,Holt-Winters,12.8796,21
+Cambridge,test,late,LYR-profile,Last-year profile,16.6389,21
+Cambridge,test,late,MSTL,MSTL,14.9537,21
+Cambridge,test,late,SN-day,Seasonal naive (day),18.7593,21
+Cambridge,test,late,SN-week,Seasonal naive (week),15.6204,21
+Cambridge,test,late,SP-profile,Previous-month profile,14.1389,21
+Cambridge,test,late,TimesFM-X,TimesFM-X,9.1389,21
+Cambridge,test,late,WeekProf4,4-week profile,10.3519,21
+Cambridge,test,late,DLinear,DLinear,10.6019,21
+Cambridge,test,late,GBT-T,GBT-T,7.0,21
+Cambridge,test,late,iTransformer-X,iTransformer-X,5.5556,21
+Cambridge,test,late,iTransformer,iTransformer,7.7315,21
+Cambridge,test,late,LSTM,LSTM,15.0463,21
+Cambridge,test,late,PatchTST,PatchTST,7.9722,21
+Cambridge,test,late,TiDE,TiDE,11.8981,21
+HEEW Arizona,test,full,TimesFM,TimesFM,3.7958,14
+HEEW Arizona,test,full,RIDGE-L,Ridge (per unit),4.6479,14
+HEEW Arizona,test,full,Chronos-2-X,Chronos-2-X,4.0141,14
+HEEW Arizona,test,full,Chronos-2,Chronos-2,5.3873,14
+HEEW Arizona,test,full,ANKYRA,ANKYRA,2.5704,14
+HEEW Arizona,test,full,GBT,GBT (zero-shot),12.1268,14
+HEEW Arizona,test,full,Holt-Winters,Holt-Winters,9.0704,14
+HEEW Arizona,test,full,LYR-profile,Last-year profile,11.1197,14
+HEEW Arizona,test,full,MSTL,MSTL,8.5563,14
+HEEW Arizona,test,full,SN-day,Seasonal naive (day),11.5423,14
+HEEW Arizona,test,full,SN-week,Seasonal naive (week),9.4085,14
+HEEW Arizona,test,full,SP-profile,Previous-month profile,9.9296,14
+HEEW Arizona,test,full,TimesFM-X,TimesFM-X,4.7394,14
+HEEW Arizona,test,full,WeekProf4,4-week profile,8.0915,14
+HEEW Arizona,test,late,TimesFM,TimesFM,7.029,21
+HEEW Arizona,test,late,RIDGE-L,Ridge (per unit),7.2391,21
+HEEW Arizona,test,late,Chronos-2-X,Chronos-2-X,6.6377,21
+HEEW Arizona,test,late,Chronos-2,Chronos-2,8.5,21
+HEEW Arizona,test,late,ANKYRA,ANKYRA,5.0797,21
+HEEW Arizona,test,late,GBT,GBT (zero-shot),17.2681,21
+HEEW Arizona,test,late,Holt-Winters,Holt-Winters,13.3333,21
+HEEW Arizona,test,late,LYR-profile,Last-year profile,17.5326,21
+HEEW Arizona,test,late,MSTL,MSTL,12.3333,21
+HEEW Arizona,test,late,SN-day,Seasonal naive (day),15.4493,21
+HEEW Arizona,test,late,SN-week,Seasonal naive (week),13.9239,21
+HEEW Arizona,test,late,SP-profile,Previous-month profile,14.7101,21
+HEEW Arizona,test,late,TimesFM-X,TimesFM-X,7.5145,21
+HEEW Arizona,test,late,WeekProf4,4-week profile,12.3551,21
+HEEW Arizona,test,late,DLinear,DLinear,11.3116,21
+HEEW Arizona,test,late,GBT-T,GBT-T,7.6014,21
+HEEW Arizona,test,late,iTransformer-X,iTransformer-X,7.9203,21
+HEEW Arizona,test,late,iTransformer,iTransformer,9.5652,21
+HEEW Arizona,test,late,LSTM,LSTM,15.7319,21
+HEEW Arizona,test,late,PatchTST,PatchTST,8.4058,21
+HEEW Arizona,test,late,TiDE,TiDE,11.558,21
+EWELD,test,full,TimesFM,TimesFM,5.6405,14
+EWELD,test,full,RIDGE-L,Ridge (per unit),5.5639,14
+EWELD,test,full,Chronos-2-X,Chronos-2-X,6.1825,14
+EWELD,test,full,Chronos-2,Chronos-2,5.7847,14
+EWELD,test,full,ANKYRA,ANKYRA,4.615,14
+EWELD,test,full,GBT,GBT (zero-shot),10.6752,14
+EWELD,test,full,Holt-Winters,Holt-Winters,9.0328,14
+EWELD,test,full,LYR-profile,Last-year profile,11.1807,14
+EWELD,test,full,MSTL,MSTL,8.7226,14
+EWELD,test,full,SN-day,Seasonal naive (day),8.4872,14
+EWELD,test,full,SN-week,Seasonal naive (week),8.8339,14
+EWELD,test,full,SP-profile,Previous-month profile,7.2555,14
+EWELD,test,full,TimesFM-X,TimesFM-X,5.7628,14
+EWELD,test,full,WeekProf4,4-week profile,7.2628,14
+EWELD,test,late,TimesFM,TimesFM,7.9695,21
+EWELD,test,late,RIDGE-L,Ridge (per unit),8.9721,21
+EWELD,test,late,Chronos-2-X,Chronos-2-X,9.1726,21
+EWELD,test,late,Chronos-2,Chronos-2,8.1574,21
+EWELD,test,late,ANKYRA,ANKYRA,6.665,21
+EWELD,test,late,GBT,GBT (zero-shot),15.0558,21
+EWELD,test,late,Holt-Winters,Holt-Winters,12.2766,21
+EWELD,test,late,LYR-profile,Last-year profile,16.4594,21
+EWELD,test,late,MSTL,MSTL,12.0533,21
+EWELD,test,late,SN-day,Seasonal naive (day),11.4619,21
+EWELD,test,late,SN-week,Seasonal naive (week),12.2614,21
+EWELD,test,late,SP-profile,Previous-month profile,10.2005,21
+EWELD,test,late,TimesFM-X,TimesFM-X,9.2437,21
+EWELD,test,late,WeekProf4,4-week profile,10.1523,21
+EWELD,test,late,DLinear,DLinear,11.5533,21
+EWELD,test,late,GBT-T,GBT-T,13.7513,21
+EWELD,test,late,iTransformer-X,iTransformer-X,9.0558,21
+EWELD,test,late,iTransformer,iTransformer,10.0102,21
+EWELD,test,late,LSTM,LSTM,14.4365,21
+EWELD,test,late,PatchTST,PatchTST,10.1878,21
+EWELD,test,late,TiDE,TiDE,11.9036,21
+GoiEner non-household,test,full,TimesFM,TimesFM,5.107,13
+GoiEner non-household,test,full,Chronos-2-X,Chronos-2-X,4.7695,13
+GoiEner non-household,test,full,Chronos-2,Chronos-2,4.6481,13
+GoiEner non-household,test,full,ANKYRA,ANKYRA,3.8128,13
+GoiEner non-household,test,full,GBT,GBT (zero-shot),8.9527,13
+GoiEner non-household,test,full,Holt-Winters,Holt-Winters,7.3477,13
+GoiEner non-household,test,full,LYR-profile,Last-year profile,8.823,13
+GoiEner non-household,test,full,MSTL,MSTL,8.8745,13
+GoiEner non-household,test,full,SN-day,Seasonal naive (day),9.1811,13
+GoiEner non-household,test,full,SN-week,Seasonal naive (week),9.8971,13
+GoiEner non-household,test,full,SP-profile,Previous-month profile,7.3107,13
+GoiEner non-household,test,full,TimesFM-X,TimesFM-X,4.9012,13
+GoiEner non-household,test,full,WeekProf4,4-week profile,7.3745,13
+GoiEner non-household,test,late,TimesFM,TimesFM,8.5811,21
+GoiEner non-household,test,late,Chronos-2-X,Chronos-2-X,7.6341,21
+GoiEner non-household,test,late,Chronos-2,Chronos-2,8.0998,21
+GoiEner non-household,test,late,ANKYRA,ANKYRA,6.3628,21
+GoiEner non-household,test,late,GBT,GBT (zero-shot),15.7921,21
+GoiEner non-household,test,late,Holt-Winters,Holt-Winters,12.8358,21
+GoiEner non-household,test,late,LYR-profile,Last-year profile,14.6757,21
+GoiEner non-household,test,late,MSTL,MSTL,15.1538,21
+GoiEner non-household,test,late,SN-day,Seasonal naive (day),14.8108,21
+GoiEner non-household,test,late,SN-week,Seasonal naive (week),16.027,21
+GoiEner non-household,test,late,SP-profile,Previous-month profile,13.3243,21
+GoiEner non-household,test,late,TimesFM-X,TimesFM-X,8.3617,21
+GoiEner non-household,test,late,WeekProf4,4-week profile,13.7796,21
+GoiEner non-household,test,late,DLinear,DLinear,8.9356,21
+GoiEner non-household,test,late,GBT-T,GBT-T,14.6486,21
+GoiEner non-household,test,late,iTransformer-X,iTransformer-X,7.2931,21
+GoiEner non-household,test,late,iTransformer,iTransformer,6.6798,21
+GoiEner non-household,test,late,LSTM,LSTM,11.1871,21
+GoiEner non-household,test,late,PatchTST,PatchTST,10.0146,21
+GoiEner non-household,test,late,RIDGE-L,Ridge (per unit),6.9356,21
+GoiEner non-household,test,late,TiDE,TiDE,9.8669,21
+GoiEner households,test,full,TimesFM,TimesFM,5.5095,14
+GoiEner households,test,full,RIDGE-L,Ridge (per unit),3.8963,14
+GoiEner households,test,full,Chronos-2-X,Chronos-2-X,5.5978,14
+GoiEner households,test,full,Chronos-2,Chronos-2,5.4229,14
+GoiEner households,test,full,ANKYRA,ANKYRA,3.9639,14
+GoiEner households,test,full,GBT,GBT (zero-shot),8.9775,14
+GoiEner households,test,full,Holt-Winters,Holt-Winters,7.9342,14
+GoiEner households,test,full,LYR-profile,Last-year profile,11.9878,14
+GoiEner households,test,full,MSTL,MSTL,11.119,14
+GoiEner households,test,full,SN-day,Seasonal naive (day),10.0784,14
+GoiEner households,test,full,SN-week,Seasonal naive (week),11.0068,14
+GoiEner households,test,full,SP-profile,Previous-month profile,6.3886,14
+GoiEner households,test,full,TimesFM-X,TimesFM-X,5.0099,14
+GoiEner households,test,full,WeekProf4,4-week profile,8.1073,14
+GoiEner households,test,late,TimesFM,TimesFM,9.6013,21
+GoiEner households,test,late,RIDGE-L,Ridge (per unit),6.5589,21
+GoiEner households,test,late,Chronos-2-X,Chronos-2-X,9.5489,21
+GoiEner households,test,late,Chronos-2,Chronos-2,9.1566,21
+GoiEner households,test,late,ANKYRA,ANKYRA,7.3125,21
+GoiEner households,test,late,GBT,GBT (zero-shot),14.9167,21
+GoiEner households,test,late,Holt-Winters,Holt-Winters,12.6451,21
+GoiEner households,test,late,LYR-profile,Last-year profile,18.1171,21
+GoiEner households,test,late,MSTL,MSTL,16.8635,21
+GoiEner households,test,late,SN-day,Seasonal naive (day),15.1559,21
+GoiEner households,test,late,SN-week,Seasonal naive (week),16.3032,21
+GoiEner households,test,late,SP-profile,Previous-month profile,11.1954,21
+GoiEner households,test,late,TimesFM-X,TimesFM-X,8.5129,21
+GoiEner households,test,late,WeekProf4,4-week profile,12.8003,21
+GoiEner households,test,late,DLinear,DLinear,9.273,21
+GoiEner households,test,late,GBT-T,GBT-T,9.6451,21
+GoiEner households,test,late,iTransformer-X,iTransformer-X,8.2083,21
+GoiEner households,test,late,iTransformer,iTransformer,8.8261,21
+GoiEner households,test,late,LSTM,LSTM,9.1968,21
+GoiEner households,test,late,PatchTST,PatchTST,7.908,21
+GoiEner households,test,late,TiDE,TiDE,9.2543,21
+Oslo,preview,full,TimesFM,TimesFM,5.2667,14
+Oslo,preview,full,RIDGE-L,Ridge (per unit),4.8,14
+Oslo,preview,full,Chronos-2-X,Chronos-2-X,1.7556,14
+Oslo,preview,full,Chronos-2,Chronos-2,5.2889,14
+Oslo,preview,full,ANKYRA,ANKYRA,2.5111,14
+Oslo,preview,full,GBT,GBT (zero-shot),11.8,14
+Oslo,preview,full,Holt-Winters,Holt-Winters,8.4,14
+Oslo,preview,full,LYR-profile,Last-year profile,7.8444,14
+Oslo,preview,full,MSTL,MSTL,10.0222,14
+Oslo,preview,full,SN-day,Seasonal naive (day),13.8889,14
+Oslo,preview,full,SN-week,Seasonal naive (week),10.5778,14
+Oslo,preview,full,SP-profile,Previous-month profile,10.5778,14
+Oslo,preview,full,TimesFM-X,TimesFM-X,5.1333,14
+Oslo,preview,full,WeekProf4,4-week profile,7.1333,14
+Oslo,preview,late,TimesFM,TimesFM,9.6829,21
+Oslo,preview,late,RIDGE-L,Ridge (per unit),9.4634,21
+Oslo,preview,late,Chronos-2-X,Chronos-2-X,4.8537,21
+Oslo,preview,late,Chronos-2,Chronos-2,9.6341,21
+Oslo,preview,late,ANKYRA,ANKYRA,5.7805,21
+Oslo,preview,late,GBT,GBT (zero-shot),18.5854,21
+Oslo,preview,late,Holt-Winters,Holt-Winters,14.5122,21
+Oslo,preview,late,LYR-profile,Last-year profile,13.6341,21
+Oslo,preview,late,MSTL,MSTL,16.7561,21
+Oslo,preview,late,SN-day,Seasonal naive (day),20.5366,21
+Oslo,preview,late,SN-week,Seasonal naive (week),16.561,21
+Oslo,preview,late,SP-profile,Previous-month profile,17.2439,21
+Oslo,preview,late,TimesFM-X,TimesFM-X,10.0244,21
+Oslo,preview,late,WeekProf4,4-week profile,13.1951,21
+Oslo,preview,late,DLinear,DLinear,9.439,21
+Oslo,preview,late,GBT-T,GBT-T,2.122,21
+Oslo,preview,late,iTransformer-X,iTransformer-X,3.1707,21
+Oslo,preview,late,iTransformer,iTransformer,5.7073,21
+Oslo,preview,late,LSTM,LSTM,14.8293,21
+Oslo,preview,late,PatchTST,PatchTST,5.8049,21
+Oslo,preview,late,TiDE,TiDE,9.4634,21
+Drammen,preview,full,TimesFM,TimesFM,5.4444,14
+Drammen,preview,full,RIDGE-L,Ridge (per unit),2.1556,14
+Drammen,preview,full,Chronos-2-X,Chronos-2-X,1.7111,14
+Drammen,preview,full,Chronos-2,Chronos-2,4.3333,14
+Drammen,preview,full,ANKYRA,ANKYRA,2.8222,14
+Drammen,preview,full,GBT,GBT (zero-shot),11.5333,14
+Drammen,preview,full,Holt-Winters,Holt-Winters,9.1556,14
+Drammen,preview,full,LYR-profile,Last-year profile,9.6889,14
+Drammen,preview,full,MSTL,MSTL,9.0667,14
+Drammen,preview,full,SN-day,Seasonal naive (day),13.2,14
+Drammen,preview,full,SN-week,Seasonal naive (week),9.1111,14
+Drammen,preview,full,SP-profile,Previous-month profile,12.1333,14
+Drammen,preview,full,TimesFM-X,TimesFM-X,5.0667,14
+Drammen,preview,full,WeekProf4,4-week profile,9.5778,14
+Drammen,preview,late,TimesFM,TimesFM,11.3953,21
+Drammen,preview,late,RIDGE-L,Ridge (per unit),4.1395,21
+Drammen,preview,late,Chronos-2-X,Chronos-2-X,2.8372,21
+Drammen,preview,late,Chronos-2,Chronos-2,9.5349,21
+Drammen,preview,late,ANKYRA,ANKYRA,6.3721,21
+Drammen,preview,late,GBT,GBT (zero-shot),18.3256,21
+Drammen,preview,late,Holt-Winters,Holt-Winters,15.0,21
+Drammen,preview,late,LYR-profile,Last-year profile,15.7907,21
+Drammen,preview,late,MSTL,MSTL,15.5581,21
+Drammen,preview,late,SN-day,Seasonal naive (day),20.0233,21
+Drammen,preview,late,SN-week,Seasonal naive (week),15.8605,21
+Drammen,preview,late,SP-profile,Previous-month profile,18.8372,21
+Drammen,preview,late,TimesFM-X,TimesFM-X,9.0698,21
+Drammen,preview,late,WeekProf4,4-week profile,16.3953,21
+Drammen,preview,late,DLinear,DLinear,6.8372,21
+Drammen,preview,late,GBT-T,GBT-T,5.3023,21
+Drammen,preview,late,iTransformer-X,iTransformer-X,5.4186,21
+Drammen,preview,late,iTransformer,iTransformer,5.2558,21
+Drammen,preview,late,LSTM,LSTM,15.2326,21
+Drammen,preview,late,PatchTST,PatchTST,5.9535,21
+Drammen,preview,late,TiDE,TiDE,7.8605,21
+CINELDI,preview,full,TimesFM,TimesFM,5.4,14
+CINELDI,preview,full,RIDGE-L,Ridge (per unit),3.2889,14
+CINELDI,preview,full,Chronos-2-X,Chronos-2-X,4.6,14
+CINELDI,preview,full,Chronos-2,Chronos-2,4.2889,14
+CINELDI,preview,full,ANKYRA,ANKYRA,2.9556,14
+CINELDI,preview,full,GBT,GBT (zero-shot),10.4667,14
+CINELDI,preview,full,Holt-Winters,Holt-Winters,7.7778,14
+CINELDI,preview,full,LYR-profile,Last-year profile,11.3778,14
+CINELDI,preview,full,MSTL,MSTL,10.8667,14
+CINELDI,preview,full,SN-day,Seasonal naive (day),13.0222,14
+CINELDI,preview,full,SN-week,Seasonal naive (week),10.9333,14
+CINELDI,preview,full,SP-profile,Previous-month profile,7.9333,14
+CINELDI,preview,full,TimesFM-X,TimesFM-X,5.7778,14
+CINELDI,preview,full,WeekProf4,4-week profile,6.3111,14
+CINELDI,preview,late,TimesFM,TimesFM,9.2889,21
+CINELDI,preview,late,RIDGE-L,Ridge (per unit),5.8889,21
+CINELDI,preview,late,Chronos-2-X,Chronos-2-X,9.4,21
+CINELDI,preview,late,Chronos-2,Chronos-2,7.9333,21
+CINELDI,preview,late,ANKYRA,ANKYRA,6.4,21
+CINELDI,preview,late,GBT,GBT (zero-shot),16.2889,21
+CINELDI,preview,late,Holt-Winters,Holt-Winters,13.0889,21
+CINELDI,preview,late,LYR-profile,Last-year profile,17.5111,21
+CINELDI,preview,late,MSTL,MSTL,17.2,21
+CINELDI,preview,late,SN-day,Seasonal naive (day),19.4667,21
+CINELDI,preview,late,SN-week,Seasonal naive (week),17.0444,21
+CINELDI,preview,late,SP-profile,Previous-month profile,13.7778,21
+CINELDI,preview,late,TimesFM-X,TimesFM-X,9.3333,21
+CINELDI,preview,late,WeekProf4,4-week profile,11.4444,21
+CINELDI,preview,late,DLinear,DLinear,7.3333,21
+CINELDI,preview,late,GBT-T,GBT-T,7.8444,21
+CINELDI,preview,late,iTransformer-X,iTransformer-X,5.3556,21
+CINELDI,preview,late,iTransformer,iTransformer,6.8667,21
+CINELDI,preview,late,LSTM,LSTM,16.1111,21
+CINELDI,preview,late,PatchTST,PatchTST,6.6889,21
+CINELDI,preview,late,TiDE,TiDE,6.7333,21
+Suzhou park,preview,full,TimesFM,TimesFM,4.25,14
+Suzhou park,preview,full,RIDGE-L,Ridge (per unit),2.75,14
+Suzhou park,preview,full,Chronos-2-X,Chronos-2-X,5.25,14
+Suzhou park,preview,full,Chronos-2,Chronos-2,7.25,14
+Suzhou park,preview,full,ANKYRA,ANKYRA,1.75,14
+Suzhou park,preview,full,GBT,GBT (zero-shot),13.0,14
+Suzhou park,preview,full,Holt-Winters,Holt-Winters,12.5,14
+Suzhou park,preview,full,LYR-profile,Last-year profile,8.75,14
+Suzhou park,preview,full,MSTL,MSTL,6.75,14
+Suzhou park,preview,full,SN-day,Seasonal naive (day),9.0,14
+Suzhou park,preview,full,SN-week,Seasonal naive (week),10.0,14
+Suzhou park,preview,full,SP-profile,Previous-month profile,10.25,14
+Suzhou park,preview,full,TimesFM-X,TimesFM-X,4.75,14
+Suzhou park,preview,full,WeekProf4,4-week profile,8.75,14
+Suzhou park,preview,late,TimesFM,TimesFM,8.25,21
+Suzhou park,preview,late,RIDGE-L,Ridge (per unit),5.5,21
+Suzhou park,preview,late,Chronos-2-X,Chronos-2-X,11.5,21
+Suzhou park,preview,late,Chronos-2,Chronos-2,13.0,21
+Suzhou park,preview,late,ANKYRA,ANKYRA,4.25,21
+Suzhou park,preview,late,GBT,GBT (zero-shot),18.75,21
+Suzhou park,preview,late,Holt-Winters,Holt-Winters,19.25,21
+Suzhou park,preview,late,LYR-profile,Last-year profile,16.75,21
+Suzhou park,preview,late,MSTL,MSTL,11.75,21
+Suzhou park,preview,late,SN-day,Seasonal naive (day),15.5,21
+Suzhou park,preview,late,SN-week,Seasonal naive (week),15.25,21
+Suzhou park,preview,late,SP-profile,Previous-month profile,15.75,21
+Suzhou park,preview,late,TimesFM-X,TimesFM-X,4.25,21
+Suzhou park,preview,late,WeekProf4,4-week profile,14.25,21
+Suzhou park,preview,late,DLinear,DLinear,5.5,21
+Suzhou park,preview,late,GBT-T,GBT-T,6.5,21
+Suzhou park,preview,late,iTransformer-X,iTransformer-X,7.5,21
+Suzhou park,preview,late,iTransformer,iTransformer,11.0,21
+Suzhou park,preview,late,LSTM,LSTM,8.0,21
+Suzhou park,preview,late,PatchTST,PatchTST,12.5,21
+Suzhou park,preview,late,TiDE,TiDE,6.0,21
+LCL households,reserved,full,TimesFM,TimesFM,3.9596,10
+LCL households,reserved,full,RIDGE-L,Ridge (per unit),2.9886,10
+LCL households,reserved,full,Chronos-2,Chronos-2,3.601,10
+LCL households,reserved,full,ANKYRA,ANKYRA,2.7109,10
+LCL households,reserved,full,GBT,GBT (zero-shot),7.4829,10
+LCL households,reserved,full,LYR-profile,Last-year profile,8.515,10
+LCL households,reserved,full,SN-day,Seasonal naive (day),8.0606,10
+LCL households,reserved,full,SN-week,Seasonal naive (week),8.3093,10
+LCL households,reserved,full,SP-profile,Previous-month profile,4.0228,10
+LCL households,reserved,full,WeekProf4,4-week profile,5.3492,10
+LCL households,reserved,late,TimesFM,TimesFM,6.6479,14
+LCL households,reserved,late,RIDGE-L,Ridge (per unit),4.2901,14
+LCL households,reserved,late,Chronos-2,Chronos-2,5.8676,14
+LCL households,reserved,late,ANKYRA,ANKYRA,4.7155,14
+LCL households,reserved,late,GBT,GBT (zero-shot),11.5887,14
+LCL households,reserved,late,LYR-profile,Last-year profile,12.2641,14
+LCL households,reserved,late,SN-day,Seasonal naive (day),11.6218,14
+LCL households,reserved,late,SN-week,Seasonal naive (week),11.9789,14
+LCL households,reserved,late,SP-profile,Previous-month profile,6.0746,14
+LCL households,reserved,late,WeekProf4,4-week profile,8.138,14
+LCL households,reserved,late,DLinear,DLinear,4.8803,14
+LCL households,reserved,late,iTransformer,iTransformer,4.5577,14
+LCL households,reserved,late,LSTM,LSTM,7.6394,14
+LCL households,reserved,late,PatchTST,PatchTST,4.7352,14

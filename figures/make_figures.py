@@ -136,10 +136,12 @@ def fig_architecture():
     txt(25.1, 29.1, "seven historical candidate paths: 8-, 4- and 2-week\nday types, the annual window, the weather response", fs=5.9)
     txt(25.1, 22.5, r"same error weighting ($K_0$ = 2);  $\Sigma_d\, b_d = 0$", fs=5.9)
     spark(51.0, 20.8, 9.2, 3.4, [0.25, 0.9, 0.85, 0.9, 0.8, 0.12, 0.05] * 2, HIST, lw=0.8, step=True)
-    box(24, 2, 37.5, 14.5, r"Within-day shape  $w$", "#F2F0F8", "#B4ADD6", tc=FM)
-    txt(25.1, 12.3, "day-demeaned TimesFM trajectory\nthe foundation model's most reliable block", fs=5.9)
+    box(24, 2, 37.5, 14.5, r"Within-day shape  $w$", "#F6F1F4", "#C4A3C9", tc=FM)
+    txt(25.1, 12.3, r"day-demeaned TimesFM trajectory  $w^{T}$", color=FM, fs=5.9)
+    txt(25.1, 9.7, r"+ the unit's analog-day shape  $S$: same day type," + "\n±14 days of year, up to 8 past days", color=HIST, fs=5.6)
+    txt(25.1, 4.6, r"$w=w^{T}+\omega_k\,(S-w^{T})$,  $\omega_k\leq$ ½ from the unit's errors" + "\nat 3 pseudo-origins, shrunk to 0 (2.0)", fs=5.4)
     tt = np.linspace(0, 3, 160)
-    spark(49.5, 3.4, 11.0, 4.2, np.sin(2 * np.pi * tt - 1.6) + 0.35 * np.sin(4 * np.pi * tt), FM, lw=0.8)
+    spark(51.5, 11.0, 9.0, 3.6, np.sin(2 * np.pi * tt - 1.6) + 0.35 * np.sin(4 * np.pi * tt), FM, lw=0.8)
 
     # ---- handover
     box(65.2, 18.5, 17.4, 31.8, "Week-by-week\nhandover", "#FBEDEE", "#E3A0A6", tc=ANKYRA)
@@ -173,6 +175,7 @@ def fig_architecture():
     arrow([(20.5, 43.0), (23.7, 43.0)], HIST)
     arrow([(20.5, 25.9), (23.7, 25.9)], HIST)
     arrow([(20.5, 9.2), (23.7, 9.2)], FM)
+    arrow([(20.5, 20.3), (22.3, 20.3), (22.3, 14.2), (23.7, 14.2)], HIST)
     arrow([(61.8, 43.0), (64.9, 43.0)], HIST)
     arrow([(61.8, 25.9), (64.9, 25.9)], HIST)
     arrow([(82.9, 34.4), (85.1, 34.4)], ANKYRA, lw=1.1)
@@ -180,10 +183,10 @@ def fig_architecture():
     arrow([(92.4, 18.2), (92.4, 16.8)], g)
 
     ax.text(50, -0.4, r"Exact identity:  $\mathrm{MSE}=\ell(e)^2+\langle b_d(e)^2\rangle_d+\langle w_{d,h}(e)^2\rangle_{d,h}$"
-            "  — the blocks are orthogonal, so each source can be scored and replaced block by block.",
+            "  — the blocks are orthogonal, so each source is scored and anchored block by block (all three since 2.0).",
             ha="center", va="top", fontsize=6.4, color=GREY)
     ax.legend(handles=[Patch(fc=HIST, label="from the unit's own history"), Patch(fc=FM, label="from TimesFM 2.5"),
-                       Patch(fc=ANKYRA, label="ANKYRA's handover")], loc="lower center", bbox_to_anchor=(0.5, 0.0), ncol=3,
+                       Patch(fc=ANKYRA, label="ANKYRA's error-weighted handovers")], loc="lower center", bbox_to_anchor=(0.5, 0.0), ncol=3,
               fontsize=6.1, handlelength=1.0, handleheight=0.7, columnspacing=1.6, frameon=False)
     save(fig, "fig1_architecture")
 
@@ -336,8 +339,9 @@ def fig_mechanism():
         return lambda s_: next((rr for rr in hg if rr["set"] == s_ and rr["contrast"] == key), None)
 
     ax = fig.add_subplot(gs[0, 0])
-    forest(ax, [(ab_row("fixed division"), "o", ANKYRA, 0.17, "vs fixed division (F0)"), (ab_row("without off-state"), "D", "#4D4D4D", -0.17, "vs no off-state rule (F1)")],
-           "a   Ablation", "ANKYRA improvement (%)", "lower right")
+    forest(ax, [(ab_row("fixed division"), "o", ANKYRA, 0.22, "vs fixed division (F0)"), (ab_row("without off-state"), "D", "#4D4D4D", 0.0, "vs no off-state rule (F1)"),
+                (ab_row("ANKYRA 1.x"), "s", HIST, -0.22, "vs 1.x (no within-day anchoring)")],
+           "a   Ablation", "ANKYRA 2.0 improvement (%)", "lower right")
     ax.text(ax.get_xlim()[1], y[0] + 0.25, "test sets ", fontsize=6, color="#4A6FA5", fontstyle="italic", ha="right", va="center")
     ax.set_ylim(y[-1] - 0.75, y[0] + 0.65)
     dx = fig.add_subplot(gs[0, 1])
@@ -374,14 +378,14 @@ def fig_mechanism():
     cx.set_ylabel(r"Mean weight on the model  $\alpha_w$", fontsize=6.8)
     cx.set_title("d   Estimated handover", fontsize=7.6)
     cx.legend(fontsize=5.9, loc="upper right", handlelength=1.4)
-    fig.text(0.105, 0.985, "a–b: shaded rows are the six test sets; filled markers exclude zero. c–d: Cambridge, CINELDI and HEEW, scored for the first time "
-             "after the handover had been fixed.", fontsize=6.2, color=GREY, va="top")
+    fig.text(0.105, 0.985, "a: 2.0 against its reduced versions (shaded rows: test sets; filled markers exclude zero). b–d: the daily-mean handover, unchanged since 1.x, "
+             "on Cambridge, CINELDI and HEEW, scored for the first time after it had been fixed.", fontsize=6.2, color=GREY, va="top")
     save(fig, "fig4_handover_and_ablation")
 
 
 # ============================================================================ Figure 5: peak operator
 def fig_peak():
-    pk = rows("peak_readout.csv"); order = TEST + PREVIEW + RESERVED
+    pk = rows("peak_readout.csv"); order = [s_ for s_ in TEST + PREVIEW + RESERVED if any(rr["set"] == s_ for rr in pk)]   # 2.0: LCL not scored
     fig, (ax, bx) = plt.subplots(1, 2, figsize=(7.2, 2.7), sharey=True)
     fig.subplots_adjust(left=0.11, right=0.99, top=0.80, bottom=0.17, wspace=0.08)
     y = np.arange(len(order))[::-1]

@@ -134,6 +134,11 @@ ratios (P19 in [theory/PROOFS.md](../theory/PROOFS.md)). No single summary is th
 
 ## Results
 
+All results below are for **ANKYRA 2.0**. The 1.x results, scored on the same windows, are kept unchanged in
+[`results/ankyra_1x/`](../results/ankyra_1x/); 2.0 against 1.x is in the ablation table and in
+[Within-day anchoring (2.0)](#within-day-anchoring-20), which also states how the 2.0 evidence differs in status from
+the 1.x evidence.
+
 ### Test populations (late windows, 21 forecasters)
 
 Primary estimand first: the unit-equal improvement $100[1-\exp(r)]$ in hourly RMS against each forecaster. The rank
@@ -141,16 +146,17 @@ rows at the bottom are a secondary summary.
 
 | | BDG2 | Cambridge | HEEW | EWELD | GoiEner NH | GoiEner HH |
 |---|---:|---:|---:|---:|---:|---:|
-| vs TiDE | +13.6 * | +16.3 * | +18.9 * | +33.1 * | +13.8 * | +14.7 * |
-| vs iTransformer-X | +3.5 | −1.5 | +5.3 * | +20.3 * | +5.8 | +12.0 * |
-| vs GBT-T ‡ | +15.2 * | +2.6 | +5.6 * | +46.0 * | +29.6 * | +16.0 * |
-| vs Chronos-2-X | −39.6 † | −0.4 | +1.0 | +14.2 * | −2.5 | +0.3 |
-| vs TimesFM-X | +5.6 | +7.1 * | +4.9 | +16.3 * | +4.6 * | +2.9 |
-| vs TimesFM (load only) | −54.8 † | +5.6 * | +2.8 | +2.1 | +1.7 | −3.8 (+) |
-| Resolved better than, of 20 | 10 | 16 | 16 | 18 | 15 | 16 |
+| vs TiDE | +14.4 * | +18.7 * | +19.5 * | +33.3 * | +17.1 * | +14.6 * |
+| vs iTransformer-X | +4.4 | +1.5 | +6.0 * | +20.6 * | +9.4 * | +11.9 * |
+| vs GBT-T ‡ | +15.9 * | +5.4 | +6.4 * | +46.2 * | +32.3 * | +15.9 * |
+| vs Chronos-2-X | −38.3 † | +2.5 | +1.8 | +14.5 * | +1.4 | +0.1 |
+| vs TimesFM-X | +6.5 | +9.8 * | +5.7 * | +16.7 * | +8.2 * | +2.8 |
+| vs TimesFM (load only) | −53.4 † | +8.3 * | +3.6 | +2.5 | +5.5 | −3.9 (+) |
+| vs ANKYRA 1.x (own earlier version) | +0.9 * | +2.9 * | +0.8 * | +0.4 | +3.8 * | −0.1 |
+| Resolved better than, of 20 | 10 | 17 | 17 | 18 | 17 | 16 |
 | Resolved worse than, of 20 | 0 | 0 | 0 | 0 | 0 | 1 |
-| ANKYRA mean per-unit rank | **5.0** | 5.6 | **5.1** | **6.7** | **6.4** | 7.3 |
-| ANKYRA position | 1 | 2 | 1 | 1 | 1 | 2 |
+| ANKYRA mean per-unit rank | **4.6** | **4.6** | **4.8** | **6.6** | **5.2** | 7.2 |
+| ANKYRA position | 1 | 1 | 1 | 1 | 1 | 2 |
 
 \* resolved in ANKYRA's favour; (+) resolved against ANKYRA. ‡ Corrected implementation; see
 [Correction of the GBT-T baseline](#correction-of-the-gbt-t-baseline).
@@ -158,9 +164,9 @@ rows at the bottom are a secondary summary.
 † BDG2 unit means are dominated by three meters reading about 0.0002 kW. The full result is kept, and a sensitivity
 analysis is reported beside it:
 
-- without the three meters (11 of 474 windows), the improvement is +1.6% against TimesFM and −3.0% against Chronos-2-X;
+- without the three meters (11 of 474 windows), the improvement is +2.5% against TimesFM and −2.1% against Chronos-2-X;
 - the intervals stay wide, because other low-load units also carry extreme ratios;
-- ANKYRA's mean rank is 4.95 with the three meters and 4.73 without them, first either way;
+- ANKYRA's mean rank is 4.60 with the three meters and 4.37 without them, first either way;
 - against all nine models of Figure 3, the median unit favours ANKYRA (58–92% of units).
 
 The three meters are the BDG2 units whose largest hourly load over their panel windows is at most 0.001 kW
@@ -171,35 +177,36 @@ Mean per-unit rank averaged over the six test populations:
 
 | Forecaster | Mean rank |
 |---|---:|
-| **ANKYRA** | **6.00** |
-| per-unit ridge | 7.25 |
-| Chronos-2-X | 7.80 |
-| iTransformer-X | 8.13 |
-| TimesFM | 8.42 |
-| TimesFM-X | 8.55 |
+| **ANKYRA 2.0** | **5.51** |
+| per-unit ridge | 7.30 |
+| Chronos-2-X | 7.84 |
+| iTransformer-X | 8.17 |
+| TimesFM | 8.45 |
+| TimesFM-X | 8.56 |
 
-By position, ANKYRA is first or second on each of the six test populations. No other forecaster is in the top two on
-more than two of them: the per-unit ridge ranges from first to fifth, Chronos-2-X to 11th, TimesFM to 12th and GBT-T to
-18th (Figure 12).
+(ANKYRA 1.x: 6.00.) By position, ANKYRA 2.0 is first on five of the six test populations and second on households. No
+other forecaster is in the top two on more than two of them (Figure 12).
 
 ![Position on every population](../figures/fig12_consistency.png)
 
 ### Preview and reserved populations
 
-- **Oslo:** GBT-T (−18.0%) and iTransformer-X (−9.2%) are resolvably better than ANKYRA. ANKYRA ranks 5th of 21 in
-  the late windows.
-- **Drammen:** several trained models have small unresolved leads (7th of 21).
-- **CINELDI:** 3rd of 21.
+- **Oslo:** GBT-T (−12.8%) is resolvably better than ANKYRA 2.0; iTransformer-X (−4.4%) is not resolved. ANKYRA ranks
+  3rd of 21 in the late windows (1.x: 5th, with GBT-T −18.0% and iTransformer-X −9.2%).
+- **Drammen:** 2nd of 21; no contrast resolved against ANKYRA (1.x: 7th).
+- **CINELDI:** 1st of 21 (1.x: 3rd).
 - **Suzhou park:** 1st of 21.
-- **LCL** (load-only comparison): 3rd of 14.
+- **LCL** was not scored for 2.0; it remains the reserved population. The 1.x load-only comparison (3rd of 14) is in
+  [`results/ankyra_1x/`](../results/ankyra_1x/).
 
-Across all ten scored populations ANKYRA's mean rank is 5.88, ahead of the per-unit ridge (6.85), iTransformer-X (7.02)
-and Chronos-2-X (7.54).
+Across the ten scored populations ANKYRA 2.0's mean rank is 4.92, ahead of the per-unit ridge (6.96), iTransformer-X
+(7.10) and Chronos-2-X (7.63).
 
-**Full windows.** The comparison without the trained models covers 14 forecasters on all 11 populations:
+**Full windows.** The comparison without the trained models covers 14 forecasters on the ten populations scored for
+2.0 (LCL, the reserved population, was scored for 1.x only):
 
-- ANKYRA ranks first on seven;
-- its mean rank is 3.09, against 3.88 for the ridge and 4.11 for Chronos-2-X;
+- ANKYRA 2.0 ranks first on 8 and second on the other two (Drammen, households);
+- its mean rank is 2.73, against 4.06 for the ridge and 4.23 for Chronos-2-X;
 - no contrast is resolved against it.
 
 ### Loss metrics of every forecaster
@@ -213,16 +220,16 @@ more; CV(RMSE) and WAPE are taken at the median unit.
 
 | ANKYRA's position among 21 | BDG2 | Cambridge | HEEW | EWELD | GoiEner NH | GoiEner HH | Suzhou park |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| RMSE (unit mean) | 1 | 2 | 2 | 2 | 3 | 2 | 1 |
-| MAE (unit mean) | 1 | 3 | 2 | 3 | 4 | 5 | 1 |
-| CV(RMSE) (median unit) | 3 | 2 | 1 | 2 | 2 | 2 | 2 |
-| WAPE (median unit) | 2 | 2 | 2 | 2 | 4 | 5 | 2 |
-| WAPE (pooled) | 2 | 3 | 3 | 3 | 4 | 5 | 1 |
+| RMSE (unit mean) | 1 | 2 | 2 | 2 | 2 | 2 | 1 |
+| MAE (unit mean) | 1 | 2 | 2 | 3 | 2 | 5 | 1 |
+| CV(RMSE) (median unit) | 2 | 2 | 2 | 1 | 2 | 2 | 2 |
+| WAPE (median unit) | 2 | 2 | 3 | 2 | 4 | 5 | 1 |
+| WAPE (pooled) | 2 | 2 | 2 | 3 | 3 | 5 | 1 |
 
-- ANKYRA is between first and fifth on every metric and population, and first in 5 of the 28 cells of the figure. No
+- ANKYRA is between first and fifth on every metric and population, and first in 6 of the 28 cells of the figure. No
   baseline is lower on all of them.
-- The forecasters lower than ANKYRA most often are Chronos-2-X (10 of the 28 cells), Chronos-2 (8), the per-unit ridge
-  (6) and TimesFM (4).
+- The forecasters lower than ANKYRA most often are Chronos-2-X (10 of the 28 cells), Chronos-2 (6), TimesFM (5) and the
+  per-unit ridge (4). The file also carries ANKYRA 1.x as a row, so that the 2.0 change can be read metric by metric.
 - MAE and WAPE are minimised by the median of the predictive distribution, squared-error metrics by its mean. On MAE and
   WAPE, zero-shot Chronos-2 or TimesFM variants are lower than ANKYRA on EWELD and on both GoiEner populations.
 - These metrics weight units differently from the unit-equal log ratio, which remains the primary estimand.
@@ -247,15 +254,17 @@ estimand exactly. The split was made after scoring; it is a description, and not
 [`results/lead_day_metrics.csv`](../results/lead_day_metrics.csv) also gives unit-mean RMSE and MAE in kW, and
 median-unit CV(RMSE) and normalised MAE, for every day.
 
-- **Position.** On every forecast day of every test population ANKYRA is among the six forecasters with the lowest
-  loss of 21, and among the seven on the Suzhou park.
-- **Growth with lead time.** From week 1 to week 4 ANKYRA's loss grows by ×1.19–1.57. That is less than TimesFM's
+- **Position.** On every forecast day of every population in the figure ANKYRA 2.0 is among the six forecasters with
+  the lowest loss of 21. It is the lowest on 9 of 31 days on BDG2, 16 on Cambridge, 12 on HEEW and 13 on the Suzhou
+  park, and the lowest or second-lowest on 23–24 days of each of those four (1.x: lowest on 8, 11, 7 and 9 days).
+- **Growth with lead time.** From week 1 to week 4 ANKYRA's loss grows by ×1.19–1.55. That is less than TimesFM's
   (×1.24–1.68) and Chronos-2's (×1.25–1.80) on all seven populations.
 - **The first day.** The zero-shot foundation models are lower on day 1 everywhere, and ANKYRA ranks third to fifth of 21.
-- **From the second week.** On BDG2, Cambridge, HEEW and the Suzhou park ANKYRA is lowest or second-lowest on 13–16 of
-  the 24 days from day 8. On EWELD it is on 5 of them.
-- **GoiEner.** On the non-household set zero-shot TimesFM, Chronos-2 and Chronos-2-X are lower on every day; on
-  households all four foundation-model variants are.
+- **From the second week.** On BDG2, Cambridge, HEEW and the Suzhou park ANKYRA is lowest or second-lowest on 17–21 of
+  the 24 days from day 8 (1.x: 13–16). On EWELD it is on 8 of them.
+- **GoiEner.** On the non-household set ANKYRA 2.0 is lower than TimesFM on 19 of 31 days (1.x: 0) but Chronos-2 and
+  Chronos-2-X stay lower on every day; on households all four foundation-model variants are lower on every day, as for
+  1.x. The within-day anchoring does not act on households (see below).
 
 **Why the monthly comparison differs.** With $R_u$ the unit's RMS over the whole window, $R_u^2$ is the mean of its 31
 daily MSEs. So $\log R_u$ is the mean of $\log r_{u,d}$ over the days plus $J_u\ge0$ (Jensen), and $J_u$ grows with how
@@ -269,13 +278,13 @@ GBT-T and the per-unit ridge the unevenness runs the other way, except for GBT-T
 
 | Fixed unit set, improvement $100[1-\exp(r)]$ | vs TimesFM: daily | month | vs Chronos-2: daily | month | vs Chronos-2-X: daily | month |
 |---|---:|---:|---:|---:|---:|---:|
-| BDG2 | +2.0 | +4.9 | +3.4 | +9.3 | −3.3 | +0.5 |
-| Cambridge | +4.0 | +5.6 | +5.5 | +7.2 | −0.5 | −0.4 |
-| HEEW | +1.1 | +2.9 | +3.7 | +5.6 | −0.7 | 0.0 |
-| EWELD | −2.0 | +2.5 | −4.9 | +0.3 | −1.0 | +4.3 |
-| GoiEner non-household | −2.9 | +1.8 | −8.7 | −0.5 | −11.2 | −3.2 |
-| GoiEner households | −7.5 | −0.7 | −10.0 | −0.8 | −9.2 | −0.6 |
-| Suzhou park | +5.2 | +7.3 | +16.9 | +19.9 | +8.7 | +12.1 |
+| BDG2 | +2.9 | +5.8 | +4.3 | +10.2 | −2.4 | +1.4 |
+| Cambridge | +6.2 | +8.3 | +7.7 | +9.9 | +1.8 | +2.5 |
+| HEEW | +1.9 | +3.7 | +4.4 | +6.4 | 0.0 | +0.8 |
+| EWELD | −1.8 | +2.9 | −4.7 | +0.8 | −0.8 | +4.7 |
+| GoiEner non-household | +0.7 | +5.8 | −4.9 | +3.6 | −7.3 | +0.9 |
+| GoiEner households | −7.5 | −0.8 | −10.0 | −0.8 | −9.3 | −0.7 |
+| Suzhou park | +8.1 | +10.5 | +19.5 | +22.7 | +11.5 | +15.2 |
 
 "Daily" is the average of the daily log ratios, "month" the monthly log ratio on the same units; positive favours
 ANKYRA. On all units the month column becomes the primary estimand of the test table. The fixed set leaves out units
@@ -391,6 +400,60 @@ Unit-equal improvement of the first arm; * resolved in its favour, (+) resolved 
 The plan fixed the wording in advance: the claim is per-unit, error-weighted mixing, not weekly resolution. All ten
 populations and the weekly breakdown are in [`results/handover_granularity.csv`](../results/handover_granularity.csv).
 
+### Within-day anchoring (2.0)
+
+In 1.x the within-day block was the foundation model's, unchanged, although it carries 36–45% of the hourly squared
+error on the building populations and about 80% on the GoiEner populations. ANKYRA 2.0 anchors it as the other two
+blocks are anchored: the unit's own analog-day shape competes with the foundation model's shape, weighted by the unit's
+errors at completed pseudo-origins ([METHOD.md](METHOD.md#within-day-shape)).
+
+**How the rule was obtained.** The rule is the sixth version of a similar-day idea (the A-series of the study record).
+Versions 1–4 (2026-09-29) were judged first on the GoiEner non-household development store and did not pass its no-harm
+gate. Version 5 (a half blend switched on by a shape-repeatability threshold) passed the development gates and the
+validation populations but failed the pre-registered no-harm gate on the test populations (BDG2, EWELD and households
+above the +0.01 upper bound; households resolvably 0.4% worse) and was not adopted. Version 6 replaced the threshold by
+the unit's own pseudo-origin errors; it was chosen from a family of six trust functions written down in advance,
+selected on nine design faces — the three development populations (GoiEner non-household store, Oslo, Drammen) and
+the **pre-cutoff** windows of the six test cohorts, the period on which the trained baselines are fitted — then
+validated on CINELDI and the Suzhou park (mean hourly log ratio −0.025 against a +0.005 limit) and evaluated once on
+the **post-cutoff** windows of the six test cohorts under a frozen protocol: HT1a (improvement on at least two of
+BDG2, Cambridge, HEEW) and HT1b (no test population with an upper bound above +0.01) both held. A third round
+(six pseudo-origins instead of three, an analog-day daily-path candidate, finer handover blocks) adopted nothing: the
+first fell 0.01 points short of its own 0.2% gain threshold, the second was harmful on BDG2 and EWELD, the third had no
+measurable effect.
+
+**Evidence status.** The 1.x test evidence is a single read of the six test populations after the model was fixed.
+The 2.0 within-day rule was developed after that read; its test windows had been seen once for 1.x and once for the
+rejected version 5. The 2.0 test numbers are therefore a **re-evaluation under a frozen protocol, not a first read**,
+and the development used the same cohorts' earlier windows. LCL, the reserved population, was not read. This is the
+one respect in which the 2.0 evidence is weaker than the 1.x evidence; everything else in the evaluation is identical.
+
+**What it changes** (post-cutoff windows; the unit-equal improvement of 2.0 over 1.x, 95% unit-and-month interval):
+
+| Population | Windows with a nonzero trust | Mean trust ω | Hourly, 2.0 vs 1.x | Within-day block |
+|---|---:|---:|---|---:|
+| BDG2 | 91% | 0.21 | +0.9% [+0.4, +1.3] | +1.3% |
+| Cambridge | 99% | 0.24 | +2.9% [+1.7, +3.9] | +6.0% |
+| HEEW | 97% | 0.20 | +0.8% [+0.2, +1.5] | +2.0% |
+| EWELD | 49% | 0.10 | +0.4% [−0.2, +1.1] | +1.0% |
+| GoiEner non-household | 83% | 0.18 | +3.8% [+0.6, +5.9] | +4.4% |
+| GoiEner households | 48% | 0.08 | −0.1% [−0.5, +0.1] | −0.8% |
+| Oslo (development, all windows) | 99% | 0.30 | +4.2% [+3.3, +5.4] | +9.2% |
+| Drammen (development, all windows) | 100% | 0.33 | +3.4% [+2.4, +4.6] | +7.7% |
+| CINELDI (validation, all windows) | 99% | 0.24 | +2.0% [+1.1, +3.2] | +3.8% |
+| Suzhou park (validation, all windows) | 100% | 0.30 | +2.9% [+0.6, +5.9] | +7.5% |
+
+- The gain is largest on buildings with fixed schedules (institutional and commercial) and on the GoiEner
+  non-household points; on households the trust stays near zero and the forecast is unchanged.
+- The level, daily path, energy readout and peak readout are identical to 1.x by construction (pre-projection daily
+  means agree to 2×10⁻¹² kW on every population).
+- No further foundation-model call: the three pseudo-origin forecasts are among the six already computed.
+- Loss by forecast day: 2.0 is lower than 1.x on 30–31 of the 31 days on BDG2, Cambridge, HEEW and GoiEner
+  non-household, with the gain growing with lead time (Cambridge: +0.6% on days 1–3, +4.0% on days 22–31).
+
+Full records: `EO_WITHIN_ANCHOR_RESULTS_v1_20261002`, `EO_WITHIN_ANCHOR_R2_RESULTS_v1_20261002`,
+`EO_WITHIN_ANCHOR_R3_RESULTS_v1_20261003` of the study record.
+
 ### Departures from normal operation persist
 
 The weekly handover and the off-state rule rest on a measured property of the load rather than on tuned thresholds.
@@ -441,15 +504,16 @@ information would not depend on how long the current departure had lasted. It do
 
 ### Readouts
 
-- **Peak operator:**
-  - against the maximum of the same trajectory, 22–77% lower peak error on all 11 populations (all resolved);
-  - against last month's observed peak, better on Drammen, Oslo and HEEW (12–16%) and worse on CINELDI (19%).
+- **Peak operator** (unchanged by 2.0 up to the nonnegativity projection):
+  - against the maximum of the same trajectory, 18–65% lower peak error on all 10 scored populations (all resolved);
+  - against last month's observed peak, better on Drammen, Oslo and HEEW (12–16%, resolved) and worse on CINELDI (19%)
+    and EWELD (20%), both resolved.
   See [`results/peak_readout.csv`](../results/peak_readout.csv).
 - **Interval (GoiEner households):**
-  - 79.2% coverage at nominal 80%;
-  - Winkler score 4.3% better than the same interval around the fixed division and 7.5% better than TimesFM's native
+  - 79.4% coverage at nominal 80%, 88.2% at 90%;
+  - Winkler score 4.4% better than the same interval around the fixed division and 7.5% better than TimesFM's native
     band (both resolved);
-  - not distinguishable from Chronos-2's native quantiles.
+  - not distinguishable from Chronos-2's native quantiles (0.5% behind).
   See [`results/intervals_households.json`](../results/intervals_households.json) and Figure 13.
 
 ![Prediction intervals on households](../figures/fig13_intervals.png)
@@ -461,20 +525,24 @@ targets are used. Each value is the median of three timed repeats after a warm-u
 
 | Per 744-hour window | First run | Pseudo-origins reused | Model load (once) | GPU memory |
 |---|---:|---:|---:|---:|
-| TimesFM alone, per-core batch 64 | 15 ms | — | 1.9 s | 3.0 GiB |
-| TimesFM alone, study configuration (per-core batch 1) | 0.50 s | — | 1.9 s | 0.9 GiB |
-| ANKYRA, batch 64 | 0.50 s | 0.11 s | 1.9 s | 3.0 GiB |
-| ANKYRA, study configuration | 3.9 s | 0.60 s | 1.9 s | 0.9 GiB |
-| Chronos-2-X | 55 ms | — | 7.3 s | 0.5 GiB |
-| Per-unit ridge (CPU) | 97 ms | — | — | — |
+| TimesFM alone, per-core batch 64 | 18 ms | — | 2.3 s | 3.0 GiB |
+| TimesFM alone, study configuration (per-core batch 1) | 0.72 s | — | 2.3 s | 0.9 GiB |
+| ANKYRA 2.0, batch 64 | 0.56 s | 0.13 s | 2.3 s | 3.0 GiB |
+| ANKYRA 2.0, study configuration | 5.5 s | 0.83 s | 2.3 s | 0.9 GiB |
+| Chronos-2-X | 80 ms | — | 9.7 s | 0.5 GiB |
+| Per-unit ridge (CPU) | 108 ms | — | — | — |
 
-ANKYRA's parts:
+ANKYRA's parts (2.0; the within-day anchoring adds the analog shapes at four origins and no model call):
 
-- reference estimator at the origin: 97 ms;
-- six fixed-division pseudo-forecasts: 0.30 s;
-- seven TimesFM contexts at batch 64: 0.10 s;
-- peak readout: 34 µs;
-- interval, when requested: 0.46 s.
+- reference estimator at the origin: 108 ms;
+- six fixed-division pseudo-forecasts: 0.32 s;
+- seven TimesFM contexts at batch 64: 0.13 s;
+- peak readout: 42 µs;
+- interval, when requested: 0.56 s.
+
+The 1.x timings on the same machine (0.50 s first run, 0.11 s reused) are in
+[`results/ankyra_1x/cost_per_window.csv`](../results/ankyra_1x/cost_per_window.csv); the run-to-run spread of this
+benchmark is of the order of the difference.
 
 The two TimesFM configurations give forecasts within 3×10⁻⁵ kW of each other.
 
@@ -486,7 +554,10 @@ issued every 744 hours, or when a window is re-run.
 - **Pretraining exposure.** Most populations were public before TimesFM 2.5 and Chronos-2 were trained. Seven BDG2
   sites are in their pretraining corpora.
 - **Design exposure.** Eight of the eleven populations were seen when some component was specified. The three
-  first-read populations (Cambridge, CINELDI, HEEW) are the clean evidence for the handover.
+  first-read populations (Cambridge, CINELDI, HEEW) are the clean evidence for the handover. The 2.0 within-day rule
+  was selected using the pre-cutoff windows of all six test cohorts and evaluated on their post-cutoff windows, which
+  had been read twice before (1.x and a rejected candidate); its test evidence is a re-evaluation under a frozen
+  protocol, not a first read ([Within-day anchoring (2.0)](#within-day-anchoring-20)).
 - **Data.** Oslo temperature is used as a proxy for CINELDI. The Suzhou park has four aggregate series, so read its
   point estimates only.
 - **Near-zero meters.** The off-state threshold misses near-zero but non-zero meters (three BDG2 meters).
@@ -494,11 +565,12 @@ issued every 744 hours, or when a window is re-run.
 
 ## Reproduction record
 
-[`results/REPRODUCTION_CHECK.json`](../results/REPRODUCTION_CHECK.json) records five comparisons of this package with
-the evaluated forecasts, run where the data are available. All match exactly (maximum absolute difference 0.0 kW):
-
-- ANKYRA forecasts on 613 windows of two populations, including every off-state window;
-- the TimesFM adapter on 64 Drammen windows;
-- the peak operator on 200 Cambridge windows;
-- the within-day default on the same 200 Cambridge windows;
-- the household intervals: bands on all 4,770 windows, and residual quantiles recomputed from the store on 12 windows.
+[`results/REPRODUCTION_CHECK.json`](../results/REPRODUCTION_CHECK.json) records the check of the 2.0 package against
+the evaluated forecasts: on 150 sampled windows of six populations (Cambridge, households, GoiEner non-household and
+BDG2 post-cutoff windows; Oslo and the Suzhou park), `ankyra.forecast` reproduces the evaluated 2.0 trajectories to the
+precision of their float32 storage (largest relative difference 5.6×10⁻⁸) and, with `within_anchor=False`, the
+evaluated 1.x trajectories exactly (largest absolute difference 1.1×10⁻¹³ kW). The 1.x record — ANKYRA forecasts on
+613 windows of two populations including every off-state window, the TimesFM adapter, the peak operator, the
+within-day default and the household intervals, all exact — is kept as
+[`results/ankyra_1x/REPRODUCTION_CHECK.json`](../results/ankyra_1x/REPRODUCTION_CHECK.json); those components are
+unchanged in 2.0.

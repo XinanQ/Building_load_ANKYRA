@@ -1,0 +1,23 @@
+set,tier,ablation,log_ratio,um_low,um_high,improvement_pct
+BDG2 2017,test,without off-state rule (F1),0.0,0.0,0.0,0.0
+BDG2 2017,test,fixed division (F0),-0.081478,-0.155853,-0.045289,7.825
+Cambridge,test,without off-state rule (F1),0.0,0.0,0.0,0.0
+Cambridge,test,fixed division (F0),-0.027133,-0.058285,-0.007188,2.677
+HEEW Arizona,test,without off-state rule (F1),0.0,0.0,0.0,0.0
+HEEW Arizona,test,fixed division (F0),-0.067191,-0.117443,-0.04209,6.498
+EWELD,test,without off-state rule (F1),-0.141547,-0.289145,-0.028574,13.199
+EWELD,test,fixed division (F0),-0.302106,-0.490175,-0.139735,26.074
+GoiEner non-household,test,without off-state rule (F1),-0.018345,-0.053118,8.1e-05,1.818
+GoiEner non-household,test,fixed division (F0),-0.067277,-0.127711,-0.034104,6.506
+GoiEner households,test,without off-state rule (F1),-0.043692,-0.103876,-0.014906,4.275
+GoiEner households,test,fixed division (F0),-0.101298,-0.204734,-0.056631,9.634
+Oslo,preview,without off-state rule (F1),0.0,0.0,0.0,0.0
+Oslo,preview,fixed division (F0),0.00907,-0.012745,0.027725,-0.911
+Drammen,preview,without off-state rule (F1),0.0,0.0,0.0,0.0
+Drammen,preview,fixed division (F0),-0.003918,-0.031939,0.022477,0.391
+CINELDI,preview,without off-state rule (F1),0.0,0.0,0.0,0.0
+CINELDI,preview,fixed division (F0),-0.015035,-0.051949,0.010465,1.492
+Suzhou park,preview,without off-state rule (F1),0.0,0.0,0.0,0.0
+Suzhou park,preview,fixed division (F0),0.017759,-0.056088,0.075673,-1.792
+LCL households,reserved,without off-state rule (F1),-0.000838,-0.003697,0.0,0.084
+LCL households,reserved,fixed division (F0),-0.017486,-0.031566,-0.008613,1.733

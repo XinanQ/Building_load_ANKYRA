@@ -1,209 +1,120 @@
 {
- "checked_utc": "2026-09-29T22:55:05.782172+00:00",
- "what": "The released package (ankyra/) against the evaluated forecasts and the research implementation, run in the research workspace where the evaluation data are available; the data are not redistributed here.",
- "ankyra_forecasts": [
-  {
-   "set": "goiener_confirm",
-   "windows_checked": 312,
-   "windows_in_panel": 1237,
-   "off_state_windows_checked": 16,
-   "max_abs_diff_kw": 0.0,
-   "max_rel_diff": 0.0,
-   "median_abs_diff_kw": 0.0,
-   "seconds": 378.857967376709
-  },
-  {
-   "set": "lcl",
-   "windows_checked": 301,
-   "windows_in_panel": 1215,
-   "off_state_windows_checked": 2,
-   "max_abs_diff_kw": 0.0,
-   "max_rel_diff": 0.0,
-   "median_abs_diff_kw": 0.0,
-   "seconds": 387.67501401901245
-  }
- ],
- "timesfm_adapter": {
-  "set": "drammen",
-  "windows": 64,
-  "max_rel_diff": 0.0,
-  "max_abs_diff_kw": 0.0
- },
- "operators": {
-  "set": "cambridge",
-  "windows": 200,
-  "peak_max_abs_diff_kw": 0.0,
-  "within_default_max_abs_diff_kw": 0.0
- },
- "intervals_households": {
-  "windows_bands_checked": 4770,
-  "bands_max_abs_diff_kw": 0.0,
-  "windows_quantiles_checked": 12,
-  "quantiles_max_abs_diff": 0.0,
-  "pseudo_windows_used_equal": true
- },
- "peak_readout_on_ankyra": {
-  "goiener_confirm": {
-   "windows": 1237,
-   "windows_where_ankyra_differs_from_f1": 16,
-   "readout_vs_own_trajectory_max": {
-    "log_ratio": -0.6162426598217274,
-    "UM": [
-     -0.9736117455138381,
-     -0.48378260559008
-    ],
-    "pooled_ratio": 0.4141133969355677,
-    "pct": 46.00305201523579
-   }
-  },
-  "drammen": {
-   "windows": 1375,
-   "windows_where_ankyra_differs_from_f1": 0,
-   "readout_vs_own_trajectory_max": {
-    "log_ratio": -0.4151700954572434,
-    "UM": [
-     -0.5059374855876182,
-     -0.3345091141049201
-    ],
-    "pooled_ratio": 0.49243054221641297,
-    "pct": 33.97720306249056
-   }
-  },
-  "oslo": {
-   "windows": 1147,
-   "windows_where_ankyra_differs_from_f1": 0,
-   "readout_vs_own_trajectory_max": {
-    "log_ratio": -0.33648487688054296,
-    "UM": [
-     -0.5238793295763313,
-     -0.17415064828273744
-    ],
-    "pooled_ratio": 0.4949293007717235,
-    "pct": 28.572331441388734
-   }
-  },
-  "eweld": {
-   "windows": 1023,
-   "windows_where_ankyra_differs_from_f1": 306,
-   "readout_vs_own_trajectory_max": {
-    "log_ratio": -0.4583659885319477,
-    "UM": [
-     -0.7355510268098568,
-     -0.2539219211615509
-    ],
-    "pooled_ratio": 0.8560426645427781,
-    "pct": 36.768398655589884
-   }
+ "utc": "2026-10-03T02:53:50.919163+00:00",
+ "package_version": "1.2.1",
+ "faces": {
+  "cambridge": {
+   "subset": "late",
+   "windows_checked": 25,
+   "v6_reference": "round-2 test file (stored as float32)",
+   "max_rel_diff_v6": 5.601670181476542e-08,
+   "median_rel_diff_v6": 3.9450975809560894e-08,
+   "max_abs_diff_1x_vs_flagship_kw": 1.1368683772161603e-13,
+   "mean_trust": [
+    0.1692678641192329,
+    0.21243293118642786,
+    0.23076650941290855,
+    0.2959497233836068
+   ],
+   "share_kept": 1.0,
+   "mean_pairs": 3.0,
+   "median_seconds_cpu_side": 0.6537432670593262
   },
   "households": {
-   "windows": 1258,
-   "windows_where_ankyra_differs_from_f1": 71,
-   "readout_vs_own_trajectory_max": {
-    "log_ratio": -1.0705632615587002,
-    "UM": [
-     -1.294228278461818,
-     -0.7173112044186479
-    ],
-    "pooled_ratio": 0.4402257562812466,
-    "pct": 65.7184631691621
-   }
+   "subset": "late",
+   "windows_checked": 25,
+   "v6_reference": "round-2 test file (stored as float32)",
+   "max_rel_diff_v6": 5.5419203177740973e-08,
+   "median_rel_diff_v6": 3.964879973190946e-08,
+   "max_abs_diff_1x_vs_flagship_kw": 0.0,
+   "mean_trust": [
+    0.07187643005866144,
+    0.05764315068739309,
+    0.06918237984211047,
+    0.06964349930130814
+   ],
+   "share_kept": 0.96,
+   "mean_pairs": 2.88,
+   "median_seconds_cpu_side": 0.3498506546020508
   },
-  "park": {
-   "windows": 127,
-   "windows_where_ankyra_differs_from_f1": 0,
-   "readout_vs_own_trajectory_max": {
-    "log_ratio": -0.24387208621620704,
-    "UM": [
-     -0.4031461546473434,
-     -0.12276435284361678
-    ],
-    "pooled_ratio": 0.5848142625115783,
-    "pct": 21.641214045932333
-   }
+  "goiener_confirm": {
+   "subset": "late",
+   "windows_checked": 25,
+   "v6_reference": "round-2 test file (stored as float32)",
+   "max_rel_diff_v6": 5.001399159111079e-08,
+   "median_rel_diff_v6": 3.749085942964765e-08,
+   "max_abs_diff_1x_vs_flagship_kw": 0.0,
+   "mean_trust": [
+    0.13797439949794382,
+    0.1706947102879377,
+    0.18357565615424692,
+    0.19078222891937496
+   ],
+   "share_kept": 0.96,
+   "mean_pairs": 3.0,
+   "median_seconds_cpu_side": 0.5138306617736816
   },
   "bdg2": {
-   "windows": 934,
-   "windows_where_ankyra_differs_from_f1": 0,
-   "readout_vs_own_trajectory_max": {
-    "log_ratio": -0.49861083149103824,
-    "UM": [
-     -0.6398370955206467,
-     -0.4003559848054224
-    ],
-    "pooled_ratio": 0.43450856971176416,
-    "pct": 39.26261814859397
-   }
+   "subset": "late",
+   "windows_checked": 25,
+   "v6_reference": "round-2 test file (stored as float32)",
+   "max_rel_diff_v6": 5.647054032945841e-08,
+   "median_rel_diff_v6": 4.309989959311528e-08,
+   "max_abs_diff_1x_vs_flagship_kw": 0.0,
+   "mean_trust": [
+    0.1544799574378,
+    0.17022181010880452,
+    0.12715190153298653,
+    0.19627858662103287
+   ],
+   "share_kept": 0.88,
+   "mean_pairs": 3.0,
+   "median_seconds_cpu_side": 0.42538976669311523
   },
-  "lcl": {
-   "windows": 1215,
-   "windows_where_ankyra_differs_from_f1": 2,
-   "readout_vs_own_trajectory_max": {
-    "log_ratio": -1.4820716489254597,
-    "UM": [
-     -1.623275665521012,
-     -1.4021444121985702
-    ],
-    "pooled_ratio": 0.16783955168459785,
-    "pct": 77.28334088462015
-   }
+  "oslo": {
+   "subset": "all",
+   "windows_checked": 25,
+   "v6_reference": "rebuilt from the round-3 build (stored as float32)",
+   "max_rel_diff_v6": 1.966585624569967e-08,
+   "median_rel_diff_v6": 7.181848668498126e-09,
+   "max_abs_diff_1x_vs_flagship_kw": 0.0,
+   "mean_trust": [
+    0.24815957487599655,
+    0.2834948928982336,
+    0.27875547903673764,
+    0.314505913050052
+   ],
+   "share_kept": 1.0,
+   "mean_pairs": 3.0,
+   "median_seconds_cpu_side": 0.600224494934082
   },
-  "cambridge": {
-   "windows": 1456,
-   "windows_where_ankyra_differs_from_f1": 0,
-   "readout_vs_own_trajectory_max": {
-    "log_ratio": -0.48442442406563613,
-    "UM": [
-     -0.6284928312641161,
-     -0.4242142273650617
-    ],
-    "pooled_ratio": 0.9484173348318062,
-    "pct": 38.394832074039165
-   }
-  },
-  "cineldi": {
-   "windows": 929,
-   "windows_where_ankyra_differs_from_f1": 0,
-   "readout_vs_own_trajectory_max": {
-    "log_ratio": -0.637934453914305,
-    "UM": [
-     -0.8296774014764225,
-     -0.45074437637169157
-    ],
-    "pooled_ratio": 1.2534348903113053,
-    "pct": 47.16173035381247
-   }
-  },
-  "heew": {
-   "windows": 1282,
-   "windows_where_ankyra_differs_from_f1": 0,
-   "readout_vs_own_trajectory_max": {
-    "log_ratio": -0.4063465467667686,
-    "UM": [
-     -0.5990102616029911,
-     -0.3112868652873654
-    ],
-    "pooled_ratio": 0.6058231232570438,
-    "pct": 33.39207002037742
-   }
+  "park": {
+   "subset": "all",
+   "windows_checked": 25,
+   "v6_reference": "rebuilt from the round-3 build (stored as float32)",
+   "max_rel_diff_v6": 1.4413817841042979e-08,
+   "median_rel_diff_v6": 7.573340899468878e-09,
+   "max_abs_diff_1x_vs_flagship_kw": 0.0,
+   "mean_trust": [
+    0.27158359538377747,
+    0.3291185670243228,
+    0.2865767004384157,
+    0.3424578561841628
+   ],
+   "share_kept": 1.0,
+   "mean_pairs": 3.0,
+   "median_seconds_cpu_side": 0.33623456954956055
   }
  },
- "package_files_sha256": {
-  "ankyra/__init__.py": "51f3e09e806920c9f556415ee94dc1748527013663be95cbcdca44e0bdbb3357",
-  "ankyra/blocks.py": "0921b6d54028c03d2ff56a21c1574bd811ea8e21076be9902a549b7586d0e8f7",
-  "ankyra/core.py": "b9221c0c2862eb8b7c1631069efeeb45354856111ab421866c90a7d12aa0dd02",
-  "ankyra/history/__init__.py": "5bb09cefbde842a67cd3bca161dd0a323f0bfa6b74a1ba951114e758904565eb",
-  "ankyra/history/_climate.py": "bf3c2404da1e37d71a9b347caf946e401c6f90a4a4ec11f45e4ee47dfb701f89",
-  "ankyra/history/_day.py": "c279268e5315641ee7495485036eebddaaaa28fe2f9cdbd6ffe50171c1b38c98",
-  "ankyra/history/_eo.py": "4c7907b523da99dacbcbb83a18b08ee877addd1ad92a901d741ac109e8949100",
-  "ankyra/history/_level.py": "83092b5c7fee81ab9c79a46d07262a99e9dd72ee0f0fbeda71184a1eacee76da",
-  "ankyra/history/_signature.py": "4263bf2d86c3f6839ddbf894fef2ed4def277a62b7d973c579cf9ae02f8c8658",
-  "ankyra/history/_span.py": "b649669d9c595fc77fb4005d40c247314e48c8bf012a2eaada632b7188df4a52",
-  "ankyra/history/api.py": "33f7da7716e54ddfe924aabbda44c2fe2630dc329b9abf098b9a29e726eee5ee",
-  "ankyra/history/frozen_config.json": "43bb3c054c9ba6bda436c85854b17dddee7d933e5194918151127696ff878caa",
-  "ankyra/history/provenance.json": "09056a155a1640f98428f20134bf27d8c84e936f8629ee1e278bf1d85d87b16b",
-  "ankyra/metrics.py": "903b4621eea355082248f26992f2b39f26dbd13639b4b505f70a4eb9d1f86c5b",
-  "ankyra/readouts.py": "51e5f3d661a965789b2dfa0b0ccaed382a3c87ddfd0d07510907d40160131274",
-  "ankyra/synthetic.py": "54c0c19de529767b0256a07d5964f252fe973b95b4368f4a50036253f276de79",
-  "ankyra/timesfm_adapter.py": "8ff43368ad39565c768bc682560d4f3907c65236c3f1f6a192c9540ef34ee1d5"
+ "pass": true,
+ "criterion": "v6: relative to each window's largest value, <= 1e-5 (the references were stored as float32); 1.x: absolute <= 1e-6 kW against the float64 flagship",
+ "package_files": {
+  "__init__.py": "51f3e09e806920c9f556415ee94dc1748527013663be95cbcdca44e0bdbb3357",
+  "analog.py": "e8a1bf58db9a1ca06c91565a92985cc543d294ab414d2176147a844ea2684e7a",
+  "blocks.py": "0921b6d54028c03d2ff56a21c1574bd811ea8e21076be9902a549b7586d0e8f7",
+  "core.py": "a01bad5eed6c1c2660508942c52ad865d60286fd6c1c03492d692bc5cb1ca096",
+  "metrics.py": "903b4621eea355082248f26992f2b39f26dbd13639b4b505f70a4eb9d1f86c5b",
+  "readouts.py": "51e5f3d661a965789b2dfa0b0ccaed382a3c87ddfd0d07510907d40160131274",
+  "synthetic.py": "54c0c19de529767b0256a07d5964f252fe973b95b4368f4a50036253f276de79",
+  "timesfm_adapter.py": "8ff43368ad39565c768bc682560d4f3907c65236c3f1f6a192c9540ef34ee1d5"
  }
 }
