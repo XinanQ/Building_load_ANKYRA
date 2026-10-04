@@ -1,6 +1,10 @@
 """Figures of the ANKYRA repository, generated from ../results only.
 
+    pip install -e ".[figures]"               # matplotlib is an optional dependency
     python figures/make_figures.py            # writes figures/*.pdf (vector) and figures/*.png (300 dpi)
+
+The figures show the ten populations of the main comparison. The LCL households were scored separately
+(results/lcl_*) and appear in no figure.
 """
 from __future__ import annotations
 
@@ -50,10 +54,9 @@ CLASS_LEGEND = [("Same information · trained", "#253494"), ("Same information �
                 ("Profiles, naive, zero-shot GBT", "#9E9E9E")]
 TEST = ["BDG2 2017", "Cambridge", "HEEW Arizona", "EWELD", "GoiEner non-household", "GoiEner households"]
 PREVIEW = ["Oslo", "Drammen", "CINELDI", "Suzhou park"]
-RESERVED = ["LCL households"]
 SHORT = {"BDG2 2017": "BDG2", "Cambridge": "Cambridge", "HEEW Arizona": "HEEW", "EWELD": "EWELD",
          "GoiEner non-household": "GoiEner NH", "GoiEner households": "GoiEner HH", "Oslo": "Oslo", "Drammen": "Drammen",
-         "CINELDI": "CINELDI", "Suzhou park": "Suzhou park", "LCL households": "LCL"}
+         "CINELDI": "CINELDI", "Suzhou park": "Suzhou park"}
 TWO_LINE = {"GoiEner non-household": "GoiEner\nNH", "GoiEner households": "GoiEner\nHH"}
 NICE = {"Holt-Winters": "Holt–Winters"}
 GREY = "#595959"
@@ -298,7 +301,7 @@ def fig_test_forest():
              fontsize=6.3, color=GREY, va="top")
     handles = [Line2D([], [], marker="o", ls="", color=c, markersize=4, label=t_) for t_, c in CLASS_LEGEND[:4]]
     fig.legend(handles=handles, loc="lower center", ncol=4, fontsize=6.1, bbox_to_anchor=(0.55, 0.058), handletextpad=0.2, columnspacing=1.0)
-    nz = {r["model"]: float(r["improvement_pct"]) for r in rows("bdg2_near_zero_sensitivity.csv") if r["units"] == "without_near_zero" and r["subset"] == "late"}
+    nz = {r["model"]: float(r["improvement_pct"]) for r in rows("bdg2_near_zero_sensitivity.csv") if r["unit_set"] == "without the three near-zero meters" and r["subset"] == "late"}
     fig.text(0.125, 0.030, "† BDG2 includes the micro-load rule of 2.0.1, written after the 2.0.0 result was seen: meters reading 0.0002–0.0005 kW are handed to TimesFM. Three of them "
              "still dominate the unit", fontsize=5.6, color="#7F7F7F")
     fig.text(0.125, 0.006, "means: for ANKYRA against models that do poorly on them, against it versus MSTL. Without the three meters: "
@@ -309,7 +312,7 @@ def fig_test_forest():
 # ============================================================================ Figure 4: what the handover does
 def fig_mechanism():
     ab = rows("ablation.csv"); lw_ = rows("lead_weeks_first_read.csv"); hg = rows("handover_granularity.csv")
-    order = TEST + PREVIEW + RESERVED
+    order = TEST + PREVIEW
     fig = plt.figure(figsize=(7.2, 5.3))
     gs = fig.add_gridspec(2, 2, height_ratios=[1.25, 1], hspace=0.5, wspace=0.34, left=0.105, right=0.985, top=0.895, bottom=0.085)
     y = np.arange(len(order))[::-1]
@@ -354,16 +357,10 @@ def fig_mechanism():
     dx = fig.add_subplot(gs[0, 1])
     forest(dx, [(hg_row("C1 AW vs Ah"), "o", ANKYRA, 0.17, "vs fixed ½ mixture"), (hg_row("C2 AW vs AM"), "s", FM, -0.17, "vs one weight per month")],
            "b   Weekly per-unit weights against simpler mixing", "Improvement of ANKYRA's weekly weights (%)", "lower right")
-    labels = [SHORT[s_] if s_ not in RESERVED else f"{SHORT[s_]} (not used)" for s_ in order]
-    dx.set_yticklabels(labels, fontsize=6.4)
-    for t_, s_ in zip(dx.get_yticklabels(), order):
-        t_.set_fontweight("bold" if s_ in TEST else "normal")
-        if s_ in RESERVED:
-            t_.set_color(GREY)
     dx.set_ylim(y[-1] - 0.75, y[0] + 0.65)
     dx.legend(handles=[Line2D([], [], marker="o", ls="", color=ANKYRA, markersize=3.8, label="vs fixed ½ mixture"),
                        Line2D([], [], marker="s", ls="", color=FM, markersize=3.2, label="vs one weight per month")],
-              loc="lower right", ncol=2, fontsize=5.8, handletextpad=0.2, columnspacing=0.8, borderaxespad=0.15)
+              loc="lower right", bbox_to_anchor=(1.0, 0.11), fontsize=5.8, handletextpad=0.2, borderaxespad=0.15)
 
     bx = fig.add_subplot(gs[1, 0]); cx = fig.add_subplot(gs[1, 1])
     marks = {"Cambridge": "o", "CINELDI": "s", "HEEW Arizona": "^"}
@@ -396,7 +393,7 @@ def fig_mechanism():
 
 # ============================================================================ Figure 5: peak operator
 def fig_peak():
-    pk = rows("peak_readout.csv"); order = [s_ for s_ in TEST + PREVIEW + RESERVED if any(rr["set"] == s_ for rr in pk)]   # 2.0: LCL not scored
+    pk = rows("peak_readout.csv"); order = [s_ for s_ in TEST + PREVIEW if any(rr["set"] == s_ for rr in pk)]
     fig, (ax, bx) = plt.subplots(1, 2, figsize=(7.2, 2.7), sharey=True)
     fig.subplots_adjust(left=0.11, right=0.99, top=0.80, bottom=0.17, wspace=0.08)
     y = np.arange(len(order))[::-1]
@@ -865,7 +862,7 @@ def fig_energy():
     models = [m for m in sorted(sorted(mean_rank), key=lambda m: mean_rank[m]) if m != "ANKYRA"]      # figure 2 order
     lab = {r["model"]: r["model_label"] for r in en}
     cls = {r["model"]: r["model_class"] for r in en}
-    cell = {(r["set"], r["subset"], r["model"]): r for r in en}
+    cell = {(r["set"], r["unit_set"], r["model"]): r for r in en}
     n, k = len(models), len(ENERGY_COLS)
     P = np.array([[float(cell[(s, sub, m)]["improvement_pct"]) for s, sub, _ in ENERGY_COLS] for m in models])
     fig = plt.figure(figsize=(7.2, 4.9))

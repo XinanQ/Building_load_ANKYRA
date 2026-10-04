@@ -1,22 +1,22 @@
-face,windows,units,fixed_model_count,model,mean_unit_rank
-common_metadata_keys_late,710,710,21,ANKYRA,6.247887323943662
-common_metadata_keys_late,710,710,21,Chronos-2-X,9.346478873239437
-common_metadata_keys_late,710,710,21,Chronos-2,8.870422535211267
-common_metadata_keys_late,710,710,21,DLinear,7.550704225352113
-common_metadata_keys_late,710,710,21,GBT-T,9.571830985915494
-common_metadata_keys_late,710,710,21,GBT,17.429577464788732
-common_metadata_keys_late,710,710,21,Holt-Winters,12.187323943661973
-common_metadata_keys_late,710,710,21,iTransformer-X,7.370422535211268
-common_metadata_keys_late,710,710,21,iTransformer,6.994366197183099
-common_metadata_keys_late,710,710,21,LSTM,11.671830985915493
-common_metadata_keys_late,710,710,21,LYR-profile,18.559859154929576
-common_metadata_keys_late,710,710,21,MSTL,17.549295774647888
-common_metadata_keys_late,710,710,21,PatchTST,7.285915492957747
-common_metadata_keys_late,710,710,21,SN-day,17.590845070422535
-common_metadata_keys_late,710,710,21,SN-week,18.194366197183097
-common_metadata_keys_late,710,710,21,SP-profile,9.301408450704225
-common_metadata_keys_late,710,710,21,TiDE,7.32112676056338
-common_metadata_keys_late,710,710,21,TimesFM-X,9.029577464788732
-common_metadata_keys_late,710,710,21,WeekProf4,12.43943661971831
-common_metadata_keys_late,710,710,21,RIDGE,6.483098591549296
-common_metadata_keys_late,710,710,21,TimesFM,10.004225352112677
+set,subset,windows,units,model,model_label,mean_unit_rank,n_models
+LCL households,late,710,710,ANKYRA,ANKYRA,6.247887323943662,21
+LCL households,late,710,710,Chronos-2-X,Chronos-2-X,9.346478873239437,21
+LCL households,late,710,710,Chronos-2,Chronos-2,8.870422535211267,21
+LCL households,late,710,710,DLinear,DLinear,7.550704225352113,21
+LCL households,late,710,710,GBT-T,GBT-T,9.571830985915494,21
+LCL households,late,710,710,GBT,GBT (zero-shot),17.429577464788732,21
+LCL households,late,710,710,Holt-Winters,Holt-Winters,12.187323943661973,21
+LCL households,late,710,710,iTransformer-X,iTransformer-X,7.370422535211268,21
+LCL households,late,710,710,iTransformer,iTransformer,6.994366197183099,21
+LCL households,late,710,710,LSTM,LSTM,11.671830985915493,21
+LCL households,late,710,710,LYR-profile,Last-year profile,18.559859154929576,21
+LCL households,late,710,710,MSTL,MSTL,17.549295774647888,21
+LCL households,late,710,710,PatchTST,PatchTST,7.285915492957747,21
+LCL households,late,710,710,SN-day,Seasonal naive (day),17.590845070422535,21
+LCL households,late,710,710,SN-week,Seasonal naive (week),18.194366197183097,21
+LCL households,late,710,710,SP-profile,Previous-month profile,9.301408450704225,21
+LCL households,late,710,710,TiDE,TiDE,7.32112676056338,21
+LCL households,late,710,710,TimesFM-X,TimesFM-X,9.029577464788732,21
+LCL households,late,710,710,WeekProf4,4-week profile,12.43943661971831,21
+LCL households,late,710,710,RIDGE-L,Ridge (per unit),6.483098591549296,21
+LCL households,late,710,710,TimesFM,TimesFM,10.004225352112677,21

@@ -1,0 +1,17 @@
+error,comparator,windows,units,log_ratio,um_low,um_high,improvement_pct,resolved_at_seed_20261004,units_better_strict
+hourly,TimesFM 2.5,134,33,-0.084507,-0.226111,-0.000965,8.103,first better,24
+hourly,Chronos-2,134,33,-0.116917,-0.290292,0.000267,11.034,not resolved,29
+hourly,Seasonal naive (day),134,33,-0.260652,-0.423806,-0.141971,22.945,first better,28
+hourly,Seasonal naive (week),134,33,-0.271420,-0.439613,-0.168086,23.770,first better,29
+hourly,Four-week profile,134,33,-0.128820,-0.223794,-0.067900,12.087,first better,27
+hourly,Previous-month profile,134,33,-0.124724,-0.222991,-0.053991,11.726,first better,27
+hourly,Last-year profile,134,33,-0.206539,-0.383550,-0.100654,18.661,first better,24
+hourly,Per-unit ridge,123,32,-0.172870,-0.715716,0.021643,15.875,not resolved,16
+energy,TimesFM 2.5,134,33,-0.477055,-0.802327,-0.097702,37.939,first better,27
+energy,Chronos-2,134,33,-0.548196,-0.909012,0.135388,42.201,not resolved,29
+energy,Seasonal naive (day),134,33,-0.483877,-1.042617,0.259009,38.361,not resolved,21
+energy,Seasonal naive (week),134,33,-0.523405,-0.911327,0.238609,40.750,not resolved,26
+energy,Four-week profile,134,33,-0.522273,-0.807774,0.136068,40.683,not resolved,25
+energy,Previous-month profile,134,33,-0.490901,-0.763070,0.026947,38.793,not resolved,26
+energy,Last-year profile,134,33,-0.298508,-0.640757,0.244079,25.808,not resolved,17
+energy,Per-unit ridge,123,32,-0.267808,-0.655723,0.086340,23.495,not resolved,20

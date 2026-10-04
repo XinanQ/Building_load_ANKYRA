@@ -13,6 +13,7 @@ from __future__ import annotations
 import numpy as np
 
 D, HR, HORIZON = 31, 24, 744
+CONTEXT = 1344            # hours of load before the origin that the foundation model and the readouts use (56 days)
 
 
 def _cube(x):

@@ -35,6 +35,7 @@ SEASON = 168               # weekly seasonal-naive lag of the scaled errors
 
 
 def window_mse(pred, y):
+    """Mean squared error of each window, (n,)."""
     return ((np.asarray(pred, dtype=np.float64) - y) ** 2).mean(1)
 
 
@@ -76,6 +77,7 @@ def score_population(forecasts, y, unit, month, reference="ANKYRA", family=(), s
 
 def unit_rmse(forecasts, y, unit):
     """{model: per-unit RMSE over the unit's windows}, with the unit labels."""
+    y = np.asarray(y, dtype=np.float64)
     uu, inv = np.unique(unit, return_inverse=True); cnt = np.bincount(inv)
     return uu, {k: np.sqrt(np.bincount(inv, window_mse(p, y), len(uu)) / cnt) for k, p in forecasts.items()}
 
@@ -104,6 +106,7 @@ def rank_tests(unit_rmse_by_model, reference="ANKYRA", alpha=0.05):
 def scaled_errors(forecasts, y, context, unit):
     """RMSSE and MASE per model: errors scaled by the in-sample weekly seasonal-naive error over the context, per unit,
     summarised by the median and the geometric mean over units.  Windows with a zero scale are left out."""
+    y = np.asarray(y, dtype=np.float64); context = np.asarray(context)        # the context keeps its own precision
     d = context[:, SEASON:] - context[:, :-SEASON]; s2 = (d ** 2).mean(1); s1 = np.abs(d).mean(1); ok = (s2 > 0) & (s1 > 0)
     uu, inv = np.unique(np.asarray(unit)[ok], return_inverse=True); cnt = np.bincount(inv); out = {}
     for k, p in forecasts.items():
@@ -117,6 +120,7 @@ def scaled_errors(forecasts, y, context, unit):
 def energy_error(forecasts, y, unit, month, reference="ANKYRA", seed=SEED, n_boot=metrics.N_BOOT):
     """The primary estimand applied to the monthly energy error (744 x the error of the window mean) instead of the
     hourly error."""
+    y = np.asarray(y, dtype=np.float64); unit = np.asarray(unit); month = np.asarray(month)
     lev = {k: (y - np.asarray(p, dtype=np.float64)).mean(1) ** 2 for k, p in forecasts.items()}; out = {}      # mean of the hourly errors, as in the study
     for k in forecasts:
         if k != reference:
@@ -130,7 +134,7 @@ def by_forecast_day(forecasts, y, unit):
     """Hourly loss by forecast day: for each model the geometric mean, over one fixed set of units, of the day's
     CV(RMSE) (the unit's RMSE over that day's 24 hours in all its windows, over the unit's mean load).  The unit set is
     the units with a mean load of at least 1e-6 kW and a nonzero error on every day for every model."""
-    y = np.asarray(y, dtype=np.float64); uu = np.unique(unit); days = y.shape[1] // 24; r = {}
+    y = np.asarray(y, dtype=np.float64); unit = np.asarray(unit); uu = np.unique(unit); days = y.shape[1] // 24; r = {}
     ybar = np.array([y[unit == u].mean() for u in uu])
     for k, p in forecasts.items():
         e = (y - np.asarray(p, dtype=np.float64)).reshape(len(y), days, 24)

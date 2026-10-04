@@ -1,7 +1,42 @@
 # Evaluation
 
-All numbers below are in [`results/`](../results). The figures are regenerated from those files by
-`figures/make_figures.py`.
+The scored statistics below are in [`results/`](../results) ([file list](../results/README.md)), and the figures are
+regenerated from those files by `figures/make_figures.py`. Four diagnostic passages report numbers that were not
+exported: the [GBT-T correction](#correction-of-the-gbt-t-baseline), the
+[Norwegian-school diagnosis](#why-ankyra-loses-on-norwegian-schools), the
+[condition-matched extension](#a-condition-matched-extension-that-was-not-adopted) and the
+[persistence of departures](#departures-from-normal-operation-persist); so does the evaluation of the spike guard
+under [Robustness](#robustness-to-corrupted-contexts). Data sources and preparation are in [DATA.md](DATA.md); the
+scoring code is in [`evaluation/`](../evaluation/README.md).
+
+The study's working protocols, scripts and saved forecasts are not part of this repository. Where this page says
+that a rule or an analysis was *fixed in advance*, it was written down in those working files before it was run.
+
+**Contents**
+
+- [Populations and tiers](#populations-and-tiers)
+- [Baselines](#baselines)
+- [Estimands](#estimands)
+- [Results](#results): [test populations](#test-populations-late-windows-21-forecasters) ·
+  [rank tests](#rank-significance-tests) · [scaled errors](#scaled-errors) ·
+  [preview populations](#preview-and-reserved-populations) ·
+  [LCL households](#lcl-households-and-two-changes-not-adopted) ·
+  [loss metrics](#loss-metrics-of-every-forecaster) · [loss by forecast day](#loss-by-forecast-day) ·
+  [energy through the month](#energy-as-the-month-accumulates) · [monthly energy](#monthly-energy-error) ·
+  [readouts](#readouts)
+- [Where the error comes from](#where-the-error-comes-from):
+  [block attribution](#where-the-error-sits-block-attribution) · [history length](#history-length) ·
+  [Norwegian schools](#why-ankyra-loses-on-norwegian-schools) ·
+  [persistence of departures](#departures-from-normal-operation-persist)
+- [Evidence for each design choice](#evidence-for-each-design-choice): [handover](#what-the-handover-contributes) ·
+  [a rejected extension](#a-condition-matched-extension-that-was-not-adopted) ·
+  [within-day anchoring](#within-day-anchoring-20) ·
+  [micro-load rule](#the-near-zero-meters-and-the-micro-load-rule-201) ·
+  [shrinkage constants](#sensitivity-to-the-shrinkage-constants)
+- [Robustness to corrupted contexts](#robustness-to-corrupted-contexts)
+- [Cost](#cost)
+- [Limitations](#limitations)
+- [Reproduction record](#reproduction-record)
 
 ## Populations and tiers
 
@@ -17,21 +52,30 @@ All numbers below are in [`results/`](../results). The figures are regenerated f
 | COFACTOR Drammen municipal buildings | Norway | 45 / 1,375 · 43 / 689 | preview | seen | Lien et al., *Sci. Data* 2025, [doi:10.1038/s41597-025-04708-3](https://doi.org/10.1038/s41597-025-04708-3) |
 | CINELDI industrial customers | Norway | 45 / 929 · 45 / 475 | preview | first read | Sandell et al., *Data in Brief* 2023, [doi:10.1016/j.dib.2023.109121](https://doi.org/10.1016/j.dib.2023.109121) |
 | Suzhou industrial park (4 category aggregates) | China | 4 / 127 · 4 / 64 | preview | seen | Zhou et al., *Sci. Data* 2023, [doi:10.1038/s41597-023-02786-9](https://doi.org/10.1038/s41597-023-02786-9) |
-| Low Carbon London households | UK | 965 / 1,215 · 710 / 710 | reserved | seen | UK Power Networks, [London Datastore](https://data.london.gov.uk/dataset/smartmeter-energy-consumption-data-in-london-households-vqm0d) |
+| Low Carbon London households | UK | 965 / 1,215 · 710 / 710 | reserved ² | seen | UK Power Networks, [London Datastore](https://data.london.gov.uk/dataset/smartmeter-energy-consumption-data-in-london-households-vqm0d) |
 
 **Design status.**
 
 - **Seen:** results for the population were known when some ANKYRA component was specified.
   - The annual candidate followed a diagnosis on the Suzhou park.
-  - The foundation-model candidate and the handover were developed on the Spanish development store (not listed).
+  - The foundation-model candidate and the handover were developed on the Spanish development store (not listed;
+    defined below).
   - The off-state rule followed the EWELD and household results.
   - The micro-load rule (2.0.1) followed the BDG2 test result of 2.0.0.
 - **First read:** the population was scored for the first time after the handover had been fixed.
+
+**Spanish development store.** A separate set of GoiEner non-household supply points in four categories, disjoint
+from the GoiEner non-household test population, on which the method was developed. It is not scored in any table and
+its data are not described in [DATA.md](DATA.md). "Development store" below always means this set.
 
 ¹ **BDG2 under 2.0.1.** The micro-load rule was written after the BDG2 test result of 2.0.0 had been seen, in response
 to it. Under 2.0.1, BDG2 is therefore not a test set scored once with the model fixed: its numbers include a rule
 written after its result was seen. The other five test populations and the four preview populations are bit-identical
 in 2.0.0 and 2.0.1 ([details](#the-near-zero-meters-and-the-micro-load-rule-201)).
+
+² **LCL.** Held in reserve while 2.0 and 2.0.1 were developed, and left out of the ten-population tables below. The
+frozen 2.0.1 forecaster was scored on it once afterwards (3 October 2026). Its 1.x result had been seen earlier, so
+LCL is not an unexposed population ([LCL households](#lcl-households-and-two-changes-not-adopted)).
 
 **Tiers of the equal-information comparison.** ANKYRA was fixed first. The covariate-informed baselines were then
 generated for every population and scored in two steps:
@@ -39,10 +83,10 @@ generated for every population and scored in two steps:
 1. a preview on four populations, used for diagnosis;
 2. after all model development had ended, one scoring of the six test populations.
 
-LCL was held in reserve. Between the two steps, four versions of a within-day extension were developed on the
-development store and the preview populations. None passed its no-harm criterion, so the test populations were never
-used for development. ANKYRA's univariate comparisons on the test populations had been scored before the covariate
-baselines.
+LCL was held in reserve until the forecaster was frozen (note ² above). Between the two steps, four versions of a
+within-day extension were developed on the development store and the preview populations. None passed its no-harm
+criterion, so the test populations were never used for development. ANKYRA's univariate comparisons on the test
+populations had been scored before the covariate baselines.
 
 This is the history of ANKYRA 1.x. Two changes were made after the test populations had been scored, and both are
 scored on the same windows:
@@ -52,6 +96,10 @@ scored on the same windows:
   ([Within-day anchoring (2.0)](#within-day-anchoring-20));
 - the micro-load rule of 2.0.1, written in response to the BDG2 test result of 2.0.0 (note ¹ above). It changes no
   forecast on any other scored population.
+
+For the 2.0 within-day rule the four preview populations were reused in other roles: Oslo and Drammen as development
+populations, CINELDI and the Suzhou park as validation populations. Where a table below calls them "development" or
+"validation", it refers to that rule.
 
 A window needs a completely observed 1,344-hour context and 744-hour target, and enough history for six pseudo-origins.
 Panels are capped at 1,500 windows per population by a fixed thinning rule. Data are used as released by the
@@ -146,6 +194,10 @@ See [`results/conventional_metrics.csv`](../results/conventional_metrics.csv) fo
 [`results/conventional_metrics_late.csv`](../results/conventional_metrics_late.csv) for the late windows, where all 21
 forecasters are available.
 
+**Pooled MSE ratio.** The ratio of the two forecasters' mean squared errors over all windows. Units with large errors
+and many windows weigh more in it (column `pooled_mse_ratio` of
+[`results/benchmark_pairwise.csv`](../results/benchmark_pairwise.csv)).
+
 **Why four summaries.** Pooled and unit-equal summaries can disagree in sign for an algebraic reason. The pooled MSE
 ratio weights each unit's squared RMS ratio by its share of the reference error, and those weights are coupled to the
 ratios (P19 in [theory/PROOFS.md](../theory/PROOFS.md)). No single summary is therefore reported alone.
@@ -165,6 +217,9 @@ All results below are for **ANKYRA 2.0.1**: 2.0.0 plus the micro-load rule
   2.0.1 against its reduced versions is in [`results/ablation.csv`](../results/ablation.csv); 2.0.0 against 1.x is in
   [Within-day anchoring (2.0)](#within-day-anchoring-20), which also states how the 2.0 evidence differs in status
   from the 1.x evidence.
+- **Two reduced versions** recur below and in the result files. The *fixed division* (F0) takes the level and the
+  daily path from the unit's history and the within-day shape from TimesFM; it has no model candidate, no handover
+  and no off-state rule. F1 is ANKYRA 1.x without the off-state rule.
 
 ### Test populations (late windows, 21 forecasters)
 
@@ -272,7 +327,7 @@ mean over units.
 |---|---:|---:|---|---:|---:|---|
 | BDG2 | 1.136 | 2 | Chronos-2-X 1.092 | 1.245 | 3 | Chronos-2-X 1.151 |
 | Cambridge | 1.207 | 1 | — | 1.180 | 2 | Chronos-2-X 1.175 |
-| HEEW | 1.143 | 1 | — | 1.287 | 5 | TimesFM 1.208 |
+| HEEW | 1.143 | 1 | — | 1.287 | 4–5 | TimesFM 1.208 |
 | EWELD | 0.744 | 1 | — | 0.930 | 2 | TimesFM 0.901 |
 | GoiEner non-household | 0.906 | 1 | — | 1.112 | 4 | Chronos-2-X 0.984 |
 | GoiEner households | 0.767 | 2 | TimesFM 0.738 | 0.944 | 5 | TimesFM 0.808 |
@@ -280,6 +335,8 @@ mean over units.
 | Drammen | 1.366 | 5 | Chronos-2-X 1.313 | 1.320 | 2 | Chronos-2-X 1.251 |
 | CINELDI | 1.043 | 1 | — | 1.113 | 3 | Chronos-2 1.061 |
 | Suzhou park | 1.400 | 2 | GBT-T 1.291 | 1.261 | 1 | — |
+
+"4–5" marks a tie at the four decimals of the file (ANKYRA and TimesFM-X, both 1.2873).
 
 - On the squared-error scale (RMSSE) ANKYRA is lowest on four of the six test populations and second on the other two.
 - On the absolute-error scale (MASE) the zero-shot foundation models are lower on most populations. Absolute error is
@@ -297,16 +354,16 @@ mean over units.
 - **Drammen:** 2nd of 21; no contrast resolved against ANKYRA (1.x: 7th).
 - **CINELDI:** 1st of 21 (1.x: 3rd).
 - **Suzhou park:** 1st of 21.
-- **LCL** was not scored for 2.0 or 2.0.1 in these original ten-population comparisons. The historical 1.x
-  load-only comparison (3rd of 14) is in [`results/ankyra_1x/`](../results/ankyra_1x/). The later final-stage record
-  is [reported separately](LCL_AND_CLOSEOUT.md#lcl-final-stage); it does not replace the ranks here.
+- **LCL** is not part of the ten-population comparisons. Its 1.x load-only comparison (3rd of 14) is in
+  [`results/ankyra_1x/`](../results/ankyra_1x/). Its 2.0.1 result is in the
+  [next section](#lcl-households-and-two-changes-not-adopted); it does not change the ranks here.
 
 Across the ten scored populations ANKYRA 2.0.1's mean rank is 4.91 (2.0.0: 4.92), ahead of the per-unit ridge (6.96),
 iTransformer-X (7.10) and Chronos-2-X (7.63).
 
 **Full windows.** The comparison without the trained models covers 14 forecasters on the ten populations scored for
-2.0 and 2.0.1 (13 on GoiEner non-household, where the per-unit ridge has no full-window forecast; LCL was scored
-for 1.x only at that historical stage and is excluded from this ten-population table):
+2.0 and 2.0.1 (13 on GoiEner non-household, where the per-unit ridge has no full-window forecast; LCL is reported
+separately and is not in this ten-population table):
 
 - ANKYRA 2.0.1 ranks first on 8 and second on the other two (Drammen, households);
 - its mean rank is 2.73, against 4.23 for Chronos-2-X and 4.06 for the ridge on the nine populations where the ridge
@@ -316,6 +373,30 @@ for 1.x only at that historical stage and is excluded from this ten-population t
   +5.7% and +13.2%, neither resolved (2.0.0: −35.6% and −24.8%), and the per-unit ridge and TimesFM-X move from +7.2%
   and +7.4% to +35.4% and +35.5%: the same shift, for the same reason, as in the late windows
   ([details](#the-near-zero-meters-and-the-micro-load-rule-201)).
+
+### LCL households and two changes not adopted
+
+The Low Carbon London households were held in reserve while 2.0 and 2.0.1 were developed. The frozen 2.0.1
+forecaster was then scored on them once, without retuning. The result is reported in full in
+[LCL_AND_CLOSEOUT.md](LCL_AND_CLOSEOUT.md#lcl-final-stage) and is not merged into the ten-population tables, ranks
+and figures.
+
+- **Windows.** 1,215 windows of 965 households; 710 late windows, on which all 21 forecasters are available.
+- **Against 1.x.** 2.0.1 improves on 1.x by 0.7% on the same inputs (0.9% on the late windows), resolved.
+- **Against the foundation models.** The contrasts with TimesFM (+1.2%), Chronos-2 (+1.2%), Chronos-2-X (+1.5%) and
+  TimesFM-X (+1.4%) are not resolved.
+- **Rank.** On the late windows ANKYRA has the lowest mean per-unit rank of the 21 forecasters (6.25; per-unit ridge
+  6.48). The ridge is not resolvably worse there (+1.2%), so this is not a significant hourly advantage.
+- **Same-information baselines.** None of the five, nor the per-unit ridge, is significantly better than ANKYRA
+  (six one-sided tests with Holm's correction). This does not show that ANKYRA is better than all six.
+- **Status.** The 1.x result on LCL was known beforehand. LCL is therefore not an unexposed population, and this is
+  not a first read. No LCL window meets the micro-load condition, so LCL gives no test of that rule. Intervals were
+  not assessed for 2.0.1 on LCL.
+
+Two further changes were examined after 2.0.1 and not adopted: a daily path taken partly from the per-unit ridge,
+and an interval built from ANKYRA's own earlier errors. Each stopped at a check fixed in advance, before anything
+was scored on a test window or on LCL
+([record](LCL_AND_CLOSEOUT.md#two-changes-that-were-tried-and-not-adopted)). ANKYRA 2.0.1 is unchanged.
 
 ### Loss metrics of every forecaster
 
@@ -457,10 +538,10 @@ Computed after scoring, as a description.
 ![Monthly energy error against every baseline](../figures/fig11_energy_error.png)
 
 A month's energy error is $744\,\ell(e)$ kWh, 744 times the level error (P3). ANKYRA's design acts on this quantity:
-its level and daily path come from the unit's own history, and its within-day shape is TimesFM's. On the same late
-windows, Figure 11 compares the monthly energy error of ANKYRA with that of each of the 20 baselines. The estimand is the
-unit-equal RMS ratio of the primary estimand applied to the level error, with the same unit-and-month bootstrap
-intervals. It was computed after scoring and is a description, not a planned test
+its level and daily path come from the unit's own history. The within-day block has a zero mean on every day, so
+neither TimesFM's shape nor its anchoring since 2.0 changes the energy. On the same late windows, Figure 11 compares
+the monthly energy error of ANKYRA with that of each of the 20 baselines. The estimand is the unit-equal RMS ratio of
+the primary estimand applied to the level error, with the same unit-and-month bootstrap intervals. It was computed after scoring and is a description, not a planned test
 ([`results/energy_error.csv`](../results/energy_error.csv), which also gives the median-unit absolute percentage energy
 error of every forecaster).
 
@@ -473,7 +554,7 @@ error of every forecaster).
   lower than that of TimesFM, Chronos-2, Chronos-2-X and TimesFM-X, each resolved; on GoiEner non-household it is 18–25%
   lower, resolved against three of them. The within-day shape, where the foundation models are as good or better, carries
   most of these populations' hourly error (about 80% at the median unit), and energy is the part that ANKYRA changes.
-- **Against TimesFM**, whose within-day shape ANKYRA uses, the energy error is 4–25% lower on all seven populations,
+- **Against TimesFM**, whose within-day shape ANKYRA starts from, the energy error is 4–25% lower on all seven populations,
   resolved on Cambridge and both GoiEner sets (BDG2: +11.9%, unresolved; 2.0.0: −38.7%).
 - **BDG2.** The numbers include the micro-load rule, written after the BDG2 result of 2.0.0 had been seen
   ([details](#the-near-zero-meters-and-the-micro-load-rule-201)).
@@ -493,6 +574,75 @@ error of every forecaster).
 - **Small unresolved deficits** remain against the per-unit ridge and three profile or naive models on households (3–6%),
   iTransformer-X on Cambridge (4%) and TimesFM-X on the Suzhou park (4%). The two unresolved BDG2 deficits are in the
   item above.
+
+### Readouts
+
+- **Peak operator** (unchanged by 2.0 up to the nonnegativity projection):
+  - against the maximum of the same trajectory, 18–65% lower peak error on all 10 scored populations (all resolved);
+  - against last month's observed peak, better on Drammen, Oslo and HEEW (12–16%, resolved) and worse on CINELDI (19%)
+    and EWELD (20%), both resolved.
+  - 2.0.1: on the 46 BDG2 micro-load windows the daily means, and with them the readout, are TimesFM's. The two BDG2
+    contrasts above are unchanged (+37.3%, resolved; −8.2%, unresolved). Against the same readout applied to TimesFM
+    the BDG2 contrast moves from −43.3% to +3.3%, neither resolved, which is the near-zero meters again.
+  See [`results/peak_readout.csv`](../results/peak_readout.csv).
+- **Interval (GoiEner households):**
+  - 79.4% coverage at nominal 80%, 88.2% at 90%;
+  - Winkler score 4.4% better than the same interval around the fixed division and 7.5% better than TimesFM's native
+    band (both resolved);
+  - not distinguishable from Chronos-2's native quantiles (0.5% behind).
+  See [`results/intervals_households.json`](../results/intervals_households.json) and Figure 13.
+
+![Prediction intervals on households](../figures/fig13_intervals.png)
+
+**Intervals on all ten populations.** The households result above was the only interval evaluation in 1.x. The same
+interval (unchanged residual model) was afterwards applied to all windows of the ten scored populations, with the native
+quantiles of TimesFM 2.5 and Chronos-2 computed from the same contexts
+([`results/intervals_by_population.csv`](../results/intervals_by_population.csv); descriptive, computed after scoring).
+
+![Interval coverage on ten populations](../figures/fig16_intervals_ten_populations.png)
+
+| Population | Coverage at nominal 80%: ANKYRA / Chronos-2 / TimesFM | At nominal 90%: ANKYRA / Chronos-2 | ANKYRA by week 1–4 | Winkler(80), ANKYRA vs TimesFM | vs Chronos-2 |
+|---|---:|---:|---:|---:|---:|
+| BDG2 | 75.6 / 64.9 / 37.2 | 84.5 / 79.4 | 80, 76, 76, 72 | +2.7% | −14.2% |
+| Cambridge | 77.0 / 71.2 / 39.7 | 86.2 / 83.9 | 84, 79, 75, 72 | +14.5% * | −1.9% |
+| HEEW | 80.2 / 73.2 / 38.9 | 88.2 / 85.4 | 86, 81, 80, 76 | +9.4% * | −4.1% (+) |
+| EWELD | 82.2 / 78.6 / 56.6 | 88.0 / 87.3 | 86, 84, 81, 79 | −19.1% | −54.7% (+) |
+| GoiEner non-household | 79.0 / 71.5 / 43.2 | 87.3 / 84.9 | 81, 80, 79, 77 | +6.3% * | −10.4% (+) |
+| GoiEner households | 79.4 / 68.8 / 36.1 | 88.2 / 82.1 | 82, 80, 78, 78 | +7.5% * | −0.5% |
+| Oslo | 80.4 / 66.7 / 36.6 | 89.1 / 80.7 | 85, 82, 79, 77 | +18.4% * | +0.9% |
+| Drammen | 81.3 / 71.7 / 37.6 | 88.9 / 83.6 | 86, 84, 81, 77 | +18.2% * | −0.6% |
+| CINELDI | 80.6 / 73.6 / 43.1 | 88.9 / 85.9 | 84, 82, 80, 77 | +13.6% * | −6.4% (+) |
+| Suzhou park | 80.8 / 69.2 / 35.4 | 88.7 / 82.3 | 87, 83, 79, 76 | +15.4% * | +2.5% |
+
+Winkler contrasts are unit-equal improvements; * resolved in ANKYRA's favour, (+) against it. The contrasts and their
+intervals, for 2.0.1 and 2.0.0, are in
+[`results/intervals_winkler_contrasts.csv`](../results/intervals_winkler_contrasts.csv); `intervals_by_population.csv`
+has the coverage, width and scores of each forecaster.
+
+- **Coverage is close to nominal everywhere**: 75.6–82.2% at 80% and 84.5–89.1% at 90%. Chronos-2's native intervals
+  cover 65–79% and 79–87%, and TimesFM's native 0.1–0.9 band 35–57%.
+- **Not sharper than Chronos-2.** ANKYRA's bands are wider than Chronos-2's, so on the Winkler score, which rewards
+  sharpness, ANKYRA is not separated from Chronos-2 on six populations and resolvably worse on four (HEEW, EWELD,
+  GoiEner non-household, CINELDI). Under 2.0.0 it was five and five: BDG2 sat just beyond the boundary. Against
+  TimesFM's band it is resolvably better on eight, in both versions.
+- **BDG2 under 2.0.1.** The BDG2 row is the only one that differs from 2.0.0 (75.8 and 84.8% coverage; Winkler −0.4%
+  against TimesFM and −17.9% against Chronos-2, the latter resolved against ANKYRA, log ratio [+0.0001, +0.676]). On
+  the micro-load windows the interval is now centred on the TimesFM forecast. Coverage falls by 0.2 points. The
+  deficit to Chronos-2 is −14.2%, and its interval now just includes zero (log ratio [−0.002, +0.530]). Read this as
+  no change in substance: BDG2 remains the population on which ANKYRA's interval is furthest from Chronos-2's after
+  EWELD.
+- **Coverage falls with lead time.** The residual quantiles are pooled over the whole pseudo-window, so the first week
+  is over-covered (80–87%) and the fourth under-covered (72–79%). TimesFM's native band collapses from 64–77% to
+  16–43%; Chronos-2's is flat but below nominal.
+- **Intermittent loads.** On EWELD the interval's mean width is meaningless (about 10⁶ kW): a unit that was off at a
+  pseudo-origin has its residuals divided by a scale at its floor, and the resulting quantiles are enormous. Coverage
+  is unaffected, the Winkler score is ruined. The interval should not be used for units that switch off.
+
+## Where the error comes from
+
+Four diagnostics: in which block ANKYRA's error sits, how its advantage depends on the length of the history,
+why it loses on the Norwegian schools, and the property of the load on which the handover and the off-state rule
+rest.
 
 ### Where the error sits: block attribution
 
@@ -577,26 +727,60 @@ combined with a foundation model that sees eight weeks cannot.
 The oracle bound and the correlations narrow the cause down but do not identify it. A free per-day factor can also
 absorb other errors, and the operating reasons behind the closure-like days are unknown.
 
-### A condition-matched extension that was not adopted
+### Departures from normal operation persist
 
-Condition-matched analog days from the unit's own history (same day type, same season, same daylight-saving state,
-similar temperature) are the most informative pre-origin source of day-level activity in every population. On
-holidays they are informative everywhere.
+The weekly handover and the off-state rule rest on a measured property of the load rather than on tuned thresholds.
+The analyses below are descriptive. They were specified in writing before they were run, and they read only stored
+records and saved forecasts. Their numbers are not exported to `results/`.
 
-Four versions supplying this information to ANKYRA were tested against a fixed no-harm criterion on the development
-store (within-day upper interval bound ≤ +0.01):
+**Definition.** A day departs from normal operation when its mean falls outside hysteresis bands around a calendar
+expectation. The expectation is the median of same-type days around the same date one year earlier. The four states
+are off (below 5%), low (below 55%), high (above 150%) and normal. Recurring holidays and school breaks are part of the
+expectation, so a departure is unscheduled by construction.
 
-| Version | What the analog days supply | Development-store result |
-|---|---|---|
-| 1 | full 24-hour shape (±45 days) | revised before scoring |
-| 2 | full 24-hour shape | 13.6% worse |
-| 3 | one absolute amplitude factor per day | +0.001 [−0.005, +0.016] |
-| 4 | one relative activity factor per day | +0.004 [−0.000, +0.012] |
+**Duration dependence.** The statistic compares exit rates in days 1–3 of a departure with days 8–30, within each unit
+(Mantel–Haenszel log ratio). A value above zero means that a departure that has lasted longer is more likely to
+continue.
 
-- None passed, so none was tested or adopted.
-- Holidays improved consistently (1.3–1.7%).
-- The remaining harm sat on ordinary days of the Spanish population, whose departures are not predictable from any
-  pre-origin source, and in strength estimates from only three pseudo-origins.
+| Population | Low | Off | High |
+|---|---|---|---|
+| Spanish development store (4 categories) | 0.76–1.00 | 0.73–1.14 | 0.81–1.00 |
+| EWELD (3 categories) | 0.65–0.79 | 0.82–1.01 | 0.77–1.02 |
+| Drammen | 1.97 [1.57, 2.48] | — | 0.77 [0.62, 0.95] |
+| Oslo | 1.12 [0.88, 1.36] | — | 0.85 [0.65, 1.06] |
+| Cambridge | 0.75 [0.59, 0.91] | — | 1.05 [0.88, 1.21] |
+| CINELDI | 0.92 [0.63, 1.20] | — | 0.94 [0.54, 1.32] |
+| GoiEner households | 0.42 [0.37, 0.47] | 0.21 [−0.07, 0.42] | 0.67 [0.61, 0.73] |
+
+- Pooled survival curves overstate duration dependence, because mixing units with different constant exit rates
+  produces falling pooled rates. The within-unit ratios are 20–50% smaller than the pooled ones, but remain above zero.
+- Gamma-frailty Weibull shapes are below one in most calendar-referenced cells (0.67–0.97; households 1.03–1.07).
+- Out of time, a semi-Markov model beats a Markov model in 12 of 19 cells, with 5 favouring Markov and 2 ties.
+- After temperature normalisation, the within-unit ratio stays above zero in 27 of 31 estimable cells.
+
+**What this means for the forecast.** If departures were Markov, the value of the foundation model's recent
+information would not depend on how long the current departure had lasted. It does.
+
+- Windows whose departure had lasted at least 15 days at the origin favoured TimesFM over the fixed division more than
+  windows with departures of at most 3 days.
+  - Within units, excluding EWELD, the difference in ½ log MSE ratio was +0.28 [0.15, 0.42] in days 1–7 and
+    +0.16 [0.05, 0.28] in days 15–31. This comparison was written after the pre-specified pooled one (+1.13 and
+    +1.12), which EWELD shutdowns dominate.
+  - Elapsed duration therefore marks the model's relative accuracy over the whole horizon, not a slower decay of it.
+- ANKYRA uses this through its error weights, not through an explicit duration rule.
+  - A rule that raised the model weight with elapsed duration failed its fixed criterion.
+  - It failed because the weights already move towards the model during long departures. On windows with departures
+    of at least 15 days, the mean ½ log MSE ratio to TimesFM fell from the fixed division (F0 in the result files)
+    to ANKYRA 1.x without the off-state rule (F1) as follows: Spanish development store 0.69 → 0.30, Cambridge
+    0.46 → 0.06, CINELDI 0.30 → 0.05.
+- A zero week is the most persistent departure. 343 of 349 zero months in EWELD were preceded by one, and in that case
+  the off-state rule hands the whole window to the model.
+
+## Evidence for each design choice
+
+One section per design choice, in the order in which the choices were made: the handover (1.x), a within-day
+extension that was rejected, the within-day anchoring (2.0), the micro-load rule (2.0.1), and the sensitivity of
+the result to the shrinkage constants.
 
 ### What the handover contributes
 
@@ -604,13 +788,13 @@ An ablation specified before it was run varied only the weight on the model's da
 within-day shape and the off-state rule fixed, and compared four weights:
 
 - no weight (A0);
-- a fixed half (A½);
+- a fixed half (A½; `Ah` in the file);
 - one weight per unit and month, estimated like the weekly ones (AM);
 - ANKYRA's four weekly weights (AW).
 
-LCL, the reserved set, was not used. The ablation was run on ANKYRA 1.x, and the recomputed AW reproduces the evaluated
-1.x forecasts to within 0.002 kW. The handover is unchanged since 1.x. No arm carries the micro-load rule, so the BDG2
-row includes the near-zero meters without it.
+LCL, then held in reserve, was not used. The ablation was run on ANKYRA 1.x, and the recomputed AW reproduces the
+evaluated 1.x forecasts to within 0.002 kW. The handover is unchanged since 1.x. No arm carries the micro-load rule,
+so the BDG2 row includes the near-zero meters without it.
 
 | Test population | A½ vs A0 | AW vs A½ | AW vs AM | Share of AW's gain captured by A½ |
 |---|---:|---:|---:|---:|
@@ -632,6 +816,29 @@ Unit-equal improvement of the first arm; * resolved in its favour, (+) resolved 
 The plan fixed the wording in advance: the claim is per-unit, error-weighted mixing, not weekly resolution. All ten
 populations and the weekly breakdown are in [`results/handover_granularity.csv`](../results/handover_granularity.csv).
 
+### A condition-matched extension that was not adopted
+
+Condition-matched analog days from the unit's own history (same day type, same season, same daylight-saving state,
+similar temperature) are the most informative pre-origin source of day-level activity in every population. On
+holidays they are informative everywhere.
+
+Four versions supplying this information to ANKYRA were tested against a fixed no-harm criterion on the Spanish
+development store (upper interval bound of the within-day log ratio ≤ +0.01):
+
+| Version | What the analog days supply | Development-store result |
+|---|---|---|
+| 1 | full 24-hour shape (±45 days) | revised before scoring |
+| 2 | full 24-hour shape | 13.6% worse |
+| 3 | one absolute amplitude factor per day | +0.001 [−0.005, +0.016] |
+| 4 | one relative activity factor per day | +0.004 [−0.000, +0.012] |
+
+- None passed, so none was scored on a test population or adopted.
+- Holidays improved consistently (1.3–1.7%).
+- The remaining harm sat on ordinary days of the Spanish development store, whose departures are not predictable from
+  any pre-origin source, and in strength estimates from only three pseudo-origins.
+
+The rule adopted in 2.0 is a later version of the same idea ([Within-day anchoring (2.0)](#within-day-anchoring-20)).
+
 ### Within-day anchoring (2.0)
 
 In 1.x the within-day block was the foundation model's, unchanged, although it carries 36–50% of the hourly squared
@@ -639,33 +846,38 @@ error on the building populations and about 80% on the GoiEner populations. ANKY
 blocks are anchored: the unit's own analog-day shape competes with the foundation model's shape, weighted by the unit's
 errors at completed pseudo-origins ([METHOD.md](METHOD.md#within-day-shape)).
 
-**How the rule was obtained.** The rule is the sixth version of a similar-day idea (the A-series of the study record).
-Versions 1–4 (2026-09-29) were judged first on the GoiEner non-household development store and did not pass its no-harm
-gate. Version 5 (a half blend switched on by a shape-repeatability threshold) passed the development gates and the
-validation populations but failed the pre-registered no-harm gate on the test populations (BDG2, EWELD and households
-above the +0.01 upper bound; households resolvably 0.4% worse) and was not adopted. Version 6 replaced the threshold by
-the unit's own pseudo-origin errors; it was chosen from a family of six trust functions written down in advance,
-selected on nine design faces — the three development populations (GoiEner non-household store, Oslo, Drammen) and
-the **pre-cutoff** windows of the six test cohorts, the period on which the trained baselines are fitted — then
-validated on CINELDI and the Suzhou park (mean hourly log ratio −0.025 against a +0.005 limit) and evaluated once on
-the **post-cutoff** windows of the six test cohorts under a frozen protocol: HT1a (improvement on at least two of
-BDG2, Cambridge, HEEW) and HT1b (no test population with an upper bound above +0.01) both held. A third round
-(six pseudo-origins instead of three, an analog-day daily-path candidate, finer handover blocks) adopted nothing: the
-first fell 0.01 points short of its own 0.2% gain threshold, the second was harmful on BDG2 and EWELD, the third had no
-measurable effect.
+**How the rule was obtained.** The rule is the sixth version of a similar-day idea.
+
+- **Versions 1–4** were judged first on the Spanish development store and did not pass its no-harm criterion
+  ([above](#a-condition-matched-extension-that-was-not-adopted)).
+- **Version 5** was a half blend switched on by a shape-repeatability threshold. It passed on the development and
+  validation populations but failed the no-harm criterion fixed in advance for the test populations: BDG2, EWELD and
+  households were above the +0.01 upper bound, and households were resolvably 0.4% worse. It was not adopted.
+- **Version 6**, the rule of 2.0, replaced the threshold by the unit's own pseudo-origin errors. It was chosen from a
+  family of six trust functions written down in advance.
+  - *Selection* used nine **design sets**: the three development populations (the Spanish development store, Oslo,
+    Drammen) and the **pre-cutoff** windows of the six test cohorts, the period on which the trained baselines are
+    fitted.
+  - *Validation* used CINELDI and the Suzhou park (mean hourly log ratio −0.025 against a limit of +0.005).
+  - *Evaluation* was made once, on the **post-cutoff** windows of the six test cohorts, under a frozen protocol with
+    two criteria: an improvement on at least two of BDG2, Cambridge and HEEW, and no test population with an upper
+    interval bound above +0.01. Both held.
+- **A further attempt** changed three things: six pseudo-origins instead of three, an analog-day daily-path
+  candidate, and finer handover blocks. Nothing was adopted. The first fell 0.01 points short of its own 0.2% gain
+  threshold, the second was harmful on BDG2 and EWELD, and the third had no measurable effect.
 
 **Evidence status.** The 1.x test evidence is a single read of the six test populations after the model was fixed.
 The 2.0 within-day rule was developed after that read; its test windows had been seen once for 1.x and once for the
 rejected version 5. The 2.0 test numbers are therefore a **re-evaluation under a frozen protocol, not a first read**,
-and the development used the same cohorts' earlier windows. LCL, the reserved population, was not read in that round. This is the
-one respect in which the evidence for the 2.0 within-day rule is weaker than the 1.x evidence; everything else in its
-evaluation is identical.
+and the development used the same cohorts' earlier windows. LCL, then held in reserve, was not read for this rule.
+This is the one respect in which the evidence for the 2.0 within-day rule is weaker than the 1.x evidence; everything
+else in its evaluation is identical.
 
 The micro-load rule of 2.0.1 is outside this protocol. It was written after the evaluation above, in response to its
 BDG2 result, and it changes BDG2 only. For BDG2 the 2.0.1 numbers are therefore weaker evidence again: a description
 of what the rule changes, not a test of it
-([The near-zero meters and the micro-load rule](#the-near-zero-meters-and-the-micro-load-rule-201)). The gates HT1a
-and HT1b were evaluated on 2.0.0.
+([The near-zero meters and the micro-load rule](#the-near-zero-meters-and-the-micro-load-rule-201)). The two
+criteria of the frozen protocol were evaluated on 2.0.0.
 
 **What it changes** (post-cutoff windows; the unit-equal improvement of 2.0.0 over 1.x, 95% unit-and-month interval).
 2.0.0 is used because its contrast with 1.x isolates the anchoring. On nine populations 2.0.1 is identical to 2.0.0;
@@ -694,144 +906,8 @@ on BDG2, 2.0.1 against 1.x also contains the micro-load rule (+37.0% on the post
   non-household, with the gain growing with lead time (Cambridge: +0.6% on days 1–3, +4.0% on days 22–31). The counts
   are the same for 2.0.0 and 2.0.1 ([`results/ankyra_2_vs_1x_by_day.csv`](../results/ankyra_2_vs_1x_by_day.csv)).
 
-Full records: `EO_WITHIN_ANCHOR_RESULTS_v1_20261002`, `EO_WITHIN_ANCHOR_R2_RESULTS_v1_20261002`,
-`EO_WITHIN_ANCHOR_R3_RESULTS_v1_20261003` of the study record.
-
-### Departures from normal operation persist
-
-The weekly handover and the off-state rule rest on a measured property of the load rather than on tuned thresholds.
-The analyses below are descriptive. They were specified in writing before they were run, and they read only stored
-records and saved forecasts.
-
-**Definition.** A day departs from normal operation when its mean falls outside hysteresis bands around a calendar
-expectation. The expectation is the median of same-type days around the same date one year earlier. The four states
-are off (below 5%), low (below 55%), high (above 150%) and normal. Recurring holidays and school breaks are part of the
-expectation, so a departure is unscheduled by construction.
-
-**Duration dependence.** The statistic compares exit rates in days 1–3 of a departure with days 8–30, within each unit
-(Mantel–Haenszel log ratio). A value above zero means that a departure that has lasted longer is more likely to
-continue.
-
-| Population | Low | Off | High |
-|---|---|---|---|
-| Spanish development (4 categories) | 0.76–1.00 | 0.73–1.14 | 0.81–1.00 |
-| EWELD (3 categories) | 0.65–0.79 | 0.82–1.01 | 0.77–1.02 |
-| Drammen | 1.97 [1.57, 2.48] | — | 0.77 [0.62, 0.95] |
-| Oslo | 1.12 [0.88, 1.36] | — | 0.85 [0.65, 1.06] |
-| Cambridge | 0.75 [0.59, 0.91] | — | 1.05 [0.88, 1.21] |
-| CINELDI | 0.92 [0.63, 1.20] | — | 0.94 [0.54, 1.32] |
-| GoiEner households | 0.42 [0.37, 0.47] | 0.21 [−0.07, 0.42] | 0.67 [0.61, 0.73] |
-
-- Pooled survival curves overstate duration dependence, because mixing units with different constant exit rates
-  produces falling pooled rates. The within-unit ratios are 20–50% smaller than the pooled ones, but remain above zero.
-- Gamma-frailty Weibull shapes are below one in most calendar-referenced cells (0.67–0.97; households 1.03–1.07).
-- Out of time, a semi-Markov model beats a Markov model in 12 of 19 cells, with 5 favouring Markov and 2 ties.
-- After temperature normalisation, the within-unit ratio stays above zero in 27 of 31 estimable cells.
-
-**What this means for the forecast.** If departures were Markov, the value of the foundation model's recent
-information would not depend on how long the current departure had lasted. It does.
-
-- Windows whose departure had lasted at least 15 days at the origin favoured TimesFM over the fixed division more than
-  windows with departures of at most 3 days.
-  - Within units, excluding EWELD, the difference in ½ log MSE ratio was +0.28 [0.15, 0.42] in days 1–7 and
-    +0.16 [0.05, 0.28] in days 15–31. This comparison was written after the pre-specified pooled one (+1.13 and
-    +1.12), which EWELD shutdowns dominate.
-  - Elapsed duration therefore marks the model's relative accuracy over the whole horizon, not a slower decay of it.
-- ANKYRA uses this through its error weights, not through an explicit duration rule.
-  - A rule that raised the model weight with elapsed duration (F1-τ) failed its fixed criterion.
-  - It failed because the weights already move towards the model during long departures. On windows with departures
-    of at least 15 days, the mean ½ log MSE ratio to TimesFM fell from F0 to F1 as follows: development 0.69 → 0.30,
-    Cambridge 0.46 → 0.06, CINELDI 0.30 → 0.05.
-- A zero week is the most persistent departure. 343 of 349 zero months in EWELD were preceded by one, and in that case
-  the off-state rule hands the whole window to the model.
-
-### Readouts
-
-- **Peak operator** (unchanged by 2.0 up to the nonnegativity projection):
-  - against the maximum of the same trajectory, 18–65% lower peak error on all 10 scored populations (all resolved);
-  - against last month's observed peak, better on Drammen, Oslo and HEEW (12–16%, resolved) and worse on CINELDI (19%)
-    and EWELD (20%), both resolved.
-  - 2.0.1: on the 46 BDG2 micro-load windows the daily means, and with them the readout, are TimesFM's. The two BDG2
-    contrasts above are unchanged (+37.3%, resolved; −8.2%, unresolved). Against the same readout applied to TimesFM
-    the BDG2 contrast moves from −43.3% to +3.3%, neither resolved, which is the near-zero meters again.
-  See [`results/peak_readout.csv`](../results/peak_readout.csv).
-- **Interval (GoiEner households):**
-  - 79.4% coverage at nominal 80%, 88.2% at 90%;
-  - Winkler score 4.4% better than the same interval around the fixed division and 7.5% better than TimesFM's native
-    band (both resolved);
-  - not distinguishable from Chronos-2's native quantiles (0.5% behind).
-  See [`results/intervals_households.json`](../results/intervals_households.json) and Figure 13.
-
-![Prediction intervals on households](../figures/fig13_intervals.png)
-
-**Intervals on all ten populations.** The households result above was the only interval evaluation in 1.x. The same
-interval (unchanged residual model) was afterwards applied to all windows of the ten scored populations, with the native
-quantiles of TimesFM 2.5 and Chronos-2 computed from the same contexts
-([`results/intervals_by_population.csv`](../results/intervals_by_population.csv); descriptive, computed after scoring).
-
-![Interval coverage on ten populations](../figures/fig16_intervals_ten_populations.png)
-
-| Population | Coverage at nominal 80%: ANKYRA / Chronos-2 / TimesFM | At nominal 90%: ANKYRA / Chronos-2 | ANKYRA by week 1–4 | Winkler(80), ANKYRA vs TimesFM | vs Chronos-2 |
-|---|---:|---:|---:|---:|---:|
-| BDG2 | 75.6 / 64.9 / 37.2 | 84.5 / 79.4 | 80, 76, 76, 72 | +2.7% | −14.2% |
-| Cambridge | 77.0 / 71.2 / 39.7 | 86.2 / 83.9 | 84, 79, 75, 72 | +14.5% * | −1.9% |
-| HEEW | 80.2 / 73.2 / 38.9 | 88.2 / 85.4 | 86, 81, 80, 76 | +9.4% * | −4.1% (+) |
-| EWELD | 82.2 / 78.6 / 56.6 | 88.0 / 87.3 | 86, 84, 81, 79 | −19.1% | −54.7% (+) |
-| GoiEner non-household | 79.0 / 71.5 / 43.2 | 87.3 / 84.9 | 81, 80, 79, 77 | +6.3% * | −10.4% (+) |
-| GoiEner households | 79.4 / 68.8 / 36.1 | 88.2 / 82.1 | 82, 80, 78, 78 | +7.5% * | −0.5% |
-| Oslo | 80.4 / 66.7 / 36.6 | 89.1 / 80.7 | 85, 82, 79, 77 | +18.4% * | +0.9% |
-| Drammen | 81.3 / 71.7 / 37.6 | 88.9 / 83.6 | 86, 84, 81, 77 | +18.2% * | −0.6% |
-| CINELDI | 80.6 / 73.6 / 43.1 | 88.9 / 85.9 | 84, 82, 80, 77 | +13.6% * | −6.4% (+) |
-| Suzhou park | 80.8 / 69.2 / 35.4 | 88.7 / 82.3 | 87, 83, 79, 76 | +15.4% * | +2.5% |
-
-Winkler contrasts are unit-equal improvements; * resolved in ANKYRA's favour, (+) against it. The contrasts and their
-intervals, for 2.0.1 and 2.0.0, are in
-[`results/intervals_winkler_contrasts.csv`](../results/intervals_winkler_contrasts.csv); `intervals_by_population.csv`
-has the coverage, width and scores of each forecaster.
-
-- **Coverage is close to nominal everywhere**: 75.6–82.2% at 80% and 84.5–89.1% at 90%. Chronos-2's native intervals
-  cover 65–79% and 79–87%, and TimesFM's native 0.1–0.9 band 35–57%.
-- **Not sharper than Chronos-2.** ANKYRA's bands are wider than Chronos-2's, so on the Winkler score, which rewards
-  sharpness, ANKYRA is not separated from Chronos-2 on six populations and resolvably worse on four (HEEW, EWELD,
-  GoiEner non-household, CINELDI). Under 2.0.0 it was five and five: BDG2 sat just beyond the boundary. Against
-  TimesFM's band it is resolvably better on eight, in both versions.
-- **BDG2 under 2.0.1.** The BDG2 row is the only one that differs from 2.0.0 (75.8 and 84.8% coverage; Winkler −0.4%
-  against TimesFM and −17.9% against Chronos-2, the latter resolved against ANKYRA, log ratio [+0.0001, +0.676]). On
-  the micro-load windows the interval is now centred on the TimesFM forecast. Coverage falls by 0.2 points. The
-  deficit to Chronos-2 is −14.2%, and its interval now just includes zero (log ratio [−0.002, +0.530]). Read this as
-  no change in substance: BDG2 remains the population on which ANKYRA's interval is furthest from Chronos-2's after
-  EWELD.
-- **Coverage falls with lead time.** The residual quantiles are pooled over the whole pseudo-window, so the first week
-  is over-covered (80–87%) and the fourth under-covered (72–79%). TimesFM's native band collapses from 64–77% to
-  16–43%; Chronos-2's is flat but below nominal.
-- **Intermittent loads.** On EWELD the interval's mean width is meaningless (about 10⁶ kW): a unit that was off at a
-  pseudo-origin has its residuals divided by a scale at its floor, and the resulting quantiles are enormous. Coverage
-  is unaffected, the Winkler score is ruined. The interval should not be used for units that switch off.
-
-### Sensitivity to the shrinkage constants
-
-The shrinkage constants were fixed on development data and never re-selected. To show how much rides on them, each was
-changed alone and the forecaster re-scored on the nine design faces only (the development populations and the
-pre-cutoff windows; [`results/constants_sensitivity.csv`](../results/constants_sensitivity.csv); hourly unit-equal log
-ratio against 2.0.1, negative better). Micro-load windows return the TimesFM forecast in the reference and in every
-variant.
-
-| Constant (ANKYRA's value) | Alternatives | Nine-face mean against 2.0.1 | Largest change on a face |
-|---|---|---:|---:|
-| handover shrinkage $K_0$ (2) | 0, 1, 4, 8 | −0.0002 to +0.0021 | +0.008 (BDG2, $K_0=0$) |
-| handover pseudo-origins (6) | 2, 3, 4 | +0.0005 to +0.0019 | +0.008 (EWELD) |
-| within-day shrinkage $K_0$ (2) | 1, 4 | −0.0009, +0.0027 | +0.008 (Oslo, $K_0=4$) |
-| within-day cap (½) | 0.3, 1 | +0.0031, −0.0004 | +0.008 (Oslo, cap 0.3) |
-| within-day pseudo-origins (3) | 2, 6 | +0.0022, −0.0019 | +0.008 (Oslo, 2 pairs) |
-
-Every alternative stays within 0.5% of the forecaster on the nine-face mean, and no face becomes more than 0.8%
-worse. The largest change in the other direction is on the BDG2 pre-cutoff face, where the handover variants with
-fewer pseudo-origins are 1.0–1.4% better. The forecaster is flat around its constants.
-
-Without the micro-load rule (2.0.0, [`results/ankyra_2_0_0/`](../results/ankyra_2_0_0/)) the same BDG2 face was the
-one exception to this: the handover variants with no shrinkage or fewer pseudo-origins moved its unit mean by 2–4.5%,
-which was the near-zero meters (below), and the two handover rows read −0.004 to +0.0003 and −0.0015 to −0.0005. The
-three within-day rows are the same in both versions.
+The protocols and full records of versions 5 and 6 and of the further attempt are working files of the study and are
+not in this repository.
 
 ### The near-zero meters and the micro-load rule (2.0.1)
 
@@ -851,9 +927,10 @@ forecast is returned unchanged, the same action as the off-state rule
   hours before the origin, floored at $\max(0.01|l_0|,10^{-3})$ kW; [METHOD.md](METHOD.md#level)); it is not a new
   constant. A record that stays inside that floor for eight weeks is treated as switched off, like a record that
   reads zero. The off-state rule does not catch it, because its readings are small but not zero.
-- The rule reads only load before the origin. The context must be completely observed. Estimator history,
-  category and temperature-scale checks run on a micro-load-only return; a window also caught by the old off-state
-  rule retains that branch's existing validation behavior. The flags are not full-validation certificates.
+- The rule reads only load before the origin. The context must be completely observed. A return under the
+  micro-load rule alone runs the estimator's history, category and temperature-scale checks; a return under the
+  off-state rule does not, as in 2.0.0. The flags `off_state` and `micro_load` say which rule fired; they are not a
+  certificate that the inputs were validated.
 - The threshold is an absolute value in kW on the magnitude of the load, like the off-state threshold and the scale
   floor. Loads must be supplied in kW.
 - `forecast(..., micro_load_rule=False)` reproduces 2.0.0.
@@ -927,8 +1004,8 @@ windows. Without the three meters the late panel has 464 windows of 139 units (1
 **2.0.1 against 2.0.0 on BDG2.**
 
 - Late windows: +36.4%, interval in log units [−1.323, +0.000]. Its upper end is at zero, so the contrast is not
-  resolved. (The round that produced the rule ran the same contrast with another bootstrap stream and printed
-  [−1.337, −0.000].) All windows: +30.4% [−1.230, −0.001].
+  resolved. It sits on the boundary: with another bootstrap seed the interval was [−1.337, −0.000]. All windows:
+  +30.4% [−1.230, −0.001].
 - **Without the three meters the point estimates agree**: to 0.01 points on the late windows (2.0.1 against 2.0.0:
   −0.007%, so 2.0.1 is marginally worse) and to 0.03 points on all windows (+0.03%).
 - **The intervals of that column do not agree.** Six further meters keep 23 late micro-load windows (35 in all) in it.
@@ -967,9 +1044,9 @@ estimand is a ratio, so the three always-near-zero meters still dominate the BDG
 **Status.** The micro-load rule was written after the BDG2 test result of 2.0.0 had been seen, in response to it. Its
 effect on BDG2 describes what the rule changes; it is not a test of the rule. No other scored population has a window
 on which the rule changes the forecast, so the rule has not been evaluated on data it was not written for. The rule
-came out of a round of four candidates specified after the 2.0.0 evaluation. It was the only one that changed no
-forecast on the design faces other than BDG2; the other three (a block-wise handover, a peak-estimate competition and
-the spike guard [below](#robustness-to-corrupted-contexts)) were not adopted. It was adopted as 2.0.1 on 3 October 2026.
+was one of four candidates specified after the 2.0.0 evaluation. It was the only one that changed no forecast on the
+design sets other than BDG2; the other three (a block-wise handover, a peak-estimate competition and the spike guard
+[below](#robustness-to-corrupted-contexts)) were not adopted. It was adopted as 2.0.1 on 3 October 2026.
 
 **Where the 2.0.0 results are.** The complete 2.0.0 result files are kept beside the 2.0.1 results in
 [`results/ankyra_2_0_0/`](../results/ankyra_2_0_0/). In the 2.0.1 files, 2.0.0 also appears as a row or arm of
@@ -977,7 +1054,33 @@ the spike guard [below](#robustness-to-corrupted-contexts)) were not adopted. It
 `ankyra_2_vs_1x_by_day.csv`. Two files are new in 2.0.1 and carry both versions: `bdg2_micro_load_windows.csv` (the 46
 windows, with the forecast mean and RMSE of 2.0.0 and 2.0.1) and `intervals_winkler_contrasts.csv`.
 
-### Robustness to corrupted contexts
+### Sensitivity to the shrinkage constants
+
+The shrinkage constants were fixed on development data and never re-selected. To show how much rides on them, each was
+changed alone and the forecaster re-scored on the nine design sets only: the three development populations and the
+pre-cutoff windows of the six test cohorts ([Within-day anchoring (2.0)](#within-day-anchoring-20)). No post-cutoff
+test window is used. The values are hourly unit-equal log ratios against 2.0.1, negative better
+([`results/constants_sensitivity.csv`](../results/constants_sensitivity.csv); `face` in its column names means one
+design set). Micro-load windows return the TimesFM forecast in the reference and in every variant.
+
+| Constant (ANKYRA's value) | Alternatives | Nine-set mean against 2.0.1 | Largest change on a set |
+|---|---|---:|---:|
+| handover shrinkage $K_0$ (2) | 0, 1, 4, 8 | −0.0002 to +0.0021 | +0.008 (BDG2, $K_0=0$) |
+| handover pseudo-origins (6) | 2, 3, 4 | +0.0005 to +0.0019 | +0.008 (EWELD) |
+| within-day shrinkage $K_0$ (2) | 1, 4 | −0.0009, +0.0027 | +0.008 (Oslo, $K_0=4$) |
+| within-day cap (½) | 0.3, 1 | +0.0031, −0.0004 | +0.008 (Oslo, cap 0.3) |
+| within-day pseudo-origins (3) | 2, 6 | +0.0022, −0.0019 | +0.008 (Oslo, 2 pairs) |
+
+Every alternative stays within 0.5% of the forecaster on the nine-set mean, and no set becomes more than 0.8%
+worse. The largest change in the other direction is on the BDG2 pre-cutoff windows, where the handover variants with
+fewer pseudo-origins are 1.0–1.4% better. The forecaster is flat around its constants.
+
+Without the micro-load rule (2.0.0, [`results/ankyra_2_0_0/`](../results/ankyra_2_0_0/)) the same BDG2 set was the
+one exception to this: the handover variants with no shrinkage or fewer pseudo-origins moved its unit mean by 2–4.5%,
+which was the [near-zero meters](#the-near-zero-meters-and-the-micro-load-rule-201), and the two handover rows read
+−0.004 to +0.0003 and −0.0015 to −0.0005. The three within-day rows are the same in both versions.
+
+## Robustness to corrupted contexts
 
 The evaluation windows have complete, cleaned contexts. To see what happens when they are not, the 64 Drammen windows
 of the cost benchmark were re-forecast with the public package after corrupting only the context (the targets are
@@ -1010,11 +1113,12 @@ population; one level of each corruption, fixed before the run).
   effect disappears (hourly error +0.03%, peak readout unchanged), and on the clean Drammen contexts the guard changes
   nothing. On the evaluation populations it would never act on BDG2, HEEW, Oslo, Drammen or the Suzhou park, and would
   act on 3–4% of the windows of the two Spanish populations, whose records contain isolated hours of that size.
-  Evaluated on the design faces (the development store and the pre-cutoff windows), the guarded forecaster was not
+  Evaluated on the design sets (the development store and the pre-cutoff windows), the guarded forecaster was not
   worse in any point estimate (hourly −1.7% on the development store, peak readout −4.2% there, resolved), but on the
-  household face fewer than half of the changed windows improved and the no-harm bound was not met (hourly upper bound
-  +2.5%): in those records an isolated spike is often real load. The guard is therefore not part of the evaluated
-  forecaster; it is an input-quality option for deployments with meter glitches.
+  household pre-cutoff windows fewer than half of the changed windows improved and the no-harm bound was not met
+  (hourly upper bound +2.5%): in those records an isolated spike is often real load. The guard is therefore not part
+  of the forecaster and is not implemented in this repository. The rule is given above for users who need to clean
+  meter glitches before calling `ankyra.forecast`. These numbers are not exported to `results/`.
 
 ## Cost
 
@@ -1061,8 +1165,14 @@ issued every 744 hours, or when a window is re-run.
   protocol, not a first read ([Within-day anchoring (2.0)](#within-day-anchoring-20)). The 2.0.1 micro-load rule was
   written after the BDG2 result of that evaluation had been seen, so under 2.0.1 BDG2 is not a test set scored with
   the model fixed.
+- **LCL.** The reserved population was scored once for 2.0.1, but its 1.x result was known, so it is not an
+  unexposed population. The contrasts with the four foundation-model variants are not resolved there
+  ([LCL households](#lcl-households-and-two-changes-not-adopted)).
 - **Data.** Oslo temperature is used as a proxy for CINELDI. The Suzhou park has four aggregate series, so read its
   point estimates only.
+- **Category Commercial.** The forecaster has no temperature-signature prior for the category Commercial and gives
+  such units a zero temperature signature ([METHOD.md](METHOD.md#the-category-commercial-has-no-prior)). 13 BDG2 units
+  and one Suzhou series are Commercial; their scored forecasts were made this way.
 - **Near-zero meters.** In 2.0.0 the off-state threshold missed meters that read near zero but not zero (nine meters
   at one BDG2 site, reading 0.0002–0.0005 kW), and ANKYRA forecast 0.35 kW on average on them where the foundation
   models forecast the reading. 2.0.1 handles them with the micro-load rule, and four limits remain
@@ -1099,7 +1209,10 @@ micro-load window of BDG2 (46) and of the EWELD post-cutoff windows (217), 263 i
   files, and directly with the scored 2.0.0 arm of the 2.0.1 panel (field `max_rel_diff_2_0_0_mode_vs_panel_arm`).
 - **1.x mode.** With `within_anchor=False, micro_load_rule=False` it reproduces the evaluated 1.x trajectories exactly
   (largest absolute difference 3.4×10⁻¹³ kW). `within_anchor=False` alone no longer does on micro-load contexts.
-- **Tests.** The package has 44 tests in `tests/` (10 of them on the micro-load rule) and 29 in `theory/`, 73 in all.
+- **Tests.** `tests/` holds the forecaster's tests, among them those of the micro-load rule
+  (`tests/test_micro_load.py`) and of input isolation (`tests/test_no_future_information.py`), and the tests of the
+  evaluation module (`tests/test_evaluation.py`). `theory/` holds the 29 checks of the exact properties. Run them
+  with `python -m unittest discover -s tests -t .` and `python -m unittest discover -s theory -t .`.
 
 The earlier records are kept: [`results/ankyra_2_0_0/REPRODUCTION_CHECK.json`](../results/ankyra_2_0_0/REPRODUCTION_CHECK.json)
 (the 2.0.0 package on 150 windows of six populations; its `package_version` field reads 1.2.1 because the check was
@@ -1108,8 +1221,9 @@ run on the 2.0.0 code before the version string was raised) and
 windows of two populations including every off-state window, the TimesFM adapter, the peak operator, the within-day
 default and the household intervals, all exact). Those components are unchanged in 2.0 and 2.0.1.
 
-## Final optimization closeout (2026-10-03)
-
-The frozen final point model remains ANKYRA 2.0.1. The [separate closeout](LCL_AND_CLOSEOUT.md) records the centered Ridge admission STOP, interval source-support STOP, API wording corrections, and synthetic cache staging. Its later LCL section is separate from the original ten-population comparisons, historical 1.x evidence and BDG2 post hoc description.
-
-The [final LCL result](LCL_AND_CLOSEOUT.md#lcl-final-stage) is now available as a separate frozen evaluation. Its all-window and fixed-common-late results are exported separately; matched-input and archived-input 1.x are distinct. Earlier LCL-reserved statements above describe the historical rounds in which they occur.
+**File hashes and line endings.** Two records carry SHA-256 values of the frozen estimator's files:
+`ankyra/history/provenance.json` (the six modules `_climate.py`, `_day.py`, `_eo.py`, `_level.py`, `_signature.py`,
+`_span.py` and `frozen_config.json`) and `results/ankyra_1x/REPRODUCTION_CHECK.json` (field `package_files_sha256`).
+They were taken on a Windows working copy in which these files have CRLF line endings. The repository stores text
+files with LF line endings, so a checkout with LF gives different hashes for the same content. Converting the line
+endings to CRLF gives the recorded values. The files' content has not changed.

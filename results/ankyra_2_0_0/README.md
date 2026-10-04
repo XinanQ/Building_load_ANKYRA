@@ -1,16 +1,29 @@
-> **Archived record of ANKYRA 2.0.0 (without the micro-load rule), kept unchanged beside the 2.0.1 results.** Figure
-> numbers below are those of the 2.0.0 release: its Figure 9 (energy by forecast day) is now Figure 9b and its Figure 9b
-> (hourly loss by forecast day) is now Figure 9. Links are relative to `results/`, the folder this file was copied from.
-> `REPRODUCTION_CHECK.json` here was written before the package's version string was raised, so its `package_version`
-> field reads 1.2.1; the check ran on the 2.0.0 code (the file hashes are in the file).
+> **Archived record of ANKYRA 2.0.0 (without the micro-load rule), kept unchanged beside the 2.0.1 results.** The
+> current files are in [`results/`](../), with a full description of the columns in
+> [`results/README.md`](../README.md).
+>
+> - Figure numbers below are those of the 2.0.0 release: its Figure 9 (energy by forecast day) is now Figure 9b and
+>   its Figure 9b (hourly loss by forecast day) is now Figure 9.
+> - The data files of this folder keep the column names of their release. Three have since been renamed in the
+>   current files: in `bdg2_near_zero_sensitivity.csv` the column `units` (values `all_units`, `without_near_zero`) is
+>   now `unit_set`; in `energy_error.csv` the column `subset` (`all units`, `without the three near-zero meters`) is
+>   now `unit_set`; in `cost_per_window.csv` the header `item,seconds_per_window` is now `item,value,unit`. In this
+>   folder the last five rows of `cost_per_window.csv` are seconds per model load and GiB of GPU memory, not seconds
+>   per window.
+> - `REPRODUCTION_CHECK.json` here was written before the package's version string was raised, so its
+>   `package_version` field reads 1.2.1; the check ran on the 2.0.0 code (the file hashes are in the file). In it,
+>   `v6` is the working name of the 2.0 forecaster and `flagship` that of the 1.x research implementation; `faces`
+>   are the window sets checked, with `goiener_confirm` the GoiEner non-household population, `households` the
+>   GoiEner households and `park` the Suzhou park.
 
-# Results data
+# Results data (ANKYRA 2.0.0, archived)
 
 All files describe **ANKYRA 2.0** (within-day anchoring) unless the file name says `1x`; the complete 1.x set, scored
-on the same windows, is kept unchanged in [`ankyra_1x/`](ankyra_1x/). Scored statistics behind the figures and tables. Everything was exported from the study's evaluation outputs, and
-nothing was tuned. Two files are descriptions computed after scoring from the scored forecasts: `lead_day_metrics.csv`
-and `energy_error.csv`. The raw data are not included. GBT-T appears in its corrected implementation, re-scored after a defect in its scaling was
-found ([details](../docs/EVALUATION.md#correction-of-the-gbt-t-baseline)).
+on the same windows, is kept unchanged in [`ankyra_1x/`](../ankyra_1x/). Scored statistics behind the figures and
+tables. Everything was exported from the study's evaluation outputs, and nothing was tuned. Two files are descriptions
+computed after scoring from the scored forecasts: `lead_day_metrics.csv` and `energy_error.csv`. The raw data are not
+included. GBT-T appears in its corrected implementation, re-scored after a defect in its scaling was found
+([details](../../docs/EVALUATION.md#correction-of-the-gbt-t-baseline)).
 
 | File | Content |
 |---|---|
@@ -29,7 +42,7 @@ found ([details](../docs/EVALUATION.md#correction-of-the-gbt-t-baseline)).
 | `rank_tests.csv` | Rank tests on per-unit RMSE of the 21 forecasters, late windows: mean ranks, Friedman p-value, Nemenyi critical difference and Holm-corrected Wilcoxon p-values of ANKYRA against each forecaster, per population and pooled over the six test populations; Figure 15. |
 | `scaled_errors.csv` | RMSSE and MASE of the 21 forecasters (scale: in-sample weekly seasonal-naive error over the 1,344-hour context), median and geometric mean over units, per population. |
 | `intervals_by_population.csv` | The pseudo-origin residual interval around ANKYRA 2.0 and the native quantiles of TimesFM 2.5 and Chronos-2 on all windows of the ten scored populations: coverage at 80% and 90%, width, Winkler score, pinball losses, and coverage and Winkler score by forecast week; Figure 16. |
-| `constants_sensitivity.csv` | One shrinkage constant changed at a time (handover K0 and pseudo-origins; within-day K0, cap and pseudo-origins): hourly unit-equal log ratio against ANKYRA 2.0 on the nine design faces (nine-face mean, worst and best face). No test window is used. |
+| `constants_sensitivity.csv` | One shrinkage constant changed at a time (handover K0 and pseudo-origins; within-day K0, cap and pseudo-origins): hourly unit-equal log ratio against ANKYRA 2.0 on the nine design sets, called faces in the column names: the three development populations (`oslo_all`, `drammen_all`, `goiener_dev_all`, the GoiEner development store) and the pre-cutoff windows of the six test populations (`bdg2_early`, `cambridge_early`, `eweld_early`, `households_early` and two more). The file gives the nine-set mean and the worst and best set. No test window is used. |
 | `robustness.csv` | Stress test on 64 Drammen windows: change of ANKYRA's and TimesFM's hourly error, of the level and of the peak readout under corrupted contexts (gaps, zero-fill, spike, clock shift, scaling). |
 | `history_length.csv` | ANKYRA 2.0 against TimesFM, ANKYRA 1.x and the fixed division by history length at the origin (hours since the unit's first observation; strata by hours and by the number of completed pseudo-origins), per population and pooled; all panel windows. Descriptive. |
 | `conventional_metrics_late.csv` | The same metrics on the late windows for all 21 forecasters plus ANKYRA 1.x as a row, with windows, units and model class (Figure 8). `units_excluded`: units with a mean below 10⁻⁶ kW, left out of the ratio metrics. |
@@ -38,7 +51,7 @@ found ([details](../docs/EVALUATION.md#correction-of-the-gbt-t-baseline)).
 | `bdg2_near_zero_sensitivity.csv` | BDG2 comparisons with and without the three near-zero meters (full and late windows); the full result is the primary one. |
 | `cost_per_window.csv` | Seconds per 744-hour window for ANKYRA, TimesFM alone, Chronos-2-X and the per-unit ridge on one laptop GPU; model loads and GPU memory. |
 | `example_window_cambridge.csv` / `.json` | One Cambridge test window (University of Cambridge estate archive, CC BY 4.0), with its full 1,344-hour context and day types, used in Figures 6 and 7. |
-| `REPRODUCTION_CHECK.json` | The 2.0 package against the evaluated forecasts on 150 sampled windows: 2.0 to float32 precision (largest relative difference 5.6×10⁻⁸), the 1.x mode exact (1.1×10⁻¹³ kW). The exact 1.x record of the adapter, readouts and intervals is `ankyra_1x/REPRODUCTION_CHECK.json`. |
+| `REPRODUCTION_CHECK.json` | The 2.0 package against the evaluated forecasts on 150 sampled windows: 2.0 to float32 precision (largest relative difference 5.6×10⁻⁸), the 1.x mode exact (1.1×10⁻¹³ kW). The exact 1.x record of the adapter, readouts and intervals is `../ankyra_1x/REPRODUCTION_CHECK.json`. |
 
 Model classes:
 

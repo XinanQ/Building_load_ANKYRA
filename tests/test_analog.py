@@ -42,11 +42,14 @@ class ShapeTests(unittest.TestCase):
         A2 = AnalogShapes(load2, self.h.temperature_c, self.h.day_types, self.h.start_timestamp, "EU", origin=self.o)
         np.testing.assert_allclose(A2.shape(self.o - 744, fb), s1, rtol=0, atol=1e-12)
 
-    def test_sanity_fallback(self):
-        fb = np.ones(744); fb -= fb.reshape(31, 24).mean(1, keepdims=True).repeat(24, 1).reshape(744)
-        huge = AnalogShapes(self.h.load_kw * 1e-6 + 1e-6, self.h.temperature_c, self.h.day_types, self.h.start_timestamp, "EU", origin=self.o)
-        s, kept = huge.shape_with_sanity(self.o, np.full(744, 0.0))
-        self.assertIn(kept, (True, False)); self.assertEqual(s.shape, (744,))
+    def test_whole_window_guard_returns_the_model_shape(self):
+        fw = np.zeros(744)
+        s, kept = self.A.shape_with_sanity(self.o, fw)                                # an ordinary record keeps its analog shape
+        self.assertTrue(kept); self.assertGreater(np.abs(s).max(), 0.0)
+        load = self.h.load_kw.copy(); load[-1344:] = 1e-4 * (1 + 0.1 * np.sin(np.arange(1344)))   # a context far below the scale floor
+        tiny = AnalogShapes(load, self.h.temperature_c, self.h.day_types, self.h.start_timestamp, "EU", origin=self.o)
+        s, kept = tiny.shape_with_sanity(self.o, fw)                                  # analog shape above three times the largest context value
+        self.assertFalse(kept); np.testing.assert_array_equal(s, fw)
 
 
 class TrustTests(unittest.TestCase):

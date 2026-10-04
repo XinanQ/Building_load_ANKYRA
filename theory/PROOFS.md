@@ -13,7 +13,11 @@ implemented in [`operators.py`](operators.py) (or in the forecaster's `ankyra.bl
 `ankyra.metrics`) and checked in [`test_operators.py`](test_operators.py), counterexamples included. Where a study
 measured a property's consequence on data, the evidence follows the statement.
 
-- *Earlier study* means the first version of this model (HCR-Load), evaluated on Spanish supply points and BDG2.
+- *Earlier study* means the first, unpublished version of this model, evaluated on Spanish supply points and BDG2.
+  Its data and outputs are not in this repository. Its numbers are quoted for context and cannot be recomputed from
+  the files here.
+- The *Spanish development store* is a separate set of GoiEner non-household supply points on which the method was
+  developed. It is disjoint from the GoiEner test population and is not scored in any table of the evaluation.
 - Unit-equal log RMS ratios are reported with 95% unit-and-month (UM) bootstrap intervals, and percentages are
   $100[1-\exp(r)]$.
 
@@ -73,8 +77,8 @@ level. Replacements are scored from block losses, so they recover no peak and no
 - Replacing the level and daily path of trained forecasters improved DLinear by 5.0% (log −0.0513 [−0.0715, −0.0335]).
 - For PatchTST the effect was unresolved (−0.0042 [−0.0234, +0.0229]), and replacing the level alone gave an adverse
   point estimate.
-- For the compact neural model the level held 20.8% of pooled hourly squared error, but only about 5% for the median
-  unit. A large level gain therefore gave a small hourly gain.
+- For a small trained neural forecaster of that study the level held 20.8% of pooled hourly squared error, but only
+  about 5% for the median unit. A large level gain therefore gave a small hourly gain.
 
 A replacement has to be checked for each base forecaster.
 
@@ -109,9 +113,10 @@ $$\Delta\mathrm{MSE}=\mathbb E[D^2]-2\,\mathbb E[eD].$$
 At a single window, changing an error $r$ by $\delta$ helps exactly when $\delta(2r+\delta)<0$. The share of errors
 with one sign cannot decide this on its own.
 
-*Evidence (earlier study; BDG2 weather diagnostic on two development surfaces).*
+*Evidence (earlier study; BDG2 weather diagnostic on two development sets).*
 
-- Building-equal, a fully weather-adjusted level improved on the adaptive combination by 5.98% and 5.79%.
+- Building-equal, a fully weather-adjusted level improved on the adaptive, error-weighted combination of level
+  candidates by 5.98% and 5.79%.
 - Site-equal, the improvement was only 0.70% and 3.26%.
 - At individual sites, the identity separated corrections that pointed the wrong way from corrections that pointed the
   right way but were too large.
@@ -179,7 +184,8 @@ component, the two weights behave differently:
 - the least-squares weight $\langle y-a,\,b-a\rangle/\Vert b-a\Vert^2$ depends only on the part in which the forecasts
   differ.
 
-ANKYRA's weekly handover therefore uses the least-squares weight [Bates and Granger, 1969], shrunk towards 1/2 with
+ANKYRA's weekly handover therefore uses the least-squares weight ([Bates and Granger, 1969](#references)), shrunk
+towards 1/2 with
 $K_0=2$. Shared errors are the rule here: on the Spanish development store, the within-day errors of the earlier
 historical model and TimesFM correlated at 0.83 (pooled).
 
@@ -204,7 +210,7 @@ Two hours are enough to show it (Figure 7d). Take the forecast $p=(-1,3)$, whose
 - The best feasible point, $(0,2)$, has squared error 4. Clipping gives $(0,3)$, with error 1.
 
 ANKYRA therefore reads energy from the level and projects only the delivered trajectory. In the earlier study the
-clip raised delivered energy by 4.8 and 3.9 kWh per window on two Spanish cohorts.
+clip raised delivered energy by 4.8 and 3.9 kWh per window on two sets of Spanish supply points.
 
 **P13. Day-level projection: a conditional guarantee.** This option projects the 31 daily means onto
 $\mathcal A=\lbrace x\ge0:\bar x=\max(\hat\ell,0)\rbrace$ before clipping, and keeps the within-day deviations.
@@ -223,10 +229,10 @@ than the smallest true daily mean: $\ell^\ast-\hat\ell\le\min_d m^\ast_d$.
 
 The guarantee is relative to the unprojected trajectory, not to the clipped one.
 
-*Evidence (earlier study; exposed Spanish cohort).*
+*Evidence (earlier study; a set of Spanish supply points already used in development).*
 
-- Against hourly clipping alone the option was non-inferior: −0.0009 [−0.0030, +0.0002] on live windows, pooled MSE
-  ratio 1.00003.
+- Against hourly clipping alone the option was non-inferior: −0.0009 [−0.0030, +0.0002] on the windows whose
+  realised load is not zero throughout, pooled MSE ratio 1.00003.
 - There was no violation in the 139 windows covered by the condition.
 - In 93 of the 173 windows outside it, the daily-mean error rose, as the condition allows.
 
@@ -242,8 +248,10 @@ $$\max_{d,h}\mathbb E[y_{d,h}\mid\mathcal F_o]\le\mathbb E\big[\max_{d,h}y_{d,h}
 Fitted forecasters are median-type summaries, not exact conditional means. The inequality therefore motivates a
 separate readout; it does not guarantee that any particular correction helps.
 
-**P15. Scalar form and bounds.** Let $A_t$ be the largest daily excursion above the day's own mean among the four most
-recent context days of type $t$. Because maxima commute, the hour-wise envelope equals a scalar maximum:
+**P15. Scalar form and bounds.** Let $\hat L_d$ be the forecast mean of day $d$, $\tau_d$ its day type and $\bar F$
+the forecast window mean. Let $a_{j,h}$ be the load of context day $j$ at hour $h$ minus that day's mean,
+$\mathcal J(t)$ the four most recent context days of type $t$, and $A_t=\max_{j\in\mathcal J(t)}\max_h a_{j,h}$ the
+largest daily excursion among them. Because maxima commute, the hour-wise envelope equals a scalar maximum:
 
 $$U=\max_{d,h}\big(\hat L_d+\max_{j\in\mathcal J(\tau_d)}a_{j,h}\big)=\max_d\,(\hat L_d+A_{\tau_d}).$$
 
@@ -251,8 +259,8 @@ $$U=\max_{d,h}\big(\hat L_d+\max_{j\in\mathcal J(\tau_d)}a_{j,h}\big)=\max_d\,(\
 - Excursions have zero day mean, so $A_t\ge0$ and $U\ge\max_d\hat L_d\ge\bar F$.
 - $\hat P_\kappa=\bar F+\kappa(U-\bar F)\ge U$ for $\kappa\ge1$. ANKYRA uses $\kappa=1$.
 
-**P16. Peak error decomposition.** Let $d^\ast$ be the realised peak day, $\hat d$ the selected day and
-$a_d(y)=\max_h w_{d,h}(y)$. Then
+**P16. Peak error decomposition.** Let $M(y)$ be the realised peak of the window, $d^\ast$ the day on which it
+occurs, $\hat d$ the selected day and $a_d(y)=\max_h w_{d,h}(y)$. Then
 
 $$U-M(y)=\ell(e)+\big[b_{d^\ast}(F)-b_{d^\ast}(y)\big]+\big[A_{\tau_{d^\ast}}-a_{d^\ast}(y)\big]+\Delta_{\rm sel},\qquad \Delta_{\rm sel}\ge0,$$
 
@@ -284,20 +292,23 @@ Charge $\lambda$ per kW under and 1 per kW over, normalised so that $\lambda=1$ 
 
 $$\frac{2(\lambda\bar u+\bar o)}{1+\lambda}=2\big[\tau\bar u+(1-\tau)\bar o\big],\qquad \tau=\frac{\lambda}{1+\lambda},$$
 
-which is twice the pinball loss at level $\tau$ [Koenker and Bassett, 1978]. Each method is summarised by its pair
+which is twice the pinball loss at level $\tau$ ([Koenker and Bassett, 1978](#references)). Each method is
+summarised by its pair
 $(\bar u,\bar o)$, and the best method for any $\lambda$ lies on the lower envelope of the lines
 $\tau\bar u+(1-\tau)\bar o$.
 
 *Evidence for the peak operator.*
 
 - Earlier study, 678 BDG2 buildings:
-  - TimesFM's peak APE fell from 14.74% (raw trajectory maximum) to 8.40% with the specified readout and to 8.27% with
-    the envelope alone ($\kappa=1$);
+  - TimesFM's peak APE (absolute percentage error) fell from 14.74% (raw trajectory maximum) to 8.40% with the
+    readout at the $\kappa$ that study had fixed in advance, and to 8.27% with the envelope alone ($\kappa=1$);
   - its share of under-predicted peaks fell from 0.93 to 0.54, and Chronos-2's APE fell from 16.21% to 8.66%;
   - in kW the corrected peaks were slightly worse;
   - the readout was not resolvably better than last month's observed peak (−0.22 APE points [−1.01, +0.54]).
-- This study: against the maximum of ANKYRA's own trajectory, the readout reduced peak error by 22–77% on all eleven
-  populations ([`results/peak_readout.csv`](../results/peak_readout.csv)).
+- This study: against the maximum of ANKYRA's own trajectory, the readout reduced peak error by 18–65% on the ten
+  scored populations, resolved on each ([`results/peak_readout.csv`](../results/peak_readout.csv)). For ANKYRA 1.x
+  on eleven populations, LCL included, the range was 22–77%
+  ([`results/ankyra_1x/peak_readout.csv`](../results/ankyra_1x/peak_readout.csv)).
 
 ## Estimands
 
@@ -318,4 +329,11 @@ mean per-unit rank, the pooled ratio and conventional metrics.
 
 - the fixed division had 7.6% lower pooled MSE than TimesFM, while the unit-equal point estimate favoured TimesFM
   (+0.0111, unresolved);
-- TimesFM improved on the compact neural model by 9.9% unit-equal, while its pooled MSE was 2.5% higher.
+- TimesFM improved on the small trained neural forecaster of that study by 9.9% unit-equal, while its pooled MSE was
+  2.5% higher.
+
+## References
+
+- Bates, J. M., Granger, C. W. J. (1969). The combination of forecasts. *Operational Research Quarterly* 20(4),
+  451–468.
+- Koenker, R., Bassett, G. (1978). Regression quantiles. *Econometrica* 46(1), 33–50.

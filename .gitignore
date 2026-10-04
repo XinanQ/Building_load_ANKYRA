@@ -9,9 +9,16 @@ venv/
 .idea/
 .vscode/
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.coverage
+htmlcov/
+.tox/
 .DS_Store
 Thumbs.db
 # raw data, arrays and model weights are never committed
+data/
 *.npz
 *.npy
 *.pt
@@ -19,4 +26,8 @@ Thumbs.db
 *.ckpt
 *.safetensors
 *.parquet
+*.feather
+*.h5
+*.hdf5
+*.pkl
 *.zip

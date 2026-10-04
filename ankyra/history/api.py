@@ -1,7 +1,12 @@
-"""Target-free, single-series interface to the extracted frozen layer arithmetic.
+"""Single-series interface to the frozen historical estimator; it takes no load from after the origin.
 
-The default strict policy preserves the known singular-signature failure. An explicit
-source_prior policy is a new engineering boundary extension, not a re-scored model.
+The estimator returns the historical level and the centred 31-day daily path of one unit at one origin.  Its
+arithmetic is in the underscore modules of this package, which are extracted unchanged from the study's code; this
+module adds the input checks, the single-series wiring and the diagnostics.
+
+With the default ``boundary_policy='strict'`` a record whose temperature does not vary over the year before the
+origin raises ``SignatureDegeneracy``, as in the study.  ``boundary_policy='source_prior'`` falls back to the
+category prior in that one case; it was not part of the evaluation.
 """
 from __future__ import annotations
 
@@ -25,11 +30,11 @@ class InputError(ValueError):
 
 
 class SignatureDegeneracy(RuntimeError):
-    """The frozen temperature-signature solver is undefined for this input."""
+    """The temperature signature cannot be fitted on this input (for example, the temperature record does not vary)."""
 
 
 def frozen_config():
-    """Return a fresh copy of all shipped settings and their source identities."""
+    """Return a fresh copy of the shipped settings: all constants and the prior curves (``frozen_config.json``)."""
     return json.loads(files(__package__).joinpath('frozen_config.json').read_text(encoding='utf-8'))
 
 
@@ -40,7 +45,10 @@ class History:
     Index zero is January 1 00:00 UTC; no implicit time shifting, filling, DST
     conversion or load resampling is performed. Load and temperature stop at the
     origin. day_types has exactly len(load_kw)+744 known labels, Monday=0,...,
-    Sunday=6, holiday=7. Missing load is allowed before the last 1,344 hours.
+    Sunday=6, holiday=7. Missing load (NaN, or False in ``observed``) is allowed
+    before the last 1,344 hours. Temperature must be finite everywhere and must
+    vary over the year before the origin: a constant record raises
+    ``SignatureDegeneracy``.
     """
     load_kw: np.ndarray
     temperature_c: np.ndarray
@@ -70,7 +78,8 @@ def _validate_history(h):
         raise InputError('start_timestamp must be an explicit ISO UTC timestamp') from exc
     if (stamp.tzinfo is None or stamp.utcoffset() != timezone.utc.utcoffset(stamp)
             or (stamp.month,stamp.day,stamp.hour,stamp.minute,stamp.second,stamp.microsecond)!=(1,1,0,0,0,0)):
-        raise InputError('the frozen climate phase requires a January 1 00:00 UTC record anchor')
+        raise InputError('start_timestamp must be January 1 00:00 UTC (index 0 of the record): '
+                         'the temperature climatology is phased on that hour')
     # Day labels must be constant inside complete UTC calendar days. Origin-aligned
     # day types are later taken at block midpoints exactly as in the research code.
     full = types[:len(types)//24*24].reshape(-1,24)
@@ -144,6 +153,9 @@ class _BoundarySignatures(ScaledSignatures):
         curve=self.curves.get(int(self.groups[b]))
         status='fitted'
         if curve is None:
+            # A category without a prior curve.  In the frozen configuration this is Commercial (its curve is
+            # stored under the key 'group_4', which the lookup by category name does not read): the signature
+            # is zero.  This is the evaluated behaviour; the status name is kept from the study.
             status='unknown_group_zero_signature'
         elif len(days)<60:
             status='fewer_than_60_days_source_prior'
@@ -154,9 +166,16 @@ class _BoundarySignatures(ScaledSignatures):
             f=f-f.mean(axis=0)
             trace=float(np.sum(f*f))
             if not np.isfinite(trace) or trace>0 or self.policy=='strict':
+                if trace==0:
+                    raise SignatureDegeneracy(
+                        f'the temperature signature cannot be fitted at day {origin_day}: the daily mean of '
+                        'temperature_c does not vary over the preceding 365 days (for example a constant fill; '
+                        'centred design trace=0.0). Supply a real temperature record. '
+                        "estimate_from_history(..., boundary_policy='source_prior') falls back to the category "
+                        'prior in this case; that extension was not part of the evaluation.') from exc
                 raise SignatureDegeneracy(
-                    f'frozen signature failed at day {origin_day}; centred design trace={trace}; '
-                    'strict mode does not alter the frozen solver') from exc
+                    f'the temperature signature cannot be fitted at day {origin_day}: the solver failed on the '
+                    f'temperature features of the preceding 365 days (centred design trace={trace})') from exc
             # Only the proven zero-information case has this specified extension.
             # Other solver failures are not silently converted to a fallback.
             result=curve.copy()
@@ -171,6 +190,15 @@ class _BoundarySignatures(ScaledSignatures):
 
 @dataclass
 class Estimate:
+    """Historical level (kW), centred 31-day daily path (kW) and diagnostics of one origin.
+
+    ``diagnostics['level_weights']`` uses the candidate names ``s_u``, ``l_u``, ``a_u`` (mean of the last seven
+    context days, long-history mean, mean of the window one year earlier; unadjusted) and ``s_w``, ``l_w``, ``a_w``
+    (the same three, weather-adjusted).  ``diagnostics['day_weights']`` uses ``c_w8``, ``c_w4``, ``c_w2`` (day-type
+    offsets from the last eight, four and two context weeks), ``c_ann_type`` and ``p_ann_cal`` (the window one year
+    earlier: its day-type offsets, and its daily path day by day), ``g_w`` (the weather path alone) and ``cur``
+    (``c_w8`` plus the weather path times the level's weather weight).
+    """
     level_kw: float
     daily_path_kw: np.ndarray
     diagnostics: dict
@@ -197,6 +225,10 @@ class Estimate:
         self.daily_path_kw.setflags(write=False)
 
     def replace(self,base_trajectory):
+        """Replace the level and/or the daily path of a 744-hour base trajectory (kW).
+
+        Returns the three trajectories (level only, daily path only, both), their counts of negative hours and
+        their energies.  Nothing is clipped."""
         self._validate_fields()  # Public fields may have been reassigned after construction.
         base=np.asarray(base_trajectory,dtype=np.float64)
         if base.shape not in ((744,),(31,24)) or not np.isfinite(base).all():
@@ -218,19 +250,34 @@ class Estimate:
 
 def estimate_from_history(history: History, *, group: str, temp_sigma_std: float,
                           boundary_policy: str='strict') -> Estimate:
-    """Estimate the fixed level and auxiliary centred day path without future load.
+    """Estimate the historical level and the centred 31-day daily path; no load after the origin is used.
 
-    temp_sigma_std is the caller-supplied, previously frozen temperature anomaly
-    scale in units of 10 degrees C. It is not estimated using the supplied horizon.
-    No confidence interval or recommendation to use a replacement is returned.
+    group is Industrial, Office, Public, Residential or Commercial and selects the
+    fixed temperature-signature prior. Commercial has no prior curve (the fifth
+    curve of frozen_config.json is stored as 'group_4' and is not read): its
+    signature is zero and the diagnostics report 'unknown_group_zero_signature'.
+    This is the evaluated behaviour.
+
+    temp_sigma_std is the fixed scale of the daily temperature anomaly, in units
+    of 10 degrees C (0.25 means 2.5 degrees C). It is supplied by the caller and
+    is not estimated here. The study computed it once per population, before the
+    first origin: standardise temperature as (T - 15 C) / 10 C, take daily means,
+    subtract a centred 31-day moving mean; temp_sigma_std is the standard
+    deviation of that anomaly, pooled over the units of the population, on the
+    first 244 days of the record (15 days dropped at each end). The per-population
+    values are not listed in the repository.
+
+    boundary_policy 'strict' (default, as evaluated) raises SignatureDegeneracy
+    when the temperature does not vary; 'source_prior' uses the category prior in
+    that case and was not evaluated. No interval is returned.
     """
     if boundary_policy not in ('strict','source_prior'):
         raise InputError('boundary_policy must be strict or source_prior')
     if not np.isscalar(temp_sigma_std) or not np.isfinite(temp_sigma_std) or temp_sigma_std<=0:
-        raise InputError('temp_sigma_std must be a finite, positive, pre-origin fixed scalar')
+        raise InputError('temp_sigma_std must be a finite, positive scalar (the fixed temperature-anomaly scale, in units of 10 degC)')
     groups=('Industrial','Office','Public','Residential','Commercial')
     if group not in groups:
-        raise InputError('group must have a declared source mapping: '+', '.join(groups))
+        raise InputError('group must be one of: '+', '.join(groups))
     cfg=frozen_config()
     group_i=groups.index(group)
     curves={i:np.asarray(cfg['source_curves'][g],dtype=np.float64)
@@ -262,9 +309,14 @@ def estimate_from_history(history: History, *, group: str, temp_sigma_std: float
     level=float(h['l0'][0]+h['s0'][0]*la[0].mean())
     path=h['s0'][0]*(lc[0]-lc[0].mean())
     if not np.isfinite(level) or not np.isfinite(path).all():
-        raise InputError('the frozen estimator produced a non-finite output')
+        raise InputError('the estimator produced a non-finite output for this input')
+    # 'implementation' is the version label of the estimator's arithmetic kept from the study; it is independent of the
+    # package version.  'config_sha256' is the hash of frozen_config.json as installed: provenance.json records the hash
+    # of the author's working copy, which had CRLF line endings, so a checkout with LF line endings reports another value
+    # for the same content.
     diagnostics={
-        'implementation':'eo-layers-reference-1.0.0','source_kind':'extracted frozen arithmetic with explicit target-free adapter',
+        'implementation':'eo-layers-reference-1.0.0',
+        'source_kind':'estimator modules extracted unchanged from the study code; this interface takes no load after the origin',
         'boundary_policy':boundary_policy,
         'boundary_extension_triggered':any(e['status']=='zero_design_source_prior_extension' for e in sigs.events.values()),
         'config_sha256':hashlib.sha256(files(__package__).joinpath('frozen_config.json').read_bytes()).hexdigest(),
@@ -282,13 +334,13 @@ def estimate_from_history(history: History, *, group: str, temp_sigma_std: float
         'signature_fits':list(sigs.events.values()),
         'daily_cur_error_is_strictly_out_of_sample':False,
         'future_load_input':False,'automatic_selection':False,
-        'scientific_status':'synthetic interface validation only; published scores belong to the original frozen implementation',
+        'scientific_status':'reference implementation; reproduces the evaluated forecasts on the windows listed in results/REPRODUCTION_CHECK.json',
     }
     return Estimate(level,path,diagnostics)
 
 
 def score_against_observations(predicted,observed):
-    """Separate descriptive scoring helper; not called by the estimator."""
+    """Hourly RMSE (kW) and energy error (kWh) of a 744-hour forecast; a scoring helper that the estimator never calls."""
     p,y=np.asarray(predicted,dtype=np.float64),np.asarray(observed,dtype=np.float64)
     if p.shape!=(744,) or y.shape!=(744,) or not np.isfinite(p).all() or not np.isfinite(y).all():
         raise InputError('scoring requires two finite 744-hour vectors')

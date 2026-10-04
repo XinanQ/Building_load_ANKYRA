@@ -50,6 +50,16 @@ class ScoringTests(unittest.TestCase):
         d = scoring.by_forecast_day(F, y, unit)
         self.assertEqual(d["gm_cv_rmse_pct"]["ANKYRA"].shape, (31,)); self.assertEqual(d["units_in_set"], 20)
 
+    def test_plain_lists_give_the_same_results_as_arrays(self):
+        F, y, unit, month, ctx = toy()
+        Fl, yl, ul, ml, cl = {k: v.tolist() for k, v in F.items()}, y.tolist(), list(unit), list(month), ctx.tolist()
+        self.assertEqual(scoring.energy_error(Fl, yl, ul, ml, n_boot=20), scoring.energy_error(F, y, unit, month, n_boot=20))
+        self.assertEqual(scoring.scaled_errors(Fl, yl, cl, ul), scoring.scaled_errors(F, y, ctx, unit))
+        a, b = scoring.by_forecast_day(Fl, yl, ul), scoring.by_forecast_day(F, y, unit)
+        self.assertEqual(a["units_in_set"], b["units_in_set"]); np.testing.assert_array_equal(a["gm_cv_rmse_pct"]["A"], b["gm_cv_rmse_pct"]["A"])
+        np.testing.assert_array_equal(scoring.unit_rmse(Fl, yl, ul)[1]["B"], scoring.unit_rmse(F, y, unit)[1]["B"])
+        self.assertEqual(scoring.score_population(Fl, yl, ul, ml, n_boot=20), scoring.score_population(F, y, unit, month, n_boot=20))
+
 
 class WindowAndBaselineTests(unittest.TestCase):
     def test_usable_origins_need_complete_context_target_and_history(self):

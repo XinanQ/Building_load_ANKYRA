@@ -10,7 +10,9 @@ def synthetic_history(hours: int = 16000, constant_temperature: bool = False, of
     """Hourly load with daily and weekly cycles, a slow trend and a heating response; calendar through the horizon.
 
     Index 0 is 2019-01-01 00:00 UTC (a Tuesday).  Every 173rd day is a holiday (type 7).  ``off_last_hours`` sets the
-    last hours before the origin to zero (a switched-off unit)."""
+    last hours before the origin to zero (a switched-off unit).  ``constant_temperature`` replaces the temperature by
+    a constant 15 degC: a record on which the temperature signature cannot be fitted, so the forecaster raises
+    ``SignatureDegeneracy``."""
     t = np.arange(hours, dtype=float)
     temp = 15 - 9 * np.cos(2 * np.pi * (t / 24 - 19.5) / 365.25) + 1.1 * np.sin(t / 100)
     if constant_temperature:

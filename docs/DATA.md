@@ -6,7 +6,8 @@ a reader who wants to rebuild the evaluation inputs from the public sources.
 ## What is and is not in this repository
 
 - **In the repository:** the forecaster ([`ankyra/`](../ankyra)), the scoring code ([`evaluation/`](../evaluation)),
-  the scored results ([`results/`](../results)), the figures, and one example window from the University of Cambridge estate archive (CC BY 4.0).
+  the scored results ([`results/`](../results)), the figures, and one example window from the University of
+  Cambridge estate archive (CC BY 4.0).
 - **Not in the repository:** raw data, prepared data stores and model weights. None of them is redistributed. Follow
   each provider's access route and terms.
 - **Foundation models.** The study used local snapshots with verified hashes:
@@ -16,8 +17,8 @@ a reader who wants to rebuild the evaluation inputs from the public sources.
   [EVALUATION.md](EVALUATION.md#populations-and-tiers). Archive identifiers, file sizes and hashes below are the ones
   the study recorded when it obtained the files. Where the study recorded none, this page says so.
 
-Where a fact is missing from the study record, the entry reads "not recorded here; see the provider". Nothing on this
-page is a guess.
+Where the study's working notes do not hold a fact, the entry reads "not recorded here; see the provider". Nothing on
+this page is a guess. The working notes and preparation scripts themselves are not part of this repository.
 
 ## The input format the forecaster expects
 
@@ -27,12 +28,27 @@ arguments of `ankyra.forecast`.
 | Input | Content |
 |---|---|
 | `load_kw` | Hourly load in kW, from the record anchor up to the origin. The last 1,344 hours must be completely observed. Earlier gaps are allowed as NaN; they remove support for candidates and pseudo-origins. |
+| `observed` | Optional boolean mask of the load, same length. `False` marks an hour as unobserved even if a value is present; an hour marked `True` must hold a finite value. Default: every finite hour is observed. |
 | `temperature_c` | Hourly outdoor temperature in °C, same length as the load, finite everywhere. Nothing after the origin. |
 | `day_types` | One integer per hour for the history plus the 744 forecast hours: Monday = 0 … Sunday = 6, public holiday = 7. Constant within each calendar day of the grid. |
 | `start_timestamp` | The record anchor: an ISO timestamp on 1 January 00:00 with a `+00:00` offset. Index 0 of every array is this hour. |
-| `group` | One of Industrial, Office, Public, Residential, Commercial. It selects the fixed temperature-signature prior. |
-| `temp_sigma_std` | One positive scalar per population: the temperature-anomaly scale, fitted before the first origin. |
+| `group` | One of Industrial, Office, Public, Residential, Commercial. It selects the fixed temperature-signature prior. Commercial has no prior and gives a zero temperature signature ([METHOD.md](METHOD.md#the-category-commercial-has-no-prior)). |
+| `temp_sigma_std` | One positive scalar per population: the standard deviation of the daily-mean temperature about its 31-day moving mean, in units of 10 °C (0.25 means 2.5 °C). The weather-adjusted candidates take their expectation over an anomaly of this size. Fitted on temperature recorded before the first origin and then kept fixed. The recipe is given below. |
 | `dst_region` | "EU", "US" or "none": the daylight-saving rule used only to match analog days. |
+
+The first five rows are fields of `History`; the last three are arguments of `ankyra.forecast`.
+
+**How the study computed `temp_sigma_std`.**
+
+1. Standardise the temperature as (T − 15 °C) / 10 °C.
+2. Take daily means.
+3. Subtract a centred 31-day moving mean. What remains is the daily temperature anomaly.
+4. `temp_sigma_std` is the standard deviation of that anomaly, pooled over the units of the population, on the first
+   244 days of the record (15 days are dropped at each end, where the centred mean is incomplete).
+
+The value is therefore in units of 10 °C. It is fitted once, before the first origin, and kept fixed. The package
+does not compute it and checks only that it is a finite positive number. The values used for the eleven populations
+are not listed in this repository.
 
 Points that matter when rebuilding:
 
@@ -104,6 +120,8 @@ Unit and window counts (all / late) are in the table of
   - The signature prior of the forecaster was fitted once on BDG2 windows ending before July 2016.
   - Nine meters at one site read 0.0002–0.0005 kW for months
     ([details](EVALUATION.md#the-near-zero-meters-and-the-micro-load-rule-201)). They are kept as released.
+  - 13 units carry the category Commercial, for which the forecaster has no signature prior and uses a zero
+    temperature signature ([METHOD.md](METHOD.md#the-category-commercial-has-no-prior)).
 
 ### 2. University of Cambridge estate (UK)
 
@@ -172,8 +190,9 @@ Unit and window counts (all / late) are in the table of
 - **Source.** Quesada et al., *Sci. Data* 2024, [doi:10.1038/s41597-023-02846-0](https://doi.org/10.1038/s41597-023-02846-0).
   Archive identifier, version, file size and hash: not recorded here; see the provider.
 - **Units.** Category-labelled supply points, not certified individual buildings: 486 units (Industrial 159,
-  Office 80, Public 247). They are disjoint from the supply points of the Spanish development store, which is not one
-  of the eleven populations.
+  Office 80, Public 247). They are disjoint from the supply points of the Spanish development store: a separate set
+  of GoiEner non-household supply points on which the method was developed. That store is not one of the eleven
+  populations and is not scored in any table.
 - **Grid.** Anchor 2018-01-01.
 - **Daylight-saving region.** EU.
 - **Load column and unit conversion, temperature source, holiday calendar, the rule that assigns the categories:**
@@ -259,6 +278,8 @@ Unit and window counts (all / late) are in the table of
   - An earlier preparation had errors in the timing and filling of the weather series. It was corrected and the
     affected results were rebuilt. Results from before and after the correction are not interchangeable.
   - With four series, only point estimates should be read.
+  - One of the four series carries the category Commercial and is forecast with a zero temperature signature
+    ([METHOD.md](METHOD.md#the-category-commercial-has-no-prior)).
 
 ### 11. Low Carbon London households (UK)
 
@@ -270,13 +291,14 @@ Unit and window counts (all / late) are in the table of
   In the padded segment the load is unobserved (NaN) and the temperature is a fixed 15 °C. An earlier preparation
   copied the temperature of the same hours one year later into the padding; the final evaluation does not.
 - **Temperature-anomaly scale.** Fitted on the earliest 244 days of the record, which end before the earliest
-  pseudo-origin.
+  pseudo-origin ([recipe](#the-input-format-the-forecaster-expects)).
 - **Windows.** Month-start origins under the common rules: 1,215 windows of 965 households; 710 late windows.
 - **Daylight-saving region.** EU.
 - **Load column and the conversion from the provider's readings to hourly kW, temperature source, time zone handling,
   holiday calendar, the category label:** not recorded here; see the provider.
-- **Caveat.** LCL was held in reserve and is not part of the ten-population tables
-  ([final evaluation](LCL_AND_CLOSEOUT.md#lcl-final-stage)).
+- **Caveat.** LCL was held out of the ten-population comparison and scored once with the frozen 2.0.1 forecaster.
+  Its 1.x result had been seen earlier, so it is not an unexposed population
+  ([LCL evaluation](LCL_AND_CLOSEOUT.md#lcl-final-stage)).
 
 ## What cannot be rebuilt from this page
 
@@ -285,16 +307,18 @@ Unit and window counts (all / late) are in the table of
   rule that assigns or forms the categories is not recorded either.
 - **Unit and window lists.** The exact units and origins of each panel are not published. The rules above reproduce
   the selection only if the same archive version and the same unit order are used.
-- **The temperature-anomaly scale.** The value of `temp_sigma_std` and its fitting period are not listed per
-  population. The study record notes that the scripts for two sources contain a path that fills temperature gaps from
-  the full record; whether it was triggered was not assessed.
+- **The temperature-anomaly scale.** The recipe for `temp_sigma_std` is given
+  [above](#the-input-format-the-forecaster-expects), but its value is not listed per population. The study's working
+  notes say that the preparation scripts for two sources contain a path that fills temperature gaps from the full
+  record; whether it was triggered was not assessed.
 - **File hashes.** Hashes are recorded for Drammen, EWELD and HEEW only.
 - **Licences.** Only the licences stated above (Cambridge, HEEW) are recorded. For the others see the provider.
 - **Provider-side processing.** A complete, finite prepared series does not show that every value is a direct
   physical observation. Gap filling by the provider, later quality control of weather archives and the pretraining
   corpora of the foundation models lie outside what this page documents
   ([METHOD.md](METHOD.md#information-at-the-origin)).
-- **The Spanish development store.** It was used to develop the method, is not one of the eleven populations and is
-  not described here.
+- **The Spanish development store.** A separate set of GoiEner non-household supply points, disjoint from
+  population 5, on which the method was developed. It is not one of the eleven populations, it is not scored in any
+  table, and its units and preparation are not described here.
 - **Prepared stores and forecasts.** The prepared arrays, the foundation-model forecasts and the trained baselines'
   checkpoints are not distributed. The scored statistics are in [`results/`](../results).

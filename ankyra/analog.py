@@ -27,10 +27,9 @@ from typing import Optional
 
 import numpy as np
 
-from .blocks import within_day, HORIZON, D, HR
+from .blocks import within_day, CONTEXT, HORIZON, D, HR
 from .history._climate import climatology
 
-CONTEXT = 1344
 WIN, KMAX, KMIN = 14, 8, 4           # day-of-year window, analogs kept, analogs required
 SANITY = 3.0                         # whole-window fallback when max|S| > SANITY * max|context|
 K_WITHIN, K0_WITHIN, W_CAP = 3, 2.0, 0.5
@@ -61,6 +60,7 @@ def dst_state(day: date, region: str) -> bool:
 
 
 def floor_of(m):
+    """Floor of the normalisation scale (kW) for a window with mean m: max(0.01 |m|, 1e-3)."""
     return max(0.01 * abs(m), 1e-3)
 
 
@@ -155,4 +155,4 @@ def anchored_within_day(foundation_within, analog_shape, weights):
     return fw + w * (s - fw)
 
 
-__all__ = ["AnalogShapes", "within_trust", "anchored_within_day", "dst_state", "floor_of", "within_day"]
+__all__ = ["AnalogShapes", "within_trust", "anchored_within_day", "dst_state"]

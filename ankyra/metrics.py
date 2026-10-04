@@ -79,7 +79,11 @@ def mean_unit_rank(window_mse: dict, unit) -> dict:
 
 
 def conventional(pred, y, unit):
-    """Per-unit RMSE and MAE (unit mean, kW); CV(RMSE), NMBE and WAPE (unit median, %); pooled WAPE."""
+    """Per-unit RMSE and MAE (unit mean, kW); CV(RMSE), NMBE and WAPE (unit median, %); pooled WAPE.
+
+    pred, y: (n, 744) arrays in kW; unit: (n,) labels.  Units with a mean load below 1e-6 kW in absolute value are
+    left out of the three relative metrics."""
+    unit = np.asarray(unit)
     e = y - pred
     rows = {"RMSE": [], "MAE": [], "CV(RMSE)": [], "NMBE": [], "WAPE": []}
     for u in np.unique(unit):

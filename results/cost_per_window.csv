@@ -1,26 +1,26 @@
-item,seconds_per_window
-TimesFM alone (batch 64),0.018274
-TimesFM alone (evaluated configuration),0.719309
-ANKYRA first run (batch 64),0.558158
-ANKYRA with cached pseudo-origins (batch 64),0.126378
-ANKYRA first run (evaluated configuration),5.462448
-ANKYRA with cached pseudo-origins (evaluated configuration),0.827413
-Chronos-2-X,0.079833
-RIDGE-L,0.108182
-"ANKYRA interval, extra",0.559904
-component: timesfm_eval_config_per_window,0.719309
-component: timesfm_b64_per_window,0.018274
-component: timesfm_b64_seven_contexts_per_window,0.130872
-component: ankyra_origin_estimator_per_window,0.108063
-component: ankyra_six_pseudo_forecasts_per_window,0.319182
-component: ankyra_forecast_cpu_per_window,0.432848
-component: peak_readout_per_window,4.2e-05
-component: interval_per_window,0.559904
-component: ridge_l_per_window,0.108182
-component: chronos2x_covariates_per_window,0.001151
-component: chronos2x_inference_per_window,0.078682
-model load: timesfm_load,2.276
-model load: chronos2_load,9.714
-GPU peak GiB: timesfm_eval_config,0.891
-GPU peak GiB: timesfm_b64,2.986
-GPU peak GiB: chronos2x,0.512
+item,value,unit
+TimesFM alone (batch 64),0.018274,s/window
+TimesFM alone (evaluated configuration),0.719309,s/window
+ANKYRA first run (batch 64),0.558158,s/window
+ANKYRA with cached pseudo-origins (batch 64),0.126378,s/window
+ANKYRA first run (evaluated configuration),5.462448,s/window
+ANKYRA with cached pseudo-origins (evaluated configuration),0.827413,s/window
+Chronos-2-X,0.079833,s/window
+RIDGE-L,0.108182,s/window
+"ANKYRA interval, extra",0.559904,s/window
+"component: TimesFM, evaluated configuration",0.719309,s/window
+"component: TimesFM, batch 64",0.018274,s/window
+"component: seven TimesFM contexts, batch 64",0.130872,s/window
+component: ANKYRA historical estimator at the origin,0.108063,s/window
+component: ANKYRA six pseudo-origin forecasts,0.319182,s/window
+component: whole ankyra.forecast call with the model forecasts supplied (CPU),0.432848,s/window
+component: peak readout,4.2e-05,s/window
+component: interval,0.559904,s/window
+component: per-unit ridge (RIDGE-L),0.108182,s/window
+component: Chronos-2-X covariates,0.001151,s/window
+component: Chronos-2-X inference,0.078682,s/window
+model load: TimesFM,2.276,s
+model load: Chronos-2,9.714,s
+"GPU peak memory: TimesFM, evaluated configuration",0.891,GiB
+"GPU peak memory: TimesFM, batch 64",2.986,GiB
+GPU peak memory: Chronos-2-X,0.512,GiB

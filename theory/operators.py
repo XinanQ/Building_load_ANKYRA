@@ -220,13 +220,14 @@ def project_to_mean(x, mean=None):
 
 
 def project_daily_means(daily_means):
-    """Day-level projection (F0P): project the 31 daily means onto {x >= 0 : mean x = max(level, 0)}."""
+    """Day-level projection (P13): project the 31 daily means onto {x >= 0 : mean x = max(level, 0)}."""
     m = np.asarray(daily_means, dtype=np.float64)
     return _project_to_sum(m, np.maximum(m.mean(-1), 0.0) * m.shape[-1])
 
 
 def daily_projection(trajectory):
-    """F0P delivered trajectory: projected daily means plus the unchanged within-day deviations, then max(., 0)."""
+    """Trajectory delivered under the day-level projection: projected daily means plus the unchanged within-day
+    deviations, then max(., 0)."""
     x = np.asarray(trajectory, dtype=np.float64)
     m = blocks.daily_means(x)
     return clip_nonnegative(x + np.repeat(project_daily_means(m) - m, HR, axis=-1))
@@ -289,5 +290,6 @@ def asymmetric_peak_cost(pred_peak, true_peak, under_cost):
 
 
 def pinball(pred, truth, tau):
+    """Mean pinball (quantile) loss at level tau."""
     d = np.asarray(truth, dtype=np.float64) - np.asarray(pred, dtype=np.float64)
     return float(np.mean(np.maximum(tau * d, (tau - 1) * d)))

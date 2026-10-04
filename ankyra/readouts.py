@@ -17,7 +17,8 @@ Because maxima commute this equals the hour-wise envelope construction; U >= max
 Interval.  Hourly residuals of historical pseudo-forecasts (level + daily path + same-day-type within-day default) at
 up to 12 completed pseudo-origins, normalised by each pseudo-window's origin scale and pooled by hour of day and
 workday / non-workday, give empirical quantiles that are added to the point trajectory, scaled by the origin scale,
-clipped at zero and made monotone across levels.
+clipped at zero and made monotone across levels.  ``examples/quickstart.py`` shows the three calls
+(``residual_quantiles``, ``origin_scale``, ``interval_bands``).
 """
 from __future__ import annotations
 
@@ -26,15 +27,18 @@ import torch
 
 from .history import History, estimate_from_history
 from .history import _eo
-from .blocks import HORIZON, D, HR
+from .blocks import CONTEXT, HORIZON, D, HR
 
-CONTEXT = 1344
-LEVELS = (0.05, 0.1, 0.5, 0.9, 0.95)
-K_INTERVAL = 12
+LEVELS = (0.05, 0.1, 0.5, 0.9, 0.95)      # quantile levels of the interval readout; rows 1 and 3 bound the 80% interval
+K_INTERVAL = 12                          # pseudo-origins o - 744k searched for interval residuals
 
 
 # ----------------------------------------------------------------------------- energy
 def energy_kwh(trajectory_kw) -> float:
+    """Sum of an hourly kW trajectory, in kWh.
+
+    ANKYRA's energy readout is ``AnkyraForecast.energy_kwh`` (744 x level, read before the nonnegativity projection);
+    this function gives the energy of any trajectory, for example the delivered one."""
     return float(np.asarray(trajectory_kw, dtype=np.float64).sum())
 
 
@@ -68,6 +72,7 @@ def historical_excursions(context, context_types, target_types, *, k=4):
 
 
 def peak_from_daily_levels(levels, excursions, kappa=1.0):
+    """P_kappa = mean + kappa (max_d (L_d + A_d) - mean), in kW, for (N, 31) daily means L and excursions A."""
     L = np.asarray(levels, dtype=np.float64)
     A = np.asarray(excursions, dtype=np.float64)
     if L.ndim != 2 or L.shape[1] != 31 or A.shape != L.shape:
@@ -91,6 +96,7 @@ def peak_readout(prediction, context, context_types, target_types, kappa=1.0):
 
 # ----------------------------------------------------------------------------- interval
 def origin_scale(context_kw) -> float:
+    """Scale s0 (kW) of the last 744 context hours: their standard deviation, floored at max(0.01 |mean|, 1e-3)."""
     last = np.asarray(context_kw, dtype=np.float64)[-HORIZON:]
     return max(float(last.std()), max(0.01 * abs(float(last.mean())), 1e-3))
 
@@ -123,7 +129,19 @@ def _historical_trajectory(load, temp, types, start_timestamp, group, sigma, o):
 
 
 def residual_quantiles(load, temp, types, start_timestamp, group, sigma, o):
-    """Pooled normalised residual quantiles Q (2 workday classes, 24 hours, len(LEVELS)) and the pseudo-windows used."""
+    """Pooled normalised residual quantiles Q (2 workday classes, 24 hours, len(LEVELS)) and the pseudo-windows used.
+
+    load, temp, types   the unit's hourly arrays as in ``History``: load (kW) and temperature (degC) from index 0 of
+                        the record, day types (Monday 0 ... Sunday 6, holiday 7) through o + 744; nothing at or after
+                        o is read from load or temp
+    start_timestamp     ``History.start_timestamp``
+    group, sigma        the ``group`` and ``temp_sigma_std`` arguments of ``ankyra.forecast``
+    o                   origin index (the length of the pre-origin record)
+
+    Q[1] is the workday class (day type < 5), Q[0] the other days (weekends and holidays).  The second return value
+    is the number of completed pseudo-windows that supplied residuals (at most 12).  A class and hour with fewer than
+    five residuals takes the quantiles of the other class; if neither has five, that entry is NaN (always the case
+    when no pseudo-window is complete)."""
     load = np.asarray(load, dtype=np.float64)
     types = np.asarray(types)
     res = [[[] for _ in range(24)] for _ in range(2)]
@@ -156,7 +174,15 @@ def residual_quantiles(load, temp, types, start_timestamp, group, sigma, o):
 
 
 def interval_bands(point_kw, s0, Q, hour_of_day, workday):
-    """Quantile trajectories (len(LEVELS), 744): point + s0 * q, clipped at zero and monotone across levels."""
+    """Quantile trajectories (len(LEVELS), 744): point + s0 * q, clipped at zero and monotone across levels.
+
+    point_kw      (744,) point trajectory, e.g. ``AnkyraForecast.trajectory_kw``
+    s0            ``origin_scale`` of the 1,344-hour context
+    Q             from ``residual_quantiles``
+    hour_of_day   (744,) integers: (o + arange(744)) % 24
+    workday       (744,) integers 0 / 1: (types[o:o + 744] < 5)
+
+    Rows follow ``LEVELS`` (0.05, 0.1, 0.5, 0.9, 0.95), so rows 1 and 3 bound the 80% interval and row 2 is the median."""
     point = np.asarray(point_kw, dtype=np.float64)
     out = np.stack([point + s0 * Q[workday, hour_of_day, i] for i in range(len(LEVELS))])
     out = np.maximum(out, 0.0)

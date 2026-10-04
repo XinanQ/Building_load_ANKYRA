@@ -1,5 +1,5 @@
 {
- "utc": "2026-10-03T20:17:45.678514+00:00",
+ "utc": "2026-10-04T18:37:59.557332+00:00",
  "package_version": "2.0.1",
  "faces": {
   "cambridge_late": {
@@ -15,7 +15,7 @@
    "flag_agrees_with_rule": true,
    "non_micro_windows_identical_to_2_0_0": true,
    "micro_windows_equal_timesfm": null,
-   "median_seconds_cpu_side": 0.6148568391799927
+   "median_seconds_cpu_side": 0.6983941793441772
   },
   "households_late": {
    "subset": "late",
@@ -30,7 +30,7 @@
    "flag_agrees_with_rule": true,
    "non_micro_windows_identical_to_2_0_0": true,
    "micro_windows_equal_timesfm": null,
-   "median_seconds_cpu_side": 0.42804956436157227
+   "median_seconds_cpu_side": 0.5076855421066284
   },
   "goiener_confirm_late": {
    "subset": "late",
@@ -45,7 +45,7 @@
    "flag_agrees_with_rule": true,
    "non_micro_windows_identical_to_2_0_0": true,
    "micro_windows_equal_timesfm": null,
-   "median_seconds_cpu_side": 0.48539793491363525
+   "median_seconds_cpu_side": 0.5912096500396729
   },
   "bdg2_late": {
    "subset": "late",
@@ -60,7 +60,7 @@
    "flag_agrees_with_rule": true,
    "non_micro_windows_identical_to_2_0_0": true,
    "micro_windows_equal_timesfm": true,
-   "median_seconds_cpu_side": 0.0004993677139282227
+   "median_seconds_cpu_side": 0.0010023117065429688
   },
   "bdg2_early": {
    "subset": "early",
@@ -75,7 +75,7 @@
    "flag_agrees_with_rule": true,
    "non_micro_windows_identical_to_2_0_0": true,
    "micro_windows_equal_timesfm": true,
-   "median_seconds_cpu_side": 0.3197643756866455
+   "median_seconds_cpu_side": 0.3739285469055176
   },
   "eweld_late": {
    "subset": "late",
@@ -105,7 +105,7 @@
    "flag_agrees_with_rule": true,
    "non_micro_windows_identical_to_2_0_0": true,
    "micro_windows_equal_timesfm": null,
-   "median_seconds_cpu_side": 0.6008173227310181
+   "median_seconds_cpu_side": 0.676105260848999
   },
   "park_all": {
    "subset": "all",
@@ -120,20 +120,20 @@
    "flag_agrees_with_rule": true,
    "non_micro_windows_identical_to_2_0_0": true,
    "micro_windows_equal_timesfm": null,
-   "median_seconds_cpu_side": 0.3690814971923828
+   "median_seconds_cpu_side": 0.40720057487487793
   }
  },
  "pass": true,
  "micro_load_windows_checked_total": 263,
  "criterion": "2.0.0 mode and 2.0.1 vs panel: relative to each window's largest value, <= 1e-5 (references stored as float32); 1.x mode: absolute <= 1e-6 kW; non-micro windows: 2.0.1 bit-identical to the package's 2.0.0 mode; micro-load windows: bit-identical to the TimesFM forecast at the origin",
  "package_files": {
-  "__init__.py": "d6aee3c5ad83db902482b720a2e8d93ad4b61c0cf41c449d53ef8dbd210ac728",
-  "analog.py": "e8a1bf58db9a1ca06c91565a92985cc543d294ab414d2176147a844ea2684e7a",
-  "blocks.py": "0921b6d54028c03d2ff56a21c1574bd811ea8e21076be9902a549b7586d0e8f7",
-  "core.py": "6eb89242b610e70d4fbb6be8c57f51107d702cd1fa688b6b80f1eaaa972743be",
-  "metrics.py": "903b4621eea355082248f26992f2b39f26dbd13639b4b505f70a4eb9d1f86c5b",
-  "readouts.py": "51e5f3d661a965789b2dfa0b0ccaed382a3c87ddfd0d07510907d40160131274",
-  "synthetic.py": "54c0c19de529767b0256a07d5964f252fe973b95b4368f4a50036253f276de79",
-  "timesfm_adapter.py": "8ff43368ad39565c768bc682560d4f3907c65236c3f1f6a192c9540ef34ee1d5"
+  "__init__.py": "2398bf2586430121b195c7e4690c43dfeb2370b4d5ddd0101a2a7867fc573824",
+  "analog.py": "1761c77b97d0c520c431ce954b35ea41b3ced1e00d6337cbed554da20ca8c71f",
+  "blocks.py": "cff12b09ab5fcf0076ac16dfd359906b1e6cfbe6b59db28b88272d66e5c58aa7",
+  "core.py": "d0c80bcb7befecc92ba6a66be9357dbfb66ba1e76b7f6f566784398ae1d8b143",
+  "metrics.py": "8d5470290b03a05331abcd74b0e8cb970e21939f6016e74467fb78459f629382",
+  "readouts.py": "48c2ea1474ee0d48ad011b032682378336b1d21bc1e9007eb077d80e0729244a",
+  "synthetic.py": "5afe56dd0c85282d5faae914cbce86ea0f03458f85c516e7d37672945529e451",
+  "timesfm_adapter.py": "81f9a6c7f91b2b5418fd3fa4e8e5e254004c9eef0cd2daf8965e143d553b66eb"
  }
 }

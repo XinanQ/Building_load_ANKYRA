@@ -1,11 +1,14 @@
 """Behaviour of the handover, the off-state rule and the complete forecast on an artificial building."""
+import sys
+import types
 import unittest
+from unittest import mock
 
 import numpy as np
 import torch
 
 import ankyra
-from ankyra import blocks
+from ankyra import blocks, timesfm_adapter
 from ankyra.core import lead_week_weights, lead_week_transition, pseudo_origin_contexts
 from ankyra.history import estimate_from_history
 from ankyra.synthetic import synthetic_history, seasonal_naive
@@ -77,6 +80,56 @@ class ForecastTests(unittest.TestCase):
     def test_origin_forecast_is_required(self):
         with self.assertRaises(ValueError):
             ankyra.forecast(self.h, group="Office", temp_sigma_std=0.25, foundation={1: np.zeros(744)})
+
+    def test_input_mistakes_give_errors_that_name_the_cause(self):
+        kw = dict(temp_sigma_std=0.25, foundation=seasonal_naive)
+        with self.assertRaisesRegex(ankyra.InputError, "group must be one of"):          # a category outside the five
+            ankyra.forecast(self.h, group="office", **kw)
+        with self.assertRaisesRegex(ankyra.InputError, "1344"):                          # a record shorter than the context
+            ankyra.forecast(synthetic_history(1000), group="Office", **kw)
+        gap = synthetic_history(16000); gap.load_kw[-10] = np.nan
+        with self.assertRaisesRegex(ankyra.InputError, "completely observed"):           # a gap in the context, callable model
+            ankyra.forecast(gap, group="Office", **kw)
+        with self.assertRaisesRegex(ValueError, "dst_region"):
+            ankyra.forecast(self.h, group="Office", dst_region="Mars", **kw)
+        with self.assertRaises(TypeError):                                               # neither a mapping, a callable nor None
+            ankyra.forecast(self.h, group="Office", temp_sigma_std=0.25, foundation="timesfm")
+        T = {k: seasonal_naive(v[None])[0] for k, v in pseudo_origin_contexts(self.h.load_kw).items()}
+        with self.assertRaisesRegex(ValueError, "k=2 must have shape"):                  # a pseudo-origin forecast one hour short
+            ankyra.forecast(self.h, group="Office", temp_sigma_std=0.25, foundation={**T, 2: T[2][:743]})
+        with self.assertRaisesRegex(ValueError, "finite"):                               # a model forecast with missing values
+            ankyra.forecast(self.h, group="Office", temp_sigma_std=0.25, foundation={**T, 0: np.full(744, np.nan)})
+
+
+class TimesfmAdapterTests(unittest.TestCase):
+    """The adapter without TimesFM: its error messages and its batching, on stand-in modules and models."""
+
+    def test_missing_package_old_package_and_mistyped_checkpoint(self):
+        with mock.patch.dict(sys.modules, {"timesfm": None}):                            # timesfm cannot be imported
+            with self.assertRaisesRegex(ImportError, r'pip install -e "\.\[timesfm\]"'):
+                timesfm_adapter.load_timesfm()
+        with mock.patch.dict(sys.modules, {"timesfm": types.ModuleType("timesfm")}):     # a timesfm without TimesFM 2.5
+            with self.assertRaisesRegex(ImportError, "TimesFM 2.5"):
+                timesfm_adapter.load_timesfm()
+        fake = types.ModuleType("timesfm"); fake.TimesFM_2p5_200M_torch = object
+        with mock.patch.dict(sys.modules, {"timesfm": fake}):
+            with self.assertRaisesRegex(FileNotFoundError, "checkpoint not found"):
+                timesfm_adapter.load_timesfm("no/such/checkpoint")
+
+    def test_forecaster_hands_batch_size_contexts_per_call_and_returns_744_hours(self):
+        calls = []
+
+        class Model:
+            def forecast(self, horizon, inputs):
+                calls.append(len(inputs))
+                return np.stack([np.full(horizon + 8, row[-1]) for row in inputs]), None
+
+        contexts = np.arange(7.0)[:, None] * np.ones((7, 1344))
+        out = timesfm_adapter.timesfm_forecaster(Model(), batch_size=3)(contexts)
+        self.assertEqual(calls, [3, 3, 1]); self.assertEqual(out.shape, (7, 744))
+        np.testing.assert_array_equal(out[:, 0], np.arange(7.0))
+        with self.assertRaises(ValueError):                                              # a context of the wrong length
+            timesfm_adapter.timesfm_forecaster(Model())(np.ones((2, 1000)))
 
 
 if __name__ == "__main__":

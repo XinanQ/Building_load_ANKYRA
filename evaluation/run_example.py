@@ -42,7 +42,8 @@ def main():
     F = {k: np.vstack(v) for k, v in forecasts.items()}; y = np.vstack(ys); ctx = np.vstack(ctxs); unit = np.array(unit); month = np.array(month)
     res = scoring.score_population(F, y, unit, month, reference="ANKYRA", n_boot=200)["full"]
     tests = scoring.rank_tests(scoring.unit_rmse(F, y, unit)[1])
-    print(json.dumps({"windows": res["windows"], "units": res["units"],
+    print(json.dumps({"note": "artificial buildings and a stand-in forecaster: the numbers show the output format only",
+                      "windows": res["windows"], "units": res["units"],
                       "ankyra_against": {k: {"improvement_pct": round(v["improvement_pct"], 2), "interval_log": [round(v["um_low"], 4), round(v["um_high"], 4)],
                                              "resolved": v["resolved"]} for k, v in res["pairwise"].items()},
                       "mean_unit_rank": {k: round(v, 3) for k, v in res["mean_unit_rank"].items()},

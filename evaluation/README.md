@@ -38,12 +38,19 @@ Cambridge, GoiEner households and the Suzhou park): the pairwise log ratios and 
 ranks, the conventional metrics, the rank tests, the scaled errors, the energy contrasts and the loss by forecast day.
 The intervals reproduce because the default seed is the study's and a fresh generator is drawn for each contrast.
 
+The module's own tests are in [`tests/test_evaluation.py`](../tests/test_evaluation.py). They run on artificial
+data, together with the forecaster's tests: `python -m unittest discover -s tests -t .`
+
+The terms used by the module (unit-equal log RMS ratio, unit-and-month bootstrap interval, late windows, mean
+per-unit rank) are defined in [docs/EVALUATION.md](../docs/EVALUATION.md#estimands).
+
 ## What is not here
 
 - **The forecasts themselves.** Raw data, saved forecast arrays and model weights are not in the repository
   ([docs/DATA.md](../docs/DATA.md) lists the sources and how the inputs were prepared).
-- **The other baselines.** The trained models (TiDE, iTransformer, GBT-T, DLinear, PatchTST, LSTM), the
-  covariate-informed foundation-model variants, Holt–Winters, MSTL, the per-unit ridge and the remaining profiles are
+- **The other baselines.** The seven trained models (TiDE, iTransformer-X, GBT-T, DLinear, PatchTST, iTransformer,
+  LSTM), the covariate-informed foundation-model variants (Chronos-2-X, TimesFM-X), Holt–Winters, MSTL, the per-unit
+  ridge, the zero-shot gradient-boosting model and the remaining profiles are
   specified in [docs/EVALUATION.md](../docs/EVALUATION.md#baselines) and
   [docs/METHOD.md](../docs/METHOD.md#inputs-and-features-the-shared-information-set); their training and inference
   code is not included.

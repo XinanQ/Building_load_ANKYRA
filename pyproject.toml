@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,23 +7,34 @@ name = "ankyra"
 version = "2.0.1"
 description = "ANKYRA: anchoring a time-series foundation model to each unit's own history for month-ahead load forecasting"
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [{ name = "Xinan Qin" }]
 requires-python = ">=3.10"
 dependencies = ["numpy>=1.26", "scipy>=1.11", "torch>=2.4"]
 keywords = ["load forecasting", "time-series foundation models", "forecast combination", "building energy", "TimesFM"]
 classifiers = [
+  "Intended Audience :: Science/Research",
+  "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
-  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Scientific/Engineering",
 ]
 
 [project.optional-dependencies]
+# TimesFM 2.5 for ankyra.timesfm_adapter; the installed package must provide timesfm.TimesFM_2p5_200M_torch
 timesfm = ["timesfm>=2.0"]
 figures = ["matplotlib>=3.8"]
 
 [project.urls]
 Repository = "https://github.com/XinanQ/Building_load_ANKYRA"
+Issues = "https://github.com/XinanQ/Building_load_ANKYRA/issues"
+Documentation = "https://github.com/XinanQ/Building_load_ANKYRA/blob/main/docs/METHOD.md"
+Changelog = "https://github.com/XinanQ/Building_load_ANKYRA/blob/main/README.md#version-history"
 
 [tool.setuptools.packages.find]
 include = ["ankyra*"]

@@ -1,67 +1,266 @@
-# LCL evaluation and closeout of the last round (3 October 2026)
+# Low Carbon London households: evaluation of ANKYRA 2.0.1
 
-ANKYRA 2.0.1 remains the frozen point model. No new point or interval rule was adopted in this round. The original ten-population tables and BDG2 qualifications are unchanged. The machine-readable record is [`closeout_status.json`](../results/closeout_status.json).
+This page reports the one population that is not in the ten-population tables of [EVALUATION.md](EVALUATION.md): the
+Low Carbon London (LCL) households. It also records two changes to the forecaster that were tried after 2.0.1 and not
+adopted. ANKYRA 2.0.1 is unchanged by anything on this page.
 
-## Centered daily-path route
-
-The sole registered point proposal was a fixed beta = 0.5 centered RIDGE-L daily-path replacement, with off, micro-load and insufficient-history windows unchanged. The reused household early design face contains 562 windows from 562 units. RIDGE-L was refitted using each origin's permitted prefix on 526 supported active windows; the other 36 retain ANKYRA. Such local Ridge fits are supervised fitting and cannot inherit a training-free description.
-
-The eligible donor's unit-equal geometric centered daily-path RMS was 0.08755% worse than ANKYRA and 3.59095% worse than TimesFM. These are month-aggregated centered-path diagnostics, not the primary hourly-by-day statistic or an overall model comparison. The donor endpoint direction is a conservative admission condition; its failure does not prove a mixture could not improve. The protocol field and machine status remain `STOP_NECESSITY_UNRESOLVED` for traceability.
-
-The truth-selected daily oracle remained **UNRESOLVED**: on fixed support of 544 units it had 60 exact-zero unit/day risks in nine units. Candidate zeros were not dropped or replaced by an epsilon. This supplies no finite geometric gain or claim that a 2% bound was established. The oracle is undeployable and can violate the fixed candidate's energy identity.
-
-The fixed-beta candidate was not scored. The other eight design faces, protection and cost stages were not triggered; this branch read no late or LCL targets and made no new foundation-model calls. The numerical cross-check used a separate implementation by the same agent, not an independent reviewer or a new experiment. Main evaluation and cross-check each opened the saved target member once (two formal reads total); the interrupted initial historical-input access count is unknown. Reused design evidence is not independent confirmation.
-
-## Interval route
-
-`STOP_INTERVAL_SOURCE_SUPPORT_GATE`: all 7,676 registered windows were retained, and at least 742 have no qualified mature complete-ANKYRA residual under the fixed sigma fitting cutoffs. The household face has 537 windows with no such residual and 25 with one; all 562 have fewer than four. Required all-window coverage and Winkler gates are therefore unresolved, and unsupported windows were not removed.
-
-I1–I3 numerical replay, scoring, the pilot and GPU inference were not triggered. No new interval rule or coverage guarantee is established. This is a source-support stop, not a measured interval-accuracy failure. Current origins all meet their fixed sigma cutoffs; the support shortage concerns historical pseudo-origins and does not establish future-parameter use at current origins. Existing archive qualifications about source clocks, arrival/revision history and historically issued forecasts remain applicable.
-
-## Cache and public API
-
-The content/version-keyed cache is synthetic engineering staging only. Equality on real archive inputs, end-to-end integration and any performance benefit have not been established; nominal key matches are not input-certified cache hits. No public code changed.
-
-Documentation now describes the actual existing early-return branches: only a micro-load return without the legacy off-state condition runs the full estimator history/category/temperature-scale checks. The off-state branch retains its existing checks and compatibility behavior. The returned flags are not validation or source-clock certificates. `within_day_kw` is the final anchored block; `foundation_within_day_kw` is the unmodified foundation shape.
+Terms used here are those of [EVALUATION.md](EVALUATION.md#estimands). The *improvement* is $100[1-\exp(r)]$, where
+$r$ is the mean over households of the log ratio of ANKYRA's hourly RMS error to the other forecaster's; positive
+favours ANKYRA. Intervals are 95% intervals of $r$ from 2,000 bootstrap replicates that resample households and
+target months. A contrast is *resolved* when its interval excludes zero.
 
 ## LCL final stage
 
-The frozen ANKYRA 2.0.1 model was evaluated once without retuning. All 1,215 registered windows from 965 units were retained. The common late face has 710 windows from 710 units, selected by the frozen metadata-key intersection of seven trained baseline files, not by target or prediction values. This is the first scoring of the frozen 2.x version on LCL; the population's 1.x results were already known, so it is not a wholly unexposed population or an independent confirmation of all prior choices. It is not merged into the original ten-population ranks.
+LCL was the last population scored, after the forecaster had been frozen as 2.0.1.
 
-The source adapter now uses a fixed 15°C before the actual temperature record; missing load stays missing. The older adapter copied temperature from a later year into that padding. The matched-input 1.x ablation uses the same repaired input and fresh foundation forecasts as 2.0.1; the archived 1.x comparison is retained separately. Their difference must not be assigned entirely to a model change. Existing baselines keep their frozen input contracts. The own-clock weather check certifies the checked temperature dependencies, not original load timestamps, arrival/revision history, physical-hour interpretation or foundation-model pretraining independence. Historical internal replay is not evidence of forecasts actually issued then.
+### Summary
 
-Percentages below are unit-equal geometric RMS improvements in favor of ANKYRA; bracketed numbers are **95% UM intervals on the log-RMS ratio**, not percentage intervals. These are month-aggregated hourly losses. Unavailable full-face comparisons are not ties, and the raw pairwise intervals are not Holm-adjusted superiority findings.
+- **Scored once, without retuning.** The frozen 2.0.1 forecaster was run on all 1,215 windows of 965 households on
+  3 October 2026. No constant or rule was changed for LCL or after its result was seen.
+- **Against ANKYRA 1.x:** 0.7% better on the same inputs, resolved.
+- **Against the foundation models:** 1.2–1.5% better in the point estimate than TimesFM, Chronos-2, Chronos-2-X and
+  TimesFM-X. None of these contrasts is resolved.
+- **Rank.** On the 710 late windows ANKYRA has the lowest mean per-unit rank of the 21 forecasters (6.25; per-unit
+  ridge 6.48). The difference from the ridge is small and not significant.
+- **Not an unexposed population.** The LCL result of ANKYRA 1.x was known before 2.0 was designed. This is the first
+  score of a 2.x version on LCL, not a first read of LCL.
 
-| Comparator | All 1,215 windows / 965 units | Common late 710 windows / 710 units |
-|---|---:|---:|
-| 1.x, matched input | +0.675%; [-0.009810, -0.003625] | +0.921%; [-0.012486, -0.005962] |
-| 1.x, archived input | +0.625%; [-0.009460, -0.003017] | +0.890%; [-0.012415, -0.005346] |
-| TimesFM | +1.240%; [-0.026234, +0.011858] | +1.311%; [-0.033120, +0.027040] |
-| RIDGE | +1.932%; [-0.036164, -0.005245] | +1.198%; [-0.032569, +0.010077] |
-| Chronos-2 | +1.163%; [-0.026008, +0.010800] | +0.970%; [-0.028421, +0.028541] |
-| Chronos-2-X | +1.538%; [-0.030881, +0.006932] | +1.279%; [-0.032880, +0.025334] |
-| TimesFM-X | +1.415%; [-0.029575, +0.008294] | +1.379%; [-0.030794, +0.025373] |
-| GBT-T | Unavailable on this registered face | +8.254%; [-0.129657, -0.037581] |
-| TiDE | Unavailable on this registered face | +2.640%; [-0.050380, -0.009490] |
-| iTransformer-X | Unavailable on this registered face | +1.409%; [-0.033624, +0.019506] |
+### What LCL is and why it was held out
 
-The matched-input 1.x no-harm gate L1 passed (registered log-RMS upper bound at most 0.01). On the fixed common face ANKYRA has mean unit rank 6.247887, the smallest of the fixed 21 models (Ridge: 6.483099); this modest descriptive rank difference is not a significant hourly advantage over Ridge on that face. L3 found no registered same-information baseline significantly better under its six-test Holm family; this direction-specific result does not establish equivalence, noninferiority to every baseline, or Holm-adjusted ANKYRA superiority over all six. The hourly contrasts with TimesFM are unresolved in both faces because their intervals cross zero.
+LCL is the smart-meter record of London households published by UK Power Networks, 23 November 2011 to 28 February
+2014 ([source and preparation](DATA.md#11-low-carbon-london-households-uk)).
 
-Full-face descriptive readouts relative to TimesFM are: independent energy +39.205%, delivered energy +39.178%, raw trajectory peak +5.453%, and ANKYRA's envelope peak +77.708%. Energy references are TimesFM's trajectory integral. Both peak references are TimesFM's raw trajectory maximum; the envelope contrast compares different readout operators and does not certify true capacity adequacy or an achieved physical peak bound. These readouts were not selection criteria.
+ANKYRA 1.x was scored on LCL against the load-only forecasters: third of 14 by mean per-unit rank on the late
+windows, behind the per-unit ridge and iTransformer ([`results/ankyra_1x/`](../results/ankyra_1x/)). When the
+equal-information comparison was set up, LCL was held in reserve. The covariate-informed baselines were not scored
+on it, and it was not read while the within-day rule of 2.0 and the micro-load rule of 2.0.1 were designed, selected
+and evaluated. The aim was to keep one population on which no 2.x rule had been chosen.
 
-There were two off-state windows and no micro-load trigger. LCL therefore supplies no new effectiveness test of the post hoc micro-load rule. New LCL intervals were not assessed; the old 1.x interval result is not relabeled as a new 2.0.1 confirmation.
+For that reason LCL is reported here and not merged into the ten-population tables, ranks and figures. Those are
+unchanged.
 
-During source preparation, 250 earlier registered target segments were wholly or partly read as matured history for later origins. That use follows the later origin's prefix and precludes an all-target-values-unseen claim. Formal scoring opened each current target once after prediction and comparator freezes. The separate saved-output arithmetic audit passed 96,032 checks with zero numerical differences and opened the saved target once more: two formal-plus-audit reads in total. It made no new model, GPU or raw-data call. This is a reproducibility check on the same saved output, not another external experiment. See the [audit](../results/lcl_audit.json) and [exposure receipt](../results/lcl_exposure.json).
+### Windows and inputs
 
-The completed inference run used 8,505 unique contexts and produced 8,537 forecasts including 32 outputs for the fixed batch-equivalence pilot. An earlier interrupted attempt completed at least 576 forecasts; its exact count is unknown and no scored output was used. Completed-run time including load/pilot was 147.85 seconds. Batch and individual inference were not bit-identical (maximum pilot relative difference 6.52253e-6). Combined point-model and matched-1.x computation took 691.37 seconds with Torch set to one CPU thread; actual NumPy BLAS thread counts were not measured. These are source/reproduction workloads, not a deployment-speed benchmark or evidence of cache acceleration.
+- **All windows:** 1,215 windows of 965 households. No window of the panel was dropped.
+- **Late windows:** the 710 windows, one per household, on which all seven trained baselines have a saved forecast.
+  Their origins lie after the baselines' training cutoff of 1 September 2013. The set was fixed from the index of the
+  baselines' forecast files, not from load or forecast values.
+- **Forecasters.** The 20 baselines of the ten-population comparison. On all windows only the 13 that are not
+  trained per population are available; on the late windows all 20. The baselines' forecasts are the ones saved
+  earlier; they were not rerun.
+- **Temperature before the record starts.** The forecaster needs a record that starts on 1 January, so the LCL record
+  is padded back to 1 January 2011. In the padding the load is unobserved and the temperature is a fixed 15 °C. The
+  preparation used for 1.x had copied the temperature of the same hours one year later into the padding. The fixed
+  value replaces it, so that no temperature stands at an hour before it was recorded.
+- **Two versions of 1.x.** *Matched-input 1.x* is ANKYRA 1.x rerun on the repaired input, with the same
+  foundation-model forecasts as 2.0.1. *Archived 1.x* is the set of 1.x forecasts scored earlier, made with the old
+  padding. Both are reported. The difference between 2.0.1 and archived 1.x is partly a change of input, so it must
+  not be read as a change of model alone.
+- **What was checked about the inputs.** The temperature values that the forecasts depend on were checked against
+  the temperature record on its own clock, and the check passed. It does not certify the provider's load timestamps,
+  later revisions of the data, or that the foundation models were not pretrained on LCL. The forecasts are a
+  retrospective run; none was issued at the time.
 
-Exports: [all registered pairwise](../results/lcl_pairwise.csv), [common late pairwise](../results/lcl_pairwise_late.csv), [fixed common ranks](../results/lcl_mean_unit_rank_late.csv), [six baseline-better Holm tests](../results/lcl_shared_information_holm.csv), [descriptive readouts](../results/lcl_readouts.csv), and [source result JSON](../results/lcl_results.json). All were exported from saved result JSON without rereading targets or predictions.
+### Results
 
+Hourly error over the forecast month. "n/a" means that the forecaster has no forecast on that window set; it is not
+a tie.
 
-## Supplementary LCL curves and conventional errors
+**All windows (1,215 windows, 965 households)**
 
-The saved-output auditor also generated descriptive summaries from its one in-memory target decode; these exports required no additional target read. They are separate from L1/L3 and do not replace Figure 9, Figure 9b or the original ten-population tables.
+| ANKYRA 2.0.1 against | Improvement | Log ratio | 95% interval (log scale) | Resolved |
+|---|---:|---:|---|:---:|
+| ANKYRA 1.x, matched input | +0.675% | −0.0068 | [−0.0098, −0.0036] | yes |
+| ANKYRA 1.x, archived | +0.625% | −0.0063 | [−0.0095, −0.0030] | yes |
+| TimesFM | +1.240% | −0.0125 | [−0.0262, +0.0119] | no |
+| Chronos-2 | +1.163% | −0.0117 | [−0.0260, +0.0108] | no |
+| Chronos-2-X | +1.538% | −0.0155 | [−0.0309, +0.0069] | no |
+| TimesFM-X | +1.415% | −0.0142 | [−0.0296, +0.0083] | no |
+| per-unit ridge | +1.932% | −0.0195 | [−0.0362, −0.0052] | yes |
+| GBT-T, TiDE, iTransformer-X | n/a | n/a | n/a | n/a |
 
-Daily curves and conventional errors are split into [all-window curves](../results/lcl_lead_day_metrics.csv), [common-late curves](../results/lcl_lead_day_metrics_late.csv), [all-window conventional errors](../results/lcl_conventional_metrics.csv), and [common-late conventional errors](../results/lcl_conventional_metrics_late.csv). The [definitions](../results/lcl_metric_definitions.json) specify their normalizers and support. Daily CV uses each unit's mean truth over the registered windows of the relevant face, rather than an own-history scale or whole-record mean. It is a descriptive normalization, not an input feature.
+**Late windows (710 windows, 710 households)**
 
-The curves retain zero-error units. Across the two source faces 619 geometric summary cells are `UNRESOLVED_ZERO_LOG_RISK` and remain blank, never zero or interpolated. Arithmetic means and medians have their own reported definitions. This differs from the older plotted support that excluded units with zero error in any model. The day-level geometric curves, month-level log-RMS pairwise statistic, pooled MSE and conventional unit summaries are distinct estimands.
+| ANKYRA 2.0.1 against | Improvement | Log ratio | 95% interval (log scale) | Resolved |
+|---|---:|---:|---|:---:|
+| ANKYRA 1.x, matched input | +0.921% | −0.0093 | [−0.0125, −0.0060] | yes |
+| ANKYRA 1.x, archived | +0.890% | −0.0089 | [−0.0124, −0.0053] | yes |
+| TimesFM | +1.311% | −0.0132 | [−0.0331, +0.0270] | no |
+| Chronos-2 | +0.970% | −0.0097 | [−0.0284, +0.0285] | no |
+| Chronos-2-X | +1.279% | −0.0129 | [−0.0329, +0.0253] | no |
+| TimesFM-X | +1.379% | −0.0139 | [−0.0308, +0.0254] | no |
+| per-unit ridge | +1.198% | −0.0121 | [−0.0326, +0.0101] | no |
+| GBT-T | +8.254% | −0.0861 | [−0.1297, −0.0376] | yes |
+| TiDE | +2.640% | −0.0268 | [−0.0504, −0.0095] | yes |
+| iTransformer-X | +1.409% | −0.0142 | [−0.0336, +0.0195] | no |
+
+- **All 20 baselines, late windows.** 11 contrasts are resolved in ANKYRA's favour, 9 are not resolved, and none is
+  resolved against it. On all windows, 9 of the 13 available contrasts are resolved in ANKYRA's favour; the four
+  foundation-model variants are not. The intervals are not adjusted for the number of comparisons, so these counts
+  are not a set of significance findings. The other rows and the pooled MSE ratios are in the files listed below.
+- **TimesFM.** The contrast is unresolved on both window sets: the intervals cross zero.
+- **Mean per-unit rank, late windows.** ANKYRA 6.25, per-unit ridge 6.48, iTransformer 6.99, PatchTST 7.29, TiDE
+  7.32, iTransformer-X 7.37, DLinear 7.55; TimesFM 10.00. ANKYRA's rank is the lowest of the 21. The ridge is not
+  resolvably worse on these windows (table above), so the rank difference is a description, not a significant
+  hourly advantage.
+
+**What was fixed before scoring.** Two checks with a pass or fail, and one description. The study protocol calls
+them L1, L3 and L2.
+
+1. *No harm against 1.x on the same inputs (L1).* The upper end of the interval of the log ratio against
+   matched-input 1.x had to be at most +0.01. It is −0.0036 on all windows and −0.0060 on the late windows. The
+   check is met (field `no_harm_check` of `lcl_results.json`).
+2. *No same-information baseline significantly better (L3).* Six one-sided bootstrap tests asked whether a baseline
+   is better than ANKYRA on the late windows: the five same-information baselines (TiDE, iTransformer-X, GBT-T,
+   Chronos-2-X, TimesFM-X) and the per-unit ridge, with Holm's correction over the six. No test rejects; every
+   adjusted p-value is 1.0 (field `same_information_check`). This result has one direction only. It does not show
+   that ANKYRA is equivalent to these baselines, non-inferior to every baseline, or significantly better than all
+   six.
+3. *Position (L2), a description without pass or fail.* ANKYRA's mean per-unit rank among the 21 forecasters on the
+   late windows and the number of resolved contrasts, both reported above.
+
+**Energy and peak readouts** (all windows, against TimesFM; descriptive, not used to select anything).
+
+| ANKYRA readout | TimesFM reference | Improvement | Log ratio | 95% interval (log scale) |
+|---|---|---:|---:|---|
+| energy read from the level, before the projection onto nonnegative load | sum of the trajectory | +39.205% | −0.4977 | [−0.6012, −0.3870] |
+| energy of the delivered trajectory | sum of the trajectory | +39.178% | −0.4972 | [−0.6008, −0.3869] |
+| peak as the maximum of ANKYRA's trajectory | maximum of the trajectory | +5.453% | −0.0561 | [−0.0762, −0.0305] |
+| ANKYRA's peak readout (the envelope of [METHOD.md](METHOD.md#readouts)) | maximum of the trajectory | +77.708% | −1.5010 | [−1.6377, −1.4177] |
+
+The last row compares two different operators: ANKYRA's envelope against the plain maximum of TimesFM's trajectory,
+not against the same readout applied to TimesFM. It does not show that the envelope bounds the realised peak.
+
+**Rules and intervals.**
+
+- Two windows are off-state windows. No window meets the micro-load condition, so LCL gives no test of the
+  micro-load rule, which was written after the BDG2 result had been seen.
+- Prediction intervals were not assessed for 2.0.1 on LCL. The interval result of 1.x is not relabelled as a 2.0.1
+  result.
+
+### Daily curves and conventional errors
+
+Loss by forecast day and the conventional error metrics were computed afterwards from the saved forecasts, as a
+description. They are not among the three items fixed before scoring, and they do not replace Figures 9 and 9b or
+the ten-population tables.
+
+- **Normaliser.** The daily CV(RMSE) divides by each household's mean realised load over its scored windows of the
+  window set. It is not a scale from the household's own history, and it is not an input of any forecaster.
+- **Zero errors.** A household whose error is exactly zero on a day has no logarithm, so the geometric mean over
+  households is undefined for that day. In these files such a cell is left blank and flagged in the `status` column
+  (`geometric mean undefined`; 619 cells over the two window sets). It is not set to zero, interpolated, or computed
+  after dropping the household. The arithmetic mean and the median are given beside it.
+- **Not comparable with Figure 9.** The ten-population curves use a fixed set of units whose error is nonzero for
+  every forecaster. The LCL curves keep every household. Do not join the two.
+- The day-level curves, the monthly log ratio of the tables above, the pooled MSE ratio and the conventional
+  metrics are four different summaries; they need not agree.
+
+### Caveats
+
+- **Earlier results were known.** The 1.x result on LCL had been seen. The LCL result of 2.0.1 is therefore not
+  independent confirmation of every earlier choice.
+- **Targets that are also history.** 250 target segments of earlier windows also serve, wholly or partly, as history
+  for later origins of the same household. That use is legitimate, since each lies before the later origin, but it
+  means that not every target value was unread when the forecasts were made. For scoring, each target was read once,
+  after the forecasts and the baselines had been frozen.
+- **Arithmetic re-check.** A second implementation, written within the same study, recomputed every reported
+  statistic from the saved forecasts and targets: 96,032 comparisons, no difference. It read the saved targets once
+  more. This is a reproducibility check on the same output. It is not an independent review and not new evidence
+  ([`lcl_audit.json`](../results/lcl_audit.json)).
+- **Pretraining.** LCL is a public data set that predates TimesFM 2.5 and Chronos-2. Whether it is in their
+  pretraining corpora was not established.
+- **Run.** The foundation model was run on 8,505 distinct contexts (8,537 forecasts, including 32 repeated for a
+  fixed check of batched against single inference; the two differ by at most 6.52253×10⁻⁶ in relative terms, so
+  they are not bit-identical). The run took 147.85 s including model load. An earlier attempt was interrupted after
+  at least 576 forecasts; its exact count is unknown and none of its output was scored. ANKYRA 2.0.1 and
+  matched-input 1.x together took 691.37 s with PyTorch on one CPU thread (the thread count of NumPy's linear
+  algebra was not measured). These times describe this evaluation run. They are not a deployment benchmark.
+
+### Files
+
+All in [`results/`](../results/). The CSV files use the column names of the ten-population files
+([`results/README.md`](../results/README.md)): `subset` is `full` (all windows) or `late`, `log_ratio` with `um_low`
+and `um_high` is the log ratio with its interval, and `improvement_pct` is the improvement. Model keys are those of
+the ten-population files (`RIDGE-L` is the per-unit ridge); the two versions of 1.x are `ANKYRA-1x-matched` and
+`ANKYRA-1x-archived`.
+
+| File | Content |
+|---|---|
+| [`lcl_pairwise.csv`](../results/lcl_pairwise.csv) | ANKYRA 2.0.1 against every forecaster and against both versions of 1.x, all windows |
+| [`lcl_pairwise_late.csv`](../results/lcl_pairwise_late.csv) | the same on the late windows |
+| [`lcl_mean_unit_rank_late.csv`](../results/lcl_mean_unit_rank_late.csv) | mean per-unit rank of the 21 forecasters, late windows |
+| [`lcl_shared_information_holm.csv`](../results/lcl_shared_information_holm.csv) | the six tests of the same-information check; the ratio is the baseline's error over ANKYRA's, the reverse of the pairwise files |
+| [`lcl_readouts.csv`](../results/lcl_readouts.csv) | the energy and peak readouts against TimesFM |
+| [`lcl_lead_day_metrics.csv`](../results/lcl_lead_day_metrics.csv), [`lcl_lead_day_metrics_late.csv`](../results/lcl_lead_day_metrics_late.csv) | hourly error, daily energy error and cumulative energy error by forecast day |
+| [`lcl_conventional_metrics.csv`](../results/lcl_conventional_metrics.csv), [`lcl_conventional_metrics_late.csv`](../results/lcl_conventional_metrics_late.csv) | RMSE, MAE, CV(RMSE), NMBE, WAPE |
+| [`lcl_metric_definitions.json`](../results/lcl_metric_definitions.json) | definitions of the metrics in the four files above |
+| [`lcl_results.json`](../results/lcl_results.json) | the complete result record from which the CSV files were exported |
+| [`lcl_audit.json`](../results/lcl_audit.json) | record of the arithmetic re-check |
+
+## Two changes that were tried and not adopted
+
+After 2.0.1, two further changes were examined. Each had a check, fixed in writing before it was run, that decided
+whether the change would be scored at all. Both stopped at that check. Neither was scored on any test window or on
+LCL, and neither is in the package. The machine-readable record is
+[`closeout_status.json`](../results/closeout_status.json). Its `status_code` fields carry the labels of the study
+protocol; in both cases they mean that the change stopped at its check and nothing was scored.
+
+### 1. A daily path taken partly from the per-unit ridge
+
+**The idea.** On households the per-unit ridge is the one baseline that beats ANKYRA for the typical unit
+([EVALUATION.md](EVALUATION.md#rank-significance-tests)). The per-unit ridge is a regression on the calendar and
+climatological temperature, refitted for each unit at every origin (`RIDGE-L` in the ten-population result files).
+The change would have replaced ANKYRA's centred daily path by a fixed half-and-half blend of ANKYRA's path and the
+ridge's. Off-state windows, micro-load windows and windows with too little history would have stayed as they are.
+
+**The check.** The blend would be scored only if the ridge's daily path alone was at least as accurate as ANKYRA's
+on the design windows: the 562 pre-cutoff windows of 562 GoiEner households, which had already been used to design
+the 2.0 rule.
+
+**The result.** The ridge was refitted at each origin from data before that origin on the 526 windows with enough
+history; the other 36 keep ANKYRA's path. On the centred daily path over the month (unit-equal geometric RMS) the
+ridge was 0.08755% worse than ANKYRA and 3.59095% worse than TimesFM. The check failed and the blend was not scored.
+No other design set, no post-cutoff window and no LCL window was read, and no foundation-model forecast was made.
+
+**What this does and does not show.**
+
+- The check is conservative. A blend can improve on both of its parts, so the result does not prove that the blend
+  would not have helped.
+- The two percentages are diagnostics of the daily path. They are not the hourly error by forecast day and not a
+  comparison of whole forecasters.
+- An upper bound was also planned: the best choice between the two paths on each day, made with the realised load.
+  It could not be evaluated. On the 544 units it applies to, 60 unit-days in nine units have an error of exactly
+  zero, and the geometric mean is then undefined. The zeros were not dropped or replaced by a small number. So there
+  is no finite estimate of the attainable gain, and no bound on it was established (the protocol's reference value
+  was 2%). Such a choice could not be deployed, and it can break the energy identity of the blend.
+- A ridge fitted at every origin is a supervised fit. A forecaster that used it could not be described as
+  training-free.
+- The numbers were recomputed by a second implementation within the same study. That is not an independent review,
+  and design windows that were used before are not independent confirmation.
+
+### 2. An interval built from ANKYRA's own earlier errors
+
+**The idea.** The interval of [METHOD.md](METHOD.md#readouts) uses the residuals of the historical pseudo-forecasts.
+The change would have used the residuals of complete ANKYRA forecasts made at earlier pseudo-origins of the same
+unit. A residual counts only if that earlier forecast could have been made at the time: its pseudo-origin must lie
+after the period on which the temperature scale `temp_sigma_std` was fitted (the first 244 days of the record), and
+its whole 744-hour target must precede the current origin.
+
+**The check.** Coverage and the Winkler score were to be judged on all 7,676 windows of the design sets, with no
+window removed.
+
+**The result.** At least 742 of the 7,676 windows have no usable earlier residual. Of the 562 household design
+windows, 537 have none and 25 have one; none has four or more. The criteria on all windows could therefore not be
+evaluated. The unsupported windows were not removed, and nothing was scored: the three candidate interval rules
+were not run, and no foundation-model forecast was made.
+
+**What this does and does not show.**
+
+- The change stopped for lack of usable earlier forecasts. It is not a measured failure of interval accuracy.
+- No new interval and no coverage guarantee is established. The interval of the package is unchanged, with the
+  limits stated in [EVALUATION.md](EVALUATION.md#readouts).
+- Every evaluation origin lies after the fitting period of its temperature scale. The shortage concerns the earlier
+  pseudo-origins only; it does not show that any evaluated forecast used a parameter fitted on later data.
+
+A cache for foundation-model forecasts was also tried, on artificial inputs only. It is not in the package, and no
+speed gain was measured.
