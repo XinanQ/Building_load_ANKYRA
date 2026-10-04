@@ -28,7 +28,7 @@
 
 - **日内块锚定**：1.x 原样采用基础模型的日内形状，而这一块在楼宇上占小时平方误差的 36%–50%。2.0 让单位自己的相似日（同日类型、年内日序 ±14 天、同夏令时状态，按气温取至多 8 天）按其余两块已有的误差定权规则来修正它。日内锚定不改变水平、日路径、电量读出与峰值读出。
 - **效果**（截点后的测试窗口，2.0.0 对 1.x，只含日内锚定）：剑桥 +2.9%、GoiEner 非住户 +3.8%、BDG2 +0.9%、HEEW +0.8%（均显著），EWELD +0.4%、住户 −0.1%（不显著）；全窗口上 Oslo +4.2%、Drammen +3.3%、CINELDI +2.0%、苏州园区 +2.9%（均显著）。不增加基础模型调用。
-- **证据身份**：2.0 的日内锚定规则是在测试集已为 1.x 评过分之后设计的，在三个开发集和测试队列截点前的窗口上选出，再在截点后窗口上按冻结协议评一次。这些窗口此前已被读过，2.0 的测试数字是复用评估，不是首次读取（[详见评估](docs/EVALUATION.md#within-day-anchoring-20)）。那些轮次尚未读取 LCL；后续最终阶段单列在[本轮收束记录](docs/FINAL_OPTIMIZATION_20261003.md#lcl-final-stage)。
+- **证据身份**：2.0 的日内锚定规则是在测试集已为 1.x 评过分之后设计的，在三个开发集和测试队列截点前的窗口上选出，再在截点后窗口上按冻结协议评一次。这些窗口此前已被读过，2.0 的测试数字是复用评估，不是首次读取（[详见评估](docs/EVALUATION.md#within-day-anchoring-20)）。那些轮次尚未读取 LCL；后续最终阶段单列在[本轮收束记录](docs/LCL_AND_CLOSEOUT.md#lcl-final-stage)。
 
 **2.0.1：微负荷规则**
 
@@ -394,10 +394,11 @@ f.trajectory_kw, f.energy_kwh, f.lead_week_weights, f.level_weights, f.within_tr
 
   见 [results/REPRODUCTION_CHECK.json](results/REPRODUCTION_CHECK.json)，以及 2.0.0 与 1.x 的记录 [results/ankyra_2_0_0/REPRODUCTION_CHECK.json](results/ankyra_2_0_0/REPRODUCTION_CHECK.json)、[results/ankyra_1x/REPRODUCTION_CHECK.json](results/ankyra_1x/REPRODUCTION_CHECK.json)。
 - `results/` 保存 2.0.1 的全部评分统计量，`python figures/make_figures.py` 可由它重新生成所有图；2.0.0 的结果文件保留在 `results/ankyra_2_0_0/`，1.x 的保留在 `results/ankyra_1x/`。2.0.1 新增两个文件：[`bdg2_micro_load_windows.csv`](results/bdg2_micro_load_windows.csv) 逐个列出微负荷规则改变的 46 个窗口；[`intervals_winkler_contrasts.csv`](results/intervals_winkler_contrasts.csv) 给出 2.0.1 与 2.0.0 的 Winkler 对比及其区间（[文件清单](results/README.md)）。
-- 两组测试，共 73 个（44 + 29）：
-  - `python -m unittest discover -s tests -t .` 运行预测模型的 44 个测试：起报点之后的任何信息都不会进入预测、权重、相似日形状或区间；交接的端点、关停规则与微负荷规则（10 个）；日内锚定的界与不变量；读出；参考估计器的已发表数值；
+- 两组测试，共 79 个（50 + 29）：
+  - `python -m unittest discover -s tests -t .` 运行 50 个测试，其中 44 个针对预测模型、6 个针对评分模块。预测模型的测试检查：起报点之后的任何信息都不会进入预测、权重、相似日形状或区间；交接的端点、关停规则与微负荷规则（10 个）；日内锚定的界与不变量；读出；参考估计器的已发表数值；
   - `python -m unittest discover -s theory -t .` 运行精确性质的 29 项检验（[theory/](theory/README.zh-CN.md)），含反例。
-- 原始数据不在此重新分发，来源见 [docs/EVALUATION.md](docs/EVALUATION.md)。
+- 原始数据不在此重新分发；各数据集的来源与整理方式见 [docs/DATA.md](docs/DATA.md)（英文）。
+- [`evaluation/`](evaluation/) 是结果表背后的评分代码（带自助区间的两两对比、名次、常规指标、排名检验、标度误差），并有一个在人工建筑上可直接运行的示例：`python -m evaluation.run_example`。用研究中保存的预测，它能复现已发布的结果表。保存的预测数组与训练类基线的代码不在仓库里。
 
 ## 仓库结构
 
@@ -416,8 +417,9 @@ theory/              精确性质 P1–P19，与预测模型分开
   PROOFS.md          陈述、证明、反例与数据上测得的后果
   operators.py       性质写成的算子
   test_operators.py  数值检验，含反例
-tests/               预测模型的测试，含起报点之后无信息的测试
-docs/                METHOD.md、EVALUATION.md
+evaluation/          由预测与实际负荷给一个人群评分；可运行示例
+tests/               预测模型的测试（含起报点之后无信息的测试）与评分模块的测试
+docs/                METHOD.md、EVALUATION.md、DATA.md（数据来源与整理）、LCL_AND_CLOSEOUT.md
 results/             评分结果（CSV / JSON）与复现记录；ankyra_2_0_0/ 与 ankyra_1x/ 为旧版本的结果
 figures/             make_figures.py 与全部图（PDF 与 PNG）
 examples/            人工建筑上的快速示例
@@ -444,6 +446,6 @@ examples/            人工建筑上的快速示例
 
 ## 最终优化收束（2026-10-03）
 
-最终点模型仍为 ANKYRA 2.0.1。中心化 Ridge 日路径路线在保守准入门停止；区间路线因合格的成熟历史残差不足停止。缓存仅完成合成工程 staging，尚无实际加速证据。见[收束与限定](docs/FINAL_OPTIMIZATION_20261003.md)及[机器记录](results/final_optimization_status.json)。本记录不替换原十个人群的排名，也不改变 BDG2 的证据身份。
+最终点模型仍为 ANKYRA 2.0.1。中心化 Ridge 日路径路线在保守准入门停止；区间路线因合格的成熟历史残差不足停止。缓存仅完成合成工程 staging，尚无实际加速证据。见[收束与限定](docs/LCL_AND_CLOSEOUT.md)及[机器记录](results/closeout_status.json)。本记录不替换原十个人群的排名，也不改变 BDG2 的证据身份。
 
-单列的[最终 LCL 评价](docs/FINAL_OPTIMIZATION_20261003.md#lcl-final-stage)保留 1,215 窗、965 单位，共同晚窗固定为 710 窗。相对同输入 1.x 的全量几何 RMS 改善为 0.675%；小时误差相对 TimesFM 的区间跨零。微负荷规则触发数为零，本次不提供该规则的新效果证据；LCL 不并入旧十个人群的汇总。
+单列的[最终 LCL 评价](docs/LCL_AND_CLOSEOUT.md#lcl-final-stage)保留 1,215 窗、965 单位，共同晚窗固定为 710 窗。相对同输入 1.x 的全量几何 RMS 改善为 0.675%；小时误差相对 TimesFM 的区间跨零。微负荷规则触发数为零，本次不提供该规则的新效果证据；LCL 不并入旧十个人群的汇总。

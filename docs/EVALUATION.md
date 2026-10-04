@@ -299,7 +299,7 @@ mean over units.
 - **Suzhou park:** 1st of 21.
 - **LCL** was not scored for 2.0 or 2.0.1 in these original ten-population comparisons. The historical 1.x
   load-only comparison (3rd of 14) is in [`results/ankyra_1x/`](../results/ankyra_1x/). The later final-stage record
-  is [reported separately](FINAL_OPTIMIZATION_20261003.md#lcl-final-stage); it does not replace the ranks here.
+  is [reported separately](LCL_AND_CLOSEOUT.md#lcl-final-stage); it does not replace the ranks here.
 
 Across the ten scored populations ANKYRA 2.0.1's mean rank is 4.91 (2.0.0: 4.92), ahead of the per-unit ridge (6.96),
 iTransformer-X (7.10) and Chronos-2-X (7.63).
@@ -1110,6 +1110,6 @@ default and the household intervals, all exact). Those components are unchanged 
 
 ## Final optimization closeout (2026-10-03)
 
-The frozen final point model remains ANKYRA 2.0.1. The [separate closeout](FINAL_OPTIMIZATION_20261003.md) records the centered Ridge admission STOP, interval source-support STOP, API wording corrections, and synthetic cache staging. Its later LCL section is separate from the original ten-population comparisons, historical 1.x evidence and BDG2 post hoc description.
+The frozen final point model remains ANKYRA 2.0.1. The [separate closeout](LCL_AND_CLOSEOUT.md) records the centered Ridge admission STOP, interval source-support STOP, API wording corrections, and synthetic cache staging. Its later LCL section is separate from the original ten-population comparisons, historical 1.x evidence and BDG2 post hoc description.
 
-The [final LCL result](FINAL_OPTIMIZATION_20261003.md#lcl-final-stage) is now available as a separate frozen evaluation. Its all-window and fixed-common-late results are exported separately; matched-input and archived-input 1.x are distinct. Earlier LCL-reserved statements above describe the historical rounds in which they occur.
+The [final LCL result](LCL_AND_CLOSEOUT.md#lcl-final-stage) is now available as a separate frozen evaluation. Its all-window and fixed-common-late results are exported separately; matched-input and archived-input 1.x are distinct. Earlier LCL-reserved statements above describe the historical rounds in which they occur.

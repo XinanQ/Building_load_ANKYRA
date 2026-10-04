@@ -76,7 +76,7 @@ lets the unit's own forecast record decide where that is.
   other than BDG2; the other three (a block-wise handover, a peak-estimate competition and a spike guard) were not
   adopted. The 2.0.0 results are kept beside the 2.0.1 results ([`results/ankyra_2_0_0/`](results/ankyra_2_0_0/)). LCL
   had not been read for those rounds; the later final stage is tracked separately in the
-  [2026-10-03 closeout](docs/FINAL_OPTIMIZATION_20261003.md#lcl-final-stage).
+  [2026-10-03 closeout](docs/LCL_AND_CLOSEOUT.md#lcl-final-stage).
 - `forecast(..., micro_load_rule=False)` reproduces 2.0.0 exactly, and
   `forecast(..., within_anchor=False, micro_load_rule=False)` reproduces 1.x exactly; `foundation=None` gives a
   history-only configuration. The 2.0.0 and 1.x result files are kept in
@@ -668,15 +668,20 @@ See [docs/METHOD.md](docs/METHOD.md) for the equations and all constants.
   [`bdg2_micro_load_windows.csv`](results/bdg2_micro_load_windows.csv), the 46 windows the micro-load rule changes,
   one by one, and [`intervals_winkler_contrasts.csv`](results/intervals_winkler_contrasts.csv), the Winkler contrasts
   with their intervals for 2.0.1 and 2.0.0 ([file list](results/README.md)).
-- Two test suites, 73 tests in all:
-  - `python -m unittest discover -s tests -t .` runs the 44 tests of the forecaster: that no information from after
+- Two test suites, 79 tests in all:
+  - `python -m unittest discover -s tests -t .` runs 50 tests, 44 of the forecaster and 6 of the evaluation module. The
+    forecaster's tests check that no information from after
     the origin reaches the forecast, the weights, the analog shapes or the interval; the handover's limits, the
     off-state rule and the micro-load rule (10 tests); the within-day anchoring's bounds and invariances; the
     readouts; and the reference estimator's documented values;
   - `python -m unittest discover -s theory -t .` runs the 29 checks of the exact properties
     ([theory/](theory/README.md)), with their counterexamples.
-- Raw data are not redistributed. The evaluation populations are public; sources are listed in
-  [docs/EVALUATION.md](docs/EVALUATION.md).
+- Raw data are not redistributed. The evaluation populations are public; [docs/DATA.md](docs/DATA.md) lists each
+  source and how the study prepared it.
+- [`evaluation/`](evaluation/) holds the scoring behind the result tables (pairwise contrasts with bootstrap
+  intervals, ranks, conventional metrics, rank tests, scaled errors) and a runnable example on artificial buildings:
+  `python -m evaluation.run_example`. It reproduces the released tables from the study's saved forecasts. The saved
+  forecasts and the code of the trained baselines are not in the repository.
 
 ```
 ankyra/              the forecaster (the model)
@@ -694,8 +699,9 @@ theory/              the exact properties P1–P19, apart from the forecaster
   PROOFS.md          statements, proofs, counterexamples and measured consequences
   operators.py       the properties as operators (replacement, support, shrinkage, projection, peak)
   test_operators.py  numerical checks, counterexamples included
-tests/               tests of the forecaster, including the no-future-information tests
-docs/                METHOD.md, EVALUATION.md
+evaluation/          scoring of a population from forecasts and realised load; a runnable example
+tests/               tests of the forecaster, including the no-future-information tests, and of the evaluation module
+docs/                METHOD.md, EVALUATION.md, DATA.md (sources and preparation), LCL_AND_CLOSEOUT.md
 results/             scored results (CSV / JSON) and the reproduction record; 2.0.0 and 1.x in subfolders
 figures/             make_figures.py and the figures (PDF and PNG)
 examples/            quickstart on an artificial building
@@ -739,6 +745,6 @@ is from the University of Cambridge estate archive (CC BY 4.0).
 
 ## Final optimization closeout (2026-10-03)
 
-ANKYRA 2.0.1 remains the frozen point model. The centered Ridge daily-path route stopped at a conservative admission gate; the interval route stopped for insufficient qualified mature residual support. Cache work is synthetic engineering staging, with no measured speedup. See the [closeout and qualifications](docs/FINAL_OPTIMIZATION_20261003.md) and [machine-readable status](results/final_optimization_status.json). These records do not revise the original ten-population ranks or the BDG2 evidence status.
+ANKYRA 2.0.1 remains the frozen point model. The centered Ridge daily-path route stopped at a conservative admission gate; the interval route stopped for insufficient qualified mature residual support. Cache work is synthetic engineering staging, with no measured speedup. See the [closeout and qualifications](docs/LCL_AND_CLOSEOUT.md) and [machine-readable status](results/closeout_status.json). These records do not revise the original ten-population ranks or the BDG2 evidence status.
 
-The separate [final LCL evaluation](docs/FINAL_OPTIMIZATION_20261003.md#lcl-final-stage) retains 1,215 windows (965 units), with a fixed common late face of 710 windows. It improves on matched-input 1.x by 0.675% overall; its hourly contrast with TimesFM is unresolved. No micro-load window triggers, so this is not new validation of that rule. The LCL result is not pooled into the original ten-population summaries.
+The separate [final LCL evaluation](docs/LCL_AND_CLOSEOUT.md#lcl-final-stage) retains 1,215 windows (965 units), with a fixed common late face of 710 windows. It improves on matched-input 1.x by 0.675% overall; its hourly contrast with TimesFM is unresolved. No micro-load window triggers, so this is not new validation of that rule. The LCL result is not pooled into the original ten-population summaries.

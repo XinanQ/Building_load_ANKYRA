@@ -24,5 +24,7 @@ jobs:
         run: python -m unittest discover -s theory -t . -v
       - name: Quickstart
         run: python examples/quickstart.py
+      - name: Evaluation example
+        run: python -m evaluation.run_example
       - name: Figures regenerate from results/
         run: python figures/make_figures.py

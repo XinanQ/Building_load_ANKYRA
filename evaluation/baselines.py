@@ -1,0 +1,29 @@
+"""The untrained reference forecasters of the benchmark that need nothing but the 1,344-hour load context.
+
+    seasonal_naive(context, 24)      the last day repeated            ("Seasonal naive (day)")
+    seasonal_naive(context, 168)     the last week repeated           ("Seasonal naive (week)")
+    week_profile(context)            the mean week of the last four   ("4-week profile")
+
+The trained baselines, the covariate-informed foundation-model variants and the per-unit ridge are described in
+docs/EVALUATION.md; their code is not part of this repository.
+"""
+from __future__ import annotations
+
+import math
+
+import numpy as np
+
+HORIZON = 744
+
+
+def seasonal_naive(context, period):
+    """Repeat the last ``period`` hours of each context over the horizon.  context: (n, >= period)."""
+    context = np.asarray(context, dtype=np.float64)
+    return np.tile(context[:, -period:], (1, math.ceil(HORIZON / period)))[:, :HORIZON]
+
+
+def week_profile(context, weeks=4):
+    """Repeat the mean of the last ``weeks`` weeks, hour of week by hour of week."""
+    context = np.asarray(context, dtype=np.float64)
+    mean_week = context[:, -weeks * 168:].reshape(len(context), weeks, 168).mean(1)
+    return np.tile(mean_week, (1, math.ceil(HORIZON / 168)))[:, :HORIZON]

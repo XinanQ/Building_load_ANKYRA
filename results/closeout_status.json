@@ -86,7 +86,7 @@
     "target_reads_formal": 1,
     "LCL_1x_prior_exposure": true,
     "intervals": "NOT_ASSESSED_SOURCE_SUPPORT; retained legacy not refitted",
-    "result_export": "lcl_final_results.json",
+    "result_export": "lcl_results.json",
     "common_rule": "metadata-key intersection of seven frozen trained baseline files",
     "audit_status": "PASS_INDEPENDENT_SAVED_OUTPUT_AUDIT",
     "earlier_targets_as_later_history": 250,

@@ -296,7 +296,7 @@ not certify that fitting cutoff.
 The returned `within_day_kw` is the final day-demeaned within-day block, including analog anchoring when active.
 `foundation_within_day_kw` is the unmodified foundation-model shape. On off/micro returns both contain that shape.
 
-The [final optimization closeout](FINAL_OPTIMIZATION_20261003.md) records rejected/stopped routes and engineering
+The [final optimization closeout](LCL_AND_CLOSEOUT.md) records rejected/stopped routes and engineering
 staging. It changes no estimator, constant, validation behavior, interval implementation or version identity.
 
 ## Readouts
