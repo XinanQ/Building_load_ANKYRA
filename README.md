@@ -75,7 +75,8 @@ lets the unit's own forecast record decide where that is.
   candidates specified after the 2.0.0 evaluation. It was the only one that changed no forecast on the design faces
   other than BDG2; the other three (a block-wise handover, a peak-estimate competition and a spike guard) were not
   adopted. The 2.0.0 results are kept beside the 2.0.1 results ([`results/ankyra_2_0_0/`](results/ankyra_2_0_0/)). LCL
-  stays unread.
+  had not been read for those rounds; the later final stage is tracked separately in the
+  [2026-10-03 closeout](docs/FINAL_OPTIMIZATION_20261003.md#lcl-final-stage).
 - `forecast(..., micro_load_rule=False)` reproduces 2.0.0 exactly, and
   `forecast(..., within_anchor=False, micro_load_rule=False)` reproduces 1.x exactly; `foundation=None` gives a
   history-only configuration. The 2.0.0 and 1.x result files are kept in
@@ -632,10 +633,13 @@ The inputs are:
   thresholds are absolute values in kW);
 - `day_types`: Monday = 0 … Sunday = 6, holiday = 7, for the history plus the 744 forecast hours;
 - `group`: selects the temperature-signature prior;
-- `temp_sigma_std`: a fixed temperature-anomaly scale estimated before the first origin;
+- `temp_sigma_std`: a fixed temperature-anomaly scale estimated before the applicable origin; its fitting cutoff
+  is the caller's provenance responsibility. The scalar input check verifies finiteness and positivity, not the fitting data;
 - `dst_region`: "EU", "US" or "none", the daylight-saving rule used to match analog days (2.0);
 - `micro_load_rule` (default `True`): the micro-load rule of 2.0.1 (max |load| ≤ 10⁻³ kW over a completely observed
-  1,344-hour context; the inputs are validated before the rule returns); `False` reproduces the 2.0.0 forecast;
+  1,344-hour context). If only this rule fires, history, category and temperature-scale input checks run before
+  the return. Windows also caught by the legacy off-state rule retain its existing validation behavior for
+  2.0.0 compatibility. `False` reproduces the 2.0.0 forecast;
 - `within_anchor=False` together with `micro_load_rule=False` reproduces the 1.x forecast (`within_anchor=False` alone
   no longer does on micro-load contexts);
 - `foundation=None` runs the history-only configuration, to which the off-state and micro-load rules do not apply.
@@ -732,3 +736,9 @@ evaluation used public datasets from GoiEner, the COFACTOR projects (Drammen, Os
 estate archive, CINELDI, HEEW, the Building Data Genome Project 2, the Suzhou industrial-park dataset and the London
 Low Carbon London project; see [docs/EVALUATION.md](docs/EVALUATION.md) for references. The example window in `results/`
 is from the University of Cambridge estate archive (CC BY 4.0).
+
+## Final optimization closeout (2026-10-03)
+
+ANKYRA 2.0.1 remains the frozen point model. The centered Ridge daily-path route stopped at a conservative admission gate; the interval route stopped for insufficient qualified mature residual support. Cache work is synthetic engineering staging, with no measured speedup. See the [closeout and qualifications](docs/FINAL_OPTIMIZATION_20261003.md) and [machine-readable status](results/final_optimization_status.json). These records do not revise the original ten-population ranks or the BDG2 evidence status.
+
+The separate [final LCL evaluation](docs/FINAL_OPTIMIZATION_20261003.md#lcl-final-stage) retains 1,215 windows (965 units), with a fixed common late face of 710 windows. It improves on matched-input 1.x by 0.675% overall; its hourly contrast with TimesFM is unresolved. No micro-load window triggers, so this is not new validation of that rule. The LCL result is not pooled into the original ten-population summaries.

@@ -28,7 +28,7 @@
 
 - **日内块锚定**：1.x 原样采用基础模型的日内形状，而这一块在楼宇上占小时平方误差的 36%–50%。2.0 让单位自己的相似日（同日类型、年内日序 ±14 天、同夏令时状态，按气温取至多 8 天）按其余两块已有的误差定权规则来修正它。日内锚定不改变水平、日路径、电量读出与峰值读出。
 - **效果**（截点后的测试窗口，2.0.0 对 1.x，只含日内锚定）：剑桥 +2.9%、GoiEner 非住户 +3.8%、BDG2 +0.9%、HEEW +0.8%（均显著），EWELD +0.4%、住户 −0.1%（不显著）；全窗口上 Oslo +4.2%、Drammen +3.3%、CINELDI +2.0%、苏州园区 +2.9%（均显著）。不增加基础模型调用。
-- **证据身份**：2.0 的日内锚定规则是在测试集已为 1.x 评过分之后设计的，在三个开发集和测试队列截点前的窗口上选出，再在截点后窗口上按冻结协议评一次。这些窗口此前已被读过，2.0 的测试数字是复用评估，不是首次读取（[详见评估](docs/EVALUATION.md#within-day-anchoring-20)）。LCL 仍未读。
+- **证据身份**：2.0 的日内锚定规则是在测试集已为 1.x 评过分之后设计的，在三个开发集和测试队列截点前的窗口上选出，再在截点后窗口上按冻结协议评一次。这些窗口此前已被读过，2.0 的测试数字是复用评估，不是首次读取（[详见评估](docs/EVALUATION.md#within-day-anchoring-20)）。那些轮次尚未读取 LCL；后续最终阶段单列在[本轮收束记录](docs/FINAL_OPTIMIZATION_20261003.md#lcl-final-stage)。
 
 **2.0.1：微负荷规则**
 
@@ -374,9 +374,9 @@ f.trajectory_kw, f.energy_kwh, f.lead_week_weights, f.level_weights, f.within_tr
 - `load_kw` 与 `temperature_c`：截至起报点的逐时数值，负荷以 kW 为单位（关停阈值 10⁻⁶ kW 和微负荷阈值 10⁻³ kW 都是 kW 的绝对值）；
 - `day_types`：周一 = 0 … 周日 = 6，节假日 = 7，覆盖历史加上 744 个预测小时；
 - `group`：选择温度特征的先验；
-- `temp_sigma_std`：固定的温度异常尺度，在第一个起报点之前估计；
+- `temp_sigma_std`：固定的温度异常尺度，由适用起报点之前可用的数据估计；拟合截止的来源证明由调用者负责。数值输入检查只核实有限且为正，不核查拟合数据；
 - `dst_region`：“EU”“US”或“none”，匹配相似日所用的夏令时规则（2.0）；
-- `micro_load_rule`（默认 `True`）：2.0.1 的微负荷规则（完整观测的 1,344 小时上下文上 max |负荷| ≤ 10⁻³ kW；规则返回之前先校验输入）；设为 `False` 复现 2.0.0 的预测；
+- `micro_load_rule`（默认 `True`）：2.0.1 的微负荷规则（完整观测的 1,344 小时上下文上 max |负荷| ≤ 10⁻³ kW）。仅微负荷规则触发而旧关停规则未触发时，提前返回前执行历史、类别和温度尺度输入检查；同时满足旧关停规则的窗口保留其原有验证行为，以保持 2.0.0 兼容性。设为 `False` 复现 2.0.0 的预测；
 - `within_anchor=False` 与 `micro_load_rule=False` 同时设置，复现 1.x 的预测（在微负荷上下文上，只设 `within_anchor=False` 已不够）；
 - `foundation=None`：纯历史配置，关停规则和微负荷规则在这个配置下不适用。
 
@@ -441,3 +441,9 @@ examples/            人工建筑上的快速示例
 ## 许可与致谢
 
 代码以 MIT 许可发布。TimesFM 2.5 版权归 Google（Apache-2.0），本仓不重新分发。评估使用的公开数据集来自 GoiEner、COFACTOR 项目（Drammen、Oslo）、EWELD、剑桥大学校园能耗档案、CINELDI、HEEW、Building Data Genome Project 2、苏州工业园区数据集和伦敦 Low Carbon London 项目；参考文献见 [docs/EVALUATION.md](docs/EVALUATION.md)。`results/` 里的示例窗口来自剑桥大学校园能耗档案（CC BY 4.0）。
+
+## 最终优化收束（2026-10-03）
+
+最终点模型仍为 ANKYRA 2.0.1。中心化 Ridge 日路径路线在保守准入门停止；区间路线因合格的成熟历史残差不足停止。缓存仅完成合成工程 staging，尚无实际加速证据。见[收束与限定](docs/FINAL_OPTIMIZATION_20261003.md)及[机器记录](results/final_optimization_status.json)。本记录不替换原十个人群的排名，也不改变 BDG2 的证据身份。
+
+单列的[最终 LCL 评价](docs/FINAL_OPTIMIZATION_20261003.md#lcl-final-stage)保留 1,215 窗、965 单位，共同晚窗固定为 710 窗。相对同输入 1.x 的全量几何 RMS 改善为 0.675%；小时误差相对 TimesFM 的区间跨零。微负荷规则触发数为零，本次不提供该规则的新效果证据；LCL 不并入旧十个人群的汇总。

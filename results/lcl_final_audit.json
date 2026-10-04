@@ -1,0 +1,30 @@
+{
+  "utc": "2026-10-03T23:55:06.922282+00:00",
+  "status": "PASS_INDEPENDENT_SAVED_OUTPUT_AUDIT",
+  "checks": 96032,
+  "failures": [],
+  "max_absolute_scalar_or_readout_difference": 0.0,
+  "max_scaled_scalar_difference": 0.0,
+  "statistic_atol": 2e-10,
+  "statistic_rtol": 2e-10,
+  "decoded_members": 104,
+  "saved_y_member_decodes": 1,
+  "saved_y_values": 903960,
+  "main_formal_target_reads": 1,
+  "audit_saved_target_reads": 1,
+  "combined_formal_plus_audit_target_reads": 2,
+  "earlier_registered_target_windows_previously_decoded_as_later_history": 250,
+  "new_raw_reads": 0,
+  "new_models": 0,
+  "new_gpu_calls": 0,
+  "seconds": 35.338737599988235,
+  "freeze_sha256": "4835c12f826374d0fcc592a8e2e8dc516af9a28a2f61c48f035fd6b622322fae",
+  "outputs_freeze_sha256": "8f276bc781928af41d9a145039ac86e17a65f4d344906de8b909c586c120a381",
+  "scope": "Independent arithmetic implementation on the SAME saved LCL outputs; not independent external confirmation or new test",
+  "limitations": [
+    "No core/history reforecast or independent level reconstruction",
+    "No new raw source, arrival/revision/physical-hour or pretraining certification",
+    "Bootstrap has no time-dependence coverage guarantee",
+    "No accuracy-driven repair or reselection"
+  ]
+}

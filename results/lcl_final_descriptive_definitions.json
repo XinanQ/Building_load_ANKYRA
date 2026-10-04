@@ -1,0 +1,336 @@
+{
+  "status": "DESCRIPTIVE_ONLY_NOT_L1_L3",
+  "support": [
+    {
+      "face": "all",
+      "model": "ANKYRA",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": true
+    },
+    {
+      "face": "all",
+      "model": "Chronos-2-X",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": true
+    },
+    {
+      "face": "all",
+      "model": "Chronos-2",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": true
+    },
+    {
+      "face": "all",
+      "model": "DLinear",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": false
+    },
+    {
+      "face": "all",
+      "model": "old_1x",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": true
+    },
+    {
+      "face": "all",
+      "model": "GBT-T",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": false
+    },
+    {
+      "face": "all",
+      "model": "GBT",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": true
+    },
+    {
+      "face": "all",
+      "model": "Holt-Winters",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": true
+    },
+    {
+      "face": "all",
+      "model": "iTransformer-X",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": false
+    },
+    {
+      "face": "all",
+      "model": "iTransformer",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": false
+    },
+    {
+      "face": "all",
+      "model": "LSTM",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": false
+    },
+    {
+      "face": "all",
+      "model": "LYR-profile",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": true
+    },
+    {
+      "face": "all",
+      "model": "MSTL",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": true
+    },
+    {
+      "face": "all",
+      "model": "PatchTST",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": false
+    },
+    {
+      "face": "all",
+      "model": "SN-day",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": true
+    },
+    {
+      "face": "all",
+      "model": "SN-week",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": true
+    },
+    {
+      "face": "all",
+      "model": "SP-profile",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": true
+    },
+    {
+      "face": "all",
+      "model": "TiDE",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": false
+    },
+    {
+      "face": "all",
+      "model": "TimesFM-X",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": true
+    },
+    {
+      "face": "all",
+      "model": "WeekProf4",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": true
+    },
+    {
+      "face": "all",
+      "model": "RIDGE",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": true
+    },
+    {
+      "face": "all",
+      "model": "TimesFM",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": true
+    },
+    {
+      "face": "all",
+      "model": "matched_1x",
+      "windows": 1215,
+      "units": 965,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "ANKYRA",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "Chronos-2-X",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "Chronos-2",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "DLinear",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "old_1x",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "GBT-T",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "GBT",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "Holt-Winters",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "iTransformer-X",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "iTransformer",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "LSTM",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "LYR-profile",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "MSTL",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "PatchTST",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "SN-day",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "SN-week",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "SP-profile",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "TiDE",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "TimesFM-X",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "WeekProf4",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "RIDGE",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "TimesFM",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    },
+    {
+      "face": "common_keys",
+      "model": "matched_1x",
+      "windows": 710,
+      "units": 710,
+      "complete_support": true
+    }
+  ],
+  "normalizer": "unit mean over all 744 hours and all registered evaluation windows on this face, not own-history or whole-record mean",
+  "hourly": "per-unit RMSE across windows and 24 hours at forecast day d, divided by normalizer, multiplied by 100",
+  "daily_energy": "per-unit RMS of daily mean-load error across windows, divided by normalizer, multiplied by 100; equivalent daily-energy CV with factor24 cancelling",
+  "cumulative_energy": "RMS of cumulative mean-load error through day d, divided by normalizer, multiplied by100",
+  "curve_eligibility": "fixed finite strictly-positive truth mean only; no candidate-error deletion; incomplete model unavailable",
+  "exact_zero": "zero-error units retained; affected log/geometric summaries UNRESOLVED, arithmetic/median still reported",
+  "conventional": "existing tools_hcr_baseline_panel_v1.conventional definitions; RMSE/MAE unit means, CV/NMBE/WAPE unit medians; abs truth mean<1e-6 excluded only from these descriptive ratio metrics, count shown",
+  "not_identical_legacy_U": "old plotted GM additionally excluded units with zero error for any model; this supplementary curve does not",
+  "extra_y_decodes_for_exports": 0
+}

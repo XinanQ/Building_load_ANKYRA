@@ -1,0 +1,24 @@
+{
+  "utc": "2026-10-03T23:56:23.492404+00:00",
+  "status": "COMPLETE_NO_MORE_NUMERIC_READS",
+  "main_formal_target_reads": 1,
+  "audit_saved_target_reads": 1,
+  "combined": 2,
+  "audit_saved_y_values": 903960,
+  "audit_completed_decoded_members": 104,
+  "audit_preparation_identity_metadata_members": 42,
+  "earlier_targets_already_decoded_as_later_allowed_history_windows": 250,
+  "predictions_freeze_all_targets_read_zero_qualification": "zero formal scoring reads then; not all eventual target values unseen",
+  "new_raw_reads": 0,
+  "new_models": 0,
+  "new_gpu_calls": 0,
+  "new_target_reads_for_descriptive_exports": 0,
+  "external_independent_confirmation": false,
+  "headline_known_before_audit_freeze": [
+    "off2 micro0",
+    "1215/965; common710/710",
+    "main L1 true, L3 true"
+  ],
+  "actual_access_log": "access.jsonl",
+  "preparation_access_log": "prepare_access.jsonl"
+}

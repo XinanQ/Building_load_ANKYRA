@@ -272,7 +272,8 @@ returned.
   foresee a restart: in 5 of the 46 windows it changes, the meter resumed during the forecast month, and there 2.0.0
   was marginally better.
 - The condition uses the whole context, so a unit with ordinary load anywhere in its last eight weeks is not affected.
-  The context must be completely observed, and the inputs must pass the estimator's checks, as in 2.0.0.
+  The context must be completely observed. A micro-load-only return runs the estimator's history, category and
+  temperature-scale checks; a return also caught by the legacy off-state rule preserves that branch's validation behavior.
 - The threshold is an absolute value in kW, like the off-state threshold and the scale floor, and is compared in double
   precision. Loads must be supplied in kW; rescaling a record across the threshold changes which branch is taken.
 - **Where it acts.** On the ten scored populations the rule changes 46 windows of nine meters at one BDG2 site (13
@@ -286,7 +287,17 @@ On off-state and micro-load windows the returned trajectory is the foundation mo
 nonnegative load that the other windows receive.
 
 Code: `ankyra/core.py` (`ZERO_KW`, `MICRO_KW`, `forecast`); the output fields `off_state` and `micro_load` report which
-rule fired.
+rule fired. They identify the return rule, not a certificate that all estimator checks ran. The off-state path
+still performs array conversions and checks the current foundation forecast shape. Numerical validation does not
+certify source timestamps, arrival/revision history, historically issued forecasts or pretraining independence.
+Supply a temperature-anomaly scale fitted before the applicable origin; checking a finite positive scalar does
+not certify that fitting cutoff.
+
+The returned `within_day_kw` is the final day-demeaned within-day block, including analog anchoring when active.
+`foundation_within_day_kw` is the unmodified foundation-model shape. On off/micro returns both contain that shape.
+
+The [final optimization closeout](FINAL_OPTIMIZATION_20261003.md) records rejected/stopped routes and engineering
+staging. It changes no estimator, constant, validation behavior, interval implementation or version identity.
 
 ## Readouts
 

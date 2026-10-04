@@ -52,3 +52,22 @@ Model classes:
 - `same information`: the model is given ANKYRA's 11 past, 10 future and 6 static features, and uses the part its
   architecture accepts;
 - `load only`: the model receives the 1,344-hour load context only.
+
+## Final optimization records (2026-10-03)
+
+`final_optimization_status.json` exports already saved result/audit JSON for the frozen 2.0.1 point model, the hourly conservative admission STOP, the interval source-support STOP and synthetic cache staging. The exporter reads no targets or prediction arrays. See [the closeout](../docs/FINAL_OPTIMIZATION_20261003.md). The original ten-population CSVs, ranks and BDG2 sensitivity results are unchanged. Final-stage LCL exports are a separate family: all registered windows and the metadata-key common post-cutoff face must remain separate, as must matched-input 1.x and the older archived 1.x forecast.
+
+
+| New file | Scope |
+|---|---|
+| `lcl_final_results.json` | Final frozen 2.0.1 LCL result record, exported from saved JSON. |
+| `lcl_final_all_pairwise.csv` | All 1,215 windows / 965 units; incomplete comparators explicitly unavailable. |
+| `lcl_final_common_late_pairwise.csv` | The fixed metadata-key common late face: 710 windows / 710 units. |
+| `lcl_final_common_late_ranks.csv` | Fixed 21-model mean unit ranks on that same common face only; no 1.x ablations in the rank set. |
+| `lcl_final_shared_information_holm.csv` | Six directional tests of baseline superiority over ANKYRA; direction is the reverse of the pairwise CSVs. |
+| `lcl_final_readouts.csv` | Full-face descriptive energy and peak errors; comparator operator is explicit. |
+
+Pairwise CSVs report `improvement_percent = 100 * (1 - exp(log_RMS_ratio))`, positive in favor of ANKYRA. `UM95_log_RMS_lower/upper` remain on the log scale. `pooled_MSE_ratio` is a separate estimand. No significance stars are assigned by these exports. The two 1.x keys identify matched-input and archived-input comparisons separately. A zero or unavailable score is not replaced by an epsilon or interpreted as a tie.
+
+
+The numerical audit passed 96,032 checks; `lcl_final_audit.json` and `lcl_final_exposure.json` record one audit target decode after the one formal scoring decode (two total). `lcl_final_all_lead_day_descriptive.csv` / `lcl_final_common_late_lead_day_descriptive.csv` and `lcl_final_all_conventional_descriptive.csv` / `lcl_final_common_late_conventional_descriptive.csv` partition the auditor's saved summaries by the two fixed faces without changing any value. `lcl_final_descriptive_definitions.json` gives the definitions. The 619 undefined geometric cells caused by exact zero error remain blank and explicitly unresolved. These descriptive curves use registered-face truth means for normalization and differ from the old figure's zero-error exclusion policy; do not splice them into Figure 9/9b or reinterpret them as the monthly primary statistic.

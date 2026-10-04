@@ -297,15 +297,16 @@ mean over units.
 - **Drammen:** 2nd of 21; no contrast resolved against ANKYRA (1.x: 7th).
 - **CINELDI:** 1st of 21 (1.x: 3rd).
 - **Suzhou park:** 1st of 21.
-- **LCL** was not scored for 2.0 or 2.0.1; it remains the reserved population. The 1.x load-only comparison (3rd of
-  14) is in [`results/ankyra_1x/`](../results/ankyra_1x/).
+- **LCL** was not scored for 2.0 or 2.0.1 in these original ten-population comparisons. The historical 1.x
+  load-only comparison (3rd of 14) is in [`results/ankyra_1x/`](../results/ankyra_1x/). The later final-stage record
+  is [reported separately](FINAL_OPTIMIZATION_20261003.md#lcl-final-stage); it does not replace the ranks here.
 
 Across the ten scored populations ANKYRA 2.0.1's mean rank is 4.91 (2.0.0: 4.92), ahead of the per-unit ridge (6.96),
 iTransformer-X (7.10) and Chronos-2-X (7.63).
 
 **Full windows.** The comparison without the trained models covers 14 forecasters on the ten populations scored for
-2.0 and 2.0.1 (13 on GoiEner non-household, where the per-unit ridge has no full-window forecast; LCL, the reserved
-population, was scored for 1.x only):
+2.0 and 2.0.1 (13 on GoiEner non-household, where the per-unit ridge has no full-window forecast; LCL was scored
+for 1.x only at that historical stage and is excluded from this ten-population table):
 
 - ANKYRA 2.0.1 ranks first on 8 and second on the other two (Drammen, households);
 - its mean rank is 2.73, against 4.23 for Chronos-2-X and 4.06 for the ridge on the nine populations where the ridge
@@ -656,7 +657,7 @@ measurable effect.
 **Evidence status.** The 1.x test evidence is a single read of the six test populations after the model was fixed.
 The 2.0 within-day rule was developed after that read; its test windows had been seen once for 1.x and once for the
 rejected version 5. The 2.0 test numbers are therefore a **re-evaluation under a frozen protocol, not a first read**,
-and the development used the same cohorts' earlier windows. LCL, the reserved population, was not read. This is the
+and the development used the same cohorts' earlier windows. LCL, the reserved population, was not read in that round. This is the
 one respect in which the evidence for the 2.0 within-day rule is weaker than the 1.x evidence; everything else in its
 evaluation is identical.
 
@@ -850,8 +851,9 @@ forecast is returned unchanged, the same action as the off-state rule
   hours before the origin, floored at $\max(0.01|l_0|,10^{-3})$ kW; [METHOD.md](METHOD.md#level)); it is not a new
   constant. A record that stays inside that floor for eight weeks is treated as switched off, like a record that
   reads zero. The off-state rule does not catch it, because its readings are small but not zero.
-- The rule reads only load before the origin. The context must be completely observed and the inputs must pass the
-  estimator's checks, as in 2.0.0.
+- The rule reads only load before the origin. The context must be completely observed. Estimator history,
+  category and temperature-scale checks run on a micro-load-only return; a window also caught by the old off-state
+  rule retains that branch's existing validation behavior. The flags are not full-validation certificates.
 - The threshold is an absolute value in kW on the magnitude of the load, like the off-state threshold and the scale
   floor. Loads must be supplied in kW.
 - `forecast(..., micro_load_rule=False)` reproduces 2.0.0.
@@ -1105,3 +1107,9 @@ run on the 2.0.0 code before the version string was raised) and
 [`results/ankyra_1x/REPRODUCTION_CHECK.json`](../results/ankyra_1x/REPRODUCTION_CHECK.json) (ANKYRA forecasts on 613
 windows of two populations including every off-state window, the TimesFM adapter, the peak operator, the within-day
 default and the household intervals, all exact). Those components are unchanged in 2.0 and 2.0.1.
+
+## Final optimization closeout (2026-10-03)
+
+The frozen final point model remains ANKYRA 2.0.1. The [separate closeout](FINAL_OPTIMIZATION_20261003.md) records the centered Ridge admission STOP, interval source-support STOP, API wording corrections, and synthetic cache staging. Its later LCL section is separate from the original ten-population comparisons, historical 1.x evidence and BDG2 post hoc description.
+
+The [final LCL result](FINAL_OPTIMIZATION_20261003.md#lcl-final-stage) is now available as a separate frozen evaluation. Its all-window and fixed-common-late results are exported separately; matched-input and archived-input 1.x are distinct. Earlier LCL-reserved statements above describe the historical rounds in which they occur.

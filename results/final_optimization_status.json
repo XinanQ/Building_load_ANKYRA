@@ -1,0 +1,173 @@
+{
+  "record": "2026-10-03 final optimization closeout with separate LCL evaluation",
+  "model_version": "2.0.1",
+  "point_decision": "retain ANKYRA 2.0.1",
+  "hourly": {
+    "machine_status": "STOP_NECESSITY_UNRESOLVED",
+    "interpretation": "Conservative admission/eligibility STOP. The donor endpoint condition is not a mathematical necessity for a mixture to improve.",
+    "scope": "reused households early design face",
+    "windows": 562,
+    "units": 562,
+    "active_Ridge_donor_windows": 526,
+    "A_fallback_windows": 36,
+    "ridge_daily_path_vs_A": {
+      "units": 562,
+      "log_ratio": 0.0008751322453243649,
+      "pct_improvement": -0.087551528527649,
+      "pooled_mse_ratio": 0.9952577941766206
+    },
+    "ridge_daily_path_vs_T": {
+      "units": 562,
+      "log_ratio": 0.03527980431024885,
+      "pct_improvement": -3.5909520201272938,
+      "pooled_mse_ratio": 0.9737012712112789
+    },
+    "fixed_daily_units": 544,
+    "oracle_status": "UNRESOLVED",
+    "oracle_zero_units": 9,
+    "oracle_zero_unit_day_pairs": 60,
+    "candidate_evaluated": false,
+    "other_eight_faces_evaluated": false,
+    "new_foundation_calls": 0,
+    "evaluation_target_member_reads_main_plus_audit": 2,
+    "initial_interrupted_historical_input_read_count": "UNKNOWN",
+    "audit": "Same agent, separate implementation; not independent reviewer or independent evidence"
+  },
+  "intervals": {
+    "status": "STOP_INTERVAL_SOURCE_SUPPORT_GATE",
+    "main_gate": "UNRESOLVED",
+    "reason": "Required all-window coverage and Winkler gates are undefined for at least 742 retained windows with zero legal mature final-model residuals. Unsupported windows cannot be removed.",
+    "windows_retained": 7676,
+    "windows_removed": 0,
+    "zero_support_lower_bound": 742,
+    "households": {
+      "retained": 562,
+      "K0": 537,
+      "K1": 25,
+      "K_at_least_4": 0
+    },
+    "I1_I2_I3_numerical_replay": "NOT_TRIGGERED",
+    "I1_I2_I3_scoring": "NOT_TRIGGERED",
+    "new_interval_adoption": false,
+    "all_current_origins_at_or_after_fixed_sigma_cutoff": true,
+    "actual_execution": {
+      "real_prefix_numeric_reads": 0,
+      "residual_labels_read": 0,
+      "new_target_reads": 0,
+      "A_calls": 0,
+      "H_full_calls": 0,
+      "new_TimesFM_calls": 0,
+      "gpu_seconds": 0,
+      "pilot_identities_executed": 0
+    },
+    "scientific_claim": "Necessary source-support STOP, not measured accuracy failure or successful interval repair. No empirical coverage or conformal guarantee is established."
+  },
+  "cache": {
+    "status": "SYNTHETIC_ENGINEERING_ONLY",
+    "claims": [
+      "Deterministic content and version keyed identities, exact own-origin shape guards, fixed-sigma cutoff guard, complete-A versus H_full guard, copy-in/copy-out memo purity.",
+      "No numerical archive integration, performance benefit, full-cache certification, or interval effect is established."
+    ],
+    "no_public_package_change": true
+  },
+  "LCL": {
+    "status": "FINAL_LCL_EVALUATED_NO_RETUNING",
+    "model": "2.0.1",
+    "input_source": "constant15 pre-record temperature; matched 1x and original 1x separate",
+    "windows": 1215,
+    "units": 965,
+    "late_windows": 710,
+    "late_units": 710,
+    "L1_matched_input_no_harm": true,
+    "L3_no_significant_same_information_baseline": true,
+    "L3_status": "NO_SIGNIFICANT_DIFFERENCE_DETECTED",
+    "off": 2,
+    "micro": 0,
+    "target_reads_formal": 1,
+    "LCL_1x_prior_exposure": true,
+    "intervals": "NOT_ASSESSED_SOURCE_SUPPORT; retained legacy not refitted",
+    "result_export": "lcl_final_results.json",
+    "common_rule": "metadata-key intersection of seven frozen trained baseline files",
+    "audit_status": "PASS_INDEPENDENT_SAVED_OUTPUT_AUDIT",
+    "earlier_targets_as_later_history": 250,
+    "not_combined_with_original_ten_population_ranks": true,
+    "audit_checks": 96032,
+    "combined_formal_plus_audit_target_reads": 2,
+    "descriptive_export_extra_target_reads": 0
+  },
+  "export_access": "Existing result/audit JSON, documentation/source bytes, and already scored descriptive CSV only; no array, target, or prediction file decoded by this exporter.",
+  "evidence": [
+    {
+      "path": "protocol.json",
+      "sha256": "dda95412ad2ba1ad8630583378bffe6e212466ee847671faddf8036204eadc2b"
+    },
+    {
+      "path": "final_point.json",
+      "sha256": "e403b68e724f8d8a6bd601366c843c2b13452c801aa8a99208cad503e1a3d0a2"
+    },
+    {
+      "path": "hourly/results.json",
+      "sha256": "38d886167ec575389e503702fd41dba5a6489b61a2ee2afe7137a45201710add"
+    },
+    {
+      "path": "hourly/audit.json",
+      "sha256": "9794f0d680381390eb3fbca4cec6014e29ab49a29c1cf67346b7f117908c38b4"
+    },
+    {
+      "path": "hourly/API_DOCUMENTATION_ERRATA.md",
+      "sha256": "cebe5673c63de3eaf7b1fd08bde0f43d29611ec87bf4e61dd99f960c4a6a2a55"
+    },
+    {
+      "path": "intervals/results.json",
+      "sha256": "d3e3f120cf7ae7f521adb5471f72d16260c3755a6ba40e67ef3e6175382b9416"
+    },
+    {
+      "path": "intervals/engineering_staging.json",
+      "sha256": "3cf18c9d2bf3d6bec996d29f69c734d3b26b4fff604baf9796ff2ead1bd3dcf9"
+    },
+    {
+      "path": "lcl/results.json",
+      "sha256": "75f07cd819616507a53cc26b90f0ce168d5c7e9d9e1fe4ec6975f4cc9775011b"
+    },
+    {
+      "path": "lcl/REPORT.md",
+      "sha256": "84df5bec9bf251a91c3a7715f263035b6eebeac47ce692766bf904b0160c379b"
+    },
+    {
+      "path": "lcl/COMPARATORS_FROZEN.json",
+      "sha256": "818805f22654ce45ca8ab9e2243000184b77d288debc62b9c41b08216f200ff4"
+    },
+    {
+      "path": "lcl/SOURCE_EXPOSURE_ADDENDUM01.json",
+      "sha256": "b675199c8d4d48486d0643394b93df3bb584ef4c89bfee76f51233ac19795700"
+    },
+    {
+      "path": "lcl/INFERENCE.json",
+      "sha256": "83142edefd25f1f1de6b0005bce15f770ae12c9995c8c3a1b9088e37fe03ff10"
+    },
+    {
+      "path": "lcl/PREDICTIONS_FROZEN.json",
+      "sha256": "e8e7befcb8b4c686e98bcb0d00d4108832a622e1e6512a375365937116eaefd4"
+    },
+    {
+      "path": "lcl/audit/results.json",
+      "sha256": "3a4a74e6be3a10c17fcd018a6452160e6648b6c0af102b6601c997378686dcf1"
+    },
+    {
+      "path": "lcl/audit/EXPOSURE_FINAL.json",
+      "sha256": "2aebf1b3a97ebdde7ef19a37a95d5809eca781104e1b9a38832a64220b6739a4"
+    },
+    {
+      "path": "lcl/audit/DESCRIPTIVE_DEFINITIONS.json",
+      "sha256": "5db0d2aaa381c84149ff6429b16708cb00415390414e9f907ceff91fa52dddaf"
+    },
+    {
+      "path": "lcl/audit/lead_day_descriptive.csv",
+      "sha256": "57ad3140ccc4ea2113e15436faaaa6cd15d36461b8b17afb8f3edf6d47dbf128"
+    },
+    {
+      "path": "lcl/audit/conventional_descriptive.csv",
+      "sha256": "6412c8cef951c995a4ae8c182add3c27050f69ae083a85c91291f3cc2d5abab6"
+    }
+  ]
+}
