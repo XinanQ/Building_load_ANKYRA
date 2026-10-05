@@ -457,4 +457,4 @@ forecasters, hourly and monthly energy error, with the 95% unit-and-month interv
 
 **`carrier_swap_x.csv`** — post-hoc exploration (not a test): ANKYRA 2.0.1 anchored to Chronos-2-X on the twelve populations, against Chronos-2-X and against the TimesFM-anchored ANKYRA, hourly and monthly energy, with the 95% unit-and-month interval ([details](../docs/FROZEN_MODEL_CHECKS.md#a-post-hoc-exploration-ankyra-anchored-to-chronos-2-x)).
 
-**`carrier_swap_combined.csv`** — the three foundation models (TimesFM, Chronos-2, Chronos-2-X) on the same windows with one seed: gain of each anchored version over its own foundation model, and the finished forecasters against each other ([details](../docs/FROZEN_MODEL_CHECKS.md#three-foundation-models-on-the-same-windows)).
+**`carrier_swap_combined.csv`** — the anchoring on two foundation-model families in three configurations (TimesFM; Chronos-2 without and with covariates) on the same windows with one seed: gain of each anchored version over its own foundation model, and the finished forecasters against each other ([details](../docs/FROZEN_MODEL_CHECKS.md#two-families-three-configurations-on-the-same-windows)).

@@ -12,7 +12,9 @@ For a forecast origin o the 744-hour trajectory is assembled from three orthogon
 Since 2.0 the within-day block is anchored as well (``ankyra.analog``): the unit's own analog-day shape competes with
 the foundation model's shape, with a per-lead-block weight set by the unit's own errors at three completed
 pseudo-origins, shrunk towards the foundation model and capped at one half.  Both shapes have zero daily means, so the
-level, the daily path and the energy and peak readouts are exactly those of the 1.x division of labour.
+pre-projection daily means, the level, the daily path, the energy readout and any readout computed from those daily
+means are exactly those of the 1.x division of labour; the delivered trajectory max(., 0), and a readout computed from it,
+can differ where the projection binds.
 
 The history-side daily means (level with the model candidate, plus the daily path) are then mixed with the foundation
 model's daily means week by week (days 1-7, 8-14, 15-21, 22-31).  The weekly weights are least-squares combination

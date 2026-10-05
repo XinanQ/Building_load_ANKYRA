@@ -316,9 +316,9 @@ not the better choice in these cases:
   ANKYRA's hourly error does not differ from TimesFM's.
 - **Against a covariate-informed foundation model on a new population.** On the Helsinki confirmation test
   ANKYRA's hourly and monthly energy errors were 6.3% and 13.9% higher than those of Chronos-2-X with temperature
-  and calendar covariates, both resolved, mainly because Chronos-2-X forecast the monthly level better. The population's temperature
-  sensitivity does not explain it; the cause is not known. Do not assume ANKYRA's energy advantage against such a
-  model. Anchoring ANKYRA to that model instead matched it there (post hoc).
+  and calendar covariates, both resolved, mainly because Chronos-2-X forecast the monthly level better. The temperature-sensitivity
+  measures tested did not support that explanation; the cause is not known. Do not assume ANKYRA's energy advantage against such a
+  model. Anchored to that model instead, ANKYRA was not separated from it there (post hoc).
 - **Buildings ruled by closure days.** On Norwegian schools a trained cross-unit model with calendar features is
   12.8% better.
 - **A context with a single large spike.** The hourly error rises and the peak readout, which takes the largest
@@ -791,7 +791,7 @@ All three were run with the released 2.0.1 package and all its defaults, each un
 run (the first two on 4 October 2026, the third on 5 October). They do not change the forecaster or any table above. Details, limits and files:
 [docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md).
 
-**One method, three foundation models.** `ankyra.forecast` takes the foundation model's forecasts as an argument, so the
+**One method, two foundation-model families, three configurations.** `ankyra.forecast` takes the foundation model's forecasts as an argument, so the
 anchoring can be put on top of another foundation model with nothing selected again. It was run three times: with TimesFM (the
 released forecaster), with Chronos-2 (4 October, a pre-specified new arm, ten populations) and with the covariate-informed
 Chronos-2-X (5 October, post hoc after the Helsinki result, all twelve populations). The table gives the gain of each anchored
@@ -822,7 +822,7 @@ interval excludes zero in favour of the anchored version; no interval excludes z
   windows, near-zero meters included, it is 2.9% worse). Anchored to the stronger Chronos-2-X it is
   resolvably better on Cambridge, Oslo, Drammen, Helsinki, and on Helsinki it closes the gap of the confirmation test
   (+6.6% hourly, +12.7% energy against the TimesFM-anchored version).
-- **Limits.** Three foundation models, not foundation models in general; the constants were selected under TimesFM; every population
+- **Limits.** Two foundation-model families in three configurations, not foundation models in general; the constants were selected under TimesFM; every population
   had been scored before, and the Chronos-2-X run is post hoc. The released forecaster stays TimesFM-anchored 2.0.1: choosing the
   foundation model after seeing every population would leave no untouched data to test the choice
   (`results/carrier_swap_combined.csv`, `results/carrier_swap.csv`, `results/carrier_swap_x.csv`;
@@ -1127,6 +1127,16 @@ and checked by `python -m unittest discover -s theory -t .`.
 
 ## Version history
 
+- **2.0.2 (5 October 2026)** — input-contract fix: a load value marked `observed=False` reached the foundation-model
+  contexts, the off-state and micro-load rules and the analog days, while the historical estimator ignored it, so a
+  finite placeholder at an unobserved hour could change the forecast. `forecast()` now masks the record once and every
+  part reads the same masked record; a malformed mask is rejected. New test
+  `test_values_at_unobserved_hours_do_not_reach_the_forecast`. Forecasts are unchanged whenever `observed` is omitted or
+  equals the finite values, as in every evaluation of the study: the reproduction check of 2.0.1 was repeated on 2.0.2
+  with identical results. HKUST: the temperature scale is now fitted on the days before the first origin (it had included
+  24 hours after the origin of four windows); every HKUST forecast was recomputed, `results/hkust_*`,
+  `results/carrier_swap_*` and Figures 17-18 come from the recomputed forecasts, and no decision changed (largest change
+  0.001 percentage points).
 - **2.0.2 (5 October 2026)** — input-contract fix: a load value marked `observed=False` reached the foundation-model
   contexts, the off-state and micro-load rules and the analog days, while the historical estimator ignored it, so a
   finite placeholder at an unobserved hour could change the forecast. `forecast()` now masks the record once and every

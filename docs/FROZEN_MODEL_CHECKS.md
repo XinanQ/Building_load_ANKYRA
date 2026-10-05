@@ -3,8 +3,8 @@
 Both were run after ANKYRA 2.0.1 was fixed, with the public package and all its defaults. Neither changes the
 forecaster, the result tables of the ten populations, or the figures. Each protocol was written before its run.
 
-- [Another foundation model](#another-foundation-model): Chronos-2 in place of TimesFM; with the Chronos-2-X run, three foundation models on the same windows.
-- [A population never used before](#a-population-never-used-before): the HKUST campus, scored once.
+- [Another foundation model](#another-foundation-model): Chronos-2 in place of TimesFM; with the Chronos-2-X run, two foundation-model families in three configurations on the same windows.
+- [A population never used before](#a-population-never-used-before): the HKUST campus; one original first read, then added comparators, a carrier exploration and a causal correction.
 - [A pre-registered confirmation test (Helsinki)](#a-pre-registered-confirmation-test-helsinki): criteria fixed in advance; not confirmed.
 - [A post-hoc exploration: ANKYRA anchored to Chronos-2-X](#a-post-hoc-exploration-ankyra-anchored-to-chronos-2-x): twelve populations; not a test.
 
@@ -53,7 +53,7 @@ released forecaster stays the TimesFM-based one.
 
 File: [`results/carrier_swap.csv`](../results/carrier_swap.csv) (all windows and late windows, hourly and energy).
 
-### Three foundation models on the same windows
+### Two families, three configurations on the same windows
 
 The Chronos-2 run above and the post-hoc Chronos-2-X run
 ([below](#a-post-hoc-exploration-ankyra-anchored-to-chronos-2-x)) re-scored together with the released TimesFM-anchored forecaster
@@ -154,7 +154,7 @@ hourly curves) and Helsinki (c, d; `results/helsinki_by_day.csv`).*
   no constant uses information after its origin.
 - Whether TimesFM or Chronos-2 was pretrained on this dataset (published 2024) was not checked.
 
-This is one population scored once. It is not merged into the ten-population tables and it does not show that the
+This is one population with one original first read, followed by added comparators, a carrier exploration and a causal correction. It is not merged into the ten-population tables and it does not show that the
 forecaster generalises; it shows that the frozen forecaster did not fail on first contact with an unseen estate.
 
 File: [`results/hkust_first_read.csv`](../results/hkust_first_read.csv). The column `resolved_at_seed_20261004` is the
@@ -214,7 +214,7 @@ TimesFM on either error and is resolvably worse than the covariate-conditioned C
 on the ten populations and on HKUST is therefore not confirmed. Post-hoc descriptions locate, but do not explain, the
 difference. In the exact block split, ANKYRA's error is higher than Chronos-2-X's mainly in the monthly level (by 13.9%,
 resolved; the largest block of the error) and by 4.2% in the within-day block (resolved); against its own carrier
-TimesFM, ANKYRA's within-day error is 6.1% lower (resolved). Temperature sensitivity is not the reason: the share of daily-load variance that temperature
+TimesFM, ANKYRA's within-day error is 6.1% lower (resolved). The temperature-sensitivity measures tested did not support that explanation: the share of daily-load variance that temperature
 explains beyond the calendar is 0.10 at the median Helsinki unit, inside the range of the ten populations
 (0.05–0.70), unrelated to the gap to Chronos-2-X across them, and the gap is similar in the least and most
 temperature-sensitive thirds of the Helsinki units. Boundary of use: on a new population, a covariate-informed
