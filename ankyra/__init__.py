@@ -6,6 +6,6 @@ from .history import History, InputError, SignatureDegeneracy
 from .core import AnkyraForecast, forecast, pseudo_origin_contexts, lead_week_weights, lead_week_transition
 from . import blocks, readouts, metrics, analog
 
-__version__ = "2.0.1"
+__version__ = "2.0.2"
 __all__ = ["History", "InputError", "SignatureDegeneracy", "AnkyraForecast", "forecast", "pseudo_origin_contexts", "lead_week_weights",
            "lead_week_transition", "blocks", "readouts", "metrics", "analog"]

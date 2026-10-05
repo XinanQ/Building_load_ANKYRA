@@ -83,8 +83,8 @@ against each other).
 
 **Question.** What does the frozen forecaster do on data the project had never read? This is a blind test in the
 following sense: no rule or constant of ANKYRA was chosen with this population in view, the units and the scoring
-plan were fixed before any load value was opened, and the forecasts were saved before the targets were read. It is
-not blind for the foundation models, whose pretraining data were not checked.
+plan were fixed before any load value was opened, inputs were truncated at each origin, and the forecasts were saved
+before any target loss was computed. It is not blind for the foundation models, whose pretraining data were not checked.
 
 **Data.** The smart-meter database of the Hong Kong University of Science and Technology campus (Li, Wang, Qu, Chui and Leung-Shea, *Scientific Data* 11, 1284, 2024, doi:10.1038/s41597-024-04106-1; data on Dryad,
 doi:10.5061/dryad.k3j9kd5h6, CC0; 1 January 2022 to 27 May 2024). Units are the meters of the incomer circuit
@@ -93,7 +93,9 @@ named, 38 have cleaned files. The files hold cumulative readings; hourly energy 
 ERA5 reanalysis for the campus; Hong Kong general holidays are day type 7; the category is `Public`.
 
 **Procedure.** The unit definition and the scoring plan were written before any load value was opened. Forecasts
-were saved with a hash before the targets were read, and the targets were scored once. The usual eligibility rule
+were saved with a hash before any target loss was computed, and the first read was one scoring pass. Comparators, a
+carrier exploration and a correction of the temperature scale were added afterwards (below); the tables on this page
+are from the recomputed forecasts. The usual eligibility rule
 (complete load for the context, the six pseudo-origins and the target) leaves **134 windows on 33 units in 19
 months**. Three incomers read zero throughout; there the off-state and micro-load rules return TimesFM, both errors
 are zero, and the units drop out of the ratio (30 effective units). 125 windows have less than two years of history.
@@ -147,8 +149,9 @@ hourly curves) and Helsinki (c, d; `results/helsinki_by_day.csv`).*
 - One constant, the temperature scale, was first computed from the first 244 days as planned, which for the four
   windows issued on 1 September 2022 included 24 hours after the origin. It was then refitted on the 243 days before
   the first origin and every ANKYRA forecast on HKUST was run again: forecasts change by at most 4.4 × 10⁻⁵ of their
-  peak, no figure on this page changes at the precision shown and no decision changes. No forecaster and no constant
-  uses information after its origin.
+  peak, every result changes by at most 0.001 percentage points and no decision changes. The result files
+  (`results/hkust_*`, `results/carrier_swap_*`) and Figures 17-18 come from the recomputed forecasts. No forecaster and
+  no constant uses information after its origin.
 - Whether TimesFM or Chronos-2 was pretrained on this dataset (published 2024) was not checked.
 
 This is one population scored once. It is not merged into the ten-population tables and it does not show that the
@@ -172,7 +175,8 @@ properties looked at during a format check), the units (one electricity series e
 provider's two-hour autumn record split evenly and flagged), the window rules of the ten populations, eleven origins
 (2025-11 to 2026-09, after the public release of TimesFM 2.5 and Chronos-2), the 14 forecasters of the full-window
 comparison, the estimand and the criteria. It was frozen with the hashes of all 978 raw files before any load value
-was parsed. All 14 forecasts were saved with a hash before the targets were read; the targets were scored once. A
+was parsed. Inputs were truncated at each origin and all 14 forecasts were saved with a hash before any target loss was computed;
+the targets were scored once. A
 first scoring attempt stopped while loading the targets (memory) before any statistic was computed; this is recorded.
 
 **Criteria (seed 20261005).** Primary: monthly energy error, ANKYRA against TimesFM 2.5, upper end of the 95%
@@ -208,9 +212,9 @@ on 25 of 31 days on both curves, below Chronos-2-X on 3 and 6). Files: `results/
 **Reading.** On a new country with long, finely metered histories, the frozen forecaster is not separated from
 TimesFM on either error and is resolvably worse than the covariate-conditioned Chronos-2-X. The energy advantage seen
 on the ten populations and on HKUST is therefore not confirmed. Post-hoc descriptions locate, but do not explain, the
-difference. In the exact block split, Chronos-2-X is better mainly in the monthly level (13.9%, resolved; the largest
-block of its error) and by 4.2% in the within-day block; against TimesFM, ANKYRA's within-day anchoring is still
-better (6.1%, resolved). Temperature sensitivity is not the reason: the share of daily-load variance that temperature
+difference. In the exact block split, ANKYRA's error is higher than Chronos-2-X's mainly in the monthly level (by 13.9%,
+resolved; the largest block of the error) and by 4.2% in the within-day block (resolved); against its own carrier
+TimesFM, ANKYRA's within-day error is 6.1% lower (resolved). Temperature sensitivity is not the reason: the share of daily-load variance that temperature
 explains beyond the calendar is 0.10 at the median Helsinki unit, inside the range of the ten populations
 (0.05–0.70), unrelated to the gap to Chronos-2-X across them, and the gap is similar in the least and most
 temperature-sensitive thirds of the Helsinki units. Boundary of use: on a new population, a covariate-informed

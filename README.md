@@ -159,7 +159,7 @@ The record, `ankyra.History`:
 | `temperature_c` | Hourly outdoor air temperature in °C for the same hours, finite everywhere, the padded hours included. The annual temperature harmonic is fitted on all of them, so use archive temperature for the padded hours if you can; a fixed value there also runs (the study's LCL preparation used 15 °C). Where load is observed the series must vary: if the daily mean temperature is constant over a year, the temperature signature cannot be fitted and `forecast` raises an error. A nearby weather station or a reanalysis series is enough. No future temperature is needed. |
 | `day_types` | One integer per hour for the history plus the 744 forecast hours (length `len(load_kw) + 744`, integer dtype): Monday = 0 … Sunday = 6 from the date, 7 on a public holiday; constant within each day. |
 | `start_timestamp` | The time of index 0. It must be 1 January 00:00 written with a `+00:00` offset (or `Z`), for example `"2019-01-01T00:00:00+00:00"`. The offset is a label and no conversion is made: use a fixed-offset grid (UTC or local standard time, without daylight-saving jumps). |
-| `observed` (optional) | Boolean mask of the load. Default: the finite values. |
+| `observed` (optional) | Boolean mask of the load. `False` marks an hour as unobserved: its value, finite or not, is ignored by every part of the forecast (since 2.0.2). Default: the finite values. |
 
 Only hourly data are supported, and the forecast is always 744 hours long. The 1 January anchor fixes the phase of the
 annual temperature harmonic; any other anchor is rejected.
@@ -315,8 +315,8 @@ not the better choice in these cases:
 - **Coarsely quantised meters.** Where the meter's step is a quarter of the mean load or more (HKUST, 11 units),
   ANKYRA's hourly error does not differ from TimesFM's.
 - **Against a covariate-informed foundation model on a new population.** On the Helsinki confirmation test
-  Chronos-2-X with temperature and calendar covariates was better on hourly error (6.3%) and monthly energy
-  (13.9%), both resolved, mainly because it forecast the monthly level better. The population's temperature
+  ANKYRA's hourly and monthly energy errors were 6.3% and 13.9% higher than those of Chronos-2-X with temperature
+  and calendar covariates, both resolved, mainly because Chronos-2-X forecast the monthly level better. The population's temperature
   sensitivity does not explain it; the cause is not known. Do not assume ANKYRA's energy advantage against such a
   model. Anchoring ANKYRA to that model instead matched it there (post hoc).
 - **Buildings ruled by closure days.** On Norwegian schools a trained cross-unit model with calendar features is
@@ -830,10 +830,11 @@ interval excludes zero in favour of the anchored version; no interval excludes z
 
 **A blind test on a population never used before.** "Blind" here means that no rule or constant of ANKYRA was
 chosen with this population in view, that the units and the scoring were fixed before any load value was opened, and
-that the forecasts were saved before the targets were read. It does not mean that the foundation models had never
-seen the data: whether TimesFM or Chronos-2 was pretrained on it was not checked. The frozen forecaster was scored once on the incomer meters of the HKUST campus
+that inputs were truncated at each origin and the forecasts saved before any target loss was computed. It does not mean that the foundation models had never
+seen the data: whether TimesFM or Chronos-2 was pretrained on it was not checked. The frozen forecaster had one original first read on the incomer meters of the HKUST campus
 (Hong Kong; 134 windows, 33 units, 30 of them non-zero), a dataset the project had not read. Units were fixed from
-the metadata before any load value was opened, and forecasts were saved before the targets were read.
+the metadata before any load value was opened, and forecasts were saved before any target loss was computed. Comparators,
+a carrier exploration and a correction of one constant (below) were added afterwards.
 
 - Monthly energy error is 38% below TimesFM's (interval 9–55%), and the interval excludes zero under every bootstrap
   seed tried.
@@ -843,7 +844,7 @@ the metadata before any load value was opened, and forecasts were saved before t
   were not run.
 - The two covariate-informed foundation models were added afterwards: ANKYRA is **not separated** from Chronos-2-X
   (+3.3% hourly) or TimesFM-X (+4.7%), and its mean unit rank stays first of ten (2.52; next 4.03).
-- One small site scored once: it is not merged into the tables above and does not show that the forecaster generalises
+- One small site: it is not merged into the tables above and does not show that the forecaster generalises
   (`results/hkust_first_read.csv`).
 
 ![Two checks with the forecaster frozen](figures/fig17_frozen_checks.png)
@@ -857,7 +858,7 @@ delivered to date.
 
 ![Per-day curves on the populations scored with the forecaster frozen](figures/fig18_new_populations_by_day.png)
 
-*Figure 18. Per-day curves of 14 forecasters on the two populations scored with the forecaster frozen: HKUST (a, b; baselines added afterwards) and Helsinki (c, d; all forecasts frozen before the targets were read).*
+*Figure 18. Per-day curves of 14 forecasters on the two populations scored with the forecaster frozen: HKUST (a, b; baselines added afterwards) and Helsinki (c, d; all forecasts frozen before any target loss was computed).*
 
 **A pre-registered confirmation test (Helsinki).** On 5 October 2026 the frozen forecaster was scored once on the
 electricity of Helsinki's city service buildings (300 property codes drawn by hash; 201 units, 1,168 windows, eleven
@@ -867,7 +868,7 @@ error not resolvably above it. **The confirmation was not established.**
 
 - Monthly energy error is 6.0% below TimesFM's, but the interval crosses zero: the primary criterion **failed**.
 - Hourly error is 4.3% below TimesFM's, not resolved: the secondary criterion passed.
-- **Chronos-2-X is resolvably better than ANKYRA** on both: hourly by 6.3%, monthly energy by 13.9%. In mean unit rank
+- **ANKYRA's errors are resolvably higher than Chronos-2-X's** on both: by 6.3% hourly and by 13.9% for monthly energy. In mean unit rank
   among the 14 forecasters it is first (4.08) and ANKYRA second (4.33).
 - Against naive, profile and statistical forecasts and the zero-shot GBT, ANKYRA's hourly gain is 8–28% and resolved
   on most of them, as on the other populations.
@@ -1126,6 +1127,16 @@ and checked by `python -m unittest discover -s theory -t .`.
 
 ## Version history
 
+- **2.0.2 (5 October 2026)** — input-contract fix: a load value marked `observed=False` reached the foundation-model
+  contexts, the off-state and micro-load rules and the analog days, while the historical estimator ignored it, so a
+  finite placeholder at an unobserved hour could change the forecast. `forecast()` now masks the record once and every
+  part reads the same masked record; a malformed mask is rejected. New test
+  `test_values_at_unobserved_hours_do_not_reach_the_forecast`. Forecasts are unchanged whenever `observed` is omitted or
+  equals the finite values, as in every evaluation of the study: the reproduction check of 2.0.1 was repeated on 2.0.2
+  with identical results. HKUST: the temperature scale is now fitted on the days before the first origin (it had included
+  24 hours after the origin of four windows); every HKUST forecast was recomputed, `results/hkust_*`,
+  `results/carrier_swap_*` and Figures 17-18 come from the recomputed forecasts, and no decision changed (largest change
+  0.001 percentage points).
 - **Two checks with the forecaster frozen (4 October 2026; forecaster unchanged)** — with Chronos-2 in place of TimesFM,
   anchoring improves the foundation model resolvably on seven of ten populations and is never resolvably worse; on
   a campus dataset never used before (HKUST, 33 units, 134 windows) monthly energy error is 38% below TimesFM's and
@@ -1133,7 +1144,7 @@ and checked by `python -m unittest discover -s theory -t .`.
   `results/carrier_swap.csv`, `results/hkust_first_read.csv`).
 - **Pre-registered confirmation test (5 October 2026; forecaster unchanged)** — Helsinki city service buildings,
   201 units: monthly energy vs TimesFM +6.0%, interval crosses zero (primary criterion failed); hourly +4.3%, not
-  resolved (secondary passed); Chronos-2-X resolvably better on both. Not confirmed
+  resolved (secondary passed); ANKYRA's errors resolvably higher than Chronos-2-X's on both. Not confirmed
   ([docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki)).
 - **After the `v2.0.1` tag (4 October 2026; forecaster unchanged)** — LCL households scored once with the frozen 2.0.1
   forecaster (`results/lcl_*`), and two further changes examined and not adopted

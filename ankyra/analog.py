@@ -17,8 +17,11 @@ completed pseudo-origin windows q = o - 744 k', k' = 1..3, clipped to [0, 1], sh
 capped at 1/2:  w_k = min(clip(lambda*_k, 0, 1) n / (n + 2), 1/2).  Nothing is trained; both shapes and the trust use
 only data before the origin (and, at a pseudo-origin, only data before that pseudo-origin).
 
-Both within-day blocks have zero daily means, so the level, the daily path, the energy readout and the peak readout are
-unchanged by the anchoring.
+Both within-day blocks have zero daily means, so the pre-projection daily means are unchanged by the anchoring, and with
+them the level, the daily path, the energy readout (744 x level) and any readout computed from those daily means.  The
+delivered trajectory max(daily + W, 0) can differ where the projection binds, and so can a readout computed from it (the
+peak readout as evaluated in the study and in examples/quickstart.py).  The analog shape of day d is
+S_dh = s0 / |A_d| * sum_j (x_jh - mean_j) / s_j over the kept analog days j.
 """
 from __future__ import annotations
 

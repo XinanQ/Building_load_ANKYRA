@@ -235,9 +235,13 @@ covariates or fine-tuning are used. In 1.x this was the within-day block.
 **Analog-day shape (2.0).** For each horizon day $d$, the unit's own *analog days* are the complete pre-origin days with
 the same calendar type, within ±14 days of the same day of year, in the same daylight-saving state, and preceded by a
 complete 744-hour window. Up to eight are kept: those closest in daily-mean temperature to the frozen climatology of
-day $d$ (ties: the more recent). An analog day's shape is its hourly load minus its own daily mean, divided by the raw
-standard deviation of the 744 hours before it; the target day's shape $S_d$ is the mean of the kept shapes times the
-origin scale $s_0$. A day with fewer than four analogs keeps $w^T_d$. If $\max|S|$ exceeds three times the largest
+day $d$ (ties: the more recent). Candidates come from the whole pre-origin record, not only from the 1,344-hour context.
+With $\mathcal A_d$ the kept analog days, $\bar x_j$ the mean of day $j$, $s_j$ the standard deviation of the 744 hours
+before day $j$ and $s_o$ that of the 744 hours before the origin (each floored at $\max(0.01|\text{mean}|, 10^{-3})$ kW),
+
+$$S_{d,h}=\frac{s_o}{|\mathcal A_d|}\sum_{j\in\mathcal A_d}\frac{x_{j,h}-\bar x_j}{s_j}.$$
+
+Each analog day's shape is thus rescaled from the variability before it to the variability before the origin. A day with fewer than four analogs keeps $w^T_d$. If $\max|S|$ exceeds three times the largest
 absolute context value the whole window keeps $w^T$ (a guard against scale floors on near-constant records).
 
 **Anchoring.** For the lead blocks $k$ = days 1–7, 8–14, 15–21, 22–31,
@@ -252,8 +256,10 @@ shape built from data before $q$, $w^T_q$ the foundation shape issued at $q$ and
 The weight is a least-squares weight on the disagreement between the two shapes, shrunk towards the foundation model
 (zero) and capped at one half. No pseudo-origin, or no disagreement, gives $\omega_k=0$ and the 1.x forecast.
 
-- Both $w^T$ and $S$ have zero daily means, so the level, the daily path, the energy readout and the peak readout are
-  unchanged by the anchoring (the delivered trajectory differs only where the projection onto $F\ge0$ acts).
+- Both $w^T$ and $S$ have zero daily means, so the pre-projection daily means are unchanged by the anchoring, and with
+  them the level, the daily path, the energy readout ($744\times$ level) and any readout computed from those daily means.
+  The delivered trajectory $\max(F,0)$ can differ where the projection binds, and so can a readout computed from it: the
+  study's peak readout and `examples/quickstart.py` use the delivered trajectory.
 - The three pseudo-origin forecasts are among the six that ANKYRA already computes for the handover: no further
   foundation-model call is needed.
 - The analog shape needs a previous year at the same dates. Records shorter than about 13 months give no analogs and

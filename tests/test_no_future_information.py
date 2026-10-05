@@ -81,6 +81,27 @@ class NoFutureInformationTests(unittest.TestCase):
         self.assertEqual(n1, n2)
         np.testing.assert_array_equal(Q1, Q2)
 
+    def test_values_at_unobserved_hours_do_not_reach_the_forecast(self):
+        """observed=False means the hour is not known: its placeholder value must not matter to any branch (the
+        foundation-model contexts, the off-state and micro-load rules, the analog days, the estimator)."""
+        load, temp, types, start = record()
+        obs = np.ones(O, bool)
+        obs[O - 3 * STEP - 200:O - 3 * STEP - 100] = False        # inside the pseudo-origin contexts k = 3, 4
+        obs[O - 365 * 24 + 5 * 24:O - 365 * 24 + 7 * 24] = False  # two analog-candidate days a year back
+        obs[3000:3400] = False                                     # an early gap
+        ref = {}
+        for fill in (np.nan, 0.0, 500.0, -40.0):
+            lf = load[:O].copy(); lf[~obs] = fill
+            h = History(load_kw=lf, temperature_c=temp[:O], day_types=types[:O + STEP], start_timestamp=start, observed=obs)
+            mapping = {k: seasonal_naive(c[None])[0] for k, c in pseudo_origin_contexts(np.where(obs, load[:O], np.nan)).items()}
+            for name, fdn in (("callable", seasonal_naive), ("mapping", mapping)):
+                f = ankyra.forecast(h, group="Office", temp_sigma_std=0.25, foundation=fdn, dst_region="EU").trajectory_kw
+                if name in ref:
+                    np.testing.assert_array_equal(f, ref[name], err_msg=f"{name}, placeholder {fill}")
+                else:
+                    ref[name] = f
+        np.testing.assert_array_equal(ref["callable"], ref["mapping"])
+
     def test_pseudo_origin_contexts_end_inside_the_record(self):
         load, _, _, _ = record()
         for k, c in pseudo_origin_contexts(load[:O]).items():

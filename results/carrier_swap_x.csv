@@ -59,12 +59,12 @@ Suzhou park,127,hourly,ANKYRA vs TimesFM,11.807,-0.194227,-0.045854,better
 Suzhou park,127,energy,ANKYRA-X vs Chronos-2-X,20.244,-0.395318,-0.093242,better
 Suzhou park,127,energy,ANKYRA-X vs ANKYRA,4.235,-0.153650,0.050835,no
 Suzhou park,127,energy,ANKYRA vs TimesFM,16.356,-0.288281,-0.057665,better
-HKUST campus,120,hourly,ANKYRA-X vs Chronos-2-X,5.405,-0.104742,-0.020965,better
-HKUST campus,120,hourly,ANKYRA-X vs ANKYRA,2.226,-0.077801,0.044419,no
-HKUST campus,120,hourly,ANKYRA vs TimesFM,8.103,-0.228932,0.001240,no
-HKUST campus,120,energy,ANKYRA-X vs Chronos-2-X,12.042,-0.763229,0.427462,no
-HKUST campus,120,energy,ANKYRA-X vs ANKYRA,8.400,-0.653384,0.261986,no
-HKUST campus,120,energy,ANKYRA vs TimesFM,37.939,-0.786426,-0.089328,better
+HKUST campus,120,hourly,ANKYRA-X vs Chronos-2-X,5.405,-0.104741,-0.020964,better
+HKUST campus,120,hourly,ANKYRA-X vs ANKYRA,2.226,-0.077802,0.044418,no
+HKUST campus,120,hourly,ANKYRA vs TimesFM,8.103,-0.228930,0.001241,no
+HKUST campus,120,energy,ANKYRA-X vs Chronos-2-X,12.042,-0.763254,0.427447,no
+HKUST campus,120,energy,ANKYRA-X vs ANKYRA,8.399,-0.653384,0.262062,no
+HKUST campus,120,energy,ANKYRA vs TimesFM,37.940,-0.786408,-0.089326,better
 Helsinki,1165,hourly,ANKYRA-X vs Chronos-2-X,0.679,-0.041422,0.036072,no
 Helsinki,1165,hourly,ANKYRA-X vs ANKYRA,6.590,-0.102335,-0.030031,better
 Helsinki,1165,hourly,ANKYRA vs TimesFM,4.257,-0.092860,0.022227,no

@@ -32,7 +32,7 @@ rule and the micro-load rule exactly as evaluated in the study.
 from __future__ import annotations
 
 import warnings
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from types import SimpleNamespace
 from typing import Callable, Mapping, Optional, Union
 
@@ -284,6 +284,7 @@ def forecast(history: History, *, group: str, temp_sigma_std: float, foundation:
     fitted then.  If the last 168 hours are at or below 1e-6 kW (off-state rule) the foundation-model forecast is
     returned before the estimator's input checks run, as in every evaluated version.
     """
+    history = _masked(history)                                       # one masked record for every branch (2.0.2)
     load = np.asarray(history.load_kw, dtype=np.float64)
     temp = np.asarray(history.temperature_c, dtype=np.float32)
     types = np.asarray(history.day_types)
@@ -353,6 +354,22 @@ def forecast(history: History, *, group: str, temp_sigma_std: float, foundation:
                           within_day_kw=W, off_state=False, lead_week_weights=tuple(float(a) for a in alphas),
                           level_weights=w_level, fixed_division_daily_means_kw=daily_f0, pseudo_pairs=len(pairs),
                           foundation_within_day_kw=wT0, analog_shape_kw=S0, within_trust=trust, within_pseudo_pairs=n_w, analog_kept=kept)
+
+
+def _masked(history: History) -> History:
+    """The history with every load value marked unobserved (``observed`` False) replaced by NaN.
+
+    The historical estimator always masked these hours; before 2.0.2 the foundation-model contexts, the off-state and
+    micro-load rules and the analog days read the raw array, so a finite placeholder at an unobserved hour could change
+    the forecast.  With the mask applied once here, every branch sees the same record and a placeholder value has no
+    effect.  A malformed mask is rejected with the estimator's own message.  When ``observed`` is None, or equals
+    ``isfinite(load_kw)`` (every evaluation in the study), the record is unchanged."""
+    if history.observed is None:
+        return history
+    load = np.asarray(history.load_kw, dtype=np.float64); obs = np.asarray(history.observed)
+    if obs.dtype != np.bool_ or obs.shape != load.shape:
+        raise _api.InputError("observed must be a boolean mask of the load history")
+    return replace(history, load_kw=np.where(obs, load, np.nan))
 
 
 def _check_inputs(history, group, temp_sigma_std) -> None:
