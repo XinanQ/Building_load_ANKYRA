@@ -1,6 +1,7 @@
 # Method
 
-This document describes ANKYRA 2.0.1. The versions differ in two places:
+This document describes ANKYRA 2.0.1, the model implemented by packages 2.0.1 to 2.0.3 (2.0.2 masks hours marked
+unobserved once for every branch; 2.0.3 changes documentation only). The model versions differ in two places:
 
 - 1.x used the foundation model's within-day shape unchanged. Section [Within-day shape](#within-day-shape) gives the
   rule introduced in 2.0.

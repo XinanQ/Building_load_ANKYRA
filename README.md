@@ -10,7 +10,8 @@ without training a model on each of them. It combines the zero-shot forecast of 
 TimesFM 2.5, with estimates from the unit's own past load, outdoor temperature and calendar, and weights the two by how
 well each has forecast the unit's own earlier months.
 
-Current version: **2.0.1** ([what changed](#what-changed-in-20-and-201) · [version history](#version-history)).
+Current package version: **2.0.3**; the forecasting model is ANKYRA 2.0.1, unchanged since 3 October 2026
+([what changed](#what-changed-in-20-and-201) · [version history](#version-history)).
 
 ![ANKYRA architecture](figures/fig1_architecture.png)
 
@@ -82,7 +83,8 @@ evaluation/          scoring of a population from forecasts and realised load; a
 results/             scored statistics (CSV / JSON) and the reproduction record; 2.0.0 and 1.x in subfolders
 figures/             make_figures.py and the figures (PDF and PNG)
 docs/                METHOD.md (equations and constants), EVALUATION.md (protocol and full tables),
-                     DATA.md (sources and preparation), LCL_AND_CLOSEOUT.md (LCL households; two changes not adopted)
+                     DATA.md (sources and preparation), LCL_AND_CLOSEOUT.md (LCL households; two changes not adopted),
+                     FROZEN_MODEL_CHECKS.md (checks with the forecaster frozen)
 ```
 
 Deliberately not included:
@@ -328,7 +330,7 @@ not the better choice in these cases:
 - **Sites in the southern hemisphere.** The annual temperature harmonic has a fixed phase, with its coldest day in
   January, and a nonnegative amplitude. Every evaluated population is in the northern hemisphere.
 
-The evidence for the first seven points is in the results sections below. The last two follow from the code.
+The evidence for the first eight points is in the results sections below. The last two follow from the code.
 
 ## Terms used on this page
 
@@ -787,8 +789,10 @@ files are `results/lcl_*` and `results/closeout_status.json` ([file list](result
 
 ## Three checks with the forecaster frozen
 
-All three were run with the released 2.0.1 package and all its defaults, each under a protocol written before the
-run (the first two on 4 October 2026, the third on 5 October). They do not change the forecaster or any table above. Details, limits and files:
+All three were run with the released 2.0.1 forecaster and all its defaults, each under a protocol written before the
+run (the first two on 4 October 2026, the third on 5 October); the section also reports one post-hoc exploration
+(the Chronos-2-X anchoring, 5 October), which had no criterion fixed in advance. None of them changes the forecaster
+or any table above. Details, limits and files:
 [docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md).
 
 **One method, two foundation-model families, three configurations.** `ankyra.forecast` takes the foundation model's forecasts as an argument, so the
@@ -869,12 +873,12 @@ error not resolvably above it. **The confirmation was not established.**
 - Monthly energy error is 6.0% below TimesFM's, but the interval crosses zero: the primary criterion **failed**.
 - Hourly error is 4.3% below TimesFM's, not resolved: the secondary criterion passed.
 - **ANKYRA's errors are resolvably higher than Chronos-2-X's** on both: by 6.3% hourly and by 13.9% for monthly energy. In mean unit rank
-  among the 14 forecasters it is first (4.08) and ANKYRA second (4.33).
+  among the 14 forecasters Chronos-2-X is first (4.08) and ANKYRA second (4.33).
 - Against naive, profile and statistical forecasts and the zero-shot GBT, ANKYRA's hourly gain is 8–28% and resolved
   on most of them, as on the other populations.
 
 This is the only test of the project with criteria fixed in advance and enough units to resolve them. It does not
-confirm the energy advantage seen on the ten populations and on HKUST
+confirm the energy advantage over TimesFM seen on the ten populations and on HKUST
 ([details](docs/FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki); `results/helsinki_confirmation.csv`).
 
 ## How the handover works
@@ -932,8 +936,9 @@ own history a say there, by the rule the other blocks already use:
 - **Trust.** $w=w^T+\omega_k\,(S-w^T)$ per lead block of the month, with $\omega_k$ the least-squares weight of the
   analog shape against the model's shape on the unit's three completed pseudo-origin windows, clipped to $[0,1]$,
   shrunk towards zero by $n/(n+2)$ and capped at ½. No evidence means the model's shape, i.e. the 1.x forecast.
-- **What it leaves untouched.** Both shapes have zero daily means: level, daily path, energy readout and peak readout
-  are identical to 1.x. The three pseudo-origin forecasts are among the six ANKYRA already computes. The micro-load
+- **What it leaves untouched.** Both shapes have zero daily means: the pre-projection daily means, and with them the
+  level, the daily path, the energy readout and a peak readout computed from them, are identical to 1.x (the
+  delivered trajectory max(·, 0), and a readout computed from it, can differ where the projection binds). The three pseudo-origin forecasts are among the six ANKYRA already computes. The micro-load
   windows of 2.0.1 are a different matter: there the whole trajectory is TimesFM's.
 - **Where it acts.** On buildings with fixed schedules nearly every window is anchored (mean trust 0.20–0.33) and the
   hourly error falls by 0.8–4.2% (2.0.0 against 1.x), growing with lead time; on households the trust stays near zero
@@ -1045,7 +1050,9 @@ and checked by `python -m unittest discover -s theory -t .`.
   difference 3.4×10⁻¹³ kW). On micro-load windows the forecast is bit-identical to the TimesFM forecast, elsewhere to
   the 2.0.0 mode. The TimesFM adapter, the peak operator and the interval functions are unchanged and were exact in
   the 1.x record.
-  See [results/REPRODUCTION_CHECK.json](results/REPRODUCTION_CHECK.json); the 2.0.0 and 1.x records are
+  The current record ([results/REPRODUCTION_CHECK.json](results/REPRODUCTION_CHECK.json)) was taken on the code of
+  this release (package 2.0.3, code of 2.0.2); the record of the 2.0.1 package is
+  [results/REPRODUCTION_CHECK_2_0_1.json](results/REPRODUCTION_CHECK_2_0_1.json); the 2.0.0 and 1.x records are
   [results/ankyra_2_0_0/REPRODUCTION_CHECK.json](results/ankyra_2_0_0/REPRODUCTION_CHECK.json) and
   [results/ankyra_1x/REPRODUCTION_CHECK.json](results/ankyra_1x/REPRODUCTION_CHECK.json).
 - `results/` holds every scored statistic behind the figures and tables, for 2.0.1. `pip install -e ".[figures]"`
@@ -1085,7 +1092,8 @@ and checked by `python -m unittest discover -s theory -t .`.
 - **Within-day anchoring.** 1.x took the foundation model's within-day shape unchanged, although that block carries
   36–50% of the hourly squared error on buildings. 2.0 lets the unit's own analog days (same calendar type, within
   ±14 days of the same day of year, same daylight-saving state; up to eight, chosen by temperature) correct it, by the
-  same error-weighted rule the other blocks use. Level, daily path, energy and peak readouts are unchanged.
+  same error-weighted rule the other blocks use. Level, daily path and energy readout are unchanged, and so is the
+  peak readout computed from the pre-projection daily means.
 - **Effect** (post-cutoff test windows, 2.0.0 against 1.x, the contrast that isolates the within-day anchoring):
   Cambridge +2.9%, GoiEner non-household +3.8%, BDG2 +0.9%, HEEW +0.8% (all resolved), EWELD +0.4%, households −0.1%
   (not resolved); Oslo +4.2%, Drammen +3.3%, CINELDI +2.0%, Suzhou park +2.9% on all windows (all resolved). No extra
@@ -1127,35 +1135,37 @@ and checked by `python -m unittest discover -s theory -t .`.
 
 ## Version history
 
+- **2.0.3 (5 October 2026)** — documentation and records only; the code is that of 2.0.2 and every forecast is
+  identical. The reproduction check was re-run on the current code (`results/REPRODUCTION_CHECK.json`; the record of
+  the 2.0.1 package is kept as `results/REPRODUCTION_CHECK_2_0_1.json`). Version statement, data licences
+  ([docs/DATA.md](docs/DATA.md#what-is-and-is-not-in-this-repository)), the framing of the frozen-model checks and the
+  peak-readout statement (pre-projection daily means) corrected.
 - **2.0.2 (5 October 2026)** — input-contract fix: a load value marked `observed=False` reached the foundation-model
   contexts, the off-state and micro-load rules and the analog days, while the historical estimator ignored it, so a
   finite placeholder at an unobserved hour could change the forecast. `forecast()` now masks the record once and every
   part reads the same masked record; a malformed mask is rejected. New test
   `test_values_at_unobserved_hours_do_not_reach_the_forecast`. Forecasts are unchanged whenever `observed` is omitted or
-  equals the finite values, as in every evaluation of the study: the reproduction check of 2.0.1 was repeated on 2.0.2
-  with identical results. HKUST: the temperature scale is now fitted on the days before the first origin (it had included
-  24 hours after the origin of four windows); every HKUST forecast was recomputed, `results/hkust_*`,
-  `results/carrier_swap_*` and Figures 17-18 come from the recomputed forecasts, and no decision changed (largest change
-  0.001 percentage points).
-- **2.0.2 (5 October 2026)** — input-contract fix: a load value marked `observed=False` reached the foundation-model
-  contexts, the off-state and micro-load rules and the analog days, while the historical estimator ignored it, so a
-  finite placeholder at an unobserved hour could change the forecast. `forecast()` now masks the record once and every
-  part reads the same masked record; a malformed mask is rejected. New test
-  `test_values_at_unobserved_hours_do_not_reach_the_forecast`. Forecasts are unchanged whenever `observed` is omitted or
-  equals the finite values, as in every evaluation of the study: the reproduction check of 2.0.1 was repeated on 2.0.2
-  with identical results. HKUST: the temperature scale is now fitted on the days before the first origin (it had included
-  24 hours after the origin of four windows); every HKUST forecast was recomputed, `results/hkust_*`,
-  `results/carrier_swap_*` and Figures 17-18 come from the recomputed forecasts, and no decision changed (largest change
-  0.001 percentage points).
+  equals the finite values, as in every evaluation of the study; the reproduction check gives the same numbers as for
+  2.0.1. HKUST: the temperature scale is now fitted on the days before the first origin (it had included 24 hours after
+  the origin of four windows); every HKUST forecast was recomputed, `results/hkust_*`, `results/carrier_swap_*` and
+  Figures 17-18 come from the recomputed forecasts, and no decision changed (largest change 0.001 percentage points).
+- **Post-hoc exploration (5 October 2026; forecaster unchanged)** — ANKYRA anchored to the covariate-informed
+  Chronos-2-X on twelve populations, with no criterion fixed in advance; with TimesFM and Chronos-2, two
+  foundation-model families in three configurations on the same windows (`results/carrier_swap_x.csv`,
+  `results/carrier_swap_combined.csv`;
+  [docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md#a-post-hoc-exploration-ankyra-anchored-to-chronos-2-x)).
+- **Pre-registered confirmation test (5 October 2026; forecaster unchanged)** — Helsinki city service buildings,
+  201 units: monthly energy vs TimesFM +6.0%, interval crosses zero (primary criterion failed); hourly +4.3%, not
+  resolved (secondary passed); ANKYRA's errors resolvably higher than Chronos-2-X's on both. Not confirmed
+  ([docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki)).
+- **HKUST comparators added (4–5 October 2026; forecaster unchanged)** — Chronos-2-X and TimesFM-X, then Holt-Winters,
+  MSTL and the zero-shot GBT, scored against the frozen ANKYRA forecasts; per-day curves (`results/hkust_by_day.csv`,
+  Figure 18).
 - **Two checks with the forecaster frozen (4 October 2026; forecaster unchanged)** — with Chronos-2 in place of TimesFM,
   anchoring improves the foundation model resolvably on seven of ten populations and is never resolvably worse; on
   a campus dataset never used before (HKUST, 33 units, 134 windows) monthly energy error is 38% below TimesFM's and
   the hourly gain of 8% is borderline ([docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md),
   `results/carrier_swap.csv`, `results/hkust_first_read.csv`).
-- **Pre-registered confirmation test (5 October 2026; forecaster unchanged)** — Helsinki city service buildings,
-  201 units: monthly energy vs TimesFM +6.0%, interval crosses zero (primary criterion failed); hourly +4.3%, not
-  resolved (secondary passed); ANKYRA's errors resolvably higher than Chronos-2-X's on both. Not confirmed
-  ([docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki)).
 - **After the `v2.0.1` tag (4 October 2026; forecaster unchanged)** — LCL households scored once with the frozen 2.0.1
   forecaster (`results/lcl_*`), and two further changes examined and not adopted
   ([docs/LCL_AND_CLOSEOUT.md](docs/LCL_AND_CLOSEOUT.md), `results/closeout_status.json`); sources and preparation of the

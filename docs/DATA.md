@@ -1,6 +1,7 @@
 # Data: sources and preparation
 
-This page says where the eleven evaluation populations come from and how the study prepared them. It is written for
+This page says where the eleven populations of the main evaluation and the two populations of the frozen-model
+checks (HKUST, Helsinki) come from and how the study prepared them. It is written for
 a reader who wants to rebuild the evaluation inputs from the public sources.
 
 ## What is and is not in this repository
@@ -12,7 +13,7 @@ a reader who wants to rebuild the evaluation inputs from the public sources.
   each provider's access route and terms.
 - **Foundation models.** The study used local snapshots with verified hashes:
   - TimesFM 2.5 200M (Apache-2.0), revision `1d952420fba87f3c6dee4f240de0f1a0fbc790e3`;
-  - Chronos-2, revision `29ec3766d36d6f73f0696f85560a422f50e8498c`.
+  - Chronos-2 (`amazon/chronos-2`, Apache-2.0), revision `29ec3766d36d6f73f0696f85560a422f50e8498c`.
 - **Sources.** The references and DOIs are those of
   [EVALUATION.md](EVALUATION.md#populations-and-tiers). Archive identifiers, file sizes and hashes below are the ones
   the study recorded when it obtained the files. Where the study recorded none, this page says so.
@@ -221,7 +222,8 @@ Unit and window counts (all / late) are in the table of
 ### 7. COFACTOR-SBHUB Oslo schools (Norway)
 
 - **Source.** Lien et al., *Data in Brief* 2025, [doi:10.1016/j.dib.2025.112288](https://doi.org/10.1016/j.dib.2025.112288).
-  Data obtained from data.sintef.no; 111,225,480 bytes (the byte count matched the portal's). Hash: not recorded here.
+  Data obtained from data.sintef.no ([doi:10.60609/czgf-5e46](https://doi.org/10.60609/czgf-5e46), CC BY 4.0);
+  111,225,480 bytes (the byte count matched the portal's). Hash: not recorded here.
 - **Load.** 48 school files in the same format as Drammen. Column `ElImp` (Wh per hour) divided by 1,000.
 - **Temperature.** Column `Tout` of each file. Before a building's first row, the hourly mean of the other buildings
   is used; all are in Oslo.
@@ -318,6 +320,9 @@ them. Results: [FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md).
 - **Temperature.** ERA5 2 m temperature at the campus through the Open-Meteo archive interface.
 - **Day types.** Hong Kong general holidays as gazetted by the HKSAR Government = 7.
 - **Windows.** Month-start origins with the common rules (six pseudo-origins, complete context and target).
+- **Temperature-anomaly scale.** Fitted on the 243 complete days before the first origin (it had first been fitted on
+  the first 244 days, which included 24 hours after the origin of four windows; every HKUST forecast was recomputed,
+  [details](FROZEN_MODEL_CHECKS.md#a-population-never-used-before)).
 
 ### 13. Helsinki city service buildings (Finland)
 
@@ -351,7 +356,16 @@ them. Results: [FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md).
   notes say that the preparation scripts for two sources contain a path that fills temperature gaps from the full
   record; whether it was triggered was not assessed.
 - **File hashes.** Hashes are recorded for Drammen, EWELD and HEEW only.
-- **Licences.** Only the licences stated above (Cambridge, HEEW) are recorded. For the others see the provider.
+- **Licences of the sources** (checked on the providers' pages on 5 October 2026): CC BY 4.0 for BDG2 (Zenodo
+  10.5281/zenodo.3887306), the Cambridge estate archive, HEEW, EWELD (figshare 10.6084/m9.figshare.21893808.v3),
+  GoiEner (Zenodo 10.5281/zenodo.7362094 and 10.5281/zenodo.7859413), COFACTOR Drammen (Zenodo
+  10.5281/zenodo.14752397), COFACTOR-SBHUB Oslo (data.sintef.no, 10.60609/czgf-5e46), CINELDI (Zenodo
+  10.5281/zenodo.10361330) and the Suzhou park (OSF 10.17605/OSF.IO/AGK8S);
+  "Creative Commons Attribution" (version not given on the page) for LCL on the London Datastore; CC0 for HKUST
+  (Dryad). The Helsinki data are listed as CC BY 4.0 in the national catalogues, but the provider's pages could not be
+  opened from the study's network, so that licence is not confirmed. The repository redistributes no raw data except the Cambridge example
+  window (CC BY 4.0, attributed in `results/example_window_cambridge.json`); `results/bdg2_micro_load_windows.csv`
+  names BDG2 meters with monthly means and maxima (CC BY 4.0, Miller et al. 2020).
 - **Provider-side processing.** A complete, finite prepared series does not show that every value is a direct
   physical observation. Gap filling by the provider, later quality control of weather archives and the pretraining
   corpora of the foundation models lie outside what this page documents

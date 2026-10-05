@@ -318,7 +318,8 @@ Cambridge estate archive, CC BY 4.0), used in Figures 6 and 7. The CSV has `hour
 the 1,344-hour context), `load_kw`, and from hour 0 on `timesfm_kw` and `ankyra_kw`. The JSON has the building, the
 forecast period, the day types of the context and target days (Monday 0 … Sunday 6, holiday 7) and the source.
 
-**`REPRODUCTION_CHECK.json`** — The 2.0.1 package against the evaluated forecasts on 484 windows of seven populations,
+**`REPRODUCTION_CHECK.json`** — The current package (2.0.3, code of 2.0.2) against the evaluated forecasts on 484
+windows of seven populations,
 including every micro-load window of BDG2 and of the EWELD late windows (263 in all).
 
 - `faces`: the window sets checked. `households` = GoiEner households, `goiener_confirm` = GoiEner non-household,
@@ -333,7 +334,15 @@ including every micro-load window of BDG2 and of the EWELD late windows (263 in 
 - `package_files`: SHA-256 of the eight top-level modules of `ankyra/` as stored in the repository (LF line endings).
   The files under `ankyra/history/` are not listed; for eight of them see the note below.
 
+**`REPRODUCTION_CHECK_2_0_1.json`** — the same check on the 2.0.1 package (4 October 2026); its `package_files` are the
+hashes of the modules at that time, three of which (`__init__.py`, `analog.py`, `core.py`) have changed since.
+
 The 2.0.0 and 1.x records are `ankyra_2_0_0/REPRODUCTION_CHECK.json` and `ankyra_1x/REPRODUCTION_CHECK.json`.
+
+**Paths in the records.** `ankyra/history/provenance.json`, `ankyra/history/frozen_config.json` and the reproduction
+records name files of the study's private working repository (for example `tools_*.py`, `recovery/…`,
+`analysis_outputs/…`) and its internal labels ("v6", "round-2"). These files are not distributed; the paths
+record where each value came from, and the hash-locked files are kept as they were.
 
 **Line endings and the older hashes.** The hashes in `ankyra/history/provenance.json` and those of eight files under
 `ankyra/history/` in `ankyra_1x/REPRODUCTION_CHECK.json` were taken on a Windows working copy with CRLF line endings.
@@ -418,15 +427,16 @@ Columns of the other files:
   - These curves keep all eligible units. `lead_day_metrics.csv` uses a fixed set of units with nonzero errors. The
     two are not comparable, and the LCL curves are not part of Figures 9 and 9b.
 
-## Two checks with the forecaster frozen
+## Checks with the forecaster frozen
 
 **`carrier_swap.csv`** — ANKYRA with Chronos-2 in place of TimesFM (`ANKYRA-C`), ten populations, all windows (`full`) and
 windows after the training cutoff (`late`), hourly and monthly-energy error. Columns: `contrast` (first model vs
 second), `log_ratio` with its 95% unit-and-month interval (`um_low`, `um_high`), `improvement_pct` (positive = first
 model better), `resolved`. A re-evaluation of populations scored before.
 
-**`hkust_first_read.csv`** — (the rows for Chronos-2-X and TimesFM-X were added afterwards, against the already frozen ANKYRA forecasts) the frozen 2.0.1 forecaster scored once on HKUST campus incomer meters (134 windows, 33
-units), ANKYRA against each comparator. `resolved_at_seed_20261004` is the reading under one bootstrap seed; the two
+**`hkust_first_read.csv`** — the frozen 2.0.1 forecaster on the HKUST campus incomer meters (134 windows, 33
+units): one original first read, comparators added afterwards against the frozen ANKYRA forecasts, and every ANKYRA
+forecast recomputed after the causal correction of the temperature scale; ANKYRA against each comparator. `resolved_at_seed_20261004` is the reading under one bootstrap seed; the two
 hourly contrasts against the foundation models are borderline and change with the seed. Not merged into any other
 table ([details and limits](../docs/FROZEN_MODEL_CHECKS.md)). The rows for Holt-Winters, MSTL and GBT (zero-shot) were
 added in the same way.
@@ -434,6 +444,15 @@ added in the same way.
 **`hkust_by_day.csv`** — per-day curves on HKUST for the 14 forecasters, on the 123 windows where the per-unit ridge is
 defined: `hourly_gm_cv_pct` (figure 9 definition) and `energy_to_date_gm_cv_pct` (figure 9b definition), geometric means
 over the fixed set of `units_in_fixed_set` units. Figure 18; computed after scoring, ANKYRA's forecasts frozen.
+
+**`helsinki_confirmation.csv`** — the pre-registered confirmation test on Helsinki city service buildings (ANKYRA 2.0.1
+frozen; 201 units, 1,168 windows; 200 units with non-zero load are scored): ANKYRA against each of the other 13
+forecasters, hourly and monthly energy error, with the 95% unit-and-month interval at seed 20261005. `helsinki_criteria.json` holds the two criteria and their outcome (primary failed, secondary passed; not confirmed).
+`helsinki_by_day.csv` holds the per-day curves (figure 18 c, d). [Details](../docs/FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki).
+
+**`carrier_swap_x.csv`** — post-hoc exploration (not a test): ANKYRA 2.0.1 anchored to Chronos-2-X on the twelve populations, against Chronos-2-X and against the TimesFM-anchored ANKYRA, hourly and monthly energy, with the 95% unit-and-month interval ([details](../docs/FROZEN_MODEL_CHECKS.md#a-post-hoc-exploration-ankyra-anchored-to-chronos-2-x)).
+
+**`carrier_swap_combined.csv`** — the anchoring on two foundation-model families in three configurations (TimesFM; Chronos-2 without and with covariates) on the same windows with one seed: gain of each anchored version over its own foundation model, and the finished forecasters against each other ([details](../docs/FROZEN_MODEL_CHECKS.md#two-families-three-configurations-on-the-same-windows)).
 
 ## Two candidates examined after 2.0.1 and not adopted
 
@@ -449,12 +468,3 @@ scored and neither was adopted; the forecaster is unchanged ([details](../docs/L
   failure of interval accuracy.
 - `status_code` gives the label each stop carries in the study protocol; `status` says the same in words.
 - `lcl`: the counts of the LCL evaluation and a pointer to its files.
-
-**`helsinki_confirmation.csv`** — the pre-registered confirmation test on Helsinki city service buildings (ANKYRA 2.0.1
-frozen; 201 units, 1,168 windows; 200 units with non-zero load are scored): ANKYRA against each of the other 13
-forecasters, hourly and monthly energy error, with the 95% unit-and-month interval at seed 20261005. `helsinki_criteria.json` holds the two criteria and their outcome (primary failed, secondary passed; not confirmed).
-`helsinki_by_day.csv` holds the per-day curves (figure 18 c, d). [Details](../docs/FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki).
-
-**`carrier_swap_x.csv`** — post-hoc exploration (not a test): ANKYRA 2.0.1 anchored to Chronos-2-X on the twelve populations, against Chronos-2-X and against the TimesFM-anchored ANKYRA, hourly and monthly energy, with the 95% unit-and-month interval ([details](../docs/FROZEN_MODEL_CHECKS.md#a-post-hoc-exploration-ankyra-anchored-to-chronos-2-x)).
-
-**`carrier_swap_combined.csv`** — the anchoring on two foundation-model families in three configurations (TimesFM; Chronos-2 without and with covariates) on the same windows with one seed: gain of each anchored version over its own foundation model, and the finished forecasters against each other ([details](../docs/FROZEN_MODEL_CHECKS.md#two-families-three-configurations-on-the-same-windows)).

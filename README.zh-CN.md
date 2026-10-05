@@ -8,7 +8,7 @@
 
 ANKYRA 预测一个单位（一栋楼、一块电表或一个用电点）未来 31 天（744 小时）的逐时用电负荷。它面向需要为许多单位做月前负荷或电量预测、又不想给每个单位单独训练模型的研究者和从业者。它把预训练基础模型 TimesFM 2.5 的零样本预测，与由该单位自己过去的负荷、室外温度和日历得到的估计结合起来；两者的权重，取决于各自对这个单位此前各月预测得有多准。
 
-当前版本：**2.0.1**（[改了什么](#20-与-201-改了什么) · [版本历史](#版本历史)）。
+当前包版本：**2.0.3**；预测模型是 ANKYRA 2.0.1，自 2026-10-03 起没有改动（[改了什么](#20-与-201-改了什么) · [版本历史](#版本历史)）。
 
 ![ANKYRA 架构](figures/fig1_architecture.png)
 
@@ -57,7 +57,8 @@ evaluation/          由预测和实际负荷给一个人群评分；附可运�
 results/             评分统计量（CSV / JSON）与复现记录；2.0.0 和 1.x 的在子文件夹里
 figures/             make_figures.py 与全部图（PDF 和 PNG）
 docs/                METHOD.md（公式与常数）、EVALUATION.md（协议与完整表格）、
-                     DATA.md（来源与整理）、LCL_AND_CLOSEOUT.md（LCL 住户；两项未采纳的改动）
+                     DATA.md（来源与整理）、LCL_AND_CLOSEOUT.md（LCL 住户；两项未采纳的改动）、
+                     FROZEN_MODEL_CHECKS.md（预测器冻结后的核查）
 ```
 
 有意不包含的内容：
@@ -503,7 +504,7 @@ PatchTST 是通道独立的，所以有没有这些输入，它的预测都相�
 
 ## 预测器冻结后的三项核查
 
-三项都用已发布的 2.0.1 包、全部默认设置完成，各自的方案在运行前写定（前两项在 2026-10-04，第三项在 10-05）。它们不改变预测器，也不改变上面任何一张表。细节、局限与文件见 [docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md)。
+三项都用已发布的 2.0.1 预测器、全部默认设置完成，各自的方案在运行前写定（前两项在 2026-10-04，第三项在 10-05）；本节还报告一项事后探索（锚定到 Chronos-2-X，10-05），它没有事先写定标准。它们都不改变预测器，也不改变上面任何一张表。细节、局限与文件见 [docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md)。
 
 **同一方法：两个模型家族、三种配置。** `ankyra.forecast` 把基础模型的预测当作输入，所以锚定可以原样套在另一个基础模型上，不重新选择任何东西。一共做了三次：TimesFM（发布的预测器）、Chronos-2（10-04，事先写定的新臂，十个人群）和带协变量的 Chronos-2-X（10-05，赫尔辛基结果之后的事后探索，全部 12 个人群）。下表是每个锚定版本相对它自己的基础模型的改进，三者在同一批窗口、同一个自助种子下评分。`*` 表示单位×月份 95% 区间不含零、锚定版本更好；没有任何一格明确更差；`—` 表示没有做。
 
@@ -548,7 +549,7 @@ PatchTST 是通道独立的，所以有没有这些输入，它的预测都相�
 
 - 月电量误差比 TimesFM 低 6.0%，但区间跨零：主标准**未通过**。
 - 逐时误差比 TimesFM 低 4.3%，不明确：次标准通过。
-- **ANKYRA 的两项误差都明确高于 Chronos-2-X**：逐时高 6.3%，月电量高 13.9%。14 个模型的平均单位名次中它第一（4.08），ANKYRA 第二（4.33）。
+- **ANKYRA 的两项误差都明确高于 Chronos-2-X**：逐时高 6.3%，月电量高 13.9%。14 个模型的平均单位名次中 Chronos-2-X 第一（4.08），ANKYRA 第二（4.33）。
 - 对朴素、剖面、统计模型和零样本 GBT，ANKYRA 的逐时优势为 8–28%，多数明确，与其他人群一致。
 
 这是项目里唯一一次事先写定标准、单位数足以分辨结果的测试。它没有确认在十个人群和香港科大上看到的电量优势（[细节](docs/FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki)；`results/helsinki_confirmation.csv`）。
@@ -585,7 +586,7 @@ PatchTST 是通道独立的，所以有没有这些输入，它的预测都相�
 
 - **相似日。** 对预测期的每一天，取单位过去同日历类型、与该日在一年中的日序相差 ±14 天以内、处于同一夏令时状态的完整日子；至多八天，取日平均温度与该日气候态最接近的。它们的形状各自除以其前 744 小时的尺度，取平均，再按起报点的尺度放回。
 - **信任。** 对月内每个提前期块，$w=w^T+\omega_k\,(S-w^T)$，其中 $\omega_k$ 是相似日形状对模型形状的最小二乘权重，在该单位三个已完成的伪起报点窗口上拟合，截到 $[0,1]$，按 $n/(n+2)$ 向零收缩，上限为 ½。没有证据就用模型的形状，也就是 1.x 的预测。
-- **它不动的部分。** 两种形状的日均值都为零：水平、日路径、电量读出和峰值读出与 1.x 完全相同。三个伪起报点预测本来就在 ANKYRA 已经计算的六个之中。2.0.1 的微负荷窗口是另一回事：在那里整条轨迹是 TimesFM 的。
+- **它不动的部分。** 两种形状的日均值都为零：投影前的日均值，以及由它们得到的水平、日路径、电量读出和峰值读出，与 1.x 完全相同（经非负投影后交付的轨迹，以及由它算出的读出，在投影生效的窗口上可能不同）。三个伪起报点预测本来就在 ANKYRA 已经计算的六个之中。2.0.1 的微负荷窗口是另一回事：在那里整条轨迹是 TimesFM 的。
 - **它在哪里起作用。** 在作息固定的建筑上，几乎每个窗口都被锚定（平均信任 0.20–0.33），逐时误差下降 0.8–4.2%（2.0.0 对 1.x），并随提前期增大；在住户上信任接近零（0.08），预测不变。
 - **它是怎么选出来的，证据有多强。** 这条规则是相似日思路的第六个版本。前四版在开发数据上没有达到“不造成损害”的标准，第五版在测试人群上没有达到。第六版从事先写定的一族候选里选出，依据是九个设计集（三个开发人群和六个测试人群的截点前窗口），在 CINELDI 和苏州园区上验证，再在截点后的测试窗口上按冻结协议评了一次。此后又有一轮尝试了六个伪起报点、一个相似日的日路径候选和更细的交接块，什么都没有采纳。完整的记录，连同各项标准及其数值，见 [docs/EVALUATION.md](docs/EVALUATION.md#within-day-anchoring-20)。
 
@@ -649,7 +650,7 @@ $$U=\max_d(\hat L_d+A_{\tau_d}).$$
 ## 可复现性
 
 - **参考实现复现了评估中的预测**：在七个人群的 484 个窗口上（其中包括 BDG2 的全部微负荷窗口和 EWELD 截点后窗口里的全部微负荷窗口，共 263 个），2.0.1 的预测与评分所用的预测一致到其 float32 存储的精度（最大相对差 6.6×10⁻⁸）。2.0.0 模式（`micro_load_rule=False`）与 2.0.0 评估存下的预测一致（5.7×10⁻⁸），与评分面板里的 2.0.0 一臂直接比较也一致（6.6×10⁻⁸）。1.x 模式与评估中的 1.x 预测精确一致（最大差 3.4×10⁻¹³ kW）。在微负荷窗口上，预测与 TimesFM 的预测逐位相同；在其余窗口上，与 2.0.0 模式逐位相同。TimesFM 适配器、峰值算子和区间函数没有改动，在 1.x 的记录里是精确一致的。
-  见 [results/REPRODUCTION_CHECK.json](results/REPRODUCTION_CHECK.json)；2.0.0 和 1.x 的记录是 [results/ankyra_2_0_0/REPRODUCTION_CHECK.json](results/ankyra_2_0_0/REPRODUCTION_CHECK.json) 和 [results/ankyra_1x/REPRODUCTION_CHECK.json](results/ankyra_1x/REPRODUCTION_CHECK.json)。
+  当前记录 [results/REPRODUCTION_CHECK.json](results/REPRODUCTION_CHECK.json) 是在本发布的代码上取的（包 2.0.3，代码同 2.0.2）；2.0.1 包的记录是 [results/REPRODUCTION_CHECK_2_0_1.json](results/REPRODUCTION_CHECK_2_0_1.json)；2.0.0 和 1.x 的记录是 [results/ankyra_2_0_0/REPRODUCTION_CHECK.json](results/ankyra_2_0_0/REPRODUCTION_CHECK.json) 和 [results/ankyra_1x/REPRODUCTION_CHECK.json](results/ankyra_1x/REPRODUCTION_CHECK.json)。
 - `results/` 保存图和表背后的每一个评分统计量，对应 2.0.1。先 `pip install -e ".[figures]"`，再 `python figures/make_figures.py`，可由它重新生成全部图。2.0.0 的结果文件保留在 `results/ankyra_2_0_0/`，1.x 的在 `results/ankyra_1x/`。2.0.1 新增两个文件：[`bdg2_micro_load_windows.csv`](results/bdg2_micro_load_windows.csv) 逐个列出微负荷规则改变的 46 个窗口；[`intervals_winkler_contrasts.csv`](results/intervals_winkler_contrasts.csv) 给出 2.0.1 和 2.0.0 的 Winkler 对比及其区间（[文件清单](results/README.md)）。
 - **核对一个数。** 表里的每个数都是 `results/` 里某个文件的一行。以测试表里剑桥那一行为例：
 
@@ -667,7 +668,7 @@ $$U=\max_d(\hat L_d+A_{\tau_d}).$$
 
 ## 2.0 与 2.0.1 改了什么
 
-- **日内锚定。** 1.x 原样采用基础模型的日内形状，而这一块在建筑上占逐时平方误差的 36–50%。2.0 让单位自己的相似日（同日历类型、与该日在一年中的日序相差 ±14 天以内、同一夏令时状态；至多八天，按温度选取）来修正它，用的是其余两块已经在用的按误差定权的规则。水平、日路径、电量读出和峰值读出不变。
+- **日内锚定。** 1.x 原样采用基础模型的日内形状，而这一块在建筑上占逐时平方误差的 36–50%。2.0 让单位自己的相似日（同日历类型、与该日在一年中的日序相差 ±14 天以内、同一夏令时状态；至多八天，按温度选取）来修正它，用的是其余两块已经在用的按误差定权的规则。水平、日路径和电量读出不变，由投影前日均值算出的峰值读出也不变。
 - **效果**（截点后的测试窗口，2.0.0 对 1.x，这个对比单独反映日内锚定）：剑桥 +2.9%、GoiEner 非住户 +3.8%、BDG2 +0.9%、HEEW +0.8%（都显著），EWELD +0.4%、住户 −0.1%（不显著）；在全部窗口上，Oslo +4.2%、Drammen +3.3%、CINELDI +2.0%、苏州园区 +2.9%（都显著）。不增加基础模型调用。（截点后窗口的数值列在 [docs/EVALUATION.md](docs/EVALUATION.md#within-day-anchoring-20) 的表中；`results/ablation.csv` 给出的是全部窗口上的对比。）
 - **2.0.1：微负荷规则。** 如果上下文的 1,344 小时全都在零附近 10⁻³ kW 以内（max |负荷| ≤ 10⁻³ kW），就原样返回 TimesFM 的预测。这与关停规则的动作相同；关停规则在最后 168 小时都不超过 10⁻⁶ kW 时触发（[定义](docs/METHOD.md#off-state-and-micro-load-rules)）。
   - **为什么是这个阈值。** 它沿用归一化尺度下限的数值，不是新常数。连续八周都落在这个下限以内的记录，按已关停处理，和读数为零的记录一样。关停规则接不住它，因为它的读数很小，但不是零。
@@ -680,9 +681,12 @@ $$U=\max_d(\hat L_d+A_{\tau_d}).$$
 
 ## 版本历史
 
-- **2.0.2（2026-10-05）**：修正输入契约。标为 `observed=False` 的负荷值以前会进入基础模型上下文、关停与微负荷规则和类比日分支，而历史估计器会屏蔽它，所以未观测位置上的有限占位值可能改变预测。现在 `forecast()` 先统一掩码一次，各分支读同一份数据；格式不对的掩码直接报错。新增测试 `test_values_at_unobserved_hours_do_not_reach_the_forecast`。只要不传 `observed` 或它等于有限值的位置（研究中的全部评估都是如此），预测就不变：2.0.1 的复现核对在 2.0.2 上重跑，结果完全相同。香港科大：气温尺度改用首个起报点之前的日子拟合（原来对四个窗口包含了起报后 24 小时），全部预测重算；`results/hkust_*`、`results/carrier_swap_*` 与图 17–18 来自重算后的预测，没有任何判定改变（最大变化 0.001 个百分点）。
-- **预测器冻结后的两项核查（2026-10-04；预测器未改）**：把 TimesFM 换成 Chronos-2，锚定在十个人群中的七个上明确改进了基础模型，没有一个明确变差；在一个从未用过的校园数据集（香港科技大学，33 个单位、134 个窗口）上，月电量误差比 TimesFM 低 38%，逐时误差低 8% 但只是边缘（[docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md)、`results/carrier_swap.csv`、`results/hkust_first_read.csv`）。
-- **事先登记的确认测试（2026-10-05；预测器未改）**：赫尔辛基市政服务建筑，201 个单位。月电量对 TimesFM 好 6.0%，区间跨零（主标准未通过）；逐时好 4.3%，不明确（次标准通过）；ANKYRA 的两项误差都明确高于 Chronos-2-X。确认未成立（[docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki)）。
+- **2.0.3（2026-10-05）**：只改文档和记录；代码与 2.0.2 相同，所有预测不变。复现核对在当前代码上重跑（`results/REPRODUCTION_CHECK.json`；2.0.1 包的记录保留为 `results/REPRODUCTION_CHECK_2_0_1.json`）。更正了版本说明、数据许可（[docs/DATA.md](docs/DATA.md#what-is-and-is-not-in-this-repository)）、冻结后核查的定性和峰值读出的说法（只对投影前日均值成立）。
+- **2.0.2（2026-10-05）**：修正输入契约。标为 `observed=False` 的负荷值以前会进入基础模型上下文、关停与微负荷规则和相似日分支，而历史估计器会屏蔽它，所以未观测位置上的有限占位值可能改变预测。现在 `forecast()` 先统一掩码一次，各分支读同一份数据；格式不对的掩码直接报错。新增测试 `test_values_at_unobserved_hours_do_not_reach_the_forecast`。只要不传 `observed` 或它等于有限值的位置（研究中的全部评估都是如此），预测就不变；复现核对给出与 2.0.1 相同的数字。香港科大：气温尺度改用首个起报点之前的日子拟合（原来对四个窗口包含了起报后 24 小时），全部预测重算；`results/hkust_*`、`results/carrier_swap_*` 与图 17–18 来自重算后的预测，没有任何判定改变（最大变化 0.001 个百分点）。
+- **事后探索（2026-10-05；预测器未改）**：把 ANKYRA 锚定到带协变量的 Chronos-2-X，在 12 个人群上评分，没有事先写定标准；连同 TimesFM 和 Chronos-2，构成两个模型家族、三种配置在同一批窗口上的对比（`results/carrier_swap_x.csv`、`results/carrier_swap_combined.csv`；[docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md#a-post-hoc-exploration-ankyra-anchored-to-chronos-2-x)）。
+- **事先登记的确认测试（2026-10-05；预测器未改）**：赫尔辛基市政服务建筑，201 个单位。月电量对 TimesFM 好 6.0%，区间跨零（主标准未通过）；逐时好 4.3%，不显著（次标准通过）；ANKYRA 的两项误差都显著高于 Chronos-2-X。确认未成立（[docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki)）。
+- **香港科大补评（2026-10-04 至 05；预测器未改）**：先补 Chronos-2-X 和 TimesFM-X，再补 Holt-Winters、MSTL 和零样本 GBT，都对照已冻结的 ANKYRA 预测评分；逐日曲线（`results/hkust_by_day.csv`，图 18）。
+- **预测器冻结后的两项核查（2026-10-04；预测器未改）**：把 TimesFM 换成 Chronos-2，锚定在十个人群中的七个上显著改进了基础模型，没有一个显著变差；在一个从未用过的校园数据集（香港科技大学，33 个单位、134 个窗口）上，月电量误差比 TimesFM 低 38%，逐时误差低 8% 但只是边缘（[docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md)、`results/carrier_swap.csv`、`results/hkust_first_read.csv`）。
 - **`v2.0.1` 标签之后（2026-10-04；预测器未改）**：LCL 住户用冻结的 2.0.1 预测器评了一次（`results/lcl_*`），另有两项改动经过考察但没有采纳（[docs/LCL_AND_CLOSEOUT.md](docs/LCL_AND_CLOSEOUT.md)、`results/closeout_status.json`）；数据的来源与整理（[docs/DATA.md](docs/DATA.md)）；评分模块 [`evaluation/`](evaluation/)，附可运行示例和它的测试。`v2.0.1` 标签标记的是预测器；这些文件是在它之后加入的。
 - **2.0.1（2026-10-03）**：微负荷规则（`ankyra/core.py`，`MICRO_KW = 1e-3`）：上下文的 1,344 小时全都在零附近 10⁻³ kW 以内时，交给基础模型，和关停规则对已关停单位的做法一样；参数 `micro_load_rule`（`False` 复现 2.0.0；再加 `within_anchor=False` 复现 1.x）和输出字段 `micro_load`。在十个评过分的人群上，这条规则改变 BDG2 九块电表的 46 个窗口；其余九个人群逐位相同。规则是看到 BDG2 的 2.0.0 测试结果之后写的：它在那里的效果说明它改变了什么，不是对它的检验。它是 2.0.0 评估之后写定的一轮四个候选之一；另外三个没有采纳。结果、图和文档按 2.0.1 重新导出；2.0.0 的文件保留在 `results/ankyra_2_0_0/`；新增结果文件 `bdg2_micro_load_windows.csv` 和 `intervals_winkler_contrasts.csv`；新增 10 个针对这条规则的测试。图号换回：图 9 重新是按预测日的逐时损失；电量图在 2.0.0 的结果补充里曾编为图 9，现在是图 9b；两张图都放在本 README 里。
 - **2.0.0 结果补充（2026-10-03；预测器未改）**：按预测日的电量误差（图 9；按日的逐时损失改为图 9b）、逐块归因（图 14）、排名检验（图 15）、十个人群上的区间（图 16）、标度误差、历史长度、对损坏上下文的稳健性、对常数的敏感性；分周文件按 2.0 重算；共用的信息集在本 README 里列成表。

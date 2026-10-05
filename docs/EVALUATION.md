@@ -1189,14 +1189,19 @@ issued every 744 hours, or when a window is re-run.
     against Chronos-2-X in both versions, neither resolved. The number of resolved contrasts in that reading still
     depends on the rule (14 of 20 under 2.0.1, 11 under 2.0.0).
   A meter that reads low but above 10⁻³ kW anywhere in its context is not covered by either rule.
+- **A pre-registered confirmation was not established.** On Helsinki city service buildings (201 units) monthly
+  energy error was 6.0% below TimesFM's with an interval that includes zero, and ANKYRA's hourly and monthly energy
+  errors were 6.3% and 13.9% higher than those of the covariate-informed Chronos-2-X, both resolved
+  ([FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki)).
 - **Interval.** The interval was scored for the benchmark on households only; on the ten populations it was applied
   afterwards as a description. It is not sharper than Chronos-2's native quantiles, its coverage falls with lead
   time, and it should not be used for units that switch off ([Readouts](#readouts)).
 
 ## Reproduction record
 
-[`results/REPRODUCTION_CHECK.json`](../results/REPRODUCTION_CHECK.json) records the check of the 2.0.1 package against
-the evaluated forecasts. It covers 484 windows of seven populations: post-cutoff windows of Cambridge, households,
+[`results/REPRODUCTION_CHECK.json`](../results/REPRODUCTION_CHECK.json) records the check of the current package
+(2.0.3, whose code is that of 2.0.2) against the evaluated forecasts; the numbers are those of the earlier check of
+the 2.0.1 package, kept as [`results/REPRODUCTION_CHECK_2_0_1.json`](../results/REPRODUCTION_CHECK_2_0_1.json). It covers 484 windows of seven populations: post-cutoff windows of Cambridge, households,
 GoiEner non-household, BDG2 and EWELD; pre-cutoff windows of BDG2; Oslo and the Suzhou park. They include every
 micro-load window of BDG2 (46) and of the EWELD post-cutoff windows (217), 263 in all.
 
@@ -1219,7 +1224,7 @@ The earlier records are kept: [`results/ankyra_2_0_0/REPRODUCTION_CHECK.json`](.
 run on the 2.0.0 code before the version string was raised) and
 [`results/ankyra_1x/REPRODUCTION_CHECK.json`](../results/ankyra_1x/REPRODUCTION_CHECK.json) (ANKYRA forecasts on 613
 windows of two populations including every off-state window, the TimesFM adapter, the peak operator, the within-day
-default and the household intervals, all exact). Those components are unchanged in 2.0 and 2.0.1.
+default and the household intervals, all exact). Those components are unchanged in 2.0, 2.0.1, 2.0.2 and 2.0.3.
 
 **File hashes and line endings.** Two records carry SHA-256 values of the frozen estimator's files:
 `ankyra/history/provenance.json` (the six modules `_climate.py`, `_day.py`, `_eo.py`, `_level.py`, `_signature.py`,

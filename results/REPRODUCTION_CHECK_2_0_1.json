@@ -1,6 +1,6 @@
 {
- "utc": "2026-10-05T19:44:37.822690+00:00",
- "package_version": "2.0.3",
+ "utc": "2026-10-04T18:37:59.557332+00:00",
+ "package_version": "2.0.1",
  "faces": {
   "cambridge_late": {
    "subset": "late",
@@ -15,7 +15,7 @@
    "flag_agrees_with_rule": true,
    "non_micro_windows_identical_to_2_0_0": true,
    "micro_windows_equal_timesfm": null,
-   "median_seconds_cpu_side": 0.5362849235534668
+   "median_seconds_cpu_side": 0.6983941793441772
   },
   "households_late": {
    "subset": "late",
@@ -30,7 +30,7 @@
    "flag_agrees_with_rule": true,
    "non_micro_windows_identical_to_2_0_0": true,
    "micro_windows_equal_timesfm": null,
-   "median_seconds_cpu_side": 0.39264965057373047
+   "median_seconds_cpu_side": 0.5076855421066284
   },
   "goiener_confirm_late": {
    "subset": "late",
@@ -45,7 +45,7 @@
    "flag_agrees_with_rule": true,
    "non_micro_windows_identical_to_2_0_0": true,
    "micro_windows_equal_timesfm": null,
-   "median_seconds_cpu_side": 0.40065526962280273
+   "median_seconds_cpu_side": 0.5912096500396729
   },
   "bdg2_late": {
    "subset": "late",
@@ -60,7 +60,7 @@
    "flag_agrees_with_rule": true,
    "non_micro_windows_identical_to_2_0_0": true,
    "micro_windows_equal_timesfm": true,
-   "median_seconds_cpu_side": 0.001001119613647461
+   "median_seconds_cpu_side": 0.0010023117065429688
   },
   "bdg2_early": {
    "subset": "early",
@@ -75,7 +75,7 @@
    "flag_agrees_with_rule": true,
    "non_micro_windows_identical_to_2_0_0": true,
    "micro_windows_equal_timesfm": true,
-   "median_seconds_cpu_side": 0.29006409645080566
+   "median_seconds_cpu_side": 0.3739285469055176
   },
   "eweld_late": {
    "subset": "late",
@@ -105,7 +105,7 @@
    "flag_agrees_with_rule": true,
    "non_micro_windows_identical_to_2_0_0": true,
    "micro_windows_equal_timesfm": null,
-   "median_seconds_cpu_side": 0.4961543083190918
+   "median_seconds_cpu_side": 0.676105260848999
   },
   "park_all": {
    "subset": "all",
@@ -120,17 +120,17 @@
    "flag_agrees_with_rule": true,
    "non_micro_windows_identical_to_2_0_0": true,
    "micro_windows_equal_timesfm": null,
-   "median_seconds_cpu_side": 0.30725371837615967
+   "median_seconds_cpu_side": 0.40720057487487793
   }
  },
  "pass": true,
  "micro_load_windows_checked_total": 263,
  "criterion": "2.0.0 mode and 2.0.1 vs panel: relative to each window's largest value, <= 1e-5 (references stored as float32); 1.x mode: absolute <= 1e-6 kW; non-micro windows: 2.0.1 bit-identical to the package's 2.0.0 mode; micro-load windows: bit-identical to the TimesFM forecast at the origin",
  "package_files": {
-  "__init__.py": "050071362cfe8c753456d9f20637a53ed84b237a34528a2b0a27b5f3533ca1f2",
-  "analog.py": "8f8fbf2d497c40874a9e5b44e23c4b246daa061328b2749cffac812333e6d89e",
+  "__init__.py": "2398bf2586430121b195c7e4690c43dfeb2370b4d5ddd0101a2a7867fc573824",
+  "analog.py": "1761c77b97d0c520c431ce954b35ea41b3ced1e00d6337cbed554da20ca8c71f",
   "blocks.py": "cff12b09ab5fcf0076ac16dfd359906b1e6cfbe6b59db28b88272d66e5c58aa7",
-  "core.py": "54ae3d8b3e00e7163158008de6e37a05a228454c3fbc1d2da0017add316d7d4e",
+  "core.py": "d0c80bcb7befecc92ba6a66be9357dbfb66ba1e76b7f6f566784398ae1d8b143",
   "metrics.py": "8d5470290b03a05331abcd74b0e8cb970e21939f6016e74467fb78459f629382",
   "readouts.py": "48c2ea1474ee0d48ad011b032682378336b1d21bc1e9007eb077d80e0729244a",
   "synthetic.py": "5afe56dd0c85282d5faae914cbce86ea0f03458f85c516e7d37672945529e451",

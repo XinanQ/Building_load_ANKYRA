@@ -1,7 +1,8 @@
 # Checks with the forecaster frozen (4–5 October 2026)
 
-Both were run after ANKYRA 2.0.1 was fixed, with the public package and all its defaults. Neither changes the
-forecaster, the result tables of the ten populations, or the figures. Each protocol was written before its run.
+All were run after ANKYRA 2.0.1 was fixed, with the public package and all its defaults. None changes the
+forecaster or the result tables of the ten populations. The first three items each had a protocol written before
+the run; the fourth is a post-hoc exploration with no criterion fixed in advance.
 
 - [Another foundation model](#another-foundation-model): Chronos-2 in place of TimesFM; with the Chronos-2-X run, two foundation-model families in three configurations on the same windows.
 - [A population never used before](#a-population-never-used-before): the HKUST campus; one original first read, then added comparators, a carrier exploration and a causal correction.
@@ -47,7 +48,8 @@ released forecaster stays the TimesFM-based one.
 - Monthly energy error improves resolvably on 8 of ten.
 - The two finished forecasters are not separated on nine populations. On households the Chronos-2-based one is
   2.9% worse; Chronos-2 itself is 4.6% worse than TimesFM there.
-- Limits: two foundation models were tested, not foundation models in general; the constants were selected under
+- Limits: two foundation-model families were tested (three configurations with the Chronos-2-X run below), not
+  foundation models in general; the constants were selected under
   TimesFM; the populations were not new. The ANKYRA-vs-TimesFM column is recomputed with this experiment's bootstrap
   seed, so its intervals can differ in the third decimal from `benchmark_pairwise.csv`.
 
