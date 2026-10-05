@@ -1157,8 +1157,8 @@ def fig_frozen_checks():
     ax.legend(handles=[Line2D([], [], marker="o", ls="-", color=CHR, markersize=3.5, lw=1.0, label="Chronos-2 anchored vs Chronos-2"),
                        Line2D([], [], marker="o", ls="-", color=FM, markersize=3.5, lw=1.0, label="TimesFM anchored (ANKYRA) vs TimesFM")],
               loc="upper center", bbox_to_anchor=(0.42, -0.2), fontsize=5.9, ncol=1, handletextpad=0.4)
-    comps = ["TimesFM 2.5", "Chronos-2", "Per-unit ridge", "Previous-month profile", "Four-week profile", "Last-year profile", "Seasonal naive (day)", "Seasonal naive (week)"]
-    colour = {"TimesFM 2.5": FM, "Chronos-2": CHR, "Per-unit ridge": "#8C6D31"}
+    comps = ["Chronos-2-X", "TimesFM-X", "TimesFM 2.5", "Chronos-2", "Per-unit ridge", "Previous-month profile", "Four-week profile", "Last-year profile", "Seasonal naive (day)", "Seasonal naive (week)"]
+    colour = {"Chronos-2-X": "#253494", "TimesFM-X": "#253494", "TimesFM 2.5": FM, "Chronos-2": CHR, "Per-unit ridge": "#8C6D31"}
     yb = np.arange(len(comps))[::-1].astype(float)
     for k, (kind, title, lim) in enumerate((("hourly", "b   HKUST: hourly error", (-12, 45)), ("energy", "c   HKUST: monthly energy error", (-35, 75)))):
         bx = fig.add_subplot(gs[k + 2]); bx.axvspan(0, lim[1], color="#F3F6FA", zorder=0); bx.axvline(0, color="#7F7F7F", lw=0.6, zorder=1)
@@ -1178,7 +1178,7 @@ def fig_frozen_checks():
              fontsize=6.3, color=GREY, va="top")
     fig.text(0.01, 0.945, "b, c: one scoring on HKUST campus incomer meters, never read before (134 windows, 30 effective units). 95% unit-and-month intervals; filled = interval excludes zero;",
              fontsize=6.3, color=GREY, va="top")
-    fig.text(0.01, 0.905, "diamonds = borderline (the interval ends at zero and the reading changes with the bootstrap seed). The per-unit ridge is scored on 123 windows.",
+    fig.text(0.01, 0.905, "diamonds = borderline (the interval ends at zero and the reading changes with the bootstrap seed). Ridge: 123 windows. The two -X models were added afterwards.",
              fontsize=6.3, color=GREY, va="top")
     save(fig, "fig17_frozen_checks")
 

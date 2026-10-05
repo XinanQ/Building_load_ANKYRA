@@ -15,3 +15,7 @@ energy,Four-week profile,134,33,-0.522273,-0.807774,0.136068,40.683,not resolved
 energy,Previous-month profile,134,33,-0.490901,-0.763070,0.026947,38.793,not resolved,26
 energy,Last-year profile,134,33,-0.298508,-0.640757,0.244079,25.808,not resolved,17
 energy,Per-unit ridge,123,32,-0.267808,-0.655723,0.086340,23.495,not resolved,20
+hourly,Chronos-2-X,134,33,-0.033055,-0.129291,0.017565,3.252,not resolved,22
+hourly,TimesFM-X,134,33,-0.048305,-0.174160,0.033430,4.716,not resolved,22
+energy,Chronos-2-X,134,33,-0.040571,-0.599914,0.658575,3.976,not resolved,20
+energy,TimesFM-X,134,33,-0.323536,-0.626507,0.123082,27.641,not resolved,24

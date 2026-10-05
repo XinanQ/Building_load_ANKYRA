@@ -425,7 +425,7 @@ windows after the training cutoff (`late`), hourly and monthly-energy error. Col
 second), `log_ratio` with its 95% unit-and-month interval (`um_low`, `um_high`), `improvement_pct` (positive = first
 model better), `resolved`. A re-evaluation of populations scored before.
 
-**`hkust_first_read.csv`** — the frozen 2.0.1 forecaster scored once on HKUST campus incomer meters (134 windows, 33
+**`hkust_first_read.csv`** — (the rows for Chronos-2-X and TimesFM-X were added afterwards, against the already frozen ANKYRA forecasts) the frozen 2.0.1 forecaster scored once on HKUST campus incomer meters (134 windows, 33
 units), ANKYRA against each comparator. `resolved_at_seed_20261004` is the reading under one bootstrap seed; the two
 hourly contrasts against the foundation models are borderline and change with the seed. Not merged into any other
 table ([details and limits](../docs/FROZEN_MODEL_CHECKS.md)).

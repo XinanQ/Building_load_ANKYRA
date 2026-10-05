@@ -305,9 +305,15 @@ history, above all when the monthly energy or the later weeks of the month matte
 not the better choice in these cases:
 
 - **Households.** On GoiEner households zero-shot TimesFM has the lower hourly error (3.9%, resolved); on LCL
-  households the two are not separated. ANKYRA's monthly energy error is still lower.
+  households the two are not separated. ANKYRA's monthly energy error is still lower. The weakness does not come from
+  TimesFM: with Chronos-2 as the foundation model it is the same
+  ([check](#two-checks-with-the-forecaster-frozen)).
 - **The first days of the month.** On day 1 the zero-shot foundation models are lower on every population.
-- **Less than two years of history.** ANKYRA is not separated from TimesFM alone.
+- **Less than two years of history.** ANKYRA is not separated from TimesFM alone on the ten populations. On the
+  HKUST blind test, where most windows have less than two years, the hourly gain is borderline and the energy gain
+  is resolved.
+- **Coarsely quantised meters.** Where the meter's step is a quarter of the mean load or more (HKUST, 11 units),
+  ANKYRA's hourly error does not differ from TimesFM's.
 - **Buildings ruled by closure days.** On Norwegian schools a trained cross-unit model with calendar features is
   12.8% better.
 - **A context with a single large spike.** The hourly error rises and the peak readout, which takes the largest
@@ -317,7 +323,7 @@ not the better choice in these cases:
 - **Sites in the southern hemisphere.** The annual temperature harmonic has a fixed phase, with its coldest day in
   January, and a nonnegative amplitude. Every evaluated population is in the northern hemisphere.
 
-The evidence for the first six points is in the results sections below. The last two follow from the code.
+The evidence for the first seven points is in the results sections below. The last two follow from the code.
 
 ## Terms used on this page
 
@@ -787,7 +793,10 @@ never resolvably worse, and negative only on households in both cases. The two f
 on nine populations. This is a re-evaluation of populations scored before, with constants chosen under TimesFM and two
 foundation models only (`results/carrier_swap.csv`).
 
-**A population never used before.** The frozen forecaster was scored once on the incomer meters of the HKUST campus
+**A blind test on a population never used before.** "Blind" here means that no rule or constant of ANKYRA was
+chosen with this population in view, that the units and the scoring were fixed before any load value was opened, and
+that the forecasts were saved before the targets were read. It does not mean that the foundation models had never
+seen the data: whether TimesFM or Chronos-2 was pretrained on it was not checked. The frozen forecaster was scored once on the incomer meters of the HKUST campus
 (Hong Kong; 134 windows, 33 units, 30 of them non-zero), a dataset the project had not read. Units were fixed from
 the metadata before any load value was opened, and forecasts were saved before the targets were read.
 
@@ -795,8 +804,10 @@ the metadata before any load value was opened, and forecasts were saved before t
   seed tried.
 - Hourly error is 8% below TimesFM's and 11% below Chronos-2's, but both intervals end at zero: **borderline, not
   resolved**. The meters are quantised at 10 or 100 kWh, and the hourly gain comes from the 19 finely metered units.
-- Against naive and profile forecasts the hourly gain is 12–24% and resolved. Covariate-informed and trained baselines
+- Against naive and profile forecasts the hourly gain is 12–24% and resolved. Trained baselines
   were not run.
+- The two covariate-informed foundation models were added afterwards: ANKYRA is **not separated** from Chronos-2-X
+  (+3.3% hourly) or TimesFM-X (+4.7%), and its mean unit rank stays first of ten (2.52; next 4.03).
 - One small site scored once: it is not merged into the tables above and does not show that the forecaster generalises
   (`results/hkust_first_read.csv`).
 

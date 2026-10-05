@@ -53,7 +53,10 @@ File: [`results/carrier_swap.csv`](../results/carrier_swap.csv) (all windows and
 
 ## A population never used before
 
-**Question.** What does the frozen forecaster do on data the project had never read?
+**Question.** What does the frozen forecaster do on data the project had never read? This is a blind test in the
+following sense: no rule or constant of ANKYRA was chosen with this population in view, the units and the scoring
+plan were fixed before any load value was opened, and the forecasts were saved before the targets were read. It is
+not blind for the foundation models, whose pretraining data were not checked.
 
 **Data.** The smart-meter database of the Hong Kong University of Science and Technology campus (Li, Wang, Qu, Chui and Leung-Shea, *Scientific Data* 11, 1284, 2024, doi:10.1038/s41597-024-04106-1; data on Dryad,
 doi:10.5061/dryad.k3j9kd5h6, CC0; 1 January 2022 to 27 May 2024). Units are the meters of the incomer circuit
@@ -69,6 +72,8 @@ are zero, and the units drop out of the ratio (30 effective units). 125 windows 
 
 | ANKYRA against | Hourly error | Monthly energy error |
 |---|---|---|
+| Chronos-2-X (added afterwards) | +3.3% [-0.129, +0.018] | +4.0% [-0.600, +0.659] |
+| TimesFM-X (added afterwards) | +4.7% [-0.174, +0.033] | +27.6% [-0.627, +0.123] |
 | TimesFM 2.5 | +8.1% [-0.226, -0.001] | +37.9% [-0.802, -0.098] |
 | Chronos-2 | +11.0% [-0.290, +0.000] | +42.2% [-0.909, +0.135] |
 | Seasonal naive (day) | +22.9% [-0.424, -0.142] | +38.4% [-1.043, +0.259] |
@@ -78,8 +83,15 @@ are zero, and the units drop out of the ratio (30 effective units). 125 windows 
 | Last-year profile | +18.7% [-0.384, -0.101] | +25.8% [-0.641, +0.244] |
 | Per-unit ridge | +15.9% [-0.716, +0.022] | +23.5% [-0.656, +0.086] |
 
-Mean unit rank among the eight models scored on all windows: ANKYRA 2.03, TimesFM 3.45.
+Mean unit rank among the eight models first scored on all windows: ANKYRA 2.03, TimesFM 3.45; among ten, with the two
+added models: ANKYRA 2.52, TimesFM-X 4.03, TimesFM 4.58, Chronos-2-X 4.76.
 The per-unit ridge is defined on 123 windows of 32 units. Baselines that must be trained on the population were not fitted.
+
+**The two covariate-informed foundation models** (Chronos-2-X and TimesFM-X, which receive the same information as
+ANKYRA) were run afterwards on the same windows, with the features and calls of the ten-population comparison. ANKYRA's
+forecasts were already frozen and scored, so this completes the comparison and is not a second blind test. ANKYRA is
+not separated from either, on hourly or energy error, under any of six bootstrap seeds; its mean unit rank stays
+first. This matches the ten populations, where Chronos-2-X is the closest competitor.
 
 **Reading - weaker than the table looks.**
 
