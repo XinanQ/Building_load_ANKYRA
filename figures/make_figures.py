@@ -1133,6 +1133,56 @@ def fig_intervals_all():
     save(fig, "fig16_intervals_ten_populations")
 
 
+# ============================================================================ Figure 17: two checks with the forecaster frozen
+def fig_frozen_checks():
+    cs = [r for r in rows("carrier_swap.csv") if r["subset"] == "full" and r["error"] == "hourly"]
+    hk = rows("hkust_first_read.csv")
+    pops = ["GoiEner non-household", "GoiEner households", "EWELD", "BDG2 2017", "Cambridge", "Arizona (HEEW)", "Oslo", "Drammen", "CINELDI", "Suzhou park"]
+    CHR = "#1D91C0"
+    fig = plt.figure(figsize=(7.2, 3.75))
+    gs = fig.add_gridspec(1, 4, width_ratios=[1.2, 0.58, 1.0, 1.0], wspace=0.1, left=0.095, right=0.985, top=0.80, bottom=0.215)
+    ax = fig.add_subplot(gs[0]); y = np.arange(len(pops))[::-1].astype(float); lo_x, hi_x = -12, 30
+    ax.axvspan(0, hi_x, color="#F3F6FA", zorder=0); ax.axvline(0, color="#7F7F7F", lw=0.6, zorder=1)
+    for key, col, dy in (("ANKYRA-C vs Chronos-2", CHR, 0.16), ("ANKYRA vs TimesFM", FM, -0.16)):
+        for yy, p_ in zip(y, pops):
+            r = next(rr for rr in cs if rr["population"] == p_ and rr["contrast"] == key)
+            p, a, b = float(r["improvement_pct"]), pct(float(r["um_high"])), pct(float(r["um_low"]))
+            ax.plot([max(a, lo_x), min(b, hi_x)], [yy + dy, yy + dy], color=col, lw=1.1, solid_capstyle="butt", zorder=2)
+            if a < lo_x:
+                ax.annotate("", xy=(lo_x, yy + dy), xytext=(lo_x + 2.5, yy + dy), arrowprops=dict(arrowstyle="-|>", color=col, lw=0.8, mutation_scale=5))
+            ax.scatter([p], [yy + dy], s=15, color=col if float(r["um_high"]) < 0 else "white", edgecolor=col, lw=0.9, zorder=3)
+    ax.set_yticks(y); ax.set_yticklabels([{"GoiEner non-household": "GoiEner NH", "GoiEner households": "GoiEner HH", "BDG2 2017": "BDG2", "Arizona (HEEW)": "HEEW"}.get(p_, p_) for p_ in pops], fontsize=6.4)
+    ax.tick_params(axis="y", length=0); ax.set_xlim(lo_x, hi_x); ax.set_ylim(-0.7, len(pops) - 0.3); ax.grid(axis="x", color="#E5E5E5", lw=0.4, zorder=0)
+    ax.set_title("a   Anchoring gain with either foundation model", fontsize=7.2); ax.set_xlabel("Hourly improvement over the\nfoundation model alone (%)", fontsize=6.6)
+    ax.legend(handles=[Line2D([], [], marker="o", ls="-", color=CHR, markersize=3.5, lw=1.0, label="Chronos-2 anchored vs Chronos-2"),
+                       Line2D([], [], marker="o", ls="-", color=FM, markersize=3.5, lw=1.0, label="TimesFM anchored (ANKYRA) vs TimesFM")],
+              loc="upper center", bbox_to_anchor=(0.42, -0.2), fontsize=5.9, ncol=1, handletextpad=0.4)
+    comps = ["TimesFM 2.5", "Chronos-2", "Per-unit ridge", "Previous-month profile", "Four-week profile", "Last-year profile", "Seasonal naive (day)", "Seasonal naive (week)"]
+    colour = {"TimesFM 2.5": FM, "Chronos-2": CHR, "Per-unit ridge": "#8C6D31"}
+    yb = np.arange(len(comps))[::-1].astype(float)
+    for k, (kind, title, lim) in enumerate((("hourly", "b   HKUST: hourly error", (-12, 45)), ("energy", "c   HKUST: monthly energy error", (-35, 75)))):
+        bx = fig.add_subplot(gs[k + 2]); bx.axvspan(0, lim[1], color="#F3F6FA", zorder=0); bx.axvline(0, color="#7F7F7F", lw=0.6, zorder=1)
+        for yy, c_ in zip(yb, comps):
+            r = next(rr for rr in hk if rr["error"] == kind and rr["comparator"] == c_)
+            p, a, b = float(r["improvement_pct"]), pct(float(r["um_high"])), pct(float(r["um_low"])); col = colour.get(c_, "#9E9E9E")
+            edge = kind == "hourly" and c_ in ("TimesFM 2.5", "Chronos-2")          # intervals that end at zero: borderline
+            bx.plot([max(a, lim[0]), min(b, lim[1])], [yy, yy], color=col, lw=1.1, solid_capstyle="butt", zorder=2)
+            for e_, beyond, d in ((lim[0], a < lim[0], 3.0), (lim[1], b > lim[1], -3.0)):
+                if beyond:
+                    bx.annotate("", xy=(e_, yy), xytext=(e_ + d, yy), arrowprops=dict(arrowstyle="-|>", color=col, lw=0.8, mutation_scale=5))
+            bx.scatter([p], [yy], s=17, marker="D" if edge else "o", color=col if (float(r["um_high"]) < 0 and not edge) else "white", edgecolor=col, lw=0.9, zorder=3)
+        bx.set_yticks(yb); bx.set_yticklabels([c_.replace("Previous-month profile", "Prev.-month profile") for c_ in comps] if k == 0 else [], fontsize=6.2)
+        bx.tick_params(axis="y", length=0); bx.set_xlim(*lim); bx.set_ylim(-0.7, len(comps) - 0.3); bx.grid(axis="x", color="#E5E5E5", lw=0.4, zorder=0)
+        bx.set_title(title, fontsize=7.2); bx.set_xlabel("ANKYRA improvement (%)", fontsize=6.6)
+    fig.text(0.01, 0.985, "Two checks made with ANKYRA 2.0.1 frozen. a: ten populations re-scored with Chronos-2 supplying the foundation forecasts and nothing re-selected (all windows).",
+             fontsize=6.3, color=GREY, va="top")
+    fig.text(0.01, 0.945, "b, c: one scoring on HKUST campus incomer meters, never read before (134 windows, 30 effective units). 95% unit-and-month intervals; filled = interval excludes zero;",
+             fontsize=6.3, color=GREY, va="top")
+    fig.text(0.01, 0.905, "diamonds = borderline (the interval ends at zero and the reading changes with the bootstrap seed). The per-unit ridge is scored on 123 windows.",
+             fontsize=6.3, color=GREY, va="top")
+    save(fig, "fig17_frozen_checks")
+
+
 if __name__ == "__main__":
     fig_intervals_all()
     fig_rank_tests()
@@ -1151,4 +1201,5 @@ if __name__ == "__main__":
     fig_energy()
     fig_consistency()
     fig_intervals()
+    fig_frozen_checks()
     print("figures written to", HERE)

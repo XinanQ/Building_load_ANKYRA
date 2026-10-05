@@ -10,6 +10,10 @@ Numbers are improvements in the unit-equal log RMS ratio (positive = the first m
 95% unit-and-month bootstrap interval of the log ratio (an interval below zero = resolved in favour of the first
 model). See [EVALUATION.md](EVALUATION.md) for the estimand.
 
+![Two checks with the forecaster frozen](../figures/fig17_frozen_checks.png)
+
+*Figure 17. a: anchoring gain with either foundation model (ten populations, all windows). b, c: HKUST campus, ANKYRA against each comparator. Filled markers: the 95% interval excludes zero; diamonds: borderline.*
+
 ## Another foundation model
 
 **Question.** Does the gain from anchoring depend on TimesFM?
@@ -51,7 +55,7 @@ File: [`results/carrier_swap.csv`](../results/carrier_swap.csv) (all windows and
 
 **Question.** What does the frozen forecaster do on data the project had never read?
 
-**Data.** The smart-meter database of the Hong Kong University of Science and Technology campus (Dryad,
+**Data.** The smart-meter database of the Hong Kong University of Science and Technology campus (Li, Wang, Qu, Chui and Leung-Shea, *Scientific Data* 11, 1284, 2024, doi:10.1038/s41597-024-04106-1; data on Dryad,
 doi:10.5061/dryad.k3j9kd5h6, CC0; 1 January 2022 to 27 May 2024). Units are the meters of the incomer circuit
 breakers named in the dataset's Brick metadata - the metering points closest to the total of a supply zone. 46 are
 named, 38 have cleaned files. The files hold cumulative readings; hourly energy is their difference. Temperature is

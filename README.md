@@ -51,7 +51,8 @@ others) are defined in [Terms used on this page](#terms-used-on-this-page).
   [No information after the origin](#no-information-after-the-origin) ·
   [Information set](#inputs-and-features-one-information-set-for-every-forecaster) ·
   [Results on six test populations](#results-on-six-test-populations) ·
-  [LCL households and two changes not adopted](#lcl-households-and-two-changes-not-adopted)
+  [LCL households and two changes not adopted](#lcl-households-and-two-changes-not-adopted) ·
+  [Two checks with the forecaster frozen](#two-checks-with-the-forecaster-frozen)
 - **How it works:** [Handover](#how-the-handover-works) · [Within-day anchoring](#within-day-anchoring-20) ·
   [Readouts](#readouts-peak-and-prediction-interval) · [Theory](#theory-exact-properties)
 - **Check it:** [Reproducibility](#reproducibility) · [What changed in 2.0 and 2.0.1](#what-changed-in-20-and-201) ·
@@ -772,6 +773,36 @@ had been seen earlier, so LCL is not an unexposed population. Its numbers are no
 
 The forecaster is unchanged. Details are in [docs/LCL_AND_CLOSEOUT.md](docs/LCL_AND_CLOSEOUT.md#lcl-final-stage); the
 files are `results/lcl_*` and `results/closeout_status.json` ([file list](results/README.md)).
+
+## Two checks with the forecaster frozen
+
+Both were run on 4 October 2026 with the released 2.0.1 package and all its defaults, each under a protocol written
+before the run. They do not change the forecaster or any table above. Details, limits and files:
+[docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md).
+
+**Another foundation model.** The foundation forecasts were taken from Chronos-2 instead of TimesFM, with nothing
+selected again, and the ten populations were scored again. Anchoring improves Chronos-2 in the same pattern as TimesFM:
+resolved on seven of ten populations with all windows (TimesFM: six) and on five of ten on the later windows (both),
+never resolvably worse, and negative only on households in both cases. The two finished forecasters are not separated
+on nine populations. This is a re-evaluation of populations scored before, with constants chosen under TimesFM and two
+foundation models only (`results/carrier_swap.csv`).
+
+**A population never used before.** The frozen forecaster was scored once on the incomer meters of the HKUST campus
+(Hong Kong; 134 windows, 33 units, 30 of them non-zero), a dataset the project had not read. Units were fixed from
+the metadata before any load value was opened, and forecasts were saved before the targets were read.
+
+- Monthly energy error is 38% below TimesFM's (interval 9–55%), and the interval excludes zero under every bootstrap
+  seed tried.
+- Hourly error is 8% below TimesFM's and 11% below Chronos-2's, but both intervals end at zero: **borderline, not
+  resolved**. The meters are quantised at 10 or 100 kWh, and the hourly gain comes from the 19 finely metered units.
+- Against naive and profile forecasts the hourly gain is 12–24% and resolved. Covariate-informed and trained baselines
+  were not run.
+- One small site scored once: it is not merged into the tables above and does not show that the forecaster generalises
+  (`results/hkust_first_read.csv`).
+
+![Two checks with the forecaster frozen](figures/fig17_frozen_checks.png)
+
+*Figure 17. Two checks with the forecaster frozen.*
 
 ## How the handover works
 
