@@ -428,7 +428,12 @@ model better), `resolved`. A re-evaluation of populations scored before.
 **`hkust_first_read.csv`** — (the rows for Chronos-2-X and TimesFM-X were added afterwards, against the already frozen ANKYRA forecasts) the frozen 2.0.1 forecaster scored once on HKUST campus incomer meters (134 windows, 33
 units), ANKYRA against each comparator. `resolved_at_seed_20261004` is the reading under one bootstrap seed; the two
 hourly contrasts against the foundation models are borderline and change with the seed. Not merged into any other
-table ([details and limits](../docs/FROZEN_MODEL_CHECKS.md)).
+table ([details and limits](../docs/FROZEN_MODEL_CHECKS.md)). The rows for Holt-Winters, MSTL and GBT (zero-shot) were
+added in the same way.
+
+**`hkust_by_day.csv`** — per-day curves on HKUST for the 14 forecasters, on the 123 windows where the per-unit ridge is
+defined: `hourly_gm_cv_pct` (figure 9 definition) and `energy_to_date_gm_cv_pct` (figure 9b definition), geometric means
+over the fixed set of `units_in_fixed_set` units. Figure 18; computed after scoring, ANKYRA's forecasts frozen.
 
 ## Two candidates examined after 2.0.1 and not adopted
 

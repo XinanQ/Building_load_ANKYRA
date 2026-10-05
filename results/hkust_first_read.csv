@@ -19,3 +19,9 @@ hourly,Chronos-2-X,134,33,-0.033055,-0.129291,0.017565,3.252,not resolved,22
 hourly,TimesFM-X,134,33,-0.048305,-0.174160,0.033430,4.716,not resolved,22
 energy,Chronos-2-X,134,33,-0.040571,-0.599914,0.658575,3.976,not resolved,20
 energy,TimesFM-X,134,33,-0.323536,-0.626507,0.123082,27.641,not resolved,24
+hourly,Holt-Winters,134,33,-0.163022,-0.280993,-0.039702,15.043,first better,25
+hourly,MSTL,134,33,-0.247874,-0.427438,-0.093687,21.954,first better,30
+hourly,GBT (zero-shot),134,33,-0.840145,-1.332020,-0.107320,56.835,first better,33
+energy,Holt-Winters,134,33,-0.538860,-0.935471,0.095657,41.659,not resolved,23
+energy,MSTL,134,33,-0.692373,-0.972271,-0.120351,49.961,first better,29
+energy,GBT (zero-shot),134,33,-0.812407,-1.312595,0.010204,55.621,not resolved,30

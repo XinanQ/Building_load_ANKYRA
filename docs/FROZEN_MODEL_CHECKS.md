@@ -93,6 +93,19 @@ forecasts were already frozen and scored, so this completes the comparison and i
 not separated from either, on hourly or energy error, under any of six bootstrap seeds; its mean unit rank stays
 first. This matches the ten populations, where Chronos-2-X is the closest competitor.
 
+**Three more baselines and the per-day curves** (Holt-Winters, MSTL and the zero-shot GBT, which need no training on
+the population) were then run the same way, again against the frozen forecasts and again not a blind test. With them
+the HKUST comparison has the same 14 forecasters as the full-window comparison of the ten populations. ANKYRA's hourly
+error is 15%, 22% and 57% lower than theirs, each resolved under every seed; on monthly energy it is resolved only
+against MSTL (50%). Mean unit rank among the 14 on the 123 ridge-defined windows: ANKYRA 3.23, per-unit ridge 4.20,
+TimesFM-X 5.31, TimesFM 5.73. Figure 18 shows the per-day curves with the definitions of figures 9 and 9b: ANKYRA has
+the lowest hourly error of the 14 on 15 of 31 days and the lowest energy error to date on 24.
+
+![HKUST per-day curves](../figures/fig18_hkust_by_day.png)
+
+*Figure 18. HKUST: hourly error of each forecast day and error of the energy delivered to date, 14 forecasters
+(`results/hkust_by_day.csv`). Quantised readings flatten the hourly curves.*
+
 **Reading - weaker than the table looks.**
 
 - Every point estimate favours ANKYRA, but the two hourly intervals against the foundation models end at zero.

@@ -815,6 +815,15 @@ the metadata before any load value was opened, and forecasts were saved before t
 
 *Figure 17. Two checks with the forecaster frozen.*
 
+With three more baselines that need no training (Holt-Winters, MSTL, zero-shot GBT), HKUST has the same 14
+forecasters as the full-window comparison; ANKYRA keeps the first mean unit rank (3.23; next, the per-unit ridge,
+4.20). Per-day curves in Figure 18: lowest of the 14 on 15 of 31 days for hourly error and on 24 for the energy
+delivered to date.
+
+![HKUST per-day curves](figures/fig18_hkust_by_day.png)
+
+*Figure 18. HKUST, per-day curves of 14 forecasters (ANKYRA frozen; baselines added afterwards).*
+
 ## How the handover works
 
 ![One test window](figures/fig6_example_window.png)
