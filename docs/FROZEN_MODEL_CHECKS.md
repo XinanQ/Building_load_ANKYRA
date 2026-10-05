@@ -1,10 +1,12 @@
-# Two checks with the forecaster frozen (4 October 2026)
+# Checks with the forecaster frozen (4–5 October 2026)
 
 Both were run after ANKYRA 2.0.1 was fixed, with the public package and all its defaults. Neither changes the
 forecaster, the result tables of the ten populations, or the figures. Each protocol was written before its run.
 
-- [Another foundation model](#another-foundation-model): Chronos-2 in place of TimesFM.
+- [Another foundation model](#another-foundation-model): Chronos-2 in place of TimesFM; with the Chronos-2-X run, three foundation models on the same windows.
 - [A population never used before](#a-population-never-used-before): the HKUST campus, scored once.
+- [A pre-registered confirmation test (Helsinki)](#a-pre-registered-confirmation-test-helsinki): criteria fixed in advance; not confirmed.
+- [A post-hoc exploration: ANKYRA anchored to Chronos-2-X](#a-post-hoc-exploration-ankyra-anchored-to-chronos-2-x): twelve populations; not a test.
 
 Numbers are improvements in the unit-equal log RMS ratio (positive = the first model has the lower error) with the
 95% unit-and-month bootstrap interval of the log ratio (an interval below zero = resolved in favour of the first
@@ -50,6 +52,32 @@ released forecaster stays the TimesFM-based one.
   seed, so its intervals can differ in the third decimal from `benchmark_pairwise.csv`.
 
 File: [`results/carrier_swap.csv`](../results/carrier_swap.csv) (all windows and late windows, hourly and energy).
+
+### Three foundation models on the same windows
+
+The Chronos-2 run above and the post-hoc Chronos-2-X run
+([below](#a-post-hoc-exploration-ankyra-anchored-to-chronos-2-x)) re-scored together with the released TimesFM-anchored forecaster
+on one set of windows (units with mean load of at least 10⁻⁶ kW) with one bootstrap seed (20261005). Gain of each anchored version
+over its own foundation model; `*` resolved in its favour; none resolved against it; `—` not run. On these windows the TimesFM count
+is 7 of 12 hourly (6 of ten in the table above, whose EWELD windows include near-zero meters).
+
+|Population|Windows|Hourly: TimesFM|Hourly: Chronos-2|Hourly: Chronos-2-X|Energy: TimesFM|Energy: Chronos-2|Energy: Chronos-2-X|
+|---|---:|---:|---:|---:|---:|---:|---:|
+|BDG2|934|+5.7%|+6.9%|+4.1%|+17.4%|+16.5%|+20.5%|
+|Cambridge|1,456|+9.6%*|+11.4%*|+4.6%*|+15.7%*|+18.9%*|+8.9%*|
+|HEEW|1,282|+4.5%*|+7.7%*|+4.7%*|+10.1%|+14.6%*|+12.2%*|
+|EWELD|931|+3.1%*|+2.8%*|+3.6%*|+5.3%|+9.4%|+7.6%|
+|GoiEner non-household|1,234|+4.3%|+4.3%|+3.3%|+16.7%*|+20.1%*|+19.5%*|
+|GoiEner households|1,232|-0.1%|+0.2%|+0.1%|+29.7%*|+33.3%*|+31.1%*|
+|Oslo|1,147|+10.9%*|+11.7%*|+6.0%*|+16.1%*|+17.9%*|+8.2%*|
+|Drammen|1,375|+11.3%*|+9.8%*|+4.3%*|+20.1%*|+19.3%*|+9.0%*|
+|CINELDI|929|+6.6%*|+5.9%*|+5.4%*|+17.1%*|+16.3%*|+16.4%*|
+|Suzhou park|127|+11.8%*|+17.7%*|+14.3%*|+16.4%*|+22.9%*|+20.2%*|
+|HKUST campus|120|+8.1%|—|+5.4%*|+37.9%*|—|+12.0%|
+|Helsinki|1,165|+4.3%|—|+0.7%|+6.0%|—|+0.6%|
+
+File: [`results/carrier_swap_combined.csv`](../results/carrier_swap_combined.csv) (intervals included, plus the finished forecasters
+against each other).
 
 ## A population never used before
 
@@ -101,10 +129,10 @@ against MSTL (50%). Mean unit rank among the 14 on the 123 ridge-defined windows
 TimesFM-X 5.31, TimesFM 5.73. Figure 18 shows the per-day curves with the definitions of figures 9 and 9b: ANKYRA has
 the lowest hourly error of the 14 on 15 of 31 days and the lowest energy error to date on 24.
 
-![HKUST per-day curves](../figures/fig18_hkust_by_day.png)
+![Per-day curves](../figures/fig18_new_populations_by_day.png)
 
-*Figure 18. HKUST: hourly error of each forecast day and error of the energy delivered to date, 14 forecasters
-(`results/hkust_by_day.csv`). Quantised readings flatten the hourly curves.*
+*Figure 18. Per-day curves of 14 forecasters: HKUST (a, b; `results/hkust_by_day.csv`; quantised readings flatten the
+hourly curves) and Helsinki (c, d; `results/helsinki_by_day.csv`).*
 
 **Reading - weaker than the table looks.**
 
@@ -116,8 +144,11 @@ the lowest hourly error of the 14 on 15 of 31 days and the lowest energy error t
 - Monthly energy error, which quantisation does not affect, is 38% below TimesFM's, with an interval that excludes
   zero under every seed tried. Against the other comparators the energy intervals include zero.
 - The sample is small and uneven: 1 to 17 windows per unit, 59 of the 134 windows in two months.
-- One constant, the temperature scale, was computed from the first 244 days as planned; for four windows that
-  includes 24 hours after the origin (0.2% of its value). No forecaster reads load or temperature after its origin.
+- One constant, the temperature scale, was first computed from the first 244 days as planned, which for the four
+  windows issued on 1 September 2022 included 24 hours after the origin. It was then refitted on the 243 days before
+  the first origin and every ANKYRA forecast on HKUST was run again: forecasts change by at most 4.4 × 10⁻⁵ of their
+  peak, no figure on this page changes at the precision shown and no decision changes. No forecaster and no constant
+  uses information after its origin.
 - Whether TimesFM or Chronos-2 was pretrained on this dataset (published 2024) was not checked.
 
 This is one population scored once. It is not merged into the ten-population tables and it does not show that the
@@ -126,3 +157,88 @@ forecaster generalises; it shows that the frozen forecaster did not fail on firs
 File: [`results/hkust_first_read.csv`](../results/hkust_first_read.csv). The column `resolved_at_seed_20261004` is the
 reading under one bootstrap seed; see the first bullet above. `units_better_strict` counts units with a strictly lower
 summed error and so includes the three all-zero units for Chronos-2 (26 of the 30 non-zero units are better).
+
+## A pre-registered confirmation test (Helsinki)
+
+**Question.** Does the frozen forecaster's advantage hold on a new, large population under criteria written before
+any load value is read?
+
+**Data.** Energy consumption of the City of Helsinki's service properties, Nuuka Open API (City of Helsinki, Urban
+Environment Division; licence listed as CC BY 4.0 in the regional and national open-data catalogues). Hourly electricity,
+2023-01-01 to 2026-10-03, pulled on 5 October 2026 and not redistributed. Preparation: [DATA.md](DATA.md).
+
+**Procedure.** The protocol fixed the sample (300 property codes drawn by SHA-256 of the code, after excluding three
+properties looked at during a format check), the units (one electricity series each), the grid (fixed UTC+2; the
+provider's two-hour autumn record split evenly and flagged), the window rules of the ten populations, eleven origins
+(2025-11 to 2026-09, after the public release of TimesFM 2.5 and Chronos-2), the 14 forecasters of the full-window
+comparison, the estimand and the criteria. It was frozen with the hashes of all 978 raw files before any load value
+was parsed. All 14 forecasts were saved with a hash before the targets were read; the targets were scored once. A
+first scoring attempt stopped while loading the targets (memory) before any statistic was computed; this is recorded.
+
+**Criteria (seed 20261005).** Primary: monthly energy error, ANKYRA against TimesFM 2.5, upper end of the 95%
+unit-and-month interval below zero. Secondary: hourly error, lower end at or below zero. Confirmation needs both.
+
+**Result: not confirmed.**
+
+| Criterion | Improvement | Interval of the log ratio | Outcome |
+|---|---|---|---|
+| Monthly energy vs TimesFM | 6.0% | [−0.152, +0.104] | failed |
+| Hourly vs TimesFM | 4.3% | [−0.093, +0.022] | passed |
+
+Five further bootstrap seeds and an independent recomputation (own code, another seed) give the same decisions.
+
+| ANKYRA against | Hourly | Monthly energy |
+|---|---|---|
+| TimesFM 2.5 | +4.3% | +6.0% |
+| Chronos-2 | +1.9% | +1.7% |
+| Chronos-2-X | **−6.3% (resolved against)** | **−13.9% (resolved against)** |
+| TimesFM-X | +4.5% | +6.0% |
+| Per-unit ridge | +4.5% * | +3.7% |
+| GBT (zero-shot) | +14.2% * | +2.8% |
+| Holt-Winters | +7.6% * | +3.5% |
+| MSTL | +9.8% * | +8.0% |
+| Seasonal naive (day / week) | +27.8% * / +11.0% * | +27.3% * / +5.6% |
+| Four-week / previous-month / last-year profile | +5.1% / +11.4% * / +21.5% * | +0.0% / +2.8% / +24.3% * |
+
+\* resolved in ANKYRA's favour. 200 units with non-zero load, 1,165 windows. Mean unit rank among the 14: Chronos-2-X
+4.08, ANKYRA 4.33, Chronos-2 4.92, TimesFM-X 5.93, TimesFM 6.05. Per-day curves: Figure 18 c, d (ANKYRA below TimesFM
+on 25 of 31 days on both curves, below Chronos-2-X on 3 and 6). Files: `results/helsinki_confirmation.csv`,
+`results/helsinki_criteria.json`, `results/helsinki_by_day.csv`.
+
+**Reading.** On a new country with long, finely metered histories, the frozen forecaster is not separated from
+TimesFM on either error and is resolvably worse than the covariate-conditioned Chronos-2-X. The energy advantage seen
+on the ten populations and on HKUST is therefore not confirmed. Post-hoc descriptions locate, but do not explain, the
+difference. In the exact block split, Chronos-2-X is better mainly in the monthly level (13.9%, resolved; the largest
+block of its error) and by 4.2% in the within-day block; against TimesFM, ANKYRA's within-day anchoring is still
+better (6.1%, resolved). Temperature sensitivity is not the reason: the share of daily-load variance that temperature
+explains beyond the calendar is 0.10 at the median Helsinki unit, inside the range of the ten populations
+(0.05–0.70), unrelated to the gap to Chronos-2-X across them, and the gap is similar in the least and most
+temperature-sensitive thirds of the Helsinki units. Boundary of use: on a new population, a covariate-informed
+foundation model can forecast the monthly level better than ANKYRA's history-weighted level.
+
+## A post-hoc exploration: ANKYRA anchored to Chronos-2-X
+
+**Status.** Requested after the Helsinki result; no criterion fixed in advance; all twelve populations scored before (Helsinki for
+the fourth time); nothing in ANKYRA 2.0.1 changed, constants selected with TimesFM. An exploration, not a test.
+
+**Procedure.** `ankyra.forecast` received Chronos-2-X point forecasts as its foundation forecasts: at the origin the forecasts already
+scored, at the pseudo-origins k = 1..6 new forecasts with the covariates of the equal-information set built at each pseudo-origin from
+data before it (about 60,000 contexts). Unit-equal log RMS ratio, 95% unit-and-month interval (seed 20261005), all windows.
+
+|Population|Windows|vs Chronos-2-X, hourly|vs Chronos-2-X, energy|vs ANKYRA, hourly|vs ANKYRA, energy|
+|---|---:|---:|---:|---:|---:|
+|BDG2|934|+4.1%|+20.5%|-10.5%|+0.6%|
+|Cambridge|1,456|+4.6%*|+8.9%*|+5.4%*|+8.9%*|
+|HEEW|1,282|+4.7%*|+12.2%*|+1.3%|+3.6%|
+|EWELD|931|+3.6%*|+7.6%|-0.3%|-8.0%|
+|GoiEner non-household|1,234|+3.3%|+19.5%*|+0.6%|+4.9%|
+|GoiEner households|1,232|+0.1%|+31.1%*|-0.2%|+2.5%|
+|Oslo|1,147|+6.0%*|+8.2%*|+6.2%*|+11.5%*|
+|Drammen|1,375|+4.3%*|+9.0%*|+4.5%*|+9.4%|
+|CINELDI|929|+5.4%*|+16.4%*|+2.4%|+4.0%|
+|Suzhou park|127|+14.3%*|+20.2%*|+1.5%|+4.2%|
+|HKUST campus|120|+5.4%*|+12.0%|+2.2%|+8.4%|
+|Helsinki|1,165|+0.7%|+0.6%|+6.6%*|+12.7%*|
+
+`*` resolved in favour of ANKYRA-X; no interval excludes zero against it. The BDG2 hourly contrast against ANKYRA (−10.5%) has a wide
+interval and is driven by the near-zero meters. File: `results/carrier_swap_x.csv` (intervals included).

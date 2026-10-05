@@ -449,3 +449,12 @@ scored and neither was adopted; the forecaster is unchanged ([details](../docs/L
   failure of interval accuracy.
 - `status_code` gives the label each stop carries in the study protocol; `status` says the same in words.
 - `lcl`: the counts of the LCL evaluation and a pointer to its files.
+
+**`helsinki_confirmation.csv`** — the pre-registered confirmation test on Helsinki city service buildings (ANKYRA 2.0.1
+frozen; 201 units, 1,168 windows; 200 units with non-zero load are scored): ANKYRA against each of the other 13
+forecasters, hourly and monthly energy error, with the 95% unit-and-month interval at seed 20261005. `helsinki_criteria.json` holds the two criteria and their outcome (primary failed, secondary passed; not confirmed).
+`helsinki_by_day.csv` holds the per-day curves (figure 18 c, d). [Details](../docs/FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki).
+
+**`carrier_swap_x.csv`** — post-hoc exploration (not a test): ANKYRA 2.0.1 anchored to Chronos-2-X on the twelve populations, against Chronos-2-X and against the TimesFM-anchored ANKYRA, hourly and monthly energy, with the 95% unit-and-month interval ([details](../docs/FROZEN_MODEL_CHECKS.md#a-post-hoc-exploration-ankyra-anchored-to-chronos-2-x)).
+
+**`carrier_swap_combined.csv`** — the three foundation models (TimesFM, Chronos-2, Chronos-2-X) on the same windows with one seed: gain of each anchored version over its own foundation model, and the finished forecasters against each other ([details](../docs/FROZEN_MODEL_CHECKS.md#three-foundation-models-on-the-same-windows)).

@@ -1183,51 +1183,59 @@ def fig_frozen_checks():
     save(fig, "fig17_frozen_checks")
 
 
-def fig_hkust_by_day():
-    """Figure 18: HKUST, per-day curves of the 14 forecasters (frozen ANKYRA 2.0.1; baselines added afterwards)."""
-    ld = rows("hkust_by_day.csv")
-    lab = {r["model"]: r["model_label"] for r in ld}
+def fig_new_populations_by_day():
+    """Figure 18: per-day curves on the populations scored with the forecaster frozen (HKUST; Helsinki when present)."""
+    pops = [("hkust_by_day.csv", "HKUST campus", "readings quantised at 10/100 kWh; baselines added after ANKYRA was scored")]
+    if (RES / "helsinki_by_day.csv").exists():
+        pops.append(("helsinki_by_day.csv", "Helsinki city buildings", "pre-registered confirmation test; all forecasts frozen before the targets were read"))
     days = np.arange(1, 32)
-    lines = [(m, c, ls) for m, c, ls in DAY_LINES if m in lab]
-    named = {"ANKYRA"} | {m for m, *_ in lines}
-    fig, axs = plt.subplots(1, 2, figsize=(7.2, 3.1))
-    fig.subplots_adjust(left=0.075, right=0.985, top=0.79, bottom=0.25, wspace=0.2)
-    for ax, (col, title, ylab, early) in zip(axs, (("hourly_gm_cv_pct", "a   Hourly error of each forecast day", "CV(RMSE) of the day (%)", 0),
-                                                   ("energy_to_date_gm_cv_pct", "b   Error of the energy delivered to date", "Error of energy to date, CV (%)", 6))):
-        curve = {m: np.array([float(r[col]) for r in sorted((r for r in ld if r["model"] == m), key=lambda r: int(r["day"]))]) for m in sorted(lab)}
-        top = (1.6 if early == 0 else 2.4) * curve["ANKYRA"][early:].max()
-        off = []
-        for m, v in curve.items():
-            if m not in named:
-                if np.median(v) > top:
+    fig, axs = plt.subplots(len(pops), 2, figsize=(7.2, 0.6 + 2.45 * len(pops)), squeeze=False)
+    fig.subplots_adjust(left=0.075, right=0.985, top=1 - 0.62 / (0.6 + 2.45 * len(pops)), bottom=0.62 / (0.6 + 2.45 * len(pops)) + 0.03,
+                        wspace=0.2, hspace=0.55)
+    letters = iter("abcdefgh"); legend_lab = {}
+    for row, (fn, name, note) in enumerate(pops):
+        ld = rows(fn)
+        lab = {r["model"]: r["model_label"] for r in ld}; legend_lab.update(lab)
+        lines = [(m, c, ls) for m, c, ls in DAY_LINES if m in lab]
+        named = {"ANKYRA"} | {m for m, *_ in lines}
+        n_w, n_u = ld[0]["windows"], ld[0]["units_in_fixed_set"]
+        for ax, (col, what, ylab, early) in zip(axs[row], (("hourly_gm_cv_pct", "hourly error of each forecast day", "CV(RMSE) of the day (%)", 0),
+                                                         ("energy_to_date_gm_cv_pct", "error of the energy delivered to date", "Energy to date, CV (%)", 6))):
+            curve = {m: np.array([float(r[col]) for r in sorted((r for r in ld if r["model"] == m), key=lambda r: int(r["day"]))]) for m in sorted(lab)}
+            top = (1.6 if early == 0 else 2.4) * curve["ANKYRA"][early:].max()
+            off = []
+            for m, v in curve.items():
+                if m not in named:
+                    if np.median(v) > top:
+                        off.append(lab[m]); continue
+                    ax.plot(days, np.minimum(v, top * 1.2), color="#D0D0D0", lw=0.55, zorder=1)
+            for m, c, ls in lines:
+                if np.median(curve[m]) > top:
                     off.append(lab[m]); continue
-                ax.plot(days, np.minimum(v, top * 1.2), color="#D0D0D0", lw=0.55, zorder=1)
-        for m, c, ls in lines:
-            if np.median(curve[m]) > top:
-                off.append(lab[m]); continue
-            ax.plot(days, curve[m], color=c, ls=ls, lw=0.95, zorder=2)
-        ax.plot(days, curve["ANKYRA"], color=ANKYRA, lw=1.9, zorder=3)
-        for x in (7.5, 14.5, 21.5):
-            ax.axvline(x, color="#E6E6E6", lw=0.5, zorder=0)
-        lowest = int(sum(all(curve["ANKYRA"][d] <= v[d] for v in curve.values()) for d in range(31)))
-        ax.set_xlim(1, 31); ax.set_ylim(0, top); ax.set_xticks([1, 7, 14, 21, 28, 31])
-        ax.set_title(title, fontsize=7.2); ax.set_ylabel(ylab, fontsize=6.6); ax.set_xlabel("Forecast day", fontsize=6.8)
-        ax.text(0.985, 0.04, f"ANKYRA lowest of {len(curve)} on {lowest} of 31 days", transform=ax.transAxes, ha="right", va="bottom", fontsize=5.8, color=ANKYRA)
-        if off:
-            ax.text(0.985, 0.97, "off scale: " + ", ".join(off), transform=ax.transAxes, ha="right", va="top", fontsize=5.6, color=GREY)
-        ax.grid(axis="y", color="#EFEFEF", lw=0.4, zorder=0)
+                ax.plot(days, curve[m], color=c, ls=ls, lw=0.95, zorder=2)
+            ax.plot(days, curve["ANKYRA"], color=ANKYRA, lw=1.9, zorder=3)
+            for x in (7.5, 14.5, 21.5):
+                ax.axvline(x, color="#E6E6E6", lw=0.5, zorder=0)
+            lowest = int(sum(all(curve["ANKYRA"][d] <= v[d] for v in curve.values()) for d in range(31)))
+            ax.set_xlim(1, 31); ax.set_ylim(0, top); ax.set_xticks([1, 7, 14, 21, 28, 31])
+            ax.set_title(f"{next(letters)}   {name}: {what}", fontsize=7.0); ax.set_ylabel(ylab, fontsize=6.4)
+            if row == len(pops) - 1:
+                ax.set_xlabel("Forecast day", fontsize=6.8)
+            ax.text(0.985, 0.04, f"ANKYRA lowest of {len(curve)} on {lowest} of 31 days", transform=ax.transAxes, ha="right", va="bottom", fontsize=5.8, color=ANKYRA)
+            if off:
+                ax.text(0.985, 0.97, "off scale: " + ", ".join(off), transform=ax.transAxes, ha="right", va="top", fontsize=5.6, color=GREY)
+            ax.grid(axis="y", color="#EFEFEF", lw=0.4, zorder=0)
+        axs[row, 0].text(0.0, 1.17, f"{name}: {len(lab)} forecasters, {n_w} windows, geometric means over {n_u} units; {note}.",
+                         transform=axs[row, 0].transAxes, fontsize=6.0, color=GREY, va="bottom")
+    lines = [(m, c, ls) for m, c, ls in DAY_LINES if m in legend_lab]
     handles = [Line2D([], [], color=ANKYRA, lw=1.9, label="ANKYRA")]
-    handles += [Line2D([], [], color=c, ls=ls, lw=0.95, label=lab[m]) for m, c, ls in lines]
-    handles += [Line2D([], [], color="#D0D0D0", lw=0.8, label=f"the other {len(lab) - 1 - len(lines)} baselines")]
+    handles += [Line2D([], [], color=c, ls=ls, lw=0.95, label=legend_lab[m]) for m, c, ls in lines]
+    handles += [Line2D([], [], color="#D0D0D0", lw=0.8, label=f"the other {len(legend_lab) - 1 - len(lines)} baselines")]
     fig.legend(handles=handles, loc="lower center", ncol=4, fontsize=6.2, bbox_to_anchor=(0.53, 0.0), handlelength=2.4, columnspacing=1.2)
-    n_w, n_u = ld[0]["windows"], ld[0]["units_in_fixed_set"]
-    fig.text(0.01, 0.985, f"HKUST campus incomer meters: ANKYRA 2.0.1 frozen before the population was read; the baselines were added afterwards against those forecasts.",
+    fig.text(0.01, 0.995, "Populations scored with ANKYRA 2.0.1 frozen, kept outside the ten-population figures. Definitions of figures 9 and 9b, on the windows where",
              fontsize=6.3, color=GREY, va="top")
-    fig.text(0.01, 0.945, f"{len(lab)} forecasters on the {n_w} windows where the per-unit ridge is defined; geometric means over {n_u} units, the definitions of figures 9 and 9b.",
-             fontsize=6.3, color=GREY, va="top")
-    fig.text(0.01, 0.905, "Readings are quantised at 10 or 100 kWh on many meters, which flattens the hourly curves. One population, kept outside the ten-population figures.",
-             fontsize=6.3, color=GREY, va="top")
-    save(fig, "fig18_hkust_by_day")
+    fig.text(0.01, 0.995 - 0.12 / (0.6 + 2.45 * len(pops)), "the per-unit ridge is defined, so that every forecaster is scored on the same windows.", fontsize=6.3, color=GREY, va="top")
+    save(fig, "fig18_new_populations_by_day")
 
 
 if __name__ == "__main__":
@@ -1249,5 +1257,5 @@ if __name__ == "__main__":
     fig_consistency()
     fig_intervals()
     fig_frozen_checks()
-    fig_hkust_by_day()
+    fig_new_populations_by_day()
     print("figures written to", HERE)

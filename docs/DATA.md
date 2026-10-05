@@ -300,6 +300,45 @@ Unit and window counts (all / late) are in the table of
   Its 1.x result had been seen earlier, so it is not an unexposed population
   ([LCL evaluation](LCL_AND_CLOSEOUT.md#lcl-final-stage)).
 
+## Populations scored with the forecaster frozen
+
+These two populations were prepared after ANKYRA 2.0.1 was fixed. No rule or constant of the forecaster was chosen on
+them. Results: [FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md).
+
+### 12. HKUST campus incomer meters (Hong Kong)
+
+- **Source.** Li, Wang, Qu, Chui and Leung-Shea, *Sci. Data* 11, 1284 (2024); Dryad
+  [doi:10.5061/dryad.k3j9kd5h6](https://doi.org/10.5061/dryad.k3j9kd5h6), file `All_Data.zip` (1.43 GB), "Clean" data.
+- **Units.** The building incomer meters named in the dataset's Brick metadata (type `ACB_Incomer`); parallel incomers
+  of one entity are summed. 33 units, 134 windows (30 units with nonzero load).
+- **Load.** The clean files hold a cumulative reading. Hourly energy is the sum of the differences inside the hour (kWh
+  per hour = mean kW); an hour is missing when a needed reading is missing or a difference is negative. Many meters are
+  quantised at 10 or 100 kWh.
+- **Grid.** Fixed UTC+8 (no daylight saving), anchor 2022-01-01. `dst_region` none.
+- **Temperature.** ERA5 2 m temperature at the campus through the Open-Meteo archive interface.
+- **Day types.** Hong Kong general holidays as gazetted by the HKSAR Government = 7.
+- **Windows.** Month-start origins with the common rules (six pseudo-origins, complete context and target).
+
+### 13. Helsinki city service buildings (Finland)
+
+- **Source.** City of Helsinki, Urban Environment Division: energy consumption of the city's service properties, Nuuka
+  Open API (`helsinki-openapi.nuuka.cloud`, no authentication), published 2020-04-16. Licence listed as CC BY 4.0 in the
+  Helsinki Region Infoshare and national open-data catalogues. Pulled 2026-10-05; the pull is not redistributed.
+- **Sample.** 300 property codes drawn by SHA-256 of the code from the city's property list (647 codes), after
+  excluding three properties looked at before the protocol was frozen; 285 electricity series, 201 with at least one
+  complete window, 1,168 windows.
+- **Load.** kWh per hour as returned (= mean kW). Exact duplicates removed; conflicting values and negative values
+  would be set missing (none occurred).
+- **Grid.** The provider's local wall clock (Europe/Helsinki) is moved to a fixed UTC+2 grid, anchor 2023-01-01:
+  summer-time records shift by one hour; the autumn repeated hour, which the provider reports as one record holding
+  two hours, is split evenly over the two grid hours and flagged (flagged hours are left out of hourly scoring and kept
+  in energy). `dst_region` EU.
+- **Temperature.** ERA5 2 m temperature at 60.17 N, 24.94 E through the Open-Meteo archive interface.
+- **Day types.** Paid public holidays listed by the University of Helsinki Almanac Office, plus Midsummer Day, Midsummer
+  Eve and Christmas Eve = 7.
+- **Windows.** Eleven month-start origins, 2025-11 to 2026-09, after the public release of both foundation models;
+  common window rules; no thinning.
+
 ## What cannot be rebuilt from this page
 
 - **GoiEner (both populations), BDG2, the Suzhou park and LCL.** The archive version, the load column, the unit

@@ -52,7 +52,7 @@ others) are defined in [Terms used on this page](#terms-used-on-this-page).
   [Information set](#inputs-and-features-one-information-set-for-every-forecaster) ·
   [Results on six test populations](#results-on-six-test-populations) ·
   [LCL households and two changes not adopted](#lcl-households-and-two-changes-not-adopted) ·
-  [Two checks with the forecaster frozen](#two-checks-with-the-forecaster-frozen)
+  [Three checks with the forecaster frozen](#three-checks-with-the-forecaster-frozen)
 - **How it works:** [Handover](#how-the-handover-works) · [Within-day anchoring](#within-day-anchoring-20) ·
   [Readouts](#readouts-peak-and-prediction-interval) · [Theory](#theory-exact-properties)
 - **Check it:** [Reproducibility](#reproducibility) · [What changed in 2.0 and 2.0.1](#what-changed-in-20-and-201) ·
@@ -307,13 +307,18 @@ not the better choice in these cases:
 - **Households.** On GoiEner households zero-shot TimesFM has the lower hourly error (3.9%, resolved); on LCL
   households the two are not separated. ANKYRA's monthly energy error is still lower. The weakness does not come from
   TimesFM: with Chronos-2 as the foundation model it is the same
-  ([check](#two-checks-with-the-forecaster-frozen)).
+  ([check](#three-checks-with-the-forecaster-frozen)).
 - **The first days of the month.** On day 1 the zero-shot foundation models are lower on every population.
 - **Less than two years of history.** ANKYRA is not separated from TimesFM alone on the ten populations. On the
   HKUST blind test, where most windows have less than two years, the hourly gain is borderline and the energy gain
   is resolved.
 - **Coarsely quantised meters.** Where the meter's step is a quarter of the mean load or more (HKUST, 11 units),
   ANKYRA's hourly error does not differ from TimesFM's.
+- **Against a covariate-informed foundation model on a new population.** On the Helsinki confirmation test
+  Chronos-2-X with temperature and calendar covariates was better on hourly error (6.3%) and monthly energy
+  (13.9%), both resolved, mainly because it forecast the monthly level better. The population's temperature
+  sensitivity does not explain it; the cause is not known. Do not assume ANKYRA's energy advantage against such a
+  model. Anchoring ANKYRA to that model instead matched it there (post hoc).
 - **Buildings ruled by closure days.** On Norwegian schools a trained cross-unit model with calendar features is
   12.8% better.
 - **A context with a single large spike.** The hourly error rises and the peak readout, which takes the largest
@@ -780,18 +785,48 @@ had been seen earlier, so LCL is not an unexposed population. Its numbers are no
 The forecaster is unchanged. Details are in [docs/LCL_AND_CLOSEOUT.md](docs/LCL_AND_CLOSEOUT.md#lcl-final-stage); the
 files are `results/lcl_*` and `results/closeout_status.json` ([file list](results/README.md)).
 
-## Two checks with the forecaster frozen
+## Three checks with the forecaster frozen
 
-Both were run on 4 October 2026 with the released 2.0.1 package and all its defaults, each under a protocol written
-before the run. They do not change the forecaster or any table above. Details, limits and files:
+All three were run with the released 2.0.1 package and all its defaults, each under a protocol written before the
+run (the first two on 4 October 2026, the third on 5 October). They do not change the forecaster or any table above. Details, limits and files:
 [docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md).
 
-**Another foundation model.** The foundation forecasts were taken from Chronos-2 instead of TimesFM, with nothing
-selected again, and the ten populations were scored again. Anchoring improves Chronos-2 in the same pattern as TimesFM:
-resolved on seven of ten populations with all windows (TimesFM: six) and on five of ten on the later windows (both),
-never resolvably worse, and negative only on households in both cases. The two finished forecasters are not separated
-on nine populations. This is a re-evaluation of populations scored before, with constants chosen under TimesFM and two
-foundation models only (`results/carrier_swap.csv`).
+**One method, three foundation models.** `ankyra.forecast` takes the foundation model's forecasts as an argument, so the
+anchoring can be put on top of another foundation model with nothing selected again. It was run three times: with TimesFM (the
+released forecaster), with Chronos-2 (4 October, a pre-specified new arm, ten populations) and with the covariate-informed
+Chronos-2-X (5 October, post hoc after the Helsinki result, all twelve populations). The table gives the gain of each anchored
+version over its own foundation model, all scored on the same windows with the same bootstrap seed. `*`: the 95% unit-and-month
+interval excludes zero in favour of the anchored version; no interval excludes zero against it; `—`: not run.
+
+|Population|Windows|Hourly: TimesFM|Hourly: Chronos-2|Hourly: Chronos-2-X|Energy: TimesFM|Energy: Chronos-2|Energy: Chronos-2-X|
+|---|---:|---:|---:|---:|---:|---:|---:|
+|BDG2|934|+5.7%|+6.9%|+4.1%|+17.4%|+16.5%|+20.5%|
+|Cambridge|1,456|+9.6%*|+11.4%*|+4.6%*|+15.7%*|+18.9%*|+8.9%*|
+|HEEW|1,282|+4.5%*|+7.7%*|+4.7%*|+10.1%|+14.6%*|+12.2%*|
+|EWELD|931|+3.1%*|+2.8%*|+3.6%*|+5.3%|+9.4%|+7.6%|
+|GoiEner non-household|1,234|+4.3%|+4.3%|+3.3%|+16.7%*|+20.1%*|+19.5%*|
+|GoiEner households|1,232|-0.1%|+0.2%|+0.1%|+29.7%*|+33.3%*|+31.1%*|
+|Oslo|1,147|+10.9%*|+11.7%*|+6.0%*|+16.1%*|+17.9%*|+8.2%*|
+|Drammen|1,375|+11.3%*|+9.8%*|+4.3%*|+20.1%*|+19.3%*|+9.0%*|
+|CINELDI|929|+6.6%*|+5.9%*|+5.4%*|+17.1%*|+16.3%*|+16.4%*|
+|Suzhou park|127|+11.8%*|+17.7%*|+14.3%*|+16.4%*|+22.9%*|+20.2%*|
+|HKUST campus|120|+8.1%|—|+5.4%*|+37.9%*|—|+12.0%|
+|Helsinki|1,165|+4.3%|—|+0.7%|+6.0%|—|+0.6%|
+
+- **The anchoring transfers.** It improves hourly error resolvably on 7/12 populations with TimesFM,
+  7/10 with Chronos-2 and 8/12 with Chronos-2-X, monthly energy on
+  8/12, 8/10 and 8/12, and never makes its own foundation model
+  resolvably worse. The weak spot is also shared: households, where no version improves the hourly error.
+- **The finished forecaster's accuracy depends in part on the foundation model.** Anchored to Chronos-2, which is about as accurate as
+  TimesFM, it is not separated from the TimesFM-anchored ANKYRA on any population on these windows (on all household
+  windows, near-zero meters included, it is 2.9% worse). Anchored to the stronger Chronos-2-X it is
+  resolvably better on Cambridge, Oslo, Drammen, Helsinki, and on Helsinki it closes the gap of the confirmation test
+  (+6.6% hourly, +12.7% energy against the TimesFM-anchored version).
+- **Limits.** Three foundation models, not foundation models in general; the constants were selected under TimesFM; every population
+  had been scored before, and the Chronos-2-X run is post hoc. The released forecaster stays TimesFM-anchored 2.0.1: choosing the
+  foundation model after seeing every population would leave no untouched data to test the choice
+  (`results/carrier_swap_combined.csv`, `results/carrier_swap.csv`, `results/carrier_swap_x.csv`;
+  [details](docs/FROZEN_MODEL_CHECKS.md#another-foundation-model)).
 
 **A blind test on a population never used before.** "Blind" here means that no rule or constant of ANKYRA was
 chosen with this population in view, that the units and the scoring were fixed before any load value was opened, and
@@ -820,9 +855,26 @@ forecasters as the full-window comparison; ANKYRA keeps the first mean unit rank
 4.20). Per-day curves in Figure 18: lowest of the 14 on 15 of 31 days for hourly error and on 24 for the energy
 delivered to date.
 
-![HKUST per-day curves](figures/fig18_hkust_by_day.png)
+![Per-day curves on the populations scored with the forecaster frozen](figures/fig18_new_populations_by_day.png)
 
-*Figure 18. HKUST, per-day curves of 14 forecasters (ANKYRA frozen; baselines added afterwards).*
+*Figure 18. Per-day curves of 14 forecasters on the two populations scored with the forecaster frozen: HKUST (a, b; baselines added afterwards) and Helsinki (c, d; all forecasts frozen before the targets were read).*
+
+**A pre-registered confirmation test (Helsinki).** On 5 October 2026 the frozen forecaster was scored once on the
+electricity of Helsinki's city service buildings (300 property codes drawn by hash; 201 units, 1,168 windows, eleven
+origins from November 2025 to September 2026, after the public release of both foundation models). The success
+criteria were written before any load value was parsed: monthly energy error resolvably below TimesFM's, and hourly
+error not resolvably above it. **The confirmation was not established.**
+
+- Monthly energy error is 6.0% below TimesFM's, but the interval crosses zero: the primary criterion **failed**.
+- Hourly error is 4.3% below TimesFM's, not resolved: the secondary criterion passed.
+- **Chronos-2-X is resolvably better than ANKYRA** on both: hourly by 6.3%, monthly energy by 13.9%. In mean unit rank
+  among the 14 forecasters it is first (4.08) and ANKYRA second (4.33).
+- Against naive, profile and statistical forecasts and the zero-shot GBT, ANKYRA's hourly gain is 8–28% and resolved
+  on most of them, as on the other populations.
+
+This is the only test of the project with criteria fixed in advance and enough units to resolve them. It does not
+confirm the energy advantage seen on the ten populations and on HKUST
+([details](docs/FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki); `results/helsinki_confirmation.csv`).
 
 ## How the handover works
 
@@ -1079,6 +1131,10 @@ and checked by `python -m unittest discover -s theory -t .`.
   a campus dataset never used before (HKUST, 33 units, 134 windows) monthly energy error is 38% below TimesFM's and
   the hourly gain of 8% is borderline ([docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md),
   `results/carrier_swap.csv`, `results/hkust_first_read.csv`).
+- **Pre-registered confirmation test (5 October 2026; forecaster unchanged)** — Helsinki city service buildings,
+  201 units: monthly energy vs TimesFM +6.0%, interval crosses zero (primary criterion failed); hourly +4.3%, not
+  resolved (secondary passed); Chronos-2-X resolvably better on both. Not confirmed
+  ([docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki)).
 - **After the `v2.0.1` tag (4 October 2026; forecaster unchanged)** — LCL households scored once with the frozen 2.0.1
   forecaster (`results/lcl_*`), and two further changes examined and not adopted
   ([docs/LCL_AND_CLOSEOUT.md](docs/LCL_AND_CLOSEOUT.md), `results/closeout_status.json`); sources and preparation of the
