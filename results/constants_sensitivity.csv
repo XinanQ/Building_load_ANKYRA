@@ -1,19 +1,19 @@
 constant,value,is_ankyra_value,nine_face_mean_log_ratio,worst_face,worst_face_log_ratio,best_face_log_ratio
-handover K0,0.0,False,0.00214,BDG2 2017 (pre-cutoff),0.00766,-0.00169
-handover K0,1.0,False,0.00054,BDG2 2017 (pre-cutoff),0.00282,-0.00129
-handover K0,2.0,True,0.0,Cambridge (pre-cutoff),0.0,0.0
-handover K0,4.0,False,-0.00023,GoiEner development store,0.00166,-0.00283
-handover K0,8.0,False,0.00027,GoiEner development store,0.00375,-0.00449
-handover pairs,2,False,0.00193,EWELD (pre-cutoff),0.00766,-0.01443
-handover pairs,3,False,0.00139,Drammen,0.00636,-0.0108
-handover pairs,4,False,0.00051,EWELD (pre-cutoff),0.00417,-0.00954
-handover pairs,6,True,0.0,Cambridge (pre-cutoff),0.0,0.0
-within-day K0,1.0,False,-0.00087,GoiEner households (pre-cutoff),0.0008,-0.00338
-within-day K0,2.0,True,0.0,Cambridge (pre-cutoff),0.0,0.0
-within-day K0,4.0,False,0.0027,Oslo,0.0079,-0.00078
-within-day cap,0.3,False,0.00307,Oslo,0.00794,-0.0009
-within-day cap,0.5,True,0.0,Cambridge (pre-cutoff),0.0,0.0
-within-day cap,1.0,False,-0.00043,GoiEner households (pre-cutoff),0.00032,-0.0013
-within-day pairs,2,False,0.00216,Oslo,0.00819,-3e-05
-within-day pairs,3,True,0.0,Cambridge (pre-cutoff),0.0,0.0
-within-day pairs,6,False,-0.00186,GoiEner households (pre-cutoff),0.0008,-0.00662
+handover K0,0.0,False,0.0022,bdg2_early,0.0077,-0.00168
+handover K0,1.0,False,0.00056,bdg2_early,0.00285,-0.00126
+handover K0,2.0,True,0.0,goiener_dev_all,0.0,0.0
+handover K0,4.0,False,-0.00025,goiener_dev_all,0.00166,-0.00287
+handover K0,8.0,False,0.00023,goiener_dev_all,0.00374,-0.00458
+handover pairs,2,False,0.0019,eweld_early,0.00776,-0.01458
+handover pairs,3,False,0.00137,eweld_early,0.00639,-0.01085
+handover pairs,4,False,0.00048,eweld_early,0.00408,-0.00957
+handover pairs,6,True,0.0,goiener_dev_all,0.0,0.0
+within-day K0,1.0,False,-0.00126,households_early,0.00054,-0.00439
+within-day K0,2.0,True,0.0,eweld_early,0.0,-0.0
+within-day K0,4.0,False,0.00339,oslo_all,0.00978,-0.00036
+within-day cap,0.3,False,0.00322,oslo_all,0.00857,-0.00056
+within-day cap,0.5,True,0.0,eweld_early,0.0,-0.0
+within-day cap,1.0,False,-0.0004,households_early,0.00021,-0.00109
+within-day pairs,2,False,0.00234,oslo_all,0.00849,0.0
+within-day pairs,3,True,0.0,eweld_early,0.0,-0.0
+within-day pairs,6,False,-0.00181,households_early,0.00054,-0.00536

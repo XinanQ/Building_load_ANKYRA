@@ -1,7 +1,11 @@
 # Checks with the forecaster frozen (4–5 October 2026)
 
 All were run after ANKYRA 2.0.1 was fixed, with the public package and all its defaults. None changes the
-forecaster or the result tables of the ten populations. The first three items each had a protocol written before
+forecaster or the result tables of the ten populations. ANKYRA 2.1 (one within-day trust per window) was adopted
+afterwards, on 6 October 2026. The checks tested 2.0.1 and keep their 2.0.1 results as the tests; HKUST, Helsinki and
+LCL were re-scored with 2.1, and those numbers are given beside them as re-evaluations of targets already read
+([`results/reevaluation_2_1.json`](../results/reevaluation_2_1.json)). The carrier-swap tables were recomputed with
+2.1 (the 2.0.1 runs are in `results/ankyra_2_0_1/`, with the same resolved counts). The first three items each had a protocol written before
 the run; the fourth is a post-hoc exploration with no criterion fixed in advance.
 
 - [Another foundation model](#another-foundation-model): Chronos-2 in place of TimesFM; with the Chronos-2-X run, two foundation-model families in three configurations on the same windows.
@@ -25,20 +29,21 @@ model). See [EVALUATION.md](EVALUATION.md) for the estimand.
 Chronos-2 point forecasts at the origin and at the six pseudo-origins; nothing else changed and no constant was
 chosen again. The result is called ANKYRA-C here. All windows of the ten populations were scored. These populations
 had been scored before, so this is a re-evaluation with a pre-specified new arm. It is a descriptive table: the
-released forecaster stays the TimesFM-based one.
+released forecaster stays the TimesFM-based one. The table shows the anchoring of ANKYRA 2.1; it was first run with
+2.0.1 (`results/ankyra_2_0_1/carrier_swap.csv`), with the same resolved counts.
 
 | Population | Windows | ANKYRA-C vs Chronos-2 (hourly) | ANKYRA vs TimesFM (hourly) | ANKYRA-C vs ANKYRA (hourly) | ANKYRA-C vs Chronos-2 (monthly energy) |
 |---|---|---|---|---|---|
-| GoiEner non-household | 1,237 | +4.3% [-0.070, +0.018] | +4.3% [-0.072, +0.013] | +1.1% [-0.044, +0.013] | +20.0% [-0.440, -0.102] |
-| GoiEner households | 1,258 | -0.9% [-0.009, +0.068] | -2.5% [-0.003, +0.108] | -2.9% [+0.005, +0.075] | +31.9% [-0.518, -0.206] |
-| EWELD | 1,023 | +2.5% [-0.042, -0.005] | +3.0% [-0.050, -0.005] | -1.7% [-0.031, +0.131] | +8.3% [-0.200, +0.016] |
-| BDG2 2017 | 934 | +6.9% [-0.090, +0.242] | +5.7% [-0.077, +0.225] | +1.9% [-0.128, +0.027] | +16.5% [-0.266, +0.117] |
-| Cambridge | 1,456 | +11.4% [-0.141, -0.088] | +9.6% [-0.122, -0.071] | -1.8% [-0.004, +0.036] | +18.9% [-0.278, -0.147] |
-| Arizona (HEEW) | 1,282 | +7.7% [-0.104, -0.030] | +4.5% [-0.065, +0.000] | -1.9% [-0.001, +0.042] | +14.6% [-0.248, -0.028] |
-| Oslo | 1,147 | +11.7% [-0.152, -0.093] | +10.9% [-0.141, -0.088] | -0.0% [-0.027, +0.027] | +17.9% [-0.266, -0.090] |
-| Drammen | 1,375 | +9.8% [-0.138, -0.069] | +11.3% [-0.157, -0.086] | +1.7% [-0.041, +0.007] | +19.3% [-0.327, -0.126] |
-| CINELDI | 929 | +5.9% [-0.085, -0.034] | +6.6% [-0.097, -0.036] | +1.5% [-0.037, +0.003] | +16.3% [-0.271, -0.081] |
-| Suzhou park | 127 | +17.7% [-0.301, -0.087] | +11.8% [-0.205, -0.045] | -2.7% [-0.021, +0.065] | +22.9% [-0.472, -0.112] |
+| GoiEner non-household | 1,237 | +4.4% [-0.071, +0.017] | +4.3% [-0.073, +0.014] | +1.2% [-0.047, +0.012] | +20.0% [-0.440, -0.099] |
+| GoiEner households | 1,258 | -0.8% [-0.011, +0.068] | -2.5% [-0.004, +0.109] | -2.8% [+0.005, +0.075] | +31.9% [-0.518, -0.207] |
+| EWELD | 1,023 | +2.6% [-0.044, -0.006] | +3.2% [-0.051, -0.007] | -1.7% [-0.031, +0.131] | +8.3% [-0.199, +0.017] |
+| BDG2 2017 | 934 | +7.0% [-0.091, +0.241] | +5.8% [-0.079, +0.223] | +1.9% [-0.127, +0.027] | +16.5% [-0.266, +0.117] |
+| Cambridge | 1,456 | +11.5% [-0.142, -0.090] | +9.7% [-0.123, -0.072] | -1.6% [-0.005, +0.035] | +18.9% [-0.278, -0.147] |
+| Arizona (HEEW) | 1,282 | +7.7% [-0.105, -0.030] | +4.5% [-0.066, +0.000] | -1.9% [-0.001, +0.042] | +14.6% [-0.248, -0.028] |
+| Oslo | 1,147 | +12.2% [-0.160, -0.097] | +11.3% [-0.147, -0.092] | +0.2% [-0.027, +0.023] | +17.9% [-0.266, -0.090] |
+| Drammen | 1,375 | +9.9% [-0.139, -0.070] | +11.4% [-0.159, -0.088] | +1.7% [-0.041, +0.008] | +19.3% [-0.327, -0.126] |
+| CINELDI | 929 | +6.0% [-0.087, -0.034] | +6.7% [-0.099, -0.037] | +1.5% [-0.037, +0.003] | +16.3% [-0.271, -0.081] |
+| Suzhou park | 127 | +17.8% [-0.305, -0.087] | +11.9% [-0.209, -0.045] | -2.6% [-0.021, +0.064] | +22.9% [-0.472, -0.112] |
 
 **Reading.**
 
@@ -47,7 +52,7 @@ released forecaster stays the TimesFM-based one.
 - On the windows after each population's training cutoff the count is 5 of ten for both foundation models.
 - Monthly energy error improves resolvably on 8 of ten.
 - The two finished forecasters are not separated on nine populations. On households the Chronos-2-based one is
-  2.9% worse; Chronos-2 itself is 4.6% worse than TimesFM there.
+  2.8% worse; Chronos-2 itself is 4.6% worse than TimesFM there.
 - Limits: two foundation-model families were tested (three configurations with the Chronos-2-X run below), not
   foundation models in general; the constants were selected under
   TimesFM; the populations were not new. The ANKYRA-vs-TimesFM column is recomputed with this experiment's bootstrap
@@ -65,18 +70,18 @@ is 7 of 12 hourly (6 of ten in the table above, whose EWELD windows include near
 
 |Population|Windows|Hourly: TimesFM|Hourly: Chronos-2|Hourly: Chronos-2-X|Energy: TimesFM|Energy: Chronos-2|Energy: Chronos-2-X|
 |---|---:|---:|---:|---:|---:|---:|---:|
-|BDG2|934|+5.7%|+6.9%|+4.1%|+17.4%|+16.5%|+20.5%|
-|Cambridge|1,456|+9.6%*|+11.4%*|+4.6%*|+15.7%*|+18.9%*|+8.9%*|
-|HEEW|1,282|+4.5%*|+7.7%*|+4.7%*|+10.1%|+14.6%*|+12.2%*|
-|EWELD|931|+3.1%*|+2.8%*|+3.6%*|+5.3%|+9.4%|+7.6%|
-|GoiEner non-household|1,234|+4.3%|+4.3%|+3.3%|+16.7%*|+20.1%*|+19.5%*|
-|GoiEner households|1,232|-0.1%|+0.2%|+0.1%|+29.7%*|+33.3%*|+31.1%*|
-|Oslo|1,147|+10.9%*|+11.7%*|+6.0%*|+16.1%*|+17.9%*|+8.2%*|
-|Drammen|1,375|+11.3%*|+9.8%*|+4.3%*|+20.1%*|+19.3%*|+9.0%*|
-|CINELDI|929|+6.6%*|+5.9%*|+5.4%*|+17.1%*|+16.3%*|+16.4%*|
-|Suzhou park|127|+11.8%*|+17.7%*|+14.3%*|+16.4%*|+22.9%*|+20.2%*|
-|HKUST campus|120|+8.1%|—|+5.4%*|+37.9%*|—|+12.0%|
-|Helsinki|1,165|+4.3%|—|+0.7%|+6.0%|—|+0.6%|
+|BDG2|934|+5.8%|+7.0%|+4.2%|+17.4%|+16.5%|+20.5%|
+|Cambridge|1,456|+9.7%*|+11.5%*|+4.7%*|+15.7%*|+18.9%*|+8.9%*|
+|HEEW|1,282|+4.5%*|+7.7%*|+4.8%*|+10.1%|+14.6%*|+12.2%*|
+|EWELD|931|+3.3%*|+3.0%*|+3.8%*|+5.3%|+9.4%|+7.7%|
+|GoiEner non-household|1,234|+4.4%|+4.4%|+3.3%|+16.6%*|+20.1%*|+19.5%*|
+|GoiEner households|1,232|-0.0%|+0.3%|+0.1%|+29.7%*|+33.3%*|+31.1%*|
+|Oslo|1,147|+11.3%*|+12.2%*|+6.3%*|+16.1%*|+17.9%*|+8.2%*|
+|Drammen|1,375|+11.4%*|+9.9%*|+4.5%*|+20.1%*|+19.3%*|+9.0%*|
+|CINELDI|929|+6.7%*|+6.0%*|+5.4%*|+17.1%*|+16.3%*|+16.4%*|
+|Suzhou park|127|+11.9%*|+17.8%*|+14.6%*|+16.4%*|+22.9%*|+20.2%*|
+|HKUST campus|120|+8.4%|—|+5.6%*|+37.9%*|—|+12.0%|
+|Helsinki|1,165|+4.6%|—|+0.8%|+6.0%|—|+0.6%|
 
 File: [`results/carrier_swap_combined.csv`](../results/carrier_swap_combined.csv) (intervals included, plus the finished forecasters
 against each other).
@@ -132,6 +137,13 @@ error is 15%, 22% and 57% lower than theirs, each resolved under every seed; on 
 against MSTL (50%). Mean unit rank among the 14 on the 123 ridge-defined windows: ANKYRA 3.23, per-unit ridge 4.20,
 TimesFM-X 5.31, TimesFM 5.73. Figure 18 shows the per-day curves with the definitions of figures 9 and 9b: ANKYRA has
 the lowest hourly error of the 14 on 15 of 31 days and the lowest energy error to date on 24.
+
+**Re-scored with ANKYRA 2.1** (a re-evaluation, not a second blind test; no multi-seed check was run for it;
+[`results/reevaluation_2_1.json`](../results/reevaluation_2_1.json)): hourly error 8.4% below TimesFM [−0.230, −0.001]
+and 11.3% below Chronos-2 [−0.296, +0.000], monthly energy 37.9% below TimesFM [−0.802, −0.097]; against Chronos-2-X
+and TimesFM-X +3.5% [−0.132, +0.015] and +5.0% [−0.179, +0.033] hourly (energy +4.0% and +27.6%), not separated;
+15%, 22% and 57% below Holt-Winters, MSTL and GBT; mean unit rank 2.52 among ten (unchanged) and 3.20 among 14
+(per-unit ridge 4.23); lowest hourly error of the 14 on 17 of 31 days and lowest energy error to date on 24.
 
 ![Per-day curves](../figures/fig18_new_populations_by_day.png)
 
@@ -193,6 +205,15 @@ unit-and-month interval below zero. Secondary: hourly error, lower end at or bel
 
 Five further bootstrap seeds and an independent recomputation (own code, another seed) give the same decisions.
 
+**Re-scored with ANKYRA 2.1** (a re-evaluation of the same targets, not a second confirmation;
+[`results/reevaluation_2_1.json`](../results/reevaluation_2_1.json)): monthly energy vs TimesFM 6.0% [−0.152, +0.104],
+primary still failed; hourly 4.6% [−0.099, +0.021], secondary passed; the same decisions under the five further
+seeds. Against Chronos-2-X −6.0% hourly and −13.9% energy, both still resolved against ANKYRA. Other hourly gains:
+Chronos-2 +2.2%, TimesFM-X +4.8%, per-unit ridge +4.8% \*, GBT +14.4% \*, Holt-Winters +7.9% \*, MSTL +10.1% \*,
+seasonal naive +28.0% \* / +11.3% \*, profiles +5.4% / +11.7% \* / +21.8% \*; the energy column is unchanged to one
+decimal. Mean unit rank among the 14: Chronos-2-X 4.09, ANKYRA 4.24, Chronos-2 4.93, TimesFM-X 5.94, TimesFM 6.07.
+The per-day counts are unchanged (below TimesFM on 25 and 25 days, below Chronos-2-X on 3 and 6).
+
 | ANKYRA against | Hourly | Monthly energy |
 |---|---|---|
 | TimesFM 2.5 | +4.3% | +6.0% |
@@ -225,7 +246,9 @@ foundation model can forecast the monthly level better than ANKYRA's history-wei
 ## A post-hoc exploration: ANKYRA anchored to Chronos-2-X
 
 **Status.** Requested after the Helsinki result; no criterion fixed in advance; all twelve populations scored before (Helsinki for
-the fourth time); nothing in ANKYRA 2.0.1 changed, constants selected with TimesFM. An exploration, not a test.
+the fourth time); no constant of ANKYRA changed (constants selected with TimesFM). The table below uses the anchoring
+of ANKYRA 2.1; the run was first made with 2.0.1 (`results/ankyra_2_0_1/carrier_swap_x.csv`), with the same resolved
+counts. An exploration, not a test.
 
 **Procedure.** `ankyra.forecast` received Chronos-2-X point forecasts as its foundation forecasts: at the origin the forecasts already
 scored, at the pseudo-origins k = 1..6 new forecasts with the covariates of the equal-information set built at each pseudo-origin from
@@ -233,18 +256,18 @@ data before it (about 60,000 contexts). Unit-equal log RMS ratio, 95% unit-and-m
 
 |Population|Windows|vs Chronos-2-X, hourly|vs Chronos-2-X, energy|vs ANKYRA, hourly|vs ANKYRA, energy|
 |---|---:|---:|---:|---:|---:|
-|BDG2|934|+4.1%|+20.5%|-10.5%|+0.6%|
-|Cambridge|1,456|+4.6%*|+8.9%*|+5.4%*|+8.9%*|
-|HEEW|1,282|+4.7%*|+12.2%*|+1.3%|+3.6%|
-|EWELD|931|+3.6%*|+7.6%|-0.3%|-8.0%|
+|BDG2|934|+4.2%|+20.5%|-10.4%|+0.5%|
+|Cambridge|1,456|+4.7%*|+8.9%*|+5.4%*|+8.9%*|
+|HEEW|1,282|+4.8%*|+12.2%*|+1.3%|+3.6%|
+|EWELD|931|+3.8%*|+7.7%|-0.2%|-8.1%|
 |GoiEner non-household|1,234|+3.3%|+19.5%*|+0.6%|+4.9%|
 |GoiEner households|1,232|+0.1%|+31.1%*|-0.2%|+2.5%|
-|Oslo|1,147|+6.0%*|+8.2%*|+6.2%*|+11.5%*|
-|Drammen|1,375|+4.3%*|+9.0%*|+4.5%*|+9.4%|
-|CINELDI|929|+5.4%*|+16.4%*|+2.4%|+4.0%|
-|Suzhou park|127|+14.3%*|+20.2%*|+1.5%|+4.2%|
-|HKUST campus|120|+5.4%*|+12.0%|+2.2%|+8.4%|
-|Helsinki|1,165|+0.7%|+0.6%|+6.6%*|+12.7%*|
+|Oslo|1,147|+6.3%*|+8.2%*|+6.1%*|+11.5%*|
+|Drammen|1,375|+4.5%*|+9.0%*|+4.5%*|+9.4%|
+|CINELDI|929|+5.4%*|+16.4%*|+2.3%|+4.0%|
+|Suzhou park|127|+14.6%*|+20.2%*|+1.7%|+4.2%|
+|HKUST campus|120|+5.6%*|+12.0%|+2.2%|+8.4%|
+|Helsinki|1,165|+0.8%|+0.6%|+6.4%*|+12.7%*|
 
-`*` resolved in favour of ANKYRA-X; no interval excludes zero against it. The BDG2 hourly contrast against ANKYRA (−10.5%) has a wide
+`*` resolved in favour of ANKYRA-X; no interval excludes zero against it. The BDG2 hourly contrast against ANKYRA (−10.4%) has a wide
 interval and is driven by the near-zero meters. File: `results/carrier_swap_x.csv` (intervals included).

@@ -1,10 +1,17 @@
 # Results data
 
-All files describe **ANKYRA 2.0.1** (2.0.0 plus the micro-load rule). Where a file also carries 2.0.0 or 1.x, or was
-measured on an earlier version, its entry says so. Earlier versions, scored on the same windows, are kept unchanged:
-2.0.0 in [`ankyra_2_0_0/`](ankyra_2_0_0/) and 1.x in [`ankyra_1x/`](ankyra_1x/).
+All files describe **ANKYRA 2.1** (2.0.1 with one within-day trust value per window instead of one per lead block),
+except the files of the frozen-model checks (`hkust_*`, `helsinki_*`, `lcl_*`), which hold the 2.0.1 tests; their 2.1
+re-evaluations are in `reevaluation_2_1.json`. Where a file also carries 2.0.1, 2.0.0 or 1.x, or was measured on an
+earlier version, its entry says so. Earlier versions, scored on the same windows, are kept unchanged: the full 2.0.1
+result set (including the reproduction record of package 2.0.3) in [`ankyra_2_0_1/`](ankyra_2_0_1/), 2.0.0 in
+[`ankyra_2_0_0/`](ankyra_2_0_0/) and 1.x in [`ankyra_1x/`](ankyra_1x/).
 
-- **What differs from 2.0.0.** Only rows of BDG2 and aggregates that include BDG2. The micro-load rule returns the
+- **What differs from 2.0.1.** The within-day block and everything computed from the delivered trajectory: hourly
+  errors, ranks, intervals, the trajectory peak, and delivered energy where the projection onto nonnegative load binds.
+  Level, daily means, handover, energy readout and the off-state and micro-load rules are bit-identical. The single
+  trust was chosen after all twelve populations had been scored with 2.0.1, so every 2.1 number is a re-evaluation.
+- **What 2.0.1 changed from 2.0.0.** Only rows of BDG2 and aggregates that include BDG2. The micro-load rule returns the
   TimesFM forecast when the whole 1,344-hour context stays within 10⁻³ kW of zero. It changes 46 windows of nine
   meters at one BDG2 site and no forecast of the other nine populations.
 - **Status of the BDG2 rows.** The rule was written after the BDG2 test result of 2.0.0 had been seen. The BDG2 rows
@@ -14,8 +21,9 @@ measured on an earlier version, its entry says so. Earlier versions, scored on t
 The files hold the scored statistics behind the figures and tables. They were exported from the study's evaluation
 outputs. Raw data, saved forecasts, model weights and the code of the trained baselines are not in the repository.
 
-- Two changes were made to the forecaster after the test populations were first scored (for 1.x): the within-day
-  anchoring of 2.0, whose numbers are a re-evaluation under a frozen protocol, and the micro-load rule above
+- Three changes were made to the forecaster after the test populations were first scored (for 1.x): the within-day
+  anchoring of 2.0, whose numbers are a re-evaluation under a frozen protocol, the micro-load rule above, and the
+  single within-day trust of 2.1, chosen after all populations had been scored with 2.0.1
   ([details](../docs/EVALUATION.md#populations-and-tiers)).
 - Nothing was tuned on the exported statistics.
 - Files marked *descriptive* were computed after scoring, from the scored forecasts.
@@ -48,7 +56,8 @@ outputs. Raw data, saved forecasts, model weights and the code of the trained ba
 
 | `model` | Forecaster | `model_class` |
 |---|---|---|
-| `ANKYRA` | ANKYRA 2.0.1 | blank |
+| `ANKYRA` | ANKYRA 2.1 | blank |
+| `ANKYRA-201` | ANKYRA 2.0.1 (within-day trust per lead block) | `ANKYRA 2.0.1, earlier version` |
 | `ANKYRA-200` | ANKYRA 2.0.0 (no micro-load rule) | `ANKYRA 2.0.0, earlier version` |
 | `ANKYRA-1x` (`ANKYRA 1.x` in `block_shares.csv`) | ANKYRA 1.x (no within-day anchoring, no micro-load rule) | `ANKYRA 1.x, earlier version` |
 | `F1` | The 1.x forecaster without the off-state rule | — |
@@ -86,8 +95,8 @@ outputs. Raw data, saved forecasts, model weights and the code of the trained ba
 - `units`, `windows`: all windows. `units_late`, `windows_late`: late windows. For LCL the late counts are the 710
   windows on which all trained baselines have a forecast.
 
-BDG2 is a test population for the 2.0.0 forecaster. Its 2.0.1 rows include the micro-load rule, written after its
-result was seen. The 1.x result on LCL was known before 2.0.1 was scored there, so LCL is `seen` and is not an
+BDG2 is a test population for the 2.0.0 forecaster. Its 2.0.1 and 2.1 rows include the micro-load rule, written after
+its result was seen. The 1.x result on LCL was known before 2.0.1 was scored there, so LCL is `seen` and is not an
 unexposed population.
 
 ## The main comparison
@@ -116,14 +125,14 @@ the six test populations pooled. Descriptive. Figure 15.
   the unrounded RMSE values; the other file rounds them to 12 decimals first. The two agree to rounding on nine
   populations. On BDG2 they differ for nine baselines by up to 0.06 (MSTL: 14.053 here, 13.993 there). On the
   near-zero meters several baselines have errors that are equal after rounding but not exactly, so they share a rank
-  in one file and not in the other. ANKYRA's rank is the same in both (4.535 and 4.5352).
+  in one file and not in the other. ANKYRA's rank is the same in both (4.507 and 4.507).
 
-**`conventional_metrics.csv`** — Conventional errors on all windows for ANKYRA, 2.0.0 (`ANKYRA-200`), 1.x
-(`ANKYRA-1x`) and the forecasters that exist on all windows. Columns: `set`, `tier`, `model`, `RMSE_kW` and `MAE_kW`
+**`conventional_metrics.csv`** — Conventional errors on all windows for ANKYRA, 2.0.1 (`ANKYRA-201`), 2.0.0
+(`ANKYRA-200`), 1.x (`ANKYRA-1x`) and the forecasters that exist on all windows. Columns: `set`, `tier`, `model`, `RMSE_kW` and `MAE_kW`
 (mean over units, kW), `CV_RMSE_pct`, `NMBE_pct` and `WAPE_pct` (median over units, %), `WAPE_pooled_pct` (pooled over
 all windows, %).
 
-**`conventional_metrics_late.csv`** — The same metrics on the late windows for all 21 forecasters, with 2.0.0 and 1.x
+**`conventional_metrics_late.csv`** — The same metrics on the late windows for all 21 forecasters, with 2.0.1, 2.0.0 and 1.x
 as extra rows. Additional columns: `windows`, `units`, `model_label`, `model_class`, and `units_excluded`, the number
 of units with a mean load below 10⁻⁶ kW, which are left out of the ratio metrics. Figure 8.
 
@@ -158,8 +167,9 @@ Suzhou park. Pooled over the month it gives back the scored metrics. Figures 9 a
 - Other columns: `set`, `tier`, `windows`, `model`, `model_label`, `model_class`, `day`.
 
 **`ankyra_2_vs_1x_by_day.csv`** — The `GM_CV_RMSE_pct` curve of `lead_day_metrics.csv` (same definition, same fixed
-unit set, three decimals) for ANKYRA 2.0.1, 2.0.0, 1.x and the four foundation-model variants on the six test sets.
-Columns: `set`, `day`, `units_in_U`, then one column per forecaster: `ankyra_2_0_1`, `ankyra_2_0_0`, `ankyra_1x`,
+unit set, three decimals) for ANKYRA 2.1, 2.0.1, 2.0.0, 1.x and the four foundation-model variants on the six test
+sets. Columns: `set`, `day`, `units_in_U`, then one column per forecaster: `ankyra_2_1`, `ankyra_2_0_1`, `ankyra_2_0_0`,
+`ankyra_1x`,
 `TimesFM`, `Chronos-2`, `Chronos-2-X`, `TimesFM-X`.
 
 **`energy_error.csv`** — Monthly energy error of ANKYRA against each of the 20 baselines on the six test sets and the
@@ -181,17 +191,20 @@ One row per `set`, `model`, `quantity` and `block`, with the number in `value`.
 
 ## Design choices
 
-**`ablation.csv`** — ANKYRA 2.0.1 against its reduced versions, on all windows of the ten populations. Columns: `set`,
-`tier`, `ablation`, `log_ratio`, `um_low`, `um_high`, `improvement_pct`. Figure 4a. The four values of `ablation`:
+**`ablation.csv`** — ANKYRA 2.1 against its reduced versions, on all windows of the ten populations. Columns: `set`,
+`tier`, `ablation`, `log_ratio`, `um_low`, `um_high`, `improvement_pct`. Figure 4a. The five values of `ablation`:
 
-- ANKYRA 2.0.0 (without the micro-load rule): zero on every population except BDG2;
+- ANKYRA 2.0.1 (within-day trust per lead block): 0.01–0.45%, resolved in favour of 2.1 on Oslo and Drammen only;
+- ANKYRA 2.0.0 (without the micro-load rule, trust per lead block): equal to the 2.0.1 row on every population except
+  BDG2;
 - ANKYRA 1.x (foundation within-day block, no anchoring);
 - F1 (the 1.x forecaster without the off-state rule);
 - F0 (the fixed division of labour).
 
 F1 and F0 are forecasters of the 1.x period, so like 1.x they lack the within-day anchoring. Where the off-state rule
 never fires, the F1 row equals the 1.x row. None of the reduced versions carries the micro-load rule, so on BDG2 the
-last three contrasts include it; their 2.0.0 values are in `ankyra_2_0_0/ablation.csv`.
+last three contrasts include it; their 2.0.0 values are in `ankyra_2_0_0/ablation.csv` and their 2.0.1 values in
+`ankyra_2_0_1/ablation.csv`.
 
 **`handover_granularity.csv`** — An ablation of the handover on the ten populations, specified before it was run. It
 is a record of 1.x; the handover is unchanged since. Four arms: ANKYRA's weekly per-unit weights (`AW`), a fixed half
@@ -203,7 +216,7 @@ number (each arm against TimesFM, `AW` and `AM` against `A0`) are descriptive. F
 **`lead_weeks_first_read.csv`** — Contrasts against TimesFM by forecast week (1–4) on the three populations scored
 first after the handover was fixed (Cambridge, CINELDI, HEEW). Figure 4c and 4d.
 
-- `ankyra_vs_timesfm_log_ratio`: ANKYRA (identical in 2.0.0 and 2.0.1).
+- `ankyra_vs_timesfm_log_ratio`: ANKYRA 2.1 (2.0.0 and 2.0.1 were identical; their values are in `ankyra_2_0_1/`).
 - `ankyra_1x_vs_timesfm_log_ratio`: ANKYRA 1.x. `fixed_division_vs_timesfm_log_ratio`: F0.
 - `mean_weight_on_model`: the mean estimated weight on TimesFM's daily means in that week.
 
@@ -225,7 +238,9 @@ windows of the six test populations. No test window is used.
 - `is_ankyra_value`: `True` on the row of the value ANKYRA uses. That row is the reference and reads zero.
 - `nine_face_mean_log_ratio`: mean over the nine design sets of the hourly unit-equal log ratio of the variant against
   ANKYRA; negative is better than ANKYRA. `face` in the column names means design set.
-- `worst_face`, `worst_face_log_ratio`: the design set with the largest ratio, and that ratio. `best_face_log_ratio`:
+- `worst_face`, `worst_face_log_ratio`: the design set with the largest ratio, and that ratio. In the 2.1 file the
+  set is named by its internal key: `bdg2_early`, `eweld_early`, `households_early` (pre-cutoff windows of those test
+  populations), `oslo_all`, `goiener_dev_all` (the GoiEner development store). The reference is ANKYRA 2.1. `best_face_log_ratio`:
   the smallest ratio. On the reference rows the named set has no meaning.
 - Micro-load windows return the TimesFM forecast in the reference and in every variant.
 
@@ -251,7 +266,7 @@ errors of the readout and of last month's peak; they repeat on the rows of a pop
 **`intervals_by_population.csv`** — The same interval and the native quantiles of TimesFM 2.5 and Chronos-2 on all
 windows of the ten populations. Descriptive. Figure 16.
 
-- `arm`: `ankyra_2_0` (the interval around the 2.0.1 trajectory; the name is from 2.0), `chronos_native`,
+- `arm`: `ankyra_2_0` (the interval around the 2.1 trajectory; the name is from 2.0), `chronos_native`,
   `timesfm_native`.
 - `cov80`, `cov90`: coverage, a fraction; `cov80_week1`–`cov80_week4` and `cov90_week1`–`cov90_week4` by forecast week.
 - `width80`, `width90`, `winkler80`, `winkler80_week1`–`winkler80_week4`, `pinball_0.05`–`pinball_0.95`,
@@ -261,31 +276,34 @@ windows of the ten populations. Descriptive. Figure 16.
 - Other columns: `set`, `tier`, `units`, `windows`.
 
 **`intervals_winkler_contrasts.csv`** — Unit-equal Winkler contrasts of the ANKYRA interval against `timesfm_native`
-and `chronos_native` (`comparator`) on the ten populations, for `version` 2.0.1 and 2.0.0. Columns: `version`, `set`,
+and `chronos_native` (`comparator`) on the ten populations, for `version` 2.1, 2.0.1 and 2.0.0. Columns: `version`, `set`,
 `comparator`, `log_ratio`, `um_low`, `um_high`, `improvement_pct`.
 
 ## BDG2 and the micro-load rule
 
 **`bdg2_near_zero_sensitivity.csv`** — The BDG2 contrasts with and without the three meters that are near zero in
 every window. Columns: `unit_set`, `subset`, `model`, `log_ratio`, `um_low`, `um_high`, `improvement_pct`,
-`ankyra_mean_unit_rank`. The rows include ANKYRA 2.0.0 and 1.x as `model`. `ankyra_mean_unit_rank` is ANKYRA's mean
+`ankyra_mean_unit_rank`. The rows include ANKYRA 2.0.1 (`ANKYRA-201`), 2.0.0 and 1.x as `model`. `ankyra_mean_unit_rank` is ANKYRA's mean
 per-unit rank on that unit set and subset, repeated on each row.
 
-- Under 2.0.1 the three meters are handed to TimesFM and still dominate the BDG2 unit means.
+- Under 2.0.1 and 2.1 the three meters are handed to TimesFM and still dominate the BDG2 unit means.
 - In the rows without them the point estimates of 2.0.1 and 2.0.0 agree (late windows to 0.01 points, all windows to
-  0.03). The intervals differ, because six further meters are handed over in some windows; three late contrasts are
-  resolved only under 2.0.1.
+  0.03). Between 2.1 and 2.0.0 they differ by 0.003 points on the late windows and 0.13 on all windows (the within-day
+  change). The intervals differ, because six further meters are handed over in some windows; three late contrasts are
+  resolved only with the rule (2.0.1 and 2.1).
 
 **`bdg2_micro_load_windows.csv`** — The 46 BDG2 windows the micro-load rule changes, one row each. Descriptive.
 Columns: `meter`, `target_month`, `subset` (`early` or `late`), `context_max_kw` (largest load in the context),
 `realised_mean_kw`, `realised_max_kw`, `meter_resumes_in_window`, and the mean forecast and RMSE of both versions
 (`forecast_mean_2_0_0_kw`, `forecast_mean_2_0_1_kw`, `rmse_2_0_0_kw`, `rmse_2_0_1_kw`). In 41 windows the meter stays
-near zero. In 5 it resumes, and there 2.0.0 is marginally better.
+near zero. In 5 it resumes, and there 2.0.0 is marginally better. 2.1 returns the same TimesFM forecast on these
+windows, so the 2.0.1 columns also describe 2.1.
 
 ## Robustness, cost, example, reproduction
 
 **`robustness.csv`** — Stress test on 64 Drammen windows (a development population): the context is corrupted, the
-targets are not. Measured on 2.0.0. One row per `corruption`:
+targets are not. Measured on 2.1 (the earlier measurement, on 2.0.0, is in `ankyra_2_0_0/` and `ankyra_2_0_1/`). One
+row per `corruption`:
 
 - `miss05`, `miss20`: 5% or 20% of the context hours removed and filled by linear interpolation;
 - `zero24`: a 24-hour block of zeros in the last week;
@@ -308,7 +326,7 @@ Columns:
 - `equivariance_max_rel_dev`: scale rows only; the largest relative deviation from exact scale equivariance.
 
 **`cost_per_window.csv`** — Timings on one laptop GPU, measured on 2.0.0 (the micro-load rule adds one maximum over
-the context). Columns: `item`, `value`, `unit`. The unit is `s/window` (seconds per 744-hour window) for the
+the context; the single trust of 2.1 adds no computation and was not timed separately). Columns: `item`, `value`, `unit`. The unit is `s/window` (seconds per 744-hour window) for the
 forecasters and their components, `s` for the two model loads (once per session) and `GiB` for peak GPU memory.
 "Evaluated configuration" is the TimesFM setting used in the study (per-core batch 1). The `component:` rows are the
 parts of the totals above them; four of them repeat a total that has a single part.
@@ -317,27 +335,43 @@ parts of the totals above them; four of them repeat a total that has a single pa
 Cambridge estate archive, CC BY 4.0), used in Figures 6 and 7. The CSV has `hour` (0 is the origin; negative hours are
 the 1,344-hour context), `load_kw`, and from hour 0 on `timesfm_kw` and `ankyra_kw`. The JSON has the building, the
 forecast period, the day types of the context and target days (Monday 0 … Sunday 6, holiday 7) and the source.
+`ankyra_kw` is the 2.1 forecast (the 2.0.1 forecast is in `ankyra_2_0_1/`).
 
-**`REPRODUCTION_CHECK.json`** — The current package (2.0.3, code of 2.0.2) against the evaluated forecasts on 484
-windows of seven populations,
+**`REPRODUCTION_CHECK.json`** — The check of the current package (2.1.0; record v6, PASS) against the evaluated
+forecasts on 484 windows of seven populations,
 including every micro-load window of BDG2 and of the EWELD late windows (263 in all).
 
 - `faces`: the window sets checked. `households` = GoiEner households, `goiener_confirm` = GoiEner non-household,
   `park` = Suzhou park; the suffixes `_late`, `_early`, `_all` name the subset.
-- `max_rel_diff_2_0_1_vs_panel`: the package against the scored 2.0.1 forecasts ("panel" is the set of scored
-  forecasts behind the tables). `max_rel_diff_2_0_0_mode`: the package with `micro_load_rule=False` against the stored
+- `max_rel_diff_2_1_vs_panel`: the package against the scored 2.1 forecasts (largest 7.4×10⁻⁸).
+  `daily_means_2_1_equal_2_0_1_and_one_trust`: the level and daily means of 2.1 are bit-identical to 2.0.1 and the four
+  trust entries are equal. `micro_windows_2_1_equal_timesfm`: 2.1 returns the TimesFM forecast on every micro-load
+  window. `median_seconds_cpu_side_2_1`: CPU time of the 2.1 call in this check, not a benchmark.
+- `max_rel_diff_2_0_1_vs_panel`: the package with `single_trust=False` against the scored 2.0.1 forecasts ("panel" is the set of scored
+  forecasts behind the tables). `max_rel_diff_2_0_0_mode`: the package with `single_trust=False, micro_load_rule=False` against the stored
   2.0.0 forecasts named in `v6_reference` ("v6" was the working name of the 2.0 forecaster).
   `max_rel_diff_2_0_0_mode_vs_panel_arm`: the same mode against the 2.0.0 rows of the 2.0.1 scoring. All agree to
   float32 precision, the precision of the stored forecasts.
 - `max_abs_diff_1x_mode_kw`: the 1.x mode against the evaluated 1.x forecasts, in kW.
-- On micro-load windows the forecast is bit-identical to the TimesFM forecast, elsewhere to the 2.0.0 mode.
+- On micro-load windows 2.1 and 2.0.1 are bit-identical to the TimesFM forecast; elsewhere the 2.0.1 mode is
+  bit-identical to the 2.0.0 mode.
 - `package_files`: SHA-256 of the eight top-level modules of `ankyra/` as stored in the repository (LF line endings).
   The files under `ankyra/history/` are not listed; for eight of them see the note below.
 
 **`REPRODUCTION_CHECK_2_0_1.json`** — the same check on the 2.0.1 package (4 October 2026); its `package_files` are the
 hashes of the modules at that time, three of which (`__init__.py`, `analog.py`, `core.py`) have changed since.
 
-The 2.0.0 and 1.x records are `ankyra_2_0_0/REPRODUCTION_CHECK.json` and `ankyra_1x/REPRODUCTION_CHECK.json`.
+The record of package 2.0.3 (model 2.0.1) is `ankyra_2_0_1/REPRODUCTION_CHECK.json`; `ankyra_2_0_1/` also holds a copy
+of `REPRODUCTION_CHECK_2_0_1.json`. The 2.0.0 and 1.x records are `ankyra_2_0_0/REPRODUCTION_CHECK.json` and
+`ankyra_1x/REPRODUCTION_CHECK.json`.
+
+**`reevaluation_2_1.json`** — The ANKYRA 2.1 re-evaluations of the three frozen-model checks of 2.0.1: LCL (against
+matched-input 1.x and TimesFM on all and late windows, mean per-unit rank on the late windows, the same-information
+check, the readouts, and 2.1 against 2.0.1), HKUST (hourly and energy contrasts, the added comparators, the mean unit
+rank among 14 and the days on which ANKYRA is lowest) and Helsinki (both criteria, all contrasts, the mean unit rank
+among 14). The same targets are read again with the 2.1 forecasts; these are re-evaluations, not tests. The tests
+remain the 2.0.1 files (`lcl_*`, `hkust_*`, `helsinki_*`). `UM` and `um_low`, `um_high` are 95% unit-and-month
+intervals in log units.
 
 **Paths in the records.** `ankyra/history/provenance.json`, `ankyra/history/frozen_config.json` and the reproduction
 records name files of the study's private working repository (for example `tools_*.py`, `recovery/…`,
@@ -354,7 +388,8 @@ reproduced. The eight files are `_climate.py`, `_day.py`, `_eo.py`, `_level.py`,
 ## LCL households
 
 The Low Carbon London (LCL) households were held out of the ten-population comparison. They were scored once with the
-frozen 2.0.1 forecaster, and nothing was retuned. The 1.x result on LCL had been seen earlier, so LCL is not an
+frozen 2.0.1 forecaster, and nothing was retuned. ANKYRA 2.1 was re-scored on LCL afterwards as a re-evaluation;
+those numbers are in `reevaluation_2_1.json`, not in these files. The 1.x result on LCL had been seen earlier, so LCL is not an
 unexposed population. The `lcl_*` files are a separate family: they are not merged into the ten-population tables,
 ranks or figures ([details](../docs/LCL_AND_CLOSEOUT.md)).
 
@@ -429,12 +464,13 @@ Columns of the other files:
 
 ## Checks with the forecaster frozen
 
-**`carrier_swap.csv`** — ANKYRA with Chronos-2 in place of TimesFM (`ANKYRA-C`), ten populations, all windows (`full`) and
+**`carrier_swap.csv`** — ANKYRA 2.1 with Chronos-2 in place of TimesFM (`ANKYRA-C`), ten populations, all windows (`full`) and
 windows after the training cutoff (`late`), hourly and monthly-energy error. Columns: `contrast` (first model vs
 second), `log_ratio` with its 95% unit-and-month interval (`um_low`, `um_high`), `improvement_pct` (positive = first
 model better), `resolved`. A re-evaluation of populations scored before.
 
-**`hkust_first_read.csv`** — the frozen 2.0.1 forecaster on the HKUST campus incomer meters (134 windows, 33
+**`hkust_first_read.csv`** — the frozen 2.0.1 forecaster (the test; the 2.1 re-evaluation is in
+`reevaluation_2_1.json`) on the HKUST campus incomer meters (134 windows, 33
 units): one original first read, comparators added afterwards against the frozen ANKYRA forecasts, and every ANKYRA
 forecast recomputed after the causal correction of the temperature scale; ANKYRA against each comparator. `resolved_at_seed_20261004` is the reading under one bootstrap seed; the two
 hourly contrasts against the foundation models are borderline and change with the seed. Not merged into any other
@@ -450,9 +486,12 @@ frozen; 201 units, 1,168 windows; 200 units with non-zero load are scored): ANKY
 forecasters, hourly and monthly energy error, with the 95% unit-and-month interval at seed 20261005. `helsinki_criteria.json` holds the two criteria and their outcome (primary failed, secondary passed; not confirmed).
 `helsinki_by_day.csv` holds the per-day curves (figure 18 c, d). [Details](../docs/FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki).
 
-**`carrier_swap_x.csv`** — post-hoc exploration (not a test): ANKYRA 2.0.1 anchored to Chronos-2-X on the twelve populations, against Chronos-2-X and against the TimesFM-anchored ANKYRA, hourly and monthly energy, with the 95% unit-and-month interval ([details](../docs/FROZEN_MODEL_CHECKS.md#a-post-hoc-exploration-ankyra-anchored-to-chronos-2-x)).
+**`carrier_swap_x.csv`** — post-hoc exploration (not a test): ANKYRA 2.1 anchored to Chronos-2-X on the twelve populations, against Chronos-2-X and against the TimesFM-anchored ANKYRA, hourly and monthly energy, with the 95% unit-and-month interval ([details](../docs/FROZEN_MODEL_CHECKS.md#a-post-hoc-exploration-ankyra-anchored-to-chronos-2-x)).
 
-**`carrier_swap_combined.csv`** — the anchoring on two foundation-model families in three configurations (TimesFM; Chronos-2 without and with covariates) on the same windows with one seed: gain of each anchored version over its own foundation model, and the finished forecasters against each other ([details](../docs/FROZEN_MODEL_CHECKS.md#two-families-three-configurations-on-the-same-windows)).
+**`carrier_swap_combined.csv`** — the anchoring of ANKYRA 2.1 on two foundation-model families in three configurations (TimesFM; Chronos-2 without and with covariates) on the same windows with one seed: gain of each anchored version over its own foundation model, and the finished forecasters against each other ([details](../docs/FROZEN_MODEL_CHECKS.md#two-families-three-configurations-on-the-same-windows)).
+
+The three carrier-swap files were recomputed with 2.1; the 2.0.1 runs are in `ankyra_2_0_1/`, with the same resolved
+counts.
 
 ## Two candidates examined after 2.0.1 and not adopted
 

@@ -1,4 +1,4 @@
-"""Analog-day within-day shapes and the error-weighted within-day anchoring (ANKYRA 2.0).
+"""Analog-day within-day shapes and the error-weighted within-day anchoring (ANKYRA 2.0; one trust value since 2.1).
 
 Analog days.  For a target day of the horizon, its analog days are the complete pre-origin days of the unit's own
 record that have the same calendar type (Monday ... Sunday, holiday), lie within 14 days of the same day of year, are in
@@ -11,11 +11,13 @@ foundation model's shape; a window whose analog shape exceeds three times the la
 foundation model's shape entirely.
 
 Within-day anchoring.  With wT the foundation model's within-day block at the origin and S the analog shape, the
-delivered within-day block is  W = wT + w_k (S - wT)  for the days of lead block k (days 1-7, 8-14, 15-21, 22-31).  The
-trust w_k is the least-squares weight of (S_q - wT_q) against the realised within-day error (y_q - wT_q) over the unit's
-completed pseudo-origin windows q = o - 744 k', k' = 1..3, clipped to [0, 1], shrunk towards zero by n/(n + 2) and
-capped at 1/2:  w_k = min(clip(lambda*_k, 0, 1) n / (n + 2), 1/2).  Nothing is trained; both shapes and the trust use
-only data before the origin (and, at a pseudo-origin, only data before that pseudo-origin).
+delivered within-day block is  W = wT + w (S - wT).  Since 2.1 the trust w is one value for the whole window: the
+least-squares weight of (S_q - wT_q) against the realised within-day error (y_q - wT_q), pooled over all 744 hours of
+the unit's completed pseudo-origin windows q = o - 744 k', k' = 1..3, clipped to [0, 1], shrunk towards zero by
+n/(n + 2) and capped at 1/2:  w = min(clip(lambda*, 0, 1) n / (n + 2), 1/2).  Up to 2.0.1 the same weight was estimated
+separately for each lead block k (days 1-7, 8-14, 15-21, 22-31); ``within_trust(..., single=False)`` gives those four
+weights.  Nothing is trained; both shapes and the trust use only data before the origin (and, at a pseudo-origin, only
+data before that pseudo-origin).
 
 Both within-day blocks have zero daily means, so the pre-projection daily means are unchanged by the anchoring, and with
 them the level, the daily path, the energy readout (744 x level) and any readout computed from those daily means.  The
@@ -132,20 +134,31 @@ class AnalogShapes:
         return s, True
 
 
-def within_trust(pairs) -> tuple[np.ndarray, int]:
-    """Per-lead-block trust w_k from completed pseudo-origin triples (analog shape, foundation within-day, realised
-    within-day), each (744,).  Returns ((4,) weights, number of pairs)."""
+def within_trust(pairs, single: bool = True) -> tuple[np.ndarray, int]:
+    """Trust on the analog shape from completed pseudo-origin triples (analog shape, foundation within-day, realised
+    within-day), each (744,).  Returns ((4,) weights for the lead blocks, number of pairs).
+
+    single True (2.1): one weight from the sums over the four lead blocks, repeated four times.
+    single False (2.0.0 - 2.0.1): one weight per lead block."""
     n = len(pairs); w = np.zeros(4)
     if n == 0:
         return w, 0
     lead = np.repeat(np.array([0] * 7 + [1] * 7 + [2] * 7 + [3] * 10), HR)
+    num, den = np.zeros(4), np.zeros(4)
     for k in range(4):
-        m = lead == k; num = den = 0.0
+        m = lead == k
         for s, f, y in pairs:
             dl = (np.asarray(s) - np.asarray(f))[m]; r = (np.asarray(y) - np.asarray(f))[m]
-            num += float(dl @ r); den += float(dl @ dl)
-        lam = num / den if den > 1e-12 else 0.0
-        w[k] = min(float(np.clip(lam, 0.0, 1.0)) * n / (n + K0_WITHIN), W_CAP)
+            num[k] += float(dl @ r); den[k] += float(dl @ dl)
+
+    def shrunk(nu, de):
+        lam = nu / de if de > 1e-12 else 0.0
+        return min(float(np.clip(lam, 0.0, 1.0)) * n / (n + K0_WITHIN), W_CAP)
+    if single:
+        w[:] = shrunk(float(num.sum()), float(den.sum()))
+    else:
+        for k in range(4):
+            w[k] = shrunk(num[k], den[k])
     return w, n
 
 

@@ -1,4 +1,5 @@
-> **Archived record of ANKYRA 1.x (release 1.2.1), kept unchanged beside the 2.0.1 results.** The current files are
+> **Archived record of ANKYRA 1.x (release 1.2.1), kept unchanged beside the 2.1 results (2.0.1 in
+> [`ankyra_2_0_1/`](../ankyra_2_0_1/)).** The current files are
 > in [`results/`](../), with a full description of the columns in [`results/README.md`](../README.md).
 >
 > - Figure numbers and file descriptions below are those of the 1.2.1 release.

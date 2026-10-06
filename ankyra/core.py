@@ -10,8 +10,9 @@ For a forecast origin o the 744-hour trajectory is assembled from three orthogon
 * centred daily path  seven historical candidate paths weighted the same way (K0 = 2).
 
 Since 2.0 the within-day block is anchored as well (``ankyra.analog``): the unit's own analog-day shape competes with
-the foundation model's shape, with a per-lead-block weight set by the unit's own errors at three completed
-pseudo-origins, shrunk towards the foundation model and capped at one half.  Both shapes have zero daily means, so the
+the foundation model's shape, with a weight set by the unit's own errors at three completed pseudo-origins, shrunk
+towards the foundation model and capped at one half.  Since 2.1 that weight is one value for the whole window (up to
+2.0.1 it was estimated separately for days 1-7, 8-14, 15-21 and 22-31).  Both shapes have zero daily means, so the
 pre-projection daily means, the level, the daily path, the energy readout and any readout computed from those daily
 means are exactly those of the 1.x division of labour; the delivered trajectory max(., 0), and a readout computed from it,
 can differ where the projection binds.
@@ -83,7 +84,7 @@ class AnkyraForecast:
     pseudo_pairs: int = 0                     # completed pseudo-origin pairs behind the lead-week weights (at most 6)
     foundation_within_day_kw: Optional[np.ndarray] = None  # (744,) the foundation model's own within-day block
     analog_shape_kw: Optional[np.ndarray] = None           # (744,) the unit's analog-day shape (None when not built)
-    within_trust: tuple = (0.0, 0.0, 0.0, 0.0)             # w_k on the analog shape, lead blocks 1-7, 8-14, 15-21, 22-31
+    within_trust: tuple = (0.0, 0.0, 0.0, 0.0)             # weight on the analog shape for lead blocks 1-7, 8-14, 15-21, 22-31 (one value repeated since 2.1)
     within_pseudo_pairs: int = 0              # completed pseudo-origin triples behind the within-day trust (at most 3)
     analog_kept: bool = False                 # False when the whole-window guard returned the model's shape (or no analog shape was built)
     micro_load: bool = False                  # True when the whole 1,344-hour context stayed within 1e-3 kW of zero and the model was used unchanged
@@ -249,7 +250,7 @@ def _check_pseudo_forecasts(T: dict, used, within_anchor: bool) -> None:
 
 
 def forecast(history: History, *, group: str, temp_sigma_std: float, foundation: Optional[Foundation], dst_region: str = "none",
-             within_anchor: bool = True, micro_load_rule: bool = True) -> AnkyraForecast:
+             within_anchor: bool = True, micro_load_rule: bool = True, single_trust: bool = True) -> AnkyraForecast:
     """ANKYRA forecast for the 744 hours after the end of ``history``.
 
     history         pre-origin hourly load and temperature and the calendar through the horizon (``ankyra.History``)
@@ -273,7 +274,10 @@ def forecast(history: History, *, group: str, temp_sigma_std: float, foundation:
                     within-day anchoring runs (not with within_anchor False or foundation None, and not on an off-state
                     or micro-load return)
     within_anchor   False leaves the foundation model's within-day block unchanged (with micro_load_rule False: the 1.x forecast)
-    micro_load_rule False reproduces the 2.0.0 forecast (no hand-over of contexts that stay within 1e-3 kW of zero)
+    micro_load_rule False switches off the hand-over of contexts that stay within 1e-3 kW of zero (together with
+                    single_trust False: the 2.0.0 forecast)
+    single_trust    False reproduces the 2.0.1 forecast (the within-day trust estimated separately for each lead block;
+                    with micro_load_rule False as well: 2.0.0)
 
     Returns an :class:`AnkyraForecast` (all values in kW).
 
@@ -348,7 +352,7 @@ def forecast(history: History, *, group: str, temp_sigma_std: float, foundation:
                 continue
             wTq = within_day(T[k]); Sq, _ = shapes.shape_with_sanity(q, wTq)
             triples.append((Sq, wTq, within_day(load[q:q + HORIZON])))
-        w, n_w = _analog.within_trust(triples); trust = tuple(float(x) for x in w)
+        w, n_w = _analog.within_trust(triples, single=single_trust); trust = tuple(float(x) for x in w)
         W = _analog.anchored_within_day(wT0, S0, w)
 
     raw = np.repeat(daily, HR) + W

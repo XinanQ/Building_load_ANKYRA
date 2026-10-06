@@ -1,15 +1,18 @@
 # Method
 
-This document describes ANKYRA 2.0.1, the model implemented by packages 2.0.1 to 2.0.3 (2.0.2 masks hours marked
-unobserved once for every branch; 2.0.3 changes documentation only). The model versions differ in two places:
+This document describes ANKYRA 2.1, the model implemented by package 2.1.0. ANKYRA 2.0.1 (packages 2.0.1 to 2.0.3;
+2.0.2 masks hours marked unobserved once for every branch, 2.0.3 changes documentation only) differs from it only in
+the within-day trust. The model versions differ in three places:
 
 - 1.x used the foundation model's within-day shape unchanged. Section [Within-day shape](#within-day-shape) gives the
   rule introduced in 2.0.
 - 2.0.1 adds the [micro-load rule](#off-state-and-micro-load-rules) to 2.0.0. It changes the forecast only when the
   whole 1,344-hour context stays within $10^{-3}$ kW of zero.
+- 2.1 estimates the [within-day trust](#within-day-shape) as one value per window, pooled over the four lead blocks,
+  instead of one value per lead block.
 
-`forecast(..., micro_load_rule=False)` reproduces 2.0.0 exactly, and
-`forecast(..., within_anchor=False, micro_load_rule=False)` reproduces 1.x exactly.
+`forecast(..., single_trust=False)` reproduces 2.0.1, `forecast(..., single_trust=False, micro_load_rule=False)`
+reproduces 2.0.0, and `forecast(..., within_anchor=False, micro_load_rule=False)` reproduces 1.x exactly.
 
 Two changes examined after 2.0.1, a daily path taken partly from a per-unit ridge regression and a new interval
 rule, were not adopted and change nothing described here
@@ -245,17 +248,25 @@ $$S_{d,h}=\frac{s_o}{|\mathcal A_d|}\sum_{j\in\mathcal A_d}\frac{x_{j,h}-\bar x_
 Each analog day's shape is thus rescaled from the variability before it to the variability before the origin. A day with fewer than four analogs keeps $w^T_d$. If $\max|S|$ exceeds three times the largest
 absolute context value the whole window keeps $w^T$ (a guard against scale floors on near-constant records).
 
-**Anchoring.** For the lead blocks $k$ = days 1–7, 8–14, 15–21, 22–31,
+**Anchoring.** Since 2.1 one weight $\omega$ is estimated for the whole window:
 
-$$w_{d,h}=w^T_{d,h}+\omega_k\,(S_{d,h}-w^T_{d,h}),\qquad
-\omega_k=\min\Big(\mathrm{clip}(\hat\lambda_k,0,1)\,\frac{n}{n+2},\ \tfrac12\Big),$$
+$$w_{d,h}=w^T_{d,h}+\omega\,(S_{d,h}-w^T_{d,h}),\qquad
+\omega=\min\Big(\mathrm{clip}(\hat\lambda,0,1)\,\frac{n}{n+2},\ \tfrac12\Big),$$
 
-$$\hat\lambda_k=\frac{\sum_q\langle S_q-w^T_q,\ y_q-w^T_q\rangle_k}{\sum_q\Vert S_q-w^T_q\Vert_k^2},$$
+$$\hat\lambda=\frac{\sum_q\langle S_q-w^T_q,\ y_q-w^T_q\rangle}{\sum_q\Vert S_q-w^T_q\Vert^2},$$
+
+with the inner products and norms taken over all 744 hours of each window,
 
 estimated over the unit's $n\le3$ completed pseudo-origin windows $q=o-744k'$, $k'=1,2,3$, where $S_q$ is the analog
 shape built from data before $q$, $w^T_q$ the foundation shape issued at $q$ and $y_q$ the realised within-day block.
 The weight is a least-squares weight on the disagreement between the two shapes, shrunk towards the foundation model
-(zero) and capped at one half. No pseudo-origin, or no disagreement, gives $\omega_k=0$ and the 1.x forecast.
+(zero) and capped at one half. No pseudo-origin, or no disagreement, gives $\omega=0$ and the 1.x forecast.
+
+Up to 2.0.1 the weight was estimated separately for each lead block $k$ = days 1–7, 8–14, 15–21, 22–31 (the sums of
+$\hat\lambda$ restricted to the hours of block $k$), giving four weights $\omega_k$; `forecast(..., single_trust=False)`
+keeps that form. One weight per window was chosen in 2.1 after all twelve scored populations had been forecast with
+2.0.1, under a non-inferiority criterion fixed before scoring and met on all twelve; its numbers are a re-evaluation
+of data used before ([EVALUATION.md](EVALUATION.md#one-within-day-trust-per-window-21)).
 
 - Both $w^T$ and $S$ have zero daily means, so the pre-projection daily means are unchanged by the anchoring, and with
   them the level, the daily path, the energy readout ($744\times$ level) and any readout computed from those daily means.
@@ -267,7 +278,8 @@ The weight is a least-squares weight on the disagreement between the two shapes,
   the block stays the foundation model's.
 - The rule was selected, from a family written down in advance, on three development populations and on the
   pre-cutoff windows of the six test cohorts; its evaluation is described in
-  [EVALUATION.md](EVALUATION.md#within-day-anchoring-20).
+  [EVALUATION.md](EVALUATION.md#within-day-anchoring-20). Pooling the four lead blocks into one weight (2.1) came
+  later, from a simplification study on all twelve populations (see above).
 
 **History-only configuration.** `forecast(..., foundation=None)` returns the history side alone: the six-candidate
 level and the daily path, with the same-day-type within-day default (eight most recent days of each type), no model
@@ -346,7 +358,7 @@ returned.
   before and 33 after the training cutoff of the trained baselines). On EWELD every micro-load window is already an
   off-state window, and no window of the other eight populations qualifies.
 - **Status.** The rule was written after the BDG2 test result of 2.0.0 had been seen, in response to it. Its effect on
-  BDG2 describes what the rule changes; it is not a test of the rule. The 2.0.0 results are kept beside the 2.0.1
+  BDG2 describes what the rule changes; it is not a test of the rule. The 2.0.0 results are kept beside the 2.0.1 and 2.1
   results ([EVALUATION.md](EVALUATION.md#the-near-zero-meters-and-the-micro-load-rule-201)).
 
 On off-state and micro-load windows the returned trajectory is the foundation model's, without the projection onto
@@ -405,7 +417,7 @@ Code: `ankyra/readouts.py`; the properties as operators: `theory/operators.py`.
 | `within_day_kw` | the final within-day block (zero mean on each day), with the analog-day anchoring where it acts |
 | `foundation_within_day_kw` | the foundation model's own within-day block, unmodified. On off-state and micro-load windows `within_day_kw` equals it |
 | `analog_shape_kw` | the unit's analog-day shape $S$ (a day with fewer than four analogs carries the foundation shape); `None` when it was not built |
-| `within_trust` | the four weights $\omega_k$ on the analog-day shape, for days 1–7, 8–14, 15–21, 22–31 |
+| `within_trust` | the weight $\omega$ on the analog-day shape, listed for days 1–7, 8–14, 15–21, 22–31 (four equal values since 2.1; four separate weights $\omega_k$ with `single_trust=False`) |
 | `within_pseudo_pairs` | the number of completed pseudo-origin windows behind `within_trust` (at most 3) |
 | `analog_kept` | `False` when the whole-window guard rejected the analog shape and the window keeps the foundation shape |
 | `lead_week_weights` | the four handover weights $\alpha_w$ on the foundation model's daily means |
@@ -468,7 +480,7 @@ Code: `ankyra/core.py` (`AnkyraForecast`), `ankyra/history/api.py` (`Estimate`).
 | Context / horizon | 1,344 h / 744 h | before any evaluation |
 | Pseudo-origins (history / model) | 12 / 6 | development data: household aggregates / the Spanish development store ([defined in EVALUATION.md](EVALUATION.md#populations-and-tiers)) |
 | $K_0$ level, daily path, handover | 8, 2, 2 | development data; never changed afterwards |
-| Within-day anchoring (2.0): pseudo-origins, shrinkage, cap | 3, $K_0=2$ towards 0, $\omega\le1/2$ | in the candidate family written down before the 2.0 rule was chosen; selected on the development populations and the pre-cutoff test windows |
+| Within-day anchoring (2.0; one weight per window since 2.1): pseudo-origins, shrinkage, cap | 3, $K_0=2$ towards 0, $\omega\le1/2$ | in the candidate family written down before the 2.0 rule was chosen; selected on the development populations and the pre-cutoff test windows. Pooling the four lead blocks into one weight (2.1) was chosen after all twelve populations had been scored with 2.0.1 |
 | Analog days: window, kept, required, guard | ±14 days of year, 8, 4, $3\times\max\lvert\text{context}\rvert$ | with the first version of the analog-day shape; never changed |
 | Off-state threshold | $10^{-6}$ kW | the pre-existing zero-load threshold |
 | Micro-load threshold (2.0.1) | $10^{-3}$ kW on the magnitude of the load, over the 1,344-hour context | the pre-existing floor of the normalisation scale; the rule was added after the BDG2 test result of 2.0.0 had been seen |

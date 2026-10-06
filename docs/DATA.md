@@ -299,13 +299,15 @@ Unit and window counts (all / late) are in the table of
 - **Load column and the conversion from the provider's readings to hourly kW, temperature source, time zone handling,
   holiday calendar, the category label:** not recorded here; see the provider.
 - **Caveat.** LCL was held out of the ten-population comparison and scored once with the frozen 2.0.1 forecaster.
+  ANKYRA 2.1 was re-scored on it afterwards, as a re-evaluation.
   Its 1.x result had been seen earlier, so it is not an unexposed population
   ([LCL evaluation](LCL_AND_CLOSEOUT.md#lcl-final-stage)).
 
 ## Populations scored with the forecaster frozen
 
 These two populations were prepared after ANKYRA 2.0.1 was fixed. No rule or constant of the forecaster was chosen on
-them. Results: [FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md).
+them. ANKYRA 2.1 was adopted after they had been scored; its numbers on them are re-evaluations
+([FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md)). Results: [FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md).
 
 ### 12. HKUST campus incomer meters (Hong Kong)
 

@@ -2,7 +2,9 @@
 
 This page reports the one population that is not in the ten-population tables of [EVALUATION.md](EVALUATION.md): the
 Low Carbon London (LCL) households. It also records two changes to the forecaster that were tried after 2.0.1 and not
-adopted. ANKYRA 2.0.1 is unchanged by anything on this page.
+adopted. ANKYRA 2.0.1 is unchanged by anything on this page. ANKYRA 2.1 (one within-day trust per window), adopted
+later from a separate simplification study, was re-scored on LCL afterwards. That re-evaluation is reported
+[below](#re-evaluation-with-ankyra-21) and does not replace the 2.0.1 result.
 
 Terms used here are those of [EVALUATION.md](EVALUATION.md#estimands). The *improvement* is $100[1-\exp(r)]$, where
 $r$ is the mean over households of the log ratio of ANKYRA's hourly RMS error to the other forecaster's; positive
@@ -135,8 +137,26 @@ not against the same readout applied to TimesFM. It does not show that the envel
 
 - Two windows are off-state windows. No window meets the micro-load condition, so LCL gives no test of the
   micro-load rule, which was written after the BDG2 result had been seen.
-- Prediction intervals were not assessed for 2.0.1 on LCL. The interval result of 1.x is not relabelled as a 2.0.1
+- Prediction intervals were not assessed for 2.0.1 or 2.1 on LCL. The interval result of 1.x is not relabelled as a 2.0.1
   result.
+
+### Re-evaluation with ANKYRA 2.1
+
+After ANKYRA 2.1 was adopted (6 October 2026), the same 1,215 windows were scored again with 2.1 against the same saved
+baseline forecasts. This is a second read of the LCL targets and a re-evaluation, not a test; the 2.0.1 result above
+remains the frozen evaluation. Source: [`reevaluation_2_1.json`](../results/reevaluation_2_1.json).
+
+- 2.1 against 2.0.1: +0.130%, log ratio −0.0013 [−0.0025, −0.0007], resolved (all windows).
+- Against matched-input 1.x: +0.804% [−0.0115, −0.0047] on all windows, +1.105% [−0.0150, −0.0073] on the late
+  windows; both resolved, so L1 is met.
+- Against TimesFM: +1.368% [−0.0277, +0.0101] on all windows, +1.494% [−0.0346, +0.0253] late; unresolved. Against
+  Chronos-2, Chronos-2-X and TimesFM-X: +1.15% to +1.67%, unresolved.
+- Per-unit ridge: +2.060% [−0.0376, −0.0069] on all windows, resolved; +1.382% [−0.0343, +0.0085] late, unresolved.
+- Late windows: 11 of 20 contrasts resolved in ANKYRA's favour, none against; all windows: 9 of 13. Mean per-unit rank
+  6.08, first of 21 (per-unit ridge 6.49, iTransformer 7.01). Same-information check: no test rejects.
+- Readouts against TimesFM: energy from the level unchanged (+39.205%); delivered energy +39.218%; trajectory maximum
+  +4.360% [−0.0627, −0.0184] (2.0.1: +5.453%); envelope peak +77.709%.
+- These numbers are not in the `lcl_*` files, which hold 2.0.1.
 
 ### Daily curves and conventional errors
 

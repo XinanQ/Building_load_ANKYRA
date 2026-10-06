@@ -1,4 +1,4 @@
-"""Within-day anchoring (2.0): analog-day shapes, the error-weighted trust and the invariance of the other blocks."""
+"""Within-day anchoring (2.0; one trust value since 2.1): analog-day shapes, the error-weighted trust and the invariance of the other blocks."""
 import unittest
 from datetime import date
 
@@ -64,6 +64,17 @@ class TrustTests(unittest.TestCase):
         np.testing.assert_allclose(w, [0.0] * 4)
         self.assertTrue(all(0.0 <= x <= W_CAP for x in w))
 
+    def test_single_trust_pools_the_four_lead_blocks(self):
+        rng = np.random.default_rng(2); triples = []
+        for _ in range(3):
+            f = rng.normal(size=744); s = f + rng.normal(size=744); y = f + 0.3 * (s - f) * np.repeat(np.r_[np.ones(14), -np.ones(17)], 24) + rng.normal(size=744)
+            triples.append((s, f, y))
+        w1, n = within_trust(triples); w4, _ = within_trust(triples, single=False)
+        self.assertEqual(n, 3); self.assertEqual(len(set(w1.tolist())), 1)              # 2.1: one value repeated
+        num = sum(float((s - f) @ (y - f)) for s, f, y in triples); den = sum(float((s - f) @ (s - f)) for s, f, y in triples)
+        self.assertAlmostEqual(w1[0], min(float(np.clip(num / den, 0, 1)) * 3 / (3 + K0_WITHIN), W_CAP), places=12)
+        self.assertGreater(w4[0], 0.0); self.assertEqual(w4[3], 0.0)                     # 2.0.1: blocks 1-2 trusted, block 4 points the wrong way
+
     def test_anchoring_keeps_daily_means(self):
         rng = np.random.default_rng(1); f = blocks.within_day(rng.normal(size=744)); s = blocks.within_day(rng.normal(size=744))
         W = anchored_within_day(f, s, [0.5, 0.25, 0.0, 0.5])
@@ -88,6 +99,14 @@ class ForecastTests(unittest.TestCase):
         self.assertEqual(len(self.f6.within_trust), 4); self.assertTrue(all(0.0 <= w <= 0.5 for w in self.f6.within_trust))
         self.assertEqual(self.f6.within_pseudo_pairs, 3); self.assertEqual(self.f6.analog_shape_kw.shape, (744,))
         np.testing.assert_array_equal(self.f6.foundation_within_day_kw, self.f1.within_day_kw)
+
+    def test_single_trust_false_reproduces_2_0_1(self):
+        f201 = ankyra.forecast(self.h, group="Office", temp_sigma_std=0.25, foundation=seasonal_naive, dst_region="EU", single_trust=False)
+        self.assertEqual(len(set(self.f6.within_trust)), 1)
+        np.testing.assert_allclose(f201.daily_means_kw, self.f6.daily_means_kw, atol=1e-12)          # the trust touches the within-day block only
+        np.testing.assert_array_equal(f201.analog_shape_kw, self.f6.analog_shape_kw)
+        W = anchored_within_day(f201.foundation_within_day_kw, f201.analog_shape_kw, f201.within_trust)
+        np.testing.assert_allclose(f201.within_day_kw, W, atol=1e-12)
 
     def test_history_only_configuration(self):
         f0 = ankyra.forecast(self.h, group="Office", temp_sigma_std=0.25, foundation=None)

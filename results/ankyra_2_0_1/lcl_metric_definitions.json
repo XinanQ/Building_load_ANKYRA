@@ -1,0 +1,31 @@
+{
+  "scope": "Definitions for lcl_lead_day_metrics.csv, lcl_lead_day_metrics_late.csv, lcl_conventional_metrics.csv and lcl_conventional_metrics_late.csv. These files are descriptive. They are not part of the two checks set before scoring (lcl_results.json).",
+  "window_sets": {
+    "full": {
+      "windows": 1215,
+      "units": 965
+    },
+    "late": {
+      "windows": 710,
+      "units": 710
+    }
+  },
+  "models_not_available_on_full": [
+    "DLinear",
+    "GBT-T",
+    "LSTM",
+    "PatchTST",
+    "TiDE",
+    "iTransformer",
+    "iTransformer-X"
+  ],
+  "normaliser": "each unit's mean load over all 744 hours of all its scored windows in the window set; not a mean over its history or its whole record",
+  "hourly_CV_RMSE_pct": "per unit: RMSE over its windows and the 24 hours of forecast day d, divided by the normaliser, multiplied by 100",
+  "daily_energy_CV_RMS_pct": "per unit: RMS over its windows of the error of the mean load of day d, divided by the normaliser, multiplied by 100 (the factor 24 between mean load and daily energy cancels)",
+  "cumulative_energy_CV_RMS_pct": "per unit: RMS over its windows of the error of the mean load over days 1 to d, divided by the normaliser, multiplied by 100",
+  "units_eligible": "units with a finite, strictly positive normaliser; no unit is removed because of a forecaster's error; a model without forecasts on every window of the set is 'not available'",
+  "zero_error_units": "units whose error is exactly zero stay in; the geometric mean is then undefined and left blank (status 'geometric mean undefined'), while the arithmetic mean and the median over units are still given",
+  "conventional": "same definitions as conventional_metrics.csv: RMSE and MAE are unit means (kW); CV(RMSE), NMBE and WAPE are unit medians (%); pooled WAPE is also given; units whose mean absolute load is below 1e-6 kW are left out of the ratio metrics only, and their count is given (units_excluded)",
+  "difference_from_lead_day_metrics": "lead_day_metrics.csv (ten populations, Figures 9 and 10) takes the geometric mean over one fixed set of units whose error is nonzero for every forecaster on every day; these files keep all eligible units and leave the geometric mean blank where a unit has zero error",
+  "additional_reads_of_the_targets_for_these_files": 0
+}

@@ -1,0 +1,41 @@
+version,set,comparator,log_ratio,um_low,um_high,improvement_pct
+2.0.1,BDG2 2017,timesfm_native,-0.027852,-0.138079,0.324294,2.747
+2.0.1,BDG2 2017,chronos_native,0.132584,-0.002267,0.530491,-14.178
+2.0.1,Cambridge,timesfm_native,-0.156381,-0.177939,-0.123333,14.477
+2.0.1,Cambridge,chronos_native,0.018369,-0.007061,0.043352,-1.854
+2.0.1,HEEW Arizona,timesfm_native,-0.099021,-0.125476,-0.043373,9.428
+2.0.1,HEEW Arizona,chronos_native,0.040319,0.015116,0.080702,-4.114
+2.0.1,EWELD,timesfm_native,0.174904,-0.034806,0.312937,-19.113
+2.0.1,EWELD,chronos_native,0.436005,0.232123,0.697169,-54.652
+2.0.1,GoiEner non-household,timesfm_native,-0.065349,-0.101238,-0.007624,6.326
+2.0.1,GoiEner non-household,chronos_native,0.098685,0.062396,0.147715,-10.372
+2.0.1,GoiEner households,timesfm_native,-0.07822,-0.106659,-0.005096,7.524
+2.0.1,GoiEner households,chronos_native,0.005479,-0.039711,0.034574,-0.549
+2.0.1,Oslo,timesfm_native,-0.203589,-0.230772,-0.172174,18.42
+2.0.1,Oslo,chronos_native,-0.008666,-0.030926,0.018552,0.863
+2.0.1,Drammen,timesfm_native,-0.200417,-0.23749,-0.162567,18.161
+2.0.1,Drammen,chronos_native,0.005879,-0.028564,0.039715,-0.59
+2.0.1,CINELDI,timesfm_native,-0.146356,-0.180039,-0.107536,13.615
+2.0.1,CINELDI,chronos_native,0.061781,0.034133,0.093276,-6.373
+2.0.1,Suzhou park,timesfm_native,-0.166669,-0.237493,-0.098664,15.352
+2.0.1,Suzhou park,chronos_native,-0.025041,-0.087125,0.038,2.473
+2.0.0,BDG2 2017,timesfm_native,0.003993,-0.134719,0.455551,-0.4
+2.0.0,BDG2 2017,chronos_native,0.164429,0.000114,0.676238,-17.872
+2.0.0,Cambridge,timesfm_native,-0.156381,-0.177939,-0.123333,14.477
+2.0.0,Cambridge,chronos_native,0.018369,-0.007061,0.043352,-1.854
+2.0.0,HEEW Arizona,timesfm_native,-0.099021,-0.125476,-0.043373,9.428
+2.0.0,HEEW Arizona,chronos_native,0.040319,0.015116,0.080702,-4.114
+2.0.0,EWELD,timesfm_native,0.174904,-0.034806,0.312937,-19.113
+2.0.0,EWELD,chronos_native,0.436005,0.232123,0.697169,-54.652
+2.0.0,GoiEner non-household,timesfm_native,-0.065349,-0.101238,-0.007624,6.326
+2.0.0,GoiEner non-household,chronos_native,0.098685,0.062396,0.147715,-10.372
+2.0.0,GoiEner households,timesfm_native,-0.07822,-0.106659,-0.005096,7.524
+2.0.0,GoiEner households,chronos_native,0.005479,-0.039711,0.034574,-0.549
+2.0.0,Oslo,timesfm_native,-0.203589,-0.230772,-0.172174,18.42
+2.0.0,Oslo,chronos_native,-0.008666,-0.030926,0.018552,0.863
+2.0.0,Drammen,timesfm_native,-0.200417,-0.23749,-0.162567,18.161
+2.0.0,Drammen,chronos_native,0.005879,-0.028564,0.039715,-0.59
+2.0.0,CINELDI,timesfm_native,-0.146356,-0.180039,-0.107536,13.615
+2.0.0,CINELDI,chronos_native,0.061781,0.034133,0.093276,-6.373
+2.0.0,Suzhou park,timesfm_native,-0.166669,-0.237493,-0.098664,15.352
+2.0.0,Suzhou park,chronos_native,-0.025041,-0.087125,0.038,2.473

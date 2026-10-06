@@ -1,0 +1,19 @@
+constant,value,is_ankyra_value,nine_face_mean_log_ratio,worst_face,worst_face_log_ratio,best_face_log_ratio
+handover K0,0.0,False,0.00214,BDG2 2017 (pre-cutoff),0.00766,-0.00169
+handover K0,1.0,False,0.00054,BDG2 2017 (pre-cutoff),0.00282,-0.00129
+handover K0,2.0,True,0.0,Cambridge (pre-cutoff),0.0,0.0
+handover K0,4.0,False,-0.00023,GoiEner development store,0.00166,-0.00283
+handover K0,8.0,False,0.00027,GoiEner development store,0.00375,-0.00449
+handover pairs,2,False,0.00193,EWELD (pre-cutoff),0.00766,-0.01443
+handover pairs,3,False,0.00139,Drammen,0.00636,-0.0108
+handover pairs,4,False,0.00051,EWELD (pre-cutoff),0.00417,-0.00954
+handover pairs,6,True,0.0,Cambridge (pre-cutoff),0.0,0.0
+within-day K0,1.0,False,-0.00087,GoiEner households (pre-cutoff),0.0008,-0.00338
+within-day K0,2.0,True,0.0,Cambridge (pre-cutoff),0.0,0.0
+within-day K0,4.0,False,0.0027,Oslo,0.0079,-0.00078
+within-day cap,0.3,False,0.00307,Oslo,0.00794,-0.0009
+within-day cap,0.5,True,0.0,Cambridge (pre-cutoff),0.0,0.0
+within-day cap,1.0,False,-0.00043,GoiEner households (pre-cutoff),0.00032,-0.0013
+within-day pairs,2,False,0.00216,Oslo,0.00819,-3e-05
+within-day pairs,3,True,0.0,Cambridge (pre-cutoff),0.0,0.0
+within-day pairs,6,False,-0.00186,GoiEner households (pre-cutoff),0.0008,-0.00662

@@ -1,0 +1,27 @@
+error,comparator,windows,units,log_ratio,um_low,um_high,improvement_pct,resolved_at_seed_20261005,units_better_strict
+energy,TimesFM 2.5,1165,200,-0.061430,-0.152174,0.104047,5.958,not resolved,107
+energy,Chronos-2,1165,200,-0.016981,-0.093669,0.198789,1.684,not resolved,82
+energy,Chronos-2-X,1165,200,0.130236,0.042237,0.331597,-13.910,second better,72
+energy,TimesFM-X,1165,200,-0.062386,-0.143063,0.138773,6.048,not resolved,89
+energy,Per-unit ridge,1165,200,-0.037769,-0.138167,0.296168,3.706,not resolved,103
+energy,GBT (zero-shot),1165,200,-0.028833,-0.210859,0.111366,2.842,not resolved,107
+energy,Holt-Winters,1165,200,-0.035555,-0.251130,0.090421,3.493,not resolved,109
+energy,MSTL,1165,200,-0.083233,-0.202043,0.154713,7.986,not resolved,111
+energy,Seasonal naive (day),1165,200,-0.319337,-0.465226,-0.066090,27.337,first better,170
+energy,Seasonal naive (week),1165,200,-0.057160,-0.161348,0.127949,5.556,not resolved,101
+energy,Four-week profile,1165,200,-0.000396,-0.447685,0.202382,0.040,not resolved,110
+energy,Previous-month profile,1165,200,-0.028066,-0.327831,0.210468,2.768,not resolved,112
+energy,Last-year profile,1165,200,-0.278557,-0.674639,-0.108786,24.312,first better,156
+hourly,TimesFM 2.5,1165,200,-0.043499,-0.092860,0.022227,4.257,not resolved,146
+hourly,Chronos-2,1165,200,-0.019281,-0.062834,0.051705,1.910,not resolved,111
+hourly,Chronos-2-X,1165,200,0.061363,0.011975,0.115503,-6.328,second better,79
+hourly,TimesFM-X,1165,200,-0.045942,-0.110977,0.031594,4.490,not resolved,120
+hourly,Per-unit ridge,1165,200,-0.045938,-0.104447,-0.002728,4.490,first better,149
+hourly,GBT (zero-shot),1165,200,-0.152609,-0.412790,-0.082738,14.154,first better,184
+hourly,Holt-Winters,1165,200,-0.078864,-0.297982,-0.020334,7.583,first better,141
+hourly,MSTL,1165,200,-0.102645,-0.191058,-0.021826,9.755,first better,162
+hourly,Seasonal naive (day),1165,200,-0.325778,-0.544095,-0.250352,27.803,first better,191
+hourly,Seasonal naive (week),1165,200,-0.116113,-0.206121,-0.020946,10.963,first better,174
+hourly,Four-week profile,1165,200,-0.052280,-0.279717,0.018350,5.094,not resolved,137
+hourly,Previous-month profile,1165,200,-0.120731,-0.480735,-0.036896,11.373,first better,165
+hourly,Last-year profile,1165,200,-0.242529,-0.511919,-0.134733,21.536,first better,176
