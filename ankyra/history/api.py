@@ -122,7 +122,15 @@ def _store(h, group_index, sigma):
 
 
 class _PredictionBatcher(_level.PseudoBatcher):
-    """Separate real-origin availability from completed pseudo-window eligibility."""
+    """Separate real-origin availability from completed pseudo-window eligibility.
+
+    min_target_obs < 1 (gap tolerance, 2.2): a pseudo-window qualifies when at least that share of its 744 target hours is
+    observed; its target is then handed to the frozen estimator with the missing hours set to the observed mean, so the
+    window mean it reads equals the mean over the observed hours.  With the default 1.0 the behaviour is unchanged."""
+    def __init__(self,store,min_target_obs=1.0):
+        super().__init__(store)
+        self.min_target_obs = float(min_target_obs)
+
     def observed(self,b,o,need_lag=False):
         b,o = int(b),int(o)
         n = self.store.origin
@@ -131,11 +139,27 @@ class _PredictionBatcher(_level.PseudoBatcher):
             return False
         if not np.isfinite(ld[b,o-1344:o]).all():
             return False
-        if o != n and (o+744 > n or not np.isfinite(ld[b,o:o+744]).all()):
+        if o != n and (o+744 > n or np.isfinite(ld[b,o:o+744]).mean() < self.min_target_obs - 1e-12):
             return False
         if need_lag and (o < 8760 or not np.isfinite(ld[b,o-8760:o-8760+744]).all()):
             return False
         return True
+
+    def batch(self,b_arr,o_arr,dtype=torch.float64):
+        batch = super().batch(b_arr,o_arr,dtype)
+        if self.min_target_obs < 1.0:
+            b,o = np.asarray(b_arr,dtype=np.int64),np.asarray(o_arr,dtype=np.int64)
+            ld = self.store.load_np
+            tgt = np.stack([ld[bi,oi:oi+744] for bi,oi in zip(b,o)])
+            fin = np.isfinite(tgt)
+            frac = fin.mean(axis=1)
+            ok = frac >= self.min_target_obs - 1e-12
+            if ok.any():
+                mean = np.where(fin,tgt,0.0).sum(axis=1)/np.maximum(fin.sum(axis=1),1)
+                filled = np.where(fin,tgt,mean[:,None])
+                batch.target = torch.tensor(np.where(ok[:,None],filled,np.where(fin,tgt,0.0)),dtype=dtype)
+                batch.target_finite = np.asarray(batch.target_finite) | ok
+        return batch
 
 
 class _BoundarySignatures(ScaledSignatures):

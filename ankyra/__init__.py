@@ -6,9 +6,9 @@ Package 2.0.2 masks hours marked unobserved once for every branch; 2.0.3 changes
 2.1 estimates the within-day trust as one value per window instead of one per lead block (``single_trust=False``
 reproduces 2.0.1)."""
 from .history import History, InputError, SignatureDegeneracy
-from .core import AnkyraForecast, forecast, pseudo_origin_contexts, lead_week_weights, lead_week_transition
+from .core import AnkyraForecast, forecast, pseudo_origin_contexts, fill_short_gaps, lead_week_weights, lead_week_transition
 from . import blocks, readouts, metrics, analog
 
-__version__ = "2.1.0"
-__all__ = ["History", "InputError", "SignatureDegeneracy", "AnkyraForecast", "forecast", "pseudo_origin_contexts", "lead_week_weights",
+__version__ = "2.2.0"
+__all__ = ["History", "InputError", "SignatureDegeneracy", "AnkyraForecast", "forecast", "pseudo_origin_contexts", "fill_short_gaps", "lead_week_weights",
            "lead_week_transition", "blocks", "readouts", "metrics", "analog"]

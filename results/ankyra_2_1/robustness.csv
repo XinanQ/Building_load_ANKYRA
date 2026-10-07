@@ -1,0 +1,9 @@
+corruption,ankyra_error_vs_clean_log_ratio,timesfm_error_vs_clean_log_ratio,ankyra_windows_worse_share,timesfm_windows_worse_share,ankyra_displacement_over_s0_median,timesfm_displacement_over_s0_median,level_change_pct_median,level_change_pct_max,peak_readout_change_pct_median,peak_error_vs_clean_log_ratio,off_state_fired,ankyra_vs_timesfm_corrupted_log_ratio,equivariance_max_rel_dev
+miss05,-0.00032,-0.0011,0.54688,0.48438,0.01463,0.02138,0.03597,3.7427,-0.03606,-0.0362,0,-0.10932,
+miss20,0.00358,0.01385,0.59375,0.53125,0.04086,0.06408,0.08654,6.20804,-0.27727,0.01485,0,-0.12038,
+zero24,0.02241,0.03727,0.67188,0.64062,0.10772,0.12158,-3.27206,11.02078,-0.61696,0.00077,0,-0.12495,
+spike,0.15333,0.0258,0.8125,0.60938,0.47501,0.14794,3.34534,16.15019,983.52881,3.65182,0,0.01743,
+shift_plus1,0.07878,0.09268,0.85938,0.79688,0.21628,0.29283,0.32861,4.31783,0.02233,-0.00135,0,-0.124,
+shift_minus1,0.05276,0.06246,0.75,0.76562,0.23116,0.28773,-0.05946,8.63257,-0.07742,0.00385,0,-0.11979,
+scale0.5,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,-0.1101,0.0
+scale2,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,-0.1101,0.0

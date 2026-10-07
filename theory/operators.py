@@ -293,3 +293,22 @@ def pinball(pred, truth, tau):
     """Mean pinball (quantile) loss at level tau."""
     d = np.asarray(truth, dtype=np.float64) - np.asarray(pred, dtype=np.float64)
     return float(np.mean(np.maximum(tau * d, (tau - 1) * d)))
+
+
+# ----------------------------------------------------------------------------- P20 evidence bound
+def aggregation_rate(K, T):
+    """Minimax rate psi(K, T) = min(K/T, sqrt(log K / T)) of convex aggregation of K candidates from T samples (Tsybakov 2003)."""
+    return float(min(K / T, np.sqrt(np.log(K) / T)))
+
+
+def selection_rate(K, T):
+    """Minimax rate log(K)/T of model-selection aggregation (choosing one of K candidates from T samples)."""
+    return float(np.log(K) / T)
+
+
+def exchangeable_hit_rate(K, T, draws, rng):
+    """Monte Carlo check of the null benchmark: with exchangeable candidate errors, the candidate with the smallest pseudo RMS
+    over T pseudo-origins is the target's best with probability 1/K.  Returns the simulated hit rate."""
+    e = rng.standard_normal((draws, T + 1, K))
+    pick = np.argmin(np.sqrt((e[:, :T] ** 2).mean(1)), axis=1); best = np.argmin(np.abs(e[:, T]), axis=1)
+    return float(np.mean(pick == best))

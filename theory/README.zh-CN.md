@@ -23,7 +23,7 @@ python -m unittest discover -s theory -t .
 
 ![一个测试窗口上的精确性质](../figures/fig7_operators.png)
 
-## 十九条性质
+## 二十条性质
 
 标为“标准”的性质是设计所依赖的已知结论；它们收录在这里，但不作为新贡献。其余性质在第三列的条件下成立。没有一条是精度保证：精度是在 [docs/EVALUATION.md](../docs/EVALUATION.md) 里测量的。
 
@@ -48,6 +48,7 @@ python -m unittest discover -s theory -t .
 | P17 | [有限支撑中位数性质](PROOFS.md#peak) | 同类型日内水平不变、独立抽取、$((m-1)/m)^n<1/2$ | 包络估计的是什么 | `operators.max_lower_median` | `PeakTests` |
 | P18 | [非对称的峰值成本](PROOFS.md#peak)（标准） | 总是 | 在给定成本下选择峰值方法 | `operators.asymmetric_peak_cost` | `PeakTests` |
 | P19 | [合并汇总与单位等权汇总](PROOFS.md#estimands) | 总是（恒等式） | 为什么并列报告几种估计目标 | `ankyra.metrics.pooled_ratio_decomposition` | `EstimandTests` |
+| P20 | [候选选择的证据界](PROOFS.md#evidence-bound)（标准结果；零基准为恒等式） | 每个候选有 T 个伪起报点误差 | 为什么水平权重要收缩、为什么预测锚定收益的是记录统计量而不是权重 | `operators.aggregation_rate`、`operators.exchangeable_hit_rate` | `EvidenceBoundTests` |
 
 `operators.*` 指本文件夹里的 [operators.py](operators.py)；`ankyra.*` 是预测器，P1、P3、P15 和 P19 由它自身的函数承载。检验名是 [test_operators.py](test_operators.py) 里的测试类，注明了文件夹的除外。
 

@@ -1,10 +1,10 @@
 set,windows,units,model,quantity,block,value
-BDG2 2017,474,142,ANKYRA,pooled_share,level,0.3359
-BDG2 2017,474,142,ANKYRA,pooled_share,daily path,0.4594
-BDG2 2017,474,142,ANKYRA,pooled_share,within-day,0.2048
-BDG2 2017,474,142,ANKYRA,median_unit_share,level,0.2064
-BDG2 2017,474,142,ANKYRA,median_unit_share,daily path,0.3238
-BDG2 2017,474,142,ANKYRA,median_unit_share,within-day,0.407
+BDG2 2017,474,142,ANKYRA,pooled_share,level,0.3363
+BDG2 2017,474,142,ANKYRA,pooled_share,daily path,0.4591
+BDG2 2017,474,142,ANKYRA,pooled_share,within-day,0.2046
+BDG2 2017,474,142,ANKYRA,median_unit_share,level,0.197
+BDG2 2017,474,142,ANKYRA,median_unit_share,daily path,0.3254
+BDG2 2017,474,142,ANKYRA,median_unit_share,within-day,0.4054
 BDG2 2017,474,142,ANKYRA 1.x,pooled_share,level,0.3343
 BDG2 2017,474,142,ANKYRA 1.x,pooled_share,daily path,0.4573
 BDG2 2017,474,142,ANKYRA 1.x,pooled_share,within-day,0.2084
@@ -23,36 +23,36 @@ BDG2 2017,474,142,Chronos-2-X,pooled_share,within-day,0.2295
 BDG2 2017,474,142,Chronos-2-X,median_unit_share,level,0.2268
 BDG2 2017,474,142,Chronos-2-X,median_unit_share,daily path,0.3308
 BDG2 2017,474,142,Chronos-2-X,median_unit_share,within-day,0.3945
-BDG2 2017,474,142,ANKYRA vs TimesFM,improvement_pct,level,11.873
-BDG2 2017,474,142,ANKYRA vs TimesFM,log_ratio,level,-0.126392
+BDG2 2017,474,142,ANKYRA vs TimesFM,improvement_pct,level,13.247
+BDG2 2017,474,142,ANKYRA vs TimesFM,log_ratio,level,-0.142104
 BDG2 2017,474,142,ANKYRA vs TimesFM,units_in_ratio,level,142
-BDG2 2017,474,142,ANKYRA vs TimesFM,improvement_pct,daily path,0.603
-BDG2 2017,474,142,ANKYRA vs TimesFM,log_ratio,daily path,-0.006052
+BDG2 2017,474,142,ANKYRA vs TimesFM,improvement_pct,daily path,0.65
+BDG2 2017,474,142,ANKYRA vs TimesFM,log_ratio,daily path,-0.00652
 BDG2 2017,474,142,ANKYRA vs TimesFM,units_in_ratio,daily path,142
-BDG2 2017,474,142,ANKYRA vs TimesFM,improvement_pct,within-day,1.578
-BDG2 2017,474,142,ANKYRA vs TimesFM,log_ratio,within-day,-0.015906
+BDG2 2017,474,142,ANKYRA vs TimesFM,improvement_pct,within-day,1.635
+BDG2 2017,474,142,ANKYRA vs TimesFM,log_ratio,within-day,-0.016488
 BDG2 2017,474,142,ANKYRA vs TimesFM,units_in_ratio,within-day,142
-BDG2 2017,474,142,ANKYRA vs TimesFM,improvement_pct,hourly,2.468
-BDG2 2017,474,142,ANKYRA vs TimesFM,log_ratio,hourly,-0.024993
+BDG2 2017,474,142,ANKYRA vs TimesFM,improvement_pct,hourly,2.73
+BDG2 2017,474,142,ANKYRA vs TimesFM,log_ratio,hourly,-0.02768
 BDG2 2017,474,142,ANKYRA vs TimesFM,units_in_ratio,hourly,142
-BDG2 2017,474,142,ANKYRA vs Chronos-2-X,improvement_pct,level,12.874
-BDG2 2017,474,142,ANKYRA vs Chronos-2-X,log_ratio,level,-0.137811
+BDG2 2017,474,142,ANKYRA vs Chronos-2-X,improvement_pct,level,14.232
+BDG2 2017,474,142,ANKYRA vs Chronos-2-X,log_ratio,level,-0.153523
 BDG2 2017,474,142,ANKYRA vs Chronos-2-X,units_in_ratio,level,142
-BDG2 2017,474,142,ANKYRA vs Chronos-2-X,improvement_pct,daily path,12.878
-BDG2 2017,474,142,ANKYRA vs Chronos-2-X,log_ratio,daily path,-0.137865
+BDG2 2017,474,142,ANKYRA vs Chronos-2-X,improvement_pct,daily path,12.919
+BDG2 2017,474,142,ANKYRA vs Chronos-2-X,log_ratio,daily path,-0.138333
 BDG2 2017,474,142,ANKYRA vs Chronos-2-X,units_in_ratio,daily path,142
-BDG2 2017,474,142,ANKYRA vs Chronos-2-X,improvement_pct,within-day,16.559
-BDG2 2017,474,142,ANKYRA vs Chronos-2-X,log_ratio,within-day,-0.181031
+BDG2 2017,474,142,ANKYRA vs Chronos-2-X,improvement_pct,within-day,16.608
+BDG2 2017,474,142,ANKYRA vs Chronos-2-X,log_ratio,within-day,-0.181613
 BDG2 2017,474,142,ANKYRA vs Chronos-2-X,units_in_ratio,within-day,142
-BDG2 2017,474,142,ANKYRA vs Chronos-2-X,improvement_pct,hourly,12.052
-BDG2 2017,474,142,ANKYRA vs Chronos-2-X,log_ratio,hourly,-0.128425
+BDG2 2017,474,142,ANKYRA vs Chronos-2-X,improvement_pct,hourly,12.288
+BDG2 2017,474,142,ANKYRA vs Chronos-2-X,log_ratio,hourly,-0.131112
 BDG2 2017,474,142,ANKYRA vs Chronos-2-X,units_in_ratio,hourly,142
-Cambridge,730,108,ANKYRA,pooled_share,level,0.25
-Cambridge,730,108,ANKYRA,pooled_share,daily path,0.1856
-Cambridge,730,108,ANKYRA,pooled_share,within-day,0.5643
+Cambridge,730,108,ANKYRA,pooled_share,level,0.2502
+Cambridge,730,108,ANKYRA,pooled_share,daily path,0.1854
+Cambridge,730,108,ANKYRA,pooled_share,within-day,0.5644
 Cambridge,730,108,ANKYRA,median_unit_share,level,0.2537
 Cambridge,730,108,ANKYRA,median_unit_share,daily path,0.2837
-Cambridge,730,108,ANKYRA,median_unit_share,within-day,0.4741
+Cambridge,730,108,ANKYRA,median_unit_share,within-day,0.4737
 Cambridge,730,108,ANKYRA 1.x,pooled_share,level,0.2479
 Cambridge,730,108,ANKYRA 1.x,pooled_share,daily path,0.1841
 Cambridge,730,108,ANKYRA 1.x,pooled_share,within-day,0.5679
@@ -71,36 +71,36 @@ Cambridge,730,108,Chronos-2-X,pooled_share,within-day,0.5337
 Cambridge,730,108,Chronos-2-X,median_unit_share,level,0.2578
 Cambridge,730,108,Chronos-2-X,median_unit_share,daily path,0.2843
 Cambridge,730,108,Chronos-2-X,median_unit_share,within-day,0.4333
-Cambridge,730,108,ANKYRA vs TimesFM,improvement_pct,level,14.595
-Cambridge,730,108,ANKYRA vs TimesFM,log_ratio,level,-0.15777
+Cambridge,730,108,ANKYRA vs TimesFM,improvement_pct,level,14.327
+Cambridge,730,108,ANKYRA vs TimesFM,log_ratio,level,-0.154635
 Cambridge,730,108,ANKYRA vs TimesFM,units_in_ratio,level,108
-Cambridge,730,108,ANKYRA vs TimesFM,improvement_pct,daily path,6.404
-Cambridge,730,108,ANKYRA vs TimesFM,log_ratio,daily path,-0.06618
+Cambridge,730,108,ANKYRA vs TimesFM,improvement_pct,daily path,6.439
+Cambridge,730,108,ANKYRA vs TimesFM,log_ratio,daily path,-0.066561
 Cambridge,730,108,ANKYRA vs TimesFM,units_in_ratio,daily path,108
-Cambridge,730,108,ANKYRA vs TimesFM,improvement_pct,within-day,6.031
-Cambridge,730,108,ANKYRA vs TimesFM,log_ratio,within-day,-0.06221
+Cambridge,730,108,ANKYRA vs TimesFM,improvement_pct,within-day,5.971
+Cambridge,730,108,ANKYRA vs TimesFM,log_ratio,within-day,-0.06157
 Cambridge,730,108,ANKYRA vs TimesFM,units_in_ratio,within-day,108
-Cambridge,730,108,ANKYRA vs TimesFM,improvement_pct,hourly,8.319
-Cambridge,730,108,ANKYRA vs TimesFM,log_ratio,hourly,-0.086856
+Cambridge,730,108,ANKYRA vs TimesFM,improvement_pct,hourly,8.276
+Cambridge,730,108,ANKYRA vs TimesFM,log_ratio,hourly,-0.086381
 Cambridge,730,108,ANKYRA vs TimesFM,units_in_ratio,hourly,108
-Cambridge,730,108,ANKYRA vs Chronos-2-X,improvement_pct,level,9.086
-Cambridge,730,108,ANKYRA vs Chronos-2-X,log_ratio,level,-0.095257
+Cambridge,730,108,ANKYRA vs Chronos-2-X,improvement_pct,level,8.801
+Cambridge,730,108,ANKYRA vs Chronos-2-X,log_ratio,level,-0.092122
 Cambridge,730,108,ANKYRA vs Chronos-2-X,units_in_ratio,level,108
-Cambridge,730,108,ANKYRA vs Chronos-2-X,improvement_pct,daily path,1.341
-Cambridge,730,108,ANKYRA vs Chronos-2-X,log_ratio,daily path,-0.013504
+Cambridge,730,108,ANKYRA vs Chronos-2-X,improvement_pct,daily path,1.379
+Cambridge,730,108,ANKYRA vs Chronos-2-X,log_ratio,daily path,-0.013886
 Cambridge,730,108,ANKYRA vs Chronos-2-X,units_in_ratio,daily path,108
-Cambridge,730,108,ANKYRA vs Chronos-2-X,improvement_pct,within-day,1.87
-Cambridge,730,108,ANKYRA vs Chronos-2-X,log_ratio,within-day,-0.018881
+Cambridge,730,108,ANKYRA vs Chronos-2-X,improvement_pct,within-day,1.808
+Cambridge,730,108,ANKYRA vs Chronos-2-X,log_ratio,within-day,-0.018242
 Cambridge,730,108,ANKYRA vs Chronos-2-X,units_in_ratio,within-day,108
-Cambridge,730,108,ANKYRA vs Chronos-2-X,improvement_pct,hourly,2.54
-Cambridge,730,108,ANKYRA vs Chronos-2-X,log_ratio,hourly,-0.02573
+Cambridge,730,108,ANKYRA vs Chronos-2-X,improvement_pct,hourly,2.494
+Cambridge,730,108,ANKYRA vs Chronos-2-X,log_ratio,hourly,-0.025256
 Cambridge,730,108,ANKYRA vs Chronos-2-X,units_in_ratio,hourly,108
-HEEW Arizona,658,138,ANKYRA,pooled_share,level,0.3295
-HEEW Arizona,658,138,ANKYRA,pooled_share,daily path,0.3432
-HEEW Arizona,658,138,ANKYRA,pooled_share,within-day,0.3273
-HEEW Arizona,658,138,ANKYRA,median_unit_share,level,0.2552
-HEEW Arizona,658,138,ANKYRA,median_unit_share,daily path,0.3142
-HEEW Arizona,658,138,ANKYRA,median_unit_share,within-day,0.3945
+HEEW Arizona,658,138,ANKYRA,pooled_share,level,0.3254
+HEEW Arizona,658,138,ANKYRA,pooled_share,daily path,0.3459
+HEEW Arizona,658,138,ANKYRA,pooled_share,within-day,0.3288
+HEEW Arizona,658,138,ANKYRA,median_unit_share,level,0.2556
+HEEW Arizona,658,138,ANKYRA,median_unit_share,daily path,0.3077
+HEEW Arizona,658,138,ANKYRA,median_unit_share,within-day,0.3971
 HEEW Arizona,658,138,ANKYRA 1.x,pooled_share,level,0.325
 HEEW Arizona,658,138,ANKYRA 1.x,pooled_share,daily path,0.3385
 HEEW Arizona,658,138,ANKYRA 1.x,pooled_share,within-day,0.3365
@@ -119,36 +119,36 @@ HEEW Arizona,658,138,Chronos-2-X,pooled_share,within-day,0.2982
 HEEW Arizona,658,138,Chronos-2-X,median_unit_share,level,0.2365
 HEEW Arizona,658,138,Chronos-2-X,median_unit_share,daily path,0.2904
 HEEW Arizona,658,138,Chronos-2-X,median_unit_share,within-day,0.4263
-HEEW Arizona,658,138,ANKYRA vs TimesFM,improvement_pct,level,4.396
-HEEW Arizona,658,138,ANKYRA vs TimesFM,log_ratio,level,-0.044959
+HEEW Arizona,658,138,ANKYRA vs TimesFM,improvement_pct,level,3.872
+HEEW Arizona,658,138,ANKYRA vs TimesFM,log_ratio,level,-0.039494
 HEEW Arizona,658,138,ANKYRA vs TimesFM,units_in_ratio,level,138
-HEEW Arizona,658,138,ANKYRA vs TimesFM,improvement_pct,daily path,2.659
-HEEW Arizona,658,138,ANKYRA vs TimesFM,log_ratio,daily path,-0.026947
+HEEW Arizona,658,138,ANKYRA vs TimesFM,improvement_pct,daily path,2.814
+HEEW Arizona,658,138,ANKYRA vs TimesFM,log_ratio,daily path,-0.028547
 HEEW Arizona,658,138,ANKYRA vs TimesFM,units_in_ratio,daily path,138
-HEEW Arizona,658,138,ANKYRA vs TimesFM,improvement_pct,within-day,2.38
-HEEW Arizona,658,138,ANKYRA vs TimesFM,log_ratio,within-day,-0.02409
+HEEW Arizona,658,138,ANKYRA vs TimesFM,improvement_pct,within-day,2.455
+HEEW Arizona,658,138,ANKYRA vs TimesFM,log_ratio,within-day,-0.024861
 HEEW Arizona,658,138,ANKYRA vs TimesFM,units_in_ratio,within-day,138
-HEEW Arizona,658,138,ANKYRA vs TimesFM,improvement_pct,hourly,3.717
-HEEW Arizona,658,138,ANKYRA vs TimesFM,log_ratio,hourly,-0.037876
+HEEW Arizona,658,138,ANKYRA vs TimesFM,improvement_pct,hourly,3.68
+HEEW Arizona,658,138,ANKYRA vs TimesFM,log_ratio,hourly,-0.037493
 HEEW Arizona,658,138,ANKYRA vs TimesFM,units_in_ratio,hourly,138
-HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,improvement_pct,level,3.703
-HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,log_ratio,level,-0.037733
+HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,improvement_pct,level,3.175
+HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,log_ratio,level,-0.032268
 HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,units_in_ratio,level,138
-HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,improvement_pct,daily path,1.257
-HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,log_ratio,daily path,-0.012652
+HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,improvement_pct,daily path,1.415
+HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,log_ratio,daily path,-0.014251
 HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,units_in_ratio,daily path,138
-HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,improvement_pct,within-day,3.248
-HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,log_ratio,within-day,-0.033019
+HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,improvement_pct,within-day,3.322
+HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,log_ratio,within-day,-0.033789
 HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,units_in_ratio,within-day,138
-HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,improvement_pct,hourly,1.999
-HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,log_ratio,hourly,-0.020196
+HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,improvement_pct,hourly,1.962
+HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,log_ratio,hourly,-0.019814
 HEEW Arizona,658,138,ANKYRA vs Chronos-2-X,units_in_ratio,hourly,138
-EWELD,523,197,ANKYRA,pooled_share,level,0.4844
-EWELD,523,197,ANKYRA,pooled_share,daily path,0.3528
-EWELD,523,197,ANKYRA,pooled_share,within-day,0.1628
+EWELD,523,197,ANKYRA,pooled_share,level,0.4858
+EWELD,523,197,ANKYRA,pooled_share,daily path,0.3515
+EWELD,523,197,ANKYRA,pooled_share,within-day,0.1626
 EWELD,523,197,ANKYRA,median_unit_share,level,0.2456
-EWELD,523,197,ANKYRA,median_unit_share,daily path,0.2915
-EWELD,523,197,ANKYRA,median_unit_share,within-day,0.3846
+EWELD,523,197,ANKYRA,median_unit_share,daily path,0.2875
+EWELD,523,197,ANKYRA,median_unit_share,within-day,0.3888
 EWELD,523,197,ANKYRA 1.x,pooled_share,level,0.4816
 EWELD,523,197,ANKYRA 1.x,pooled_share,daily path,0.3507
 EWELD,523,197,ANKYRA 1.x,pooled_share,within-day,0.1677
@@ -167,33 +167,33 @@ EWELD,523,197,Chronos-2-X,pooled_share,within-day,0.142
 EWELD,523,197,Chronos-2-X,median_unit_share,level,0.2492
 EWELD,523,197,Chronos-2-X,median_unit_share,daily path,0.3385
 EWELD,523,197,Chronos-2-X,median_unit_share,within-day,0.3298
-EWELD,523,197,ANKYRA vs TimesFM,improvement_pct,level,7.903
-EWELD,523,197,ANKYRA vs TimesFM,log_ratio,level,-0.082331
+EWELD,523,197,ANKYRA vs TimesFM,improvement_pct,level,6.612
+EWELD,523,197,ANKYRA vs TimesFM,log_ratio,level,-0.068405
 EWELD,523,197,ANKYRA vs TimesFM,units_in_ratio,level,161
-EWELD,523,197,ANKYRA vs TimesFM,improvement_pct,daily path,3.095
-EWELD,523,197,ANKYRA vs TimesFM,log_ratio,daily path,-0.031435
+EWELD,523,197,ANKYRA vs TimesFM,improvement_pct,daily path,3.314
+EWELD,523,197,ANKYRA vs TimesFM,log_ratio,daily path,-0.033701
 EWELD,523,197,ANKYRA vs TimesFM,units_in_ratio,daily path,161
-EWELD,523,197,ANKYRA vs TimesFM,improvement_pct,within-day,1.283
-EWELD,523,197,ANKYRA vs TimesFM,log_ratio,within-day,-0.012908
+EWELD,523,197,ANKYRA vs TimesFM,improvement_pct,within-day,1.119
+EWELD,523,197,ANKYRA vs TimesFM,log_ratio,within-day,-0.01125
 EWELD,523,197,ANKYRA vs TimesFM,units_in_ratio,within-day,161
-EWELD,523,197,ANKYRA vs TimesFM,improvement_pct,hourly,2.597
-EWELD,523,197,ANKYRA vs TimesFM,log_ratio,hourly,-0.026317
+EWELD,523,197,ANKYRA vs TimesFM,improvement_pct,hourly,2.589
+EWELD,523,197,ANKYRA vs TimesFM,log_ratio,hourly,-0.026236
 EWELD,523,197,ANKYRA vs TimesFM,units_in_ratio,hourly,161
-EWELD,523,197,ANKYRA vs Chronos-2-X,improvement_pct,level,31.57
-EWELD,523,197,ANKYRA vs Chronos-2-X,log_ratio,level,-0.379358
+EWELD,523,197,ANKYRA vs Chronos-2-X,improvement_pct,level,30.61
+EWELD,523,197,ANKYRA vs Chronos-2-X,log_ratio,level,-0.365431
 EWELD,523,197,ANKYRA vs Chronos-2-X,units_in_ratio,level,161
-EWELD,523,197,ANKYRA vs Chronos-2-X,improvement_pct,daily path,15.219
-EWELD,523,197,ANKYRA vs Chronos-2-X,log_ratio,daily path,-0.165098
+EWELD,523,197,ANKYRA vs Chronos-2-X,improvement_pct,daily path,15.411
+EWELD,523,197,ANKYRA vs Chronos-2-X,log_ratio,daily path,-0.167365
 EWELD,523,197,ANKYRA vs Chronos-2-X,units_in_ratio,daily path,161
-EWELD,523,197,ANKYRA vs Chronos-2-X,improvement_pct,within-day,14.317
-EWELD,523,197,ANKYRA vs Chronos-2-X,log_ratio,within-day,-0.154511
+EWELD,523,197,ANKYRA vs Chronos-2-X,improvement_pct,within-day,14.174
+EWELD,523,197,ANKYRA vs Chronos-2-X,log_ratio,within-day,-0.152853
 EWELD,523,197,ANKYRA vs Chronos-2-X,units_in_ratio,within-day,161
-EWELD,523,197,ANKYRA vs Chronos-2-X,improvement_pct,hourly,14.564
-EWELD,523,197,ANKYRA vs Chronos-2-X,log_ratio,hourly,-0.157402
+EWELD,523,197,ANKYRA vs Chronos-2-X,improvement_pct,hourly,14.557
+EWELD,523,197,ANKYRA vs Chronos-2-X,log_ratio,hourly,-0.157321
 EWELD,523,197,ANKYRA vs Chronos-2-X,units_in_ratio,hourly,161
-GoiEner non-household,890,481,ANKYRA,pooled_share,level,0.1305
+GoiEner non-household,890,481,ANKYRA,pooled_share,level,0.1304
 GoiEner non-household,890,481,ANKYRA,pooled_share,daily path,0.3084
-GoiEner non-household,890,481,ANKYRA,pooled_share,within-day,0.5611
+GoiEner non-household,890,481,ANKYRA,pooled_share,within-day,0.5612
 GoiEner non-household,890,481,ANKYRA,median_unit_share,level,0.0382
 GoiEner non-household,890,481,ANKYRA,median_unit_share,daily path,0.1346
 GoiEner non-household,890,481,ANKYRA,median_unit_share,within-day,0.804
@@ -215,36 +215,36 @@ GoiEner non-household,890,481,Chronos-2-X,pooled_share,within-day,0.516
 GoiEner non-household,890,481,Chronos-2-X,median_unit_share,level,0.0715
 GoiEner non-household,890,481,Chronos-2-X,median_unit_share,daily path,0.1341
 GoiEner non-household,890,481,Chronos-2-X,median_unit_share,within-day,0.7742
-GoiEner non-household,890,481,ANKYRA vs TimesFM,improvement_pct,level,24.919
-GoiEner non-household,890,481,ANKYRA vs TimesFM,log_ratio,level,-0.286606
+GoiEner non-household,890,481,ANKYRA vs TimesFM,improvement_pct,level,24.917
+GoiEner non-household,890,481,ANKYRA vs TimesFM,log_ratio,level,-0.286577
 GoiEner non-household,890,481,ANKYRA vs TimesFM,units_in_ratio,level,481
-GoiEner non-household,890,481,ANKYRA vs TimesFM,improvement_pct,daily path,0.279
-GoiEner non-household,890,481,ANKYRA vs TimesFM,log_ratio,daily path,-0.002797
+GoiEner non-household,890,481,ANKYRA vs TimesFM,improvement_pct,daily path,0.28
+GoiEner non-household,890,481,ANKYRA vs TimesFM,log_ratio,daily path,-0.002799
 GoiEner non-household,890,481,ANKYRA vs TimesFM,units_in_ratio,daily path,481
 GoiEner non-household,890,481,ANKYRA vs TimesFM,improvement_pct,within-day,4.487
-GoiEner non-household,890,481,ANKYRA vs TimesFM,log_ratio,within-day,-0.045907
+GoiEner non-household,890,481,ANKYRA vs TimesFM,log_ratio,within-day,-0.045908
 GoiEner non-household,890,481,ANKYRA vs TimesFM,units_in_ratio,within-day,481
-GoiEner non-household,890,481,ANKYRA vs TimesFM,improvement_pct,hourly,5.46
-GoiEner non-household,890,481,ANKYRA vs TimesFM,log_ratio,hourly,-0.056142
+GoiEner non-household,890,481,ANKYRA vs TimesFM,improvement_pct,hourly,5.458
+GoiEner non-household,890,481,ANKYRA vs TimesFM,log_ratio,hourly,-0.056125
 GoiEner non-household,890,481,ANKYRA vs TimesFM,units_in_ratio,hourly,481
-GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,improvement_pct,level,18.167
-GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,log_ratio,level,-0.200485
+GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,improvement_pct,level,18.164
+GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,log_ratio,level,-0.200456
 GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,units_in_ratio,level,481
 GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,improvement_pct,daily path,-0.408
-GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,log_ratio,daily path,0.004076
+GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,log_ratio,daily path,0.004074
 GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,units_in_ratio,daily path,481
 GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,improvement_pct,within-day,-0.039
-GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,log_ratio,within-day,0.000394
+GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,log_ratio,within-day,0.000392
 GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,units_in_ratio,within-day,481
-GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,improvement_pct,hourly,1.413
-GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,log_ratio,hourly,-0.014228
+GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,improvement_pct,hourly,1.411
+GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,log_ratio,hourly,-0.01421
 GoiEner non-household,890,481,ANKYRA vs Chronos-2-X,units_in_ratio,hourly,481
-GoiEner households,696,696,ANKYRA,pooled_share,level,0.1561
-GoiEner households,696,696,ANKYRA,pooled_share,daily path,0.1575
-GoiEner households,696,696,ANKYRA,pooled_share,within-day,0.6864
-GoiEner households,696,696,ANKYRA,median_unit_share,level,0.0279
-GoiEner households,696,696,ANKYRA,median_unit_share,daily path,0.1037
-GoiEner households,696,696,ANKYRA,median_unit_share,within-day,0.8476
+GoiEner households,696,696,ANKYRA,pooled_share,level,0.1657
+GoiEner households,696,696,ANKYRA,pooled_share,daily path,0.1592
+GoiEner households,696,696,ANKYRA,pooled_share,within-day,0.6751
+GoiEner households,696,696,ANKYRA,median_unit_share,level,0.0284
+GoiEner households,696,696,ANKYRA,median_unit_share,daily path,0.1049
+GoiEner households,696,696,ANKYRA,median_unit_share,within-day,0.8471
 GoiEner households,696,696,ANKYRA 1.x,pooled_share,level,0.1559
 GoiEner households,696,696,ANKYRA 1.x,pooled_share,daily path,0.1573
 GoiEner households,696,696,ANKYRA 1.x,pooled_share,within-day,0.6869
@@ -263,29 +263,29 @@ GoiEner households,696,696,Chronos-2-X,pooled_share,within-day,0.6214
 GoiEner households,696,696,Chronos-2-X,median_unit_share,level,0.069
 GoiEner households,696,696,Chronos-2-X,median_unit_share,daily path,0.0965
 GoiEner households,696,696,Chronos-2-X,median_unit_share,within-day,0.8101
-GoiEner households,696,696,ANKYRA vs TimesFM,improvement_pct,level,24.736
-GoiEner households,696,696,ANKYRA vs TimesFM,log_ratio,level,-0.284162
+GoiEner households,696,696,ANKYRA vs TimesFM,improvement_pct,level,25.606
+GoiEner households,696,696,ANKYRA vs TimesFM,log_ratio,level,-0.295795
 GoiEner households,696,696,ANKYRA vs TimesFM,units_in_ratio,level,696
-GoiEner households,696,696,ANKYRA vs TimesFM,improvement_pct,daily path,-9.352
-GoiEner households,696,696,ANKYRA vs TimesFM,log_ratio,daily path,0.0894
+GoiEner households,696,696,ANKYRA vs TimesFM,improvement_pct,daily path,-9.169
+GoiEner households,696,696,ANKYRA vs TimesFM,log_ratio,daily path,0.087731
 GoiEner households,696,696,ANKYRA vs TimesFM,units_in_ratio,daily path,696
-GoiEner households,696,696,ANKYRA vs TimesFM,improvement_pct,within-day,-0.522
-GoiEner households,696,696,ANKYRA vs TimesFM,log_ratio,within-day,0.005207
+GoiEner households,696,696,ANKYRA vs TimesFM,improvement_pct,within-day,-0.431
+GoiEner households,696,696,ANKYRA vs TimesFM,log_ratio,within-day,0.0043
 GoiEner households,696,696,ANKYRA vs TimesFM,units_in_ratio,within-day,696
-GoiEner households,696,696,ANKYRA vs TimesFM,improvement_pct,hourly,-3.855
-GoiEner households,696,696,ANKYRA vs TimesFM,log_ratio,hourly,0.037827
+GoiEner households,696,696,ANKYRA vs TimesFM,improvement_pct,hourly,-3.51
+GoiEner households,696,696,ANKYRA vs TimesFM,log_ratio,hourly,0.034497
 GoiEner households,696,696,ANKYRA vs TimesFM,units_in_ratio,hourly,696
-GoiEner households,696,696,ANKYRA vs Chronos-2-X,improvement_pct,level,26.302
-GoiEner households,696,696,ANKYRA vs Chronos-2-X,log_ratio,level,-0.305196
+GoiEner households,696,696,ANKYRA vs Chronos-2-X,improvement_pct,level,27.154
+GoiEner households,696,696,ANKYRA vs Chronos-2-X,log_ratio,level,-0.316829
 GoiEner households,696,696,ANKYRA vs Chronos-2-X,units_in_ratio,level,696
-GoiEner households,696,696,ANKYRA vs Chronos-2-X,improvement_pct,daily path,-3.689
-GoiEner households,696,696,ANKYRA vs Chronos-2-X,log_ratio,daily path,0.036224
+GoiEner households,696,696,ANKYRA vs Chronos-2-X,improvement_pct,daily path,-3.516
+GoiEner households,696,696,ANKYRA vs Chronos-2-X,log_ratio,daily path,0.034556
 GoiEner households,696,696,ANKYRA vs Chronos-2-X,units_in_ratio,daily path,696
-GoiEner households,696,696,ANKYRA vs Chronos-2-X,improvement_pct,within-day,2.773
-GoiEner households,696,696,ANKYRA vs Chronos-2-X,log_ratio,within-day,-0.028119
+GoiEner households,696,696,ANKYRA vs Chronos-2-X,improvement_pct,within-day,2.861
+GoiEner households,696,696,ANKYRA vs Chronos-2-X,log_ratio,within-day,-0.029027
 GoiEner households,696,696,ANKYRA vs Chronos-2-X,units_in_ratio,within-day,696
-GoiEner households,696,696,ANKYRA vs Chronos-2-X,improvement_pct,hourly,0.198
-GoiEner households,696,696,ANKYRA vs Chronos-2-X,log_ratio,hourly,-0.001978
+GoiEner households,696,696,ANKYRA vs Chronos-2-X,improvement_pct,hourly,0.529
+GoiEner households,696,696,ANKYRA vs Chronos-2-X,log_ratio,hourly,-0.005308
 GoiEner households,696,696,ANKYRA vs Chronos-2-X,units_in_ratio,hourly,696
 Suzhou park,64,4,ANKYRA,pooled_share,level,0.2734
 Suzhou park,64,4,ANKYRA,pooled_share,daily path,0.3989

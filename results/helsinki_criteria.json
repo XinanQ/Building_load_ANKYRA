@@ -1,32 +1,33 @@
 {
- "test": "pre-registered confirmation, Helsinki city service buildings, ANKYRA 2.0.1 frozen",
+ "test": "pre-registered confirmation, Helsinki city service buildings; registered and first scored with ANKYRA 2.0.1 frozen (results/ankyra_2_1/helsinki_criteria.json); the numbers here re-read the same targets with ANKYRA 2.2 (re-evaluation); the verdicts are the same",
+ "model": "ANKYRA 2.2",
  "seed": 20261005,
  "primary": {
   "what": "monthly energy error vs TimesFM 2.5, upper end of 95% unit-and-month interval < 0",
-  "um_high": 0.104047,
+  "um_high": 0.106412,
   "pass": false
  },
  "secondary": {
   "what": "hourly error vs TimesFM 2.5, lower end <= 0",
-  "um_low": -0.09286,
+  "um_low": -0.108627,
   "pass": true
  },
  "confirmed": false,
  "windows": 1168,
  "units_scored": 200,
  "mean_unit_rank_14": {
-  "Chronos-2-X": 4.08,
-  "ANKYRA": 4.33,
+  "Chronos-2-X": 4.12,
+  "ANKYRA": 4.17,
   "Chronos-2": 4.92,
   "TimesFM-X": 5.93,
-  "TimesFM 2.5": 6.05,
-  "Four-week profile": 6.39,
-  "Per-unit ridge": 6.5,
-  "Holt-Winters": 7.53,
-  "MSTL": 8.41,
-  "Seasonal naive (week)": 8.96,
-  "Previous-month profile": 9.04,
-  "GBT (zero-shot)": 9.76,
+  "TimesFM 2.5": 6.09,
+  "Four-week profile": 6.41,
+  "Per-unit ridge": 6.53,
+  "Holt-Winters": 7.54,
+  "MSTL": 8.43,
+  "Seasonal naive (week)": 8.97,
+  "Previous-month profile": 9.06,
+  "GBT (zero-shot)": 9.74,
   "Last-year profile": 10.64,
   "Seasonal naive (day)": 12.46
  }

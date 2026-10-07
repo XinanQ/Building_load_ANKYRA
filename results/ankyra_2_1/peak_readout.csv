@@ -1,0 +1,41 @@
+set,tier,comparator,log_ratio,um_low,um_high,improvement_pct,median_peak_ape_ankyra_pct,median_peak_ape_previous_peak_pct
+GoiEner non-household,test,trajectory maximum,-0.529591,-0.947837,-0.388555,41.115,14.48,15.02
+GoiEner non-household,test,same readout on TimesFM,-0.036231,-0.09744,0.001205,3.558,14.48,15.02
+GoiEner non-household,test,previous-window peak,0.235714,-0.025112,0.401563,-26.581,14.48,15.02
+GoiEner non-household,test,same readout on fixed division (F0),0.006948,-0.111771,0.050324,-0.697,14.48,15.02
+Drammen,preview,trajectory maximum,-0.386784,-0.475108,-0.309008,32.076,13.34,17.16
+Drammen,preview,same readout on TimesFM,-0.064937,-0.10565,-0.025583,6.287,13.34,17.16
+Drammen,preview,previous-window peak,-0.128464,-0.279176,-0.008719,12.055,13.34,17.16
+Drammen,preview,same readout on fixed division (F0),-0.001456,-0.056104,0.03853,0.146,13.34,17.16
+Oslo,preview,trajectory maximum,-0.268133,-0.451962,-0.109474,23.519,11.1,10.28
+Oslo,preview,same readout on TimesFM,-0.053617,-0.088839,-0.015657,5.22,11.1,10.28
+Oslo,preview,previous-window peak,-0.174088,-0.271313,-0.083793,15.978,11.1,10.28
+Oslo,preview,same readout on fixed division (F0),0.012216,-0.032273,0.037056,-1.229,11.1,10.28
+EWELD,test,trajectory maximum,-0.47631,-0.746853,-0.262633,37.893,9.84,7.94
+EWELD,test,same readout on TimesFM,-0.026597,-0.128781,0.061871,2.625,9.84,7.94
+EWELD,test,previous-window peak,0.185522,-0.001081,0.399837,-20.385,9.84,7.94
+EWELD,test,same readout on fixed division (F0),-0.293209,-0.537057,-0.097321,25.413,9.84,7.94
+GoiEner households,test,trajectory maximum,-1.066771,-1.28465,-0.725465,65.588,20.53,20.48
+GoiEner households,test,same readout on TimesFM,-0.026965,-0.097376,0.027518,2.661,20.53,20.48
+GoiEner households,test,previous-window peak,-0.003335,-0.112132,0.086157,0.333,20.53,20.48
+GoiEner households,test,same readout on fixed division (F0),0.017752,-0.022732,0.051924,-1.791,20.53,20.48
+Suzhou park,preview,trajectory maximum,-0.200316,-0.338055,-0.087095,18.153,15.95,17.66
+Suzhou park,preview,same readout on TimesFM,-0.078324,-0.139647,0.011864,7.534,15.95,17.66
+Suzhou park,preview,previous-window peak,-0.133762,-0.382914,0.004388,12.52,15.95,17.66
+Suzhou park,preview,same readout on fixed division (F0),0.033345,-0.050047,0.085042,-3.391,15.95,17.66
+BDG2 2017,test,trajectory maximum,-0.467009,-0.613025,-0.377906,37.313,8.33,6.96
+BDG2 2017,test,same readout on TimesFM,-0.033803,-0.114382,0.221563,3.324,8.33,6.96
+BDG2 2017,test,previous-window peak,0.078989,-0.058479,0.23991,-8.219,8.33,6.96
+BDG2 2017,test,same readout on fixed division (F0),-0.424867,-1.373283,-0.037433,34.614,8.33,6.96
+Cambridge,test,trajectory maximum,-0.455179,-0.602089,-0.400747,36.567,8.35,8.09
+Cambridge,test,same readout on TimesFM,-0.043138,-0.076368,0.002458,4.222,8.35,8.09
+Cambridge,test,previous-window peak,0.071022,-0.049841,0.17881,-7.36,8.35,8.09
+Cambridge,test,same readout on fixed division (F0),-0.021631,-0.071949,0.015954,2.14,8.35,8.09
+CINELDI,preview,trajectory maximum,-0.609171,-0.803117,-0.348983,45.62,9.66,8.04
+CINELDI,preview,same readout on TimesFM,-0.038732,-0.099479,0.023659,3.799,9.66,8.04
+CINELDI,preview,previous-window peak,0.17722,0.031097,0.350466,-19.389,9.66,8.04
+CINELDI,preview,same readout on fixed division (F0),-0.00932,-0.078337,0.031054,0.928,9.66,8.04
+HEEW Arizona,test,trajectory maximum,-0.399705,-0.589577,-0.31032,32.948,5.47,5.97
+HEEW Arizona,test,same readout on TimesFM,-0.03308,-0.085233,0.034869,3.254,5.47,5.97
+HEEW Arizona,test,previous-window peak,-0.137707,-0.246693,-0.028491,12.865,5.47,5.97
+HEEW Arizona,test,same readout on fixed division (F0),-0.079936,-0.165946,-0.006634,7.682,5.47,5.97

@@ -292,3 +292,18 @@ class EstimandTests(unittest.TestCase):                                         
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class EvidenceBoundTests(unittest.TestCase):                                      # P20
+    def test_rates_for_the_study_sizes(self):
+        self.assertAlmostEqual(op.aggregation_rate(7, 6), min(7 / 6, np.sqrt(np.log(7) / 6)), places=12)
+        self.assertGreater(op.aggregation_rate(7, 6), 0.5); self.assertLess(op.aggregation_rate(7, 30), 0.25)
+        self.assertGreater(op.selection_rate(7, 6), 0.3); self.assertLess(op.selection_rate(7, 30), 0.07)
+        for T in (6, 12, 30, 120):
+            self.assertGreater(op.aggregation_rate(7, T), op.aggregation_rate(7, T + 1))
+
+    def test_exchangeable_errors_give_chance_hit_rate(self):
+        rng = np.random.default_rng(20261006)
+        self.assertAlmostEqual(op.exchangeable_hit_rate(7, 6, 40000, rng), 1 / 7, delta=0.01)
+        self.assertAlmostEqual(op.exchangeable_hit_rate(6, 30, 40000, rng), 1 / 6, delta=0.01)
+

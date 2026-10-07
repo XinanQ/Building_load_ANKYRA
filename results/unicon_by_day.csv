@@ -1,0 +1,435 @@
+model,model_label,day,hourly_gm_cv_pct,energy_to_date_gm_cv_pct,windows,units_in_fixed_set
+TimesFM,TimesFM 2.5,1,15.937,8.791,674,60
+TimesFM,TimesFM 2.5,2,17.103,8.694,674,60
+TimesFM,TimesFM 2.5,3,19.186,9.199,674,60
+TimesFM,TimesFM 2.5,4,19.598,9.258,674,60
+TimesFM,TimesFM 2.5,5,19.216,9.308,674,60
+TimesFM,TimesFM 2.5,6,18.512,9.183,674,60
+TimesFM,TimesFM 2.5,7,19.708,9.435,674,60
+TimesFM,TimesFM 2.5,8,20.24,9.462,674,60
+TimesFM,TimesFM 2.5,9,20.407,9.442,674,60
+TimesFM,TimesFM 2.5,10,21.953,9.437,674,60
+TimesFM,TimesFM 2.5,11,21.118,9.435,674,60
+TimesFM,TimesFM 2.5,12,20.153,9.442,674,60
+TimesFM,TimesFM 2.5,13,21.584,9.589,674,60
+TimesFM,TimesFM 2.5,14,21.211,9.663,674,60
+TimesFM,TimesFM 2.5,15,21.83,9.722,674,60
+TimesFM,TimesFM 2.5,16,21.012,9.765,674,60
+TimesFM,TimesFM 2.5,17,21.475,9.818,674,60
+TimesFM,TimesFM 2.5,18,21.86,9.835,674,60
+TimesFM,TimesFM 2.5,19,22.288,9.874,674,60
+TimesFM,TimesFM 2.5,20,23.405,9.997,674,60
+TimesFM,TimesFM 2.5,21,23.258,10.106,674,60
+TimesFM,TimesFM 2.5,22,23.781,10.206,674,60
+TimesFM,TimesFM 2.5,23,23.338,10.213,674,60
+TimesFM,TimesFM 2.5,24,25.208,10.27,674,60
+TimesFM,TimesFM 2.5,25,25.083,10.305,674,60
+TimesFM,TimesFM 2.5,26,23.778,10.353,674,60
+TimesFM,TimesFM 2.5,27,25.122,10.43,674,60
+TimesFM,TimesFM 2.5,28,24.373,10.526,674,60
+TimesFM,TimesFM 2.5,29,26.086,10.625,674,60
+TimesFM,TimesFM 2.5,30,26.94,10.718,674,60
+TimesFM,TimesFM 2.5,31,28.782,10.827,674,60
+Chronos-2-X,Chronos-2-X,1,16.548,9.25,674,60
+Chronos-2-X,Chronos-2-X,2,16.246,8.889,674,60
+Chronos-2-X,Chronos-2-X,3,18.819,9.394,674,60
+Chronos-2-X,Chronos-2-X,4,19.553,9.606,674,60
+Chronos-2-X,Chronos-2-X,5,19.607,9.706,674,60
+Chronos-2-X,Chronos-2-X,6,18.027,9.586,674,60
+Chronos-2-X,Chronos-2-X,7,18.959,9.764,674,60
+Chronos-2-X,Chronos-2-X,8,20.023,9.8,674,60
+Chronos-2-X,Chronos-2-X,9,20.714,9.889,674,60
+Chronos-2-X,Chronos-2-X,10,20.991,10.019,674,60
+Chronos-2-X,Chronos-2-X,11,22.102,10.168,674,60
+Chronos-2-X,Chronos-2-X,12,20.995,10.254,674,60
+Chronos-2-X,Chronos-2-X,13,21.734,10.409,674,60
+Chronos-2-X,Chronos-2-X,14,22.314,10.516,674,60
+Chronos-2-X,Chronos-2-X,15,22.758,10.615,674,60
+Chronos-2-X,Chronos-2-X,16,22.328,10.689,674,60
+Chronos-2-X,Chronos-2-X,17,23.009,10.812,674,60
+Chronos-2-X,Chronos-2-X,18,23.526,10.894,674,60
+Chronos-2-X,Chronos-2-X,19,22.937,10.95,674,60
+Chronos-2-X,Chronos-2-X,20,24.16,11.011,674,60
+Chronos-2-X,Chronos-2-X,21,23.266,11.071,674,60
+Chronos-2-X,Chronos-2-X,22,23.58,11.137,674,60
+Chronos-2-X,Chronos-2-X,23,23.69,11.115,674,60
+Chronos-2-X,Chronos-2-X,24,24.738,11.119,674,60
+Chronos-2-X,Chronos-2-X,25,24.936,11.137,674,60
+Chronos-2-X,Chronos-2-X,26,23.817,11.172,674,60
+Chronos-2-X,Chronos-2-X,27,25.442,11.235,674,60
+Chronos-2-X,Chronos-2-X,28,25.162,11.322,674,60
+Chronos-2-X,Chronos-2-X,29,26.792,11.426,674,60
+Chronos-2-X,Chronos-2-X,30,27.838,11.54,674,60
+Chronos-2-X,Chronos-2-X,31,29.425,11.653,674,60
+ANKYRA,ANKYRA,1,17.505,10.919,674,60
+ANKYRA,ANKYRA,2,17.755,10.417,674,60
+ANKYRA,ANKYRA,3,19.439,10.481,674,60
+ANKYRA,ANKYRA,4,19.673,10.331,674,60
+ANKYRA,ANKYRA,5,18.985,10.187,674,60
+ANKYRA,ANKYRA,6,18.515,9.995,674,60
+ANKYRA,ANKYRA,7,19.699,9.415,674,60
+ANKYRA,ANKYRA,8,20.337,9.585,674,60
+ANKYRA,ANKYRA,9,20.552,9.225,674,60
+ANKYRA,ANKYRA,10,21.166,9.166,674,60
+ANKYRA,ANKYRA,11,21.016,9.356,674,60
+ANKYRA,ANKYRA,12,20.318,9.398,674,60
+ANKYRA,ANKYRA,13,21.136,9.471,674,60
+ANKYRA,ANKYRA,14,21.184,9.515,674,60
+ANKYRA,ANKYRA,15,21.646,9.59,674,60
+ANKYRA,ANKYRA,16,20.855,9.598,674,60
+ANKYRA,ANKYRA,17,21.401,9.617,674,60
+ANKYRA,ANKYRA,18,21.169,9.608,674,60
+ANKYRA,ANKYRA,19,21.604,9.655,674,60
+ANKYRA,ANKYRA,20,23.276,9.774,674,60
+ANKYRA,ANKYRA,21,23.035,9.871,674,60
+ANKYRA,ANKYRA,22,23.147,9.97,674,60
+ANKYRA,ANKYRA,23,23.135,9.99,674,60
+ANKYRA,ANKYRA,24,24.639,10.053,674,60
+ANKYRA,ANKYRA,25,24.513,10.127,674,60
+ANKYRA,ANKYRA,26,23.081,10.189,674,60
+ANKYRA,ANKYRA,27,24.218,10.263,674,60
+ANKYRA,ANKYRA,28,23.901,10.36,674,60
+ANKYRA,ANKYRA,29,25.097,10.443,674,60
+ANKYRA,ANKYRA,30,26.358,10.534,674,60
+ANKYRA,ANKYRA,31,28.067,10.619,674,60
+Chronos-2,Chronos-2,1,15.04,8.275,674,60
+Chronos-2,Chronos-2,2,16.187,8.126,674,60
+Chronos-2,Chronos-2,3,19.058,8.914,674,60
+Chronos-2,Chronos-2,4,19.27,9.096,674,60
+Chronos-2,Chronos-2,5,19.169,9.139,674,60
+Chronos-2,Chronos-2,6,18.223,8.973,674,60
+Chronos-2,Chronos-2,7,19.342,8.999,674,60
+Chronos-2,Chronos-2,8,19.484,9.018,674,60
+Chronos-2,Chronos-2,9,19.761,8.965,674,60
+Chronos-2,Chronos-2,10,21.335,9.038,674,60
+Chronos-2,Chronos-2,11,20.71,9.108,674,60
+Chronos-2,Chronos-2,12,20.008,9.16,674,60
+Chronos-2,Chronos-2,13,21.505,9.274,674,60
+Chronos-2,Chronos-2,14,21.182,9.314,674,60
+Chronos-2,Chronos-2,15,22.502,9.425,674,60
+Chronos-2,Chronos-2,16,21.406,9.492,674,60
+Chronos-2,Chronos-2,17,21.778,9.575,674,60
+Chronos-2,Chronos-2,18,22.176,9.619,674,60
+Chronos-2,Chronos-2,19,21.778,9.659,674,60
+Chronos-2,Chronos-2,20,23.681,9.806,674,60
+Chronos-2,Chronos-2,21,23.737,9.928,674,60
+Chronos-2,Chronos-2,22,23.636,9.988,674,60
+Chronos-2,Chronos-2,23,23.044,9.996,674,60
+Chronos-2,Chronos-2,24,24.901,10.095,674,60
+Chronos-2,Chronos-2,25,24.562,10.152,674,60
+Chronos-2,Chronos-2,26,23.183,10.188,674,60
+Chronos-2,Chronos-2,27,24.507,10.219,674,60
+Chronos-2,Chronos-2,28,24.502,10.31,674,60
+Chronos-2,Chronos-2,29,26.308,10.404,674,60
+Chronos-2,Chronos-2,30,26.86,10.493,674,60
+Chronos-2,Chronos-2,31,28.982,10.649,674,60
+SN-day,Seasonal naive (day),1,26.854,15.757,674,60
+SN-day,Seasonal naive (day),2,33.412,16.837,674,60
+SN-day,Seasonal naive (day),3,34.947,17.975,674,60
+SN-day,Seasonal naive (day),4,33.085,17.986,674,60
+SN-day,Seasonal naive (day),5,35.074,18.208,674,60
+SN-day,Seasonal naive (day),6,28.889,17.492,674,60
+SN-day,Seasonal naive (day),7,23.908,16.756,674,60
+SN-day,Seasonal naive (day),8,30.841,16.525,674,60
+SN-day,Seasonal naive (day),9,36.032,16.838,674,60
+SN-day,Seasonal naive (day),10,36.767,17.17,674,60
+SN-day,Seasonal naive (day),11,35.728,17.297,674,60
+SN-day,Seasonal naive (day),12,35.495,17.463,674,60
+SN-day,Seasonal naive (day),13,31.039,17.257,674,60
+SN-day,Seasonal naive (day),14,24.939,16.788,674,60
+SN-day,Seasonal naive (day),15,33.003,16.748,674,60
+SN-day,Seasonal naive (day),16,36.998,17.028,674,60
+SN-day,Seasonal naive (day),17,37.035,17.253,674,60
+SN-day,Seasonal naive (day),18,35.621,17.373,674,60
+SN-day,Seasonal naive (day),19,35.843,17.43,674,60
+SN-day,Seasonal naive (day),20,32.869,17.337,674,60
+SN-day,Seasonal naive (day),21,26.71,17.047,674,60
+SN-day,Seasonal naive (day),22,32.893,16.998,674,60
+SN-day,Seasonal naive (day),23,37.162,17.115,674,60
+SN-day,Seasonal naive (day),24,38.328,17.252,674,60
+SN-day,Seasonal naive (day),25,36.812,17.341,674,60
+SN-day,Seasonal naive (day),26,36.693,17.444,674,60
+SN-day,Seasonal naive (day),27,30.952,17.374,674,60
+SN-day,Seasonal naive (day),28,28.284,17.241,674,60
+SN-day,Seasonal naive (day),29,36.798,17.328,674,60
+SN-day,Seasonal naive (day),30,40.154,17.543,674,60
+SN-day,Seasonal naive (day),31,41.0,17.759,674,60
+SN-week,Seasonal naive (week),1,22.447,13.745,674,60
+SN-week,Seasonal naive (week),2,22.745,12.443,674,60
+SN-week,Seasonal naive (week),3,23.566,11.979,674,60
+SN-week,Seasonal naive (week),4,22.737,11.165,674,60
+SN-week,Seasonal naive (week),5,21.773,10.459,674,60
+SN-week,Seasonal naive (week),6,22.135,9.895,674,60
+SN-week,Seasonal naive (week),7,23.908,9.528,674,60
+SN-week,Seasonal naive (week),8,24.497,9.715,674,60
+SN-week,Seasonal naive (week),9,24.099,9.782,674,60
+SN-week,Seasonal naive (week),10,26.331,9.928,674,60
+SN-week,Seasonal naive (week),11,24.818,9.947,674,60
+SN-week,Seasonal naive (week),12,23.712,9.933,674,60
+SN-week,Seasonal naive (week),13,24.48,9.949,674,60
+SN-week,Seasonal naive (week),14,24.939,9.902,674,60
+SN-week,Seasonal naive (week),15,26.65,10.007,674,60
+SN-week,Seasonal naive (week),16,25.896,10.079,674,60
+SN-week,Seasonal naive (week),17,26.124,10.156,674,60
+SN-week,Seasonal naive (week),18,25.499,10.126,674,60
+SN-week,Seasonal naive (week),19,24.186,10.066,674,60
+SN-week,Seasonal naive (week),20,25.734,10.04,674,60
+SN-week,Seasonal naive (week),21,26.71,10.055,674,60
+SN-week,Seasonal naive (week),22,27.844,10.162,674,60
+SN-week,Seasonal naive (week),23,28.036,10.19,674,60
+SN-week,Seasonal naive (week),24,28.93,10.273,674,60
+SN-week,Seasonal naive (week),25,28.549,10.334,674,60
+SN-week,Seasonal naive (week),26,26.158,10.335,674,60
+SN-week,Seasonal naive (week),27,27.817,10.363,674,60
+SN-week,Seasonal naive (week),28,28.284,10.455,674,60
+SN-week,Seasonal naive (week),29,29.066,10.591,674,60
+SN-week,Seasonal naive (week),30,31.935,10.741,674,60
+SN-week,Seasonal naive (week),31,32.801,10.913,674,60
+WeekProf4,Four-week profile,1,24.035,16.572,674,60
+WeekProf4,Four-week profile,2,22.037,14.842,674,60
+WeekProf4,Four-week profile,3,22.275,14.093,674,60
+WeekProf4,Four-week profile,4,21.115,13.386,674,60
+WeekProf4,Four-week profile,5,20.982,12.766,674,60
+WeekProf4,Four-week profile,6,20.658,12.265,674,60
+WeekProf4,Four-week profile,7,21.205,11.601,674,60
+WeekProf4,Four-week profile,8,23.641,11.76,674,60
+WeekProf4,Four-week profile,9,23.592,11.45,674,60
+WeekProf4,Four-week profile,10,24.557,11.426,674,60
+WeekProf4,Four-week profile,11,21.811,11.337,674,60
+WeekProf4,Four-week profile,12,21.007,10.794,674,60
+WeekProf4,Four-week profile,13,22.373,10.983,674,60
+WeekProf4,Four-week profile,14,21.958,10.955,674,60
+WeekProf4,Four-week profile,15,23.737,11.075,674,60
+WeekProf4,Four-week profile,16,23.521,11.238,674,60
+WeekProf4,Four-week profile,17,23.034,11.213,674,60
+WeekProf4,Four-week profile,18,22.602,11.137,674,60
+WeekProf4,Four-week profile,19,22.626,11.059,674,60
+WeekProf4,Four-week profile,20,24.032,11.077,674,60
+WeekProf4,Four-week profile,21,23.972,11.121,674,60
+WeekProf4,Four-week profile,22,25.973,11.263,674,60
+WeekProf4,Four-week profile,23,26.427,11.405,674,60
+WeekProf4,Four-week profile,24,26.773,11.502,674,60
+WeekProf4,Four-week profile,25,25.621,11.538,674,60
+WeekProf4,Four-week profile,26,24.498,11.518,674,60
+WeekProf4,Four-week profile,27,25.894,11.547,674,60
+WeekProf4,Four-week profile,28,24.415,11.561,674,60
+WeekProf4,Four-week profile,29,27.037,11.625,674,60
+WeekProf4,Four-week profile,30,29.335,11.72,674,60
+WeekProf4,Four-week profile,31,29.76,11.767,674,60
+SP-profile,Previous-month profile,1,26.21,19.037,674,60
+SP-profile,Previous-month profile,2,24.125,15.757,674,60
+SP-profile,Previous-month profile,3,25.153,14.553,674,60
+SP-profile,Previous-month profile,4,24.849,13.564,674,60
+SP-profile,Previous-month profile,5,26.124,13.289,674,60
+SP-profile,Previous-month profile,6,24.431,12.567,674,60
+SP-profile,Previous-month profile,7,25.215,10.919,674,60
+SP-profile,Previous-month profile,8,26.205,11.83,674,60
+SP-profile,Previous-month profile,9,26.266,11.48,674,60
+SP-profile,Previous-month profile,10,26.561,11.334,674,60
+SP-profile,Previous-month profile,11,26.997,11.593,674,60
+SP-profile,Previous-month profile,12,26.899,11.656,674,60
+SP-profile,Previous-month profile,13,26.269,11.648,674,60
+SP-profile,Previous-month profile,14,26.573,11.598,674,60
+SP-profile,Previous-month profile,15,26.937,11.589,674,60
+SP-profile,Previous-month profile,16,26.39,11.585,674,60
+SP-profile,Previous-month profile,17,26.34,11.557,674,60
+SP-profile,Previous-month profile,18,26.589,11.513,674,60
+SP-profile,Previous-month profile,19,27.371,11.56,674,60
+SP-profile,Previous-month profile,20,28.145,11.552,674,60
+SP-profile,Previous-month profile,21,28.622,11.599,674,60
+SP-profile,Previous-month profile,22,28.365,11.696,674,60
+SP-profile,Previous-month profile,23,28.465,11.757,674,60
+SP-profile,Previous-month profile,24,29.298,11.835,674,60
+SP-profile,Previous-month profile,25,29.79,11.859,674,60
+SP-profile,Previous-month profile,26,28.246,11.928,674,60
+SP-profile,Previous-month profile,27,28.28,11.966,674,60
+SP-profile,Previous-month profile,28,28.556,12.013,674,60
+SP-profile,Previous-month profile,29,30.261,12.09,674,60
+SP-profile,Previous-month profile,30,31.327,12.175,674,60
+SP-profile,Previous-month profile,31,32.386,12.252,674,60
+LYR-profile,Last-year profile,1,24.879,15.96,674,60
+LYR-profile,Last-year profile,2,25.012,14.276,674,60
+LYR-profile,Last-year profile,3,25.1,13.693,674,60
+LYR-profile,Last-year profile,4,25.229,13.197,674,60
+LYR-profile,Last-year profile,5,23.853,12.626,674,60
+LYR-profile,Last-year profile,6,24.287,12.085,674,60
+LYR-profile,Last-year profile,7,26.141,11.95,674,60
+LYR-profile,Last-year profile,8,26.397,12.079,674,60
+LYR-profile,Last-year profile,9,26.543,12.125,674,60
+LYR-profile,Last-year profile,10,27.871,12.167,674,60
+LYR-profile,Last-year profile,11,27.481,12.173,674,60
+LYR-profile,Last-year profile,12,26.25,12.156,674,60
+LYR-profile,Last-year profile,13,26.744,12.182,674,60
+LYR-profile,Last-year profile,14,27.283,12.21,674,60
+LYR-profile,Last-year profile,15,28.605,12.314,674,60
+LYR-profile,Last-year profile,16,27.687,12.356,674,60
+LYR-profile,Last-year profile,17,27.792,12.413,674,60
+LYR-profile,Last-year profile,18,28.313,12.448,674,60
+LYR-profile,Last-year profile,19,26.332,12.397,674,60
+LYR-profile,Last-year profile,20,28.057,12.417,674,60
+LYR-profile,Last-year profile,21,28.756,12.509,674,60
+LYR-profile,Last-year profile,22,29.576,12.626,674,60
+LYR-profile,Last-year profile,23,30.235,12.628,674,60
+LYR-profile,Last-year profile,24,30.585,12.659,674,60
+LYR-profile,Last-year profile,25,30.643,12.706,674,60
+LYR-profile,Last-year profile,26,28.478,12.699,674,60
+LYR-profile,Last-year profile,27,29.988,12.726,674,60
+LYR-profile,Last-year profile,28,29.955,12.794,674,60
+LYR-profile,Last-year profile,29,30.564,12.911,674,60
+LYR-profile,Last-year profile,30,33.592,13.051,674,60
+LYR-profile,Last-year profile,31,34.443,13.201,674,60
+RIDGE-L,Per-unit ridge,1,19.613,11.726,674,60
+RIDGE-L,Per-unit ridge,2,19.271,10.608,674,60
+RIDGE-L,Per-unit ridge,3,20.817,10.775,674,60
+RIDGE-L,Per-unit ridge,4,20.147,10.188,674,60
+RIDGE-L,Per-unit ridge,5,20.642,10.003,674,60
+RIDGE-L,Per-unit ridge,6,19.939,9.535,674,60
+RIDGE-L,Per-unit ridge,7,20.586,9.527,674,60
+RIDGE-L,Per-unit ridge,8,21.138,9.494,674,60
+RIDGE-L,Per-unit ridge,9,22.216,9.541,674,60
+RIDGE-L,Per-unit ridge,10,21.64,9.58,674,60
+RIDGE-L,Per-unit ridge,11,21.81,9.619,674,60
+RIDGE-L,Per-unit ridge,12,21.541,9.653,674,60
+RIDGE-L,Per-unit ridge,13,21.717,9.672,674,60
+RIDGE-L,Per-unit ridge,14,22.197,9.684,674,60
+RIDGE-L,Per-unit ridge,15,22.36,9.643,674,60
+RIDGE-L,Per-unit ridge,16,22.547,9.717,674,60
+RIDGE-L,Per-unit ridge,17,23.428,9.889,674,60
+RIDGE-L,Per-unit ridge,18,22.238,9.867,674,60
+RIDGE-L,Per-unit ridge,19,22.56,9.861,674,60
+RIDGE-L,Per-unit ridge,20,24.628,9.883,674,60
+RIDGE-L,Per-unit ridge,21,24.528,9.902,674,60
+RIDGE-L,Per-unit ridge,22,23.368,9.922,674,60
+RIDGE-L,Per-unit ridge,23,24.447,9.938,674,60
+RIDGE-L,Per-unit ridge,24,26.096,10.019,674,60
+RIDGE-L,Per-unit ridge,25,24.693,10.026,674,60
+RIDGE-L,Per-unit ridge,26,23.843,10.043,674,60
+RIDGE-L,Per-unit ridge,27,25.826,10.137,674,60
+RIDGE-L,Per-unit ridge,28,24.227,10.216,674,60
+RIDGE-L,Per-unit ridge,29,25.679,10.279,674,60
+RIDGE-L,Per-unit ridge,30,27.719,10.419,674,60
+RIDGE-L,Per-unit ridge,31,29.321,10.553,674,60
+Holt-Winters,Holt-Winters,1,22.416,13.913,674,60
+Holt-Winters,Holt-Winters,2,21.22,12.68,674,60
+Holt-Winters,Holt-Winters,3,22.228,12.613,674,60
+Holt-Winters,Holt-Winters,4,23.94,12.636,674,60
+Holt-Winters,Holt-Winters,5,23.94,12.875,674,60
+Holt-Winters,Holt-Winters,6,23.754,13.089,674,60
+Holt-Winters,Holt-Winters,7,23.22,13.036,674,60
+Holt-Winters,Holt-Winters,8,23.655,13.059,674,60
+Holt-Winters,Holt-Winters,9,24.244,12.95,674,60
+Holt-Winters,Holt-Winters,10,24.855,12.95,674,60
+Holt-Winters,Holt-Winters,11,25.224,12.985,674,60
+Holt-Winters,Holt-Winters,12,25.513,13.103,674,60
+Holt-Winters,Holt-Winters,13,25.996,13.229,674,60
+Holt-Winters,Holt-Winters,14,25.519,13.248,674,60
+Holt-Winters,Holt-Winters,15,25.505,13.33,674,60
+Holt-Winters,Holt-Winters,16,24.885,13.355,674,60
+Holt-Winters,Holt-Winters,17,24.774,13.366,674,60
+Holt-Winters,Holt-Winters,18,26.24,13.436,674,60
+Holt-Winters,Holt-Winters,19,26.986,13.539,674,60
+Holt-Winters,Holt-Winters,20,27.635,13.653,674,60
+Holt-Winters,Holt-Winters,21,27.456,13.735,674,60
+Holt-Winters,Holt-Winters,22,27.126,13.794,674,60
+Holt-Winters,Holt-Winters,23,27.285,13.802,674,60
+Holt-Winters,Holt-Winters,24,28.268,13.859,674,60
+Holt-Winters,Holt-Winters,25,29.789,13.979,674,60
+Holt-Winters,Holt-Winters,26,29.435,14.115,674,60
+Holt-Winters,Holt-Winters,27,30.055,14.259,674,60
+Holt-Winters,Holt-Winters,28,28.106,14.353,674,60
+Holt-Winters,Holt-Winters,29,29.186,14.466,674,60
+Holt-Winters,Holt-Winters,30,30.269,14.554,674,60
+Holt-Winters,Holt-Winters,31,31.937,14.657,674,60
+MSTL,MSTL,1,19.722,11.363,674,60
+MSTL,MSTL,2,21.512,11.025,674,60
+MSTL,MSTL,3,23.261,11.713,674,60
+MSTL,MSTL,4,23.79,11.763,674,60
+MSTL,MSTL,5,23.469,11.827,674,60
+MSTL,MSTL,6,22.34,11.726,674,60
+MSTL,MSTL,7,23.427,11.835,674,60
+MSTL,MSTL,8,24.644,11.892,674,60
+MSTL,MSTL,9,24.529,11.878,674,60
+MSTL,MSTL,10,26.271,12.07,674,60
+MSTL,MSTL,11,25.333,12.144,674,60
+MSTL,MSTL,12,24.103,12.16,674,60
+MSTL,MSTL,13,24.372,12.157,674,60
+MSTL,MSTL,14,24.375,12.135,674,60
+MSTL,MSTL,15,26.388,12.185,674,60
+MSTL,MSTL,16,25.495,12.213,674,60
+MSTL,MSTL,17,25.849,12.293,674,60
+MSTL,MSTL,18,25.818,12.35,674,60
+MSTL,MSTL,19,25.225,12.356,674,60
+MSTL,MSTL,20,26.116,12.395,674,60
+MSTL,MSTL,21,25.977,12.427,674,60
+MSTL,MSTL,22,27.386,12.498,674,60
+MSTL,MSTL,23,28.011,12.517,674,60
+MSTL,MSTL,24,28.974,12.608,674,60
+MSTL,MSTL,25,28.667,12.687,674,60
+MSTL,MSTL,26,27.648,12.756,674,60
+MSTL,MSTL,27,28.244,12.828,674,60
+MSTL,MSTL,28,27.707,12.93,674,60
+MSTL,MSTL,29,29.575,13.038,674,60
+MSTL,MSTL,30,31.469,13.125,674,60
+MSTL,MSTL,31,33.083,13.265,674,60
+GBT,GBT (zero-shot),1,23.592,14.171,674,60
+GBT,GBT (zero-shot),2,23.162,12.394,674,60
+GBT,GBT (zero-shot),3,24.631,12.189,674,60
+GBT,GBT (zero-shot),4,23.38,11.45,674,60
+GBT,GBT (zero-shot),5,24.783,11.303,674,60
+GBT,GBT (zero-shot),6,23.739,10.989,674,60
+GBT,GBT (zero-shot),7,25.351,10.929,674,60
+GBT,GBT (zero-shot),8,25.531,11.082,674,60
+GBT,GBT (zero-shot),9,25.847,11.122,674,60
+GBT,GBT (zero-shot),10,25.565,11.128,674,60
+GBT,GBT (zero-shot),11,25.649,11.038,674,60
+GBT,GBT (zero-shot),12,25.867,11.053,674,60
+GBT,GBT (zero-shot),13,26.585,11.104,674,60
+GBT,GBT (zero-shot),14,27.126,11.083,674,60
+GBT,GBT (zero-shot),15,27.578,11.117,674,60
+GBT,GBT (zero-shot),16,26.347,11.124,674,60
+GBT,GBT (zero-shot),17,26.722,11.145,674,60
+GBT,GBT (zero-shot),18,26.261,11.105,674,60
+GBT,GBT (zero-shot),19,26.373,11.113,674,60
+GBT,GBT (zero-shot),20,28.326,11.133,674,60
+GBT,GBT (zero-shot),21,28.569,11.18,674,60
+GBT,GBT (zero-shot),22,28.829,11.301,674,60
+GBT,GBT (zero-shot),23,28.529,11.367,674,60
+GBT,GBT (zero-shot),24,30.214,11.469,674,60
+GBT,GBT (zero-shot),25,28.703,11.523,674,60
+GBT,GBT (zero-shot),26,28.724,11.624,674,60
+GBT,GBT (zero-shot),27,30.194,11.74,674,60
+GBT,GBT (zero-shot),28,30.979,11.871,674,60
+GBT,GBT (zero-shot),29,40.308,12.128,674,60
+GBT,GBT (zero-shot),30,42.657,12.427,674,60
+GBT,GBT (zero-shot),31,48.548,12.813,674,60
+TimesFM-X,TimesFM-X,1,17.823,11.128,674,60
+TimesFM-X,TimesFM-X,2,17.844,10.238,674,60
+TimesFM-X,TimesFM-X,3,19.796,10.476,674,60
+TimesFM-X,TimesFM-X,4,19.975,10.26,674,60
+TimesFM-X,TimesFM-X,5,19.654,10.199,674,60
+TimesFM-X,TimesFM-X,6,18.606,9.819,674,60
+TimesFM-X,TimesFM-X,7,19.693,9.823,674,60
+TimesFM-X,TimesFM-X,8,20.452,9.812,674,60
+TimesFM-X,TimesFM-X,9,20.98,9.848,674,60
+TimesFM-X,TimesFM-X,10,21.802,9.794,674,60
+TimesFM-X,TimesFM-X,11,21.642,9.859,674,60
+TimesFM-X,TimesFM-X,12,20.698,9.85,674,60
+TimesFM-X,TimesFM-X,13,21.419,9.899,674,60
+TimesFM-X,TimesFM-X,14,21.411,9.925,674,60
+TimesFM-X,TimesFM-X,15,22.371,9.987,674,60
+TimesFM-X,TimesFM-X,16,21.907,10.057,674,60
+TimesFM-X,TimesFM-X,17,22.515,10.162,674,60
+TimesFM-X,TimesFM-X,18,22.411,10.21,674,60
+TimesFM-X,TimesFM-X,19,22.233,10.227,674,60
+TimesFM-X,TimesFM-X,20,24.009,10.288,674,60
+TimesFM-X,TimesFM-X,21,23.572,10.38,674,60
+TimesFM-X,TimesFM-X,22,23.823,10.482,674,60
+TimesFM-X,TimesFM-X,23,23.843,10.511,674,60
+TimesFM-X,TimesFM-X,24,25.607,10.592,674,60
+TimesFM-X,TimesFM-X,25,25.182,10.651,674,60
+TimesFM-X,TimesFM-X,26,23.884,10.7,674,60
+TimesFM-X,TimesFM-X,27,25.086,10.771,674,60
+TimesFM-X,TimesFM-X,28,24.836,10.887,674,60
+TimesFM-X,TimesFM-X,29,26.17,10.985,674,60
+TimesFM-X,TimesFM-X,30,27.262,11.102,674,60
+TimesFM-X,TimesFM-X,31,29.318,11.225,674,60

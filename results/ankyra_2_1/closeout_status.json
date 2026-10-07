@@ -1,0 +1,88 @@
+{
+  "record": "Status after the 2.0.1 release (3 October 2026). Two candidate changes were examined and neither was adopted; the LCL households were then scored once with the frozen forecaster.",
+  "model_version": "2.0.1",
+  "decision": "ANKYRA 2.0.1 is kept unchanged",
+  "daily_path_candidate": {
+    "candidate": "Mix ANKYRA's centred daily path (the daily means minus their monthly mean) half and half with that of the per-unit ridge (RIDGE-L). Off-state, micro-load and short-history windows keep ANKYRA.",
+    "entry_condition": "The candidate was to be scored only if the ridge's daily path alone was at least as good as ANKYRA's on the design windows.",
+    "status": "stopped at the entry condition; the candidate was not scored",
+    "status_code": "STOP_NECESSITY_UNRESOLVED",
+    "status_code_meaning": "the label of this stop in the study protocol; the entry condition was a cautious one, and its failure does not prove that no mixture could improve",
+    "design_windows": "pre-cutoff windows of the GoiEner households, used before in the design of 2.0",
+    "windows": 562,
+    "units": 562,
+    "windows_with_a_ridge_fit": 526,
+    "windows_keeping_ankyra": 36,
+    "metric": "unit-equal log RMS ratio of the centred daily path over the month, ridge over the named forecaster; positive = the ridge is worse",
+    "ridge_daily_path_vs_ankyra": {
+      "units": 562,
+      "log_ratio": 0.0008751322453243649,
+      "improvement_pct": -0.087551528527649,
+      "pooled_mse_ratio": 0.9952577941766206
+    },
+    "ridge_daily_path_vs_timesfm": {
+      "units": 562,
+      "log_ratio": 0.03527980431024885,
+      "improvement_pct": -3.5909520201272938,
+      "pooled_mse_ratio": 0.9737012712112789
+    },
+    "upper_bound_check": {
+      "description": "the best choice between ANKYRA's and the ridge's daily path on each day, made with knowledge of the realised load (an upper bound, not a usable forecaster), as a geometric mean over a fixed set of units",
+      "units_in_fixed_set": 544,
+      "result": "undefined: some unit-days have exactly zero error, and zeros were neither dropped nor replaced by a small number",
+      "units_with_zero_error": 9,
+      "unit_days_with_zero_error": 60
+    },
+    "candidate_scored": false,
+    "other_eight_design_sets_scored": false,
+    "new_foundation_model_calls": 0,
+    "times_design_targets_opened": 2,
+    "times_design_targets_opened_note": "once for the evaluation and once for the cross-check; the number of input reads of an interrupted first run was not recorded",
+    "cross_check": "second implementation within the same study; not an independent review or independent evidence"
+  },
+  "interval_candidate": {
+    "candidate": "A new interval rule built from the residuals of complete ANKYRA forecasts made at earlier pseudo-origins of the same unit.",
+    "status": "stopped before scoring: too few usable earlier residuals; no new interval rule was adopted",
+    "status_code": "STOP_INTERVAL_SOURCE_SUPPORT_GATE",
+    "status_code_meaning": "the label of this stop in the study protocol",
+    "reason": "The criteria on coverage and Winkler score were defined over all windows. At least 742 retained windows have no usable earlier residual, so the criteria cannot be evaluated. Windows without residuals were not removed.",
+    "coverage_and_winkler_criteria": "not evaluable",
+    "windows_retained": 7676,
+    "windows_removed": 0,
+    "windows_without_usable_residual_at_least": 742,
+    "goiener_households_design_windows": {
+      "windows": 562,
+      "with_no_usable_residual": 537,
+      "with_one_usable_residual": 25,
+      "with_four_or_more_usable_residuals": 0
+    },
+    "planned_steps": {
+      "numerical_replay": "not run",
+      "scoring": "not run"
+    },
+    "new_interval_rule_adopted": false,
+    "all_scored_origins_at_or_after_the_temperature_scale_cutoff": true,
+    "temperature_scale_note": "The temperature scale temp_sigma_std is fitted once on the first 244 days of a population's record. An earlier residual is usable only if its pseudo-origin lies after that period and its whole target lies before the current origin. Every scored origin lies at or after the cutoff; the shortage concerns the earlier pseudo-origins only.",
+    "work_done": {
+      "data_values_read": 0,
+      "residuals_read": 0,
+      "targets_read": 0,
+      "ankyra_forecasts_computed": 0,
+      "historical_estimator_runs": 0,
+      "timesfm_calls": 0,
+      "gpu_seconds": 0,
+      "pilot_windows_run": 0
+    },
+    "claim": "The stop is for lack of usable earlier residuals. It is not a measured failure of interval accuracy, and no coverage result or guarantee is established."
+  },
+  "lcl": {
+    "status": "scored once with the frozen 2.0.1 forecaster; nothing retuned",
+    "windows": 1215,
+    "units": 965,
+    "late_windows": 710,
+    "late_units": 710,
+    "lcl_1x_results_known_before": true,
+    "kept_apart_from_the_ten_population_tables": true,
+    "details": "lcl_results.json (results and the two checks set before scoring), lcl_audit.json (arithmetic re-check)"
+  }
+}

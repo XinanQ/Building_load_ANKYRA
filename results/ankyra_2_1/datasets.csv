@@ -1,0 +1,12 @@
+set,tier,country,population,ankyra_design_status,units,windows,units_late,windows_late
+BDG2 2017,test,USA / Europe,commercial and institutional building meters,seen,178,934,142,474
+Cambridge,test,UK,university estate buildings,first read,119,1456,108,730
+HEEW Arizona,test,USA,university campus buildings,first read,142,1282,138,658
+EWELD,test,China,industrial and commercial meters,seen,274,1023,197,523
+GoiEner non-household,test,Spain,non-household supply points,seen,486,1237,481,890
+GoiEner households,test,Spain,households,seen,1109,1258,696,696
+Oslo,preview,Norway,public schools,seen,45,1147,41,581
+Drammen,preview,Norway,municipal buildings,seen,45,1375,43,689
+CINELDI,preview,Norway,industrial customers,first read,45,929,45,475
+Suzhou park,preview,China,industrial-park category aggregates,seen,4,127,4,64
+LCL households,reserved,UK,households,seen,965,1215,710,710

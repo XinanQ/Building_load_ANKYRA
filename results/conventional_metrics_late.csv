@@ -4,9 +4,10 @@ BDG2 2017,test,474,142,RIDGE-L,Ridge (per unit),per-unit regression,30.1214,21.4
 BDG2 2017,test,474,142,ANKYRA-1x,ANKYRA 1.x (no within-day anchoring),"ANKYRA 1.x, earlier version",28.8925,20.2425,20.19,0.94,13.87,11.51,0
 BDG2 2017,test,474,142,ANKYRA-200,ANKYRA 2.0.0 (no micro-load rule),"ANKYRA 2.0.0, earlier version",28.7293,20.1438,19.43,0.94,13.76,11.45,0
 BDG2 2017,test,474,142,ANKYRA-201,ANKYRA 2.0.1 (within-day trust per lead block),"ANKYRA 2.0.1, earlier version",28.7242,20.134,18.56,0.94,13.36,11.44,0
+BDG2 2017,test,474,142,ANKYRA-21,ANKYRA 2.1 (no gap tolerance),"ANKYRA 2.1, earlier version",28.7072,20.1168,18.6,0.94,13.25,11.43,0
 BDG2 2017,test,474,142,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",30.0814,20.3764,18.07,1.3,12.57,11.44,0
 BDG2 2017,test,474,142,Chronos-2,Chronos-2,"load only, zero-shot foundation model",31.9397,21.8905,21.89,1.16,15.51,12.26,0
-BDG2 2017,test,474,142,ANKYRA,ANKYRA,,28.7072,20.1168,18.6,0.94,13.25,11.43,0
+BDG2 2017,test,474,142,ANKYRA,ANKYRA,,28.6692,20.0937,18.6,0.82,13.3,11.44,0
 BDG2 2017,test,474,142,GBT,GBT (zero-shot),zero-shot gradient boosting,51.96,30.8351,34.35,-1.34,22.18,17.77,0
 BDG2 2017,test,474,142,Holt-Winters,Holt-Winters,"load only, statistical",37.0149,26.8418,25.09,0.96,18.79,15.38,0
 BDG2 2017,test,474,142,LYR-profile,Last-year profile,profile,37.6388,26.0054,25.77,-1.56,17.31,16.13,0
@@ -28,9 +29,10 @@ Cambridge,test,730,108,RIDGE-L,Ridge (per unit),per-unit regression,15.0348,9.32
 Cambridge,test,730,108,ANKYRA-1x,ANKYRA 1.x (no within-day anchoring),"ANKYRA 1.x, earlier version",14.3798,8.8036,17.69,1.56,12.03,8.54,0
 Cambridge,test,730,108,ANKYRA-200,ANKYRA 2.0.0 (no micro-load rule),"ANKYRA 2.0.0, earlier version",14.0325,8.6293,17.64,1.56,12.1,8.36,0
 Cambridge,test,730,108,ANKYRA-201,ANKYRA 2.0.1 (within-day trust per lead block),"ANKYRA 2.0.1, earlier version",14.0325,8.6293,17.64,1.56,12.1,8.36,0
+Cambridge,test,730,108,ANKYRA-21,ANKYRA 2.1 (no gap tolerance),"ANKYRA 2.1, earlier version",14.0379,8.629,17.6,1.56,12.1,8.35,0
 Cambridge,test,730,108,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",14.4798,8.7564,18.83,1.97,11.81,8.48,0
 Cambridge,test,730,108,Chronos-2,Chronos-2,"load only, zero-shot foundation model",15.9326,9.5562,20.38,2.53,12.56,9.46,0
-Cambridge,test,730,108,ANKYRA,ANKYRA,,14.0379,8.629,17.6,1.56,12.1,8.35,0
+Cambridge,test,730,108,ANKYRA,ANKYRA,,14.0438,8.6305,17.65,1.88,11.87,8.36,0
 Cambridge,test,730,108,GBT,GBT (zero-shot),zero-shot gradient boosting,18.1752,11.779,24.44,1.22,16.18,11.59,0
 Cambridge,test,730,108,Holt-Winters,Holt-Winters,"load only, statistical",16.9216,10.6755,21.14,-0.18,14.79,10.52,0
 Cambridge,test,730,108,LYR-profile,Last-year profile,profile,21.6235,14.4985,27.9,-0.59,19.2,13.77,0
@@ -52,9 +54,10 @@ HEEW Arizona,test,658,138,RIDGE-L,Ridge (per unit),per-unit regression,29.267,20
 HEEW Arizona,test,658,138,ANKYRA-1x,ANKYRA 1.x (no within-day anchoring),"ANKYRA 1.x, earlier version",26.238,18.8734,16.89,-0.4,11.32,10.64,0
 HEEW Arizona,test,658,138,ANKYRA-200,ANKYRA 2.0.0 (no micro-load rule),"ANKYRA 2.0.0, earlier version",26.0566,18.7879,17.07,-0.4,11.37,10.58,0
 HEEW Arizona,test,658,138,ANKYRA-201,ANKYRA 2.0.1 (within-day trust per lead block),"ANKYRA 2.0.1, earlier version",26.0566,18.7879,17.07,-0.4,11.37,10.58,0
+HEEW Arizona,test,658,138,ANKYRA-21,ANKYRA 2.1 (no gap tolerance),"ANKYRA 2.1, earlier version",26.0015,18.7438,17.08,-0.4,11.38,10.56,0
 HEEW Arizona,test,658,138,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",27.2756,19.0644,16.97,0.77,10.83,10.62,0
 HEEW Arizona,test,658,138,Chronos-2,Chronos-2,"load only, zero-shot foundation model",29.5946,20.195,18.49,1.02,11.6,11.36,0
-HEEW Arizona,test,658,138,ANKYRA,ANKYRA,,26.0015,18.7438,17.08,-0.4,11.38,10.56,0
+HEEW Arizona,test,658,138,ANKYRA,ANKYRA,,25.9658,18.7073,16.94,-0.43,11.37,10.54,0
 HEEW Arizona,test,658,138,GBT,GBT (zero-shot),zero-shot gradient boosting,41.1962,27.4729,25.47,-1.6,17.25,15.72,0
 HEEW Arizona,test,658,138,Holt-Winters,Holt-Winters,"load only, statistical",33.1466,24.2048,21.13,0.3,14.49,13.81,0
 HEEW Arizona,test,658,138,LYR-profile,Last-year profile,profile,38.7642,28.4826,27.16,-4.42,20.31,16.62,0
@@ -76,9 +79,10 @@ EWELD,test,523,197,RIDGE-L,Ridge (per unit),per-unit regression,102.502,66.9192,
 EWELD,test,523,197,ANKYRA-1x,ANKYRA 1.x (no within-day anchoring),"ANKYRA 1.x, earlier version",99.4786,64.4732,52.17,3.46,32.27,32.32,44
 EWELD,test,523,197,ANKYRA-200,ANKYRA 2.0.0 (no micro-load rule),"ANKYRA 2.0.0, earlier version",98.8773,64.3142,50.71,3.5,32.22,32.28,44
 EWELD,test,523,197,ANKYRA-201,ANKYRA 2.0.1 (within-day trust per lead block),"ANKYRA 2.0.1, earlier version",98.8773,64.3142,50.71,3.5,32.22,32.28,44
+EWELD,test,523,197,ANKYRA-21,ANKYRA 2.1 (no gap tolerance),"ANKYRA 2.1, earlier version",98.9438,64.3557,52.17,3.52,32.18,32.29,44
 EWELD,test,523,197,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",106.2517,67.2028,52.51,4.61,32.65,32.6,44
 EWELD,test,523,197,Chronos-2,Chronos-2,"load only, zero-shot foundation model",97.1365,60.7338,51.92,1.93,31.22,30.38,44
-EWELD,test,523,197,ANKYRA,ANKYRA,,98.9438,64.3557,52.17,3.52,32.18,32.29,44
+EWELD,test,523,197,ANKYRA,ANKYRA,,99.3813,64.8066,52.04,3.49,32.34,32.39,44
 EWELD,test,523,197,GBT,GBT (zero-shot),zero-shot gradient boosting,135.4312,84.9323,74.11,-6.12,44.77,42.42,44
 EWELD,test,523,197,Holt-Winters,Holt-Winters,"load only, statistical",115.1141,78.4056,68.68,1.3,43.71,39.16,44
 EWELD,test,523,197,LYR-profile,Last-year profile,profile,249.0839,195.697,94.03,6.4,70.49,96.83,44
@@ -99,9 +103,10 @@ GoiEner non-household,test,890,481,TimesFM,TimesFM,"load only, zero-shot foundat
 GoiEner non-household,test,890,481,ANKYRA-1x,ANKYRA 1.x (no within-day anchoring),"ANKYRA 1.x, earlier version",0.604,0.36,74.14,2.45,42.59,29.69,4
 GoiEner non-household,test,890,481,ANKYRA-200,ANKYRA 2.0.0 (no micro-load rule),"ANKYRA 2.0.0, earlier version",0.58,0.3475,72.83,2.45,41.46,28.63,4
 GoiEner non-household,test,890,481,ANKYRA-201,ANKYRA 2.0.1 (within-day trust per lead block),"ANKYRA 2.0.1, earlier version",0.58,0.3475,72.83,2.45,41.46,28.63,4
+GoiEner non-household,test,890,481,ANKYRA-21,ANKYRA 2.1 (no gap tolerance),"ANKYRA 2.1, earlier version",0.5799,0.3475,72.48,2.45,41.19,28.63,4
 GoiEner non-household,test,890,481,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",0.5623,0.3109,78.02,10.78,39.88,25.79,4
 GoiEner non-household,test,890,481,Chronos-2,Chronos-2,"load only, zero-shot foundation model",0.6372,0.3528,76.85,10.26,39.67,28.48,4
-GoiEner non-household,test,890,481,ANKYRA,ANKYRA,,0.5799,0.3475,72.48,2.45,41.19,28.63,4
+GoiEner non-household,test,890,481,ANKYRA,ANKYRA,,0.5798,0.3475,72.48,2.45,41.19,28.63,4
 GoiEner non-household,test,890,481,GBT,GBT (zero-shot),zero-shot gradient boosting,0.8462,0.5189,94.11,-5.87,57.88,43.71,4
 GoiEner non-household,test,890,481,Holt-Winters,Holt-Winters,"load only, statistical",0.7225,0.4472,83.77,2.13,50.75,36.89,4
 GoiEner non-household,test,890,481,LYR-profile,Last-year profile,profile,0.6978,0.409,97.76,-1.41,55.67,33.95,4
@@ -124,9 +129,10 @@ GoiEner households,test,696,696,RIDGE-L,Ridge (per unit),per-unit regression,0.1
 GoiEner households,test,696,696,ANKYRA-1x,ANKYRA 1.x (no within-day anchoring),"ANKYRA 1.x, earlier version",0.173,0.1,99.58,8.85,57.29,54.15,17
 GoiEner households,test,696,696,ANKYRA-200,ANKYRA 2.0.0 (no micro-load rule),"ANKYRA 2.0.0, earlier version",0.1729,0.0998,99.58,8.85,56.98,54.08,17
 GoiEner households,test,696,696,ANKYRA-201,ANKYRA 2.0.1 (within-day trust per lead block),"ANKYRA 2.0.1, earlier version",0.1729,0.0998,99.58,8.85,56.98,54.08,17
+GoiEner households,test,696,696,ANKYRA-21,ANKYRA 2.1 (no gap tolerance),"ANKYRA 2.1, earlier version",0.1728,0.0998,99.58,8.85,56.94,54.06,17
 GoiEner households,test,696,696,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",0.1767,0.0927,102.59,22.11,52.32,50.2,17
 GoiEner households,test,696,696,Chronos-2,Chronos-2,"load only, zero-shot foundation model",0.1771,0.0927,102.44,21.54,52.01,50.23,17
-GoiEner households,test,696,696,ANKYRA,ANKYRA,,0.1728,0.0998,99.58,8.85,56.94,54.06,17
+GoiEner households,test,696,696,ANKYRA,ANKYRA,,0.1721,0.0991,99.38,8.85,56.57,53.69,17
 GoiEner households,test,696,696,GBT,GBT (zero-shot),zero-shot gradient boosting,0.2306,0.1391,120.8,-7.45,72.35,75.35,17
 GoiEner households,test,696,696,Holt-Winters,Holt-Winters,"load only, statistical",0.1957,0.126,110.37,6.32,65.87,68.23,17
 GoiEner households,test,696,696,LYR-profile,Last-year profile,profile,0.2458,0.1394,133.45,0.64,75.28,75.48,17
@@ -148,6 +154,7 @@ Oslo,preview,581,41,RIDGE-L,Ridge (per unit),per-unit regression,28.8706,19.8956
 Oslo,preview,581,41,ANKYRA-1x,ANKYRA 1.x (no within-day anchoring),"ANKYRA 1.x, earlier version",27.0836,17.9018,35.71,-0.33,23.1,23.94,0
 Oslo,preview,581,41,ANKYRA-200,ANKYRA 2.0.0 (no micro-load rule),"ANKYRA 2.0.0, earlier version",26.0557,17.3839,33.39,-0.33,21.71,23.32,0
 Oslo,preview,581,41,ANKYRA-201,ANKYRA 2.0.1 (within-day trust per lead block),"ANKYRA 2.0.1, earlier version",26.0557,17.3839,33.39,-0.33,21.71,23.32,0
+Oslo,preview,581,41,ANKYRA-21,ANKYRA 2.1 (no gap tolerance),"ANKYRA 2.1, earlier version",25.9384,17.338,32.92,-0.33,21.57,23.27,0
 Oslo,preview,581,41,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",26.2475,16.6537,31.78,1.41,20.54,22.0,0
 Oslo,preview,581,41,Chronos-2,Chronos-2,"load only, zero-shot foundation model",29.0605,18.1999,36.77,3.38,23.98,24.16,0
 Oslo,preview,581,41,ANKYRA,ANKYRA,,25.9384,17.338,32.92,-0.33,21.57,23.27,0
@@ -172,9 +179,10 @@ Drammen,preview,689,43,RIDGE-L,Ridge (per unit),per-unit regression,14.6583,10.1
 Drammen,preview,689,43,ANKYRA-1x,ANKYRA 1.x (no within-day anchoring),"ANKYRA 1.x, earlier version",15.2558,10.1888,34.43,4.43,23.22,22.02,0
 Drammen,preview,689,43,ANKYRA-200,ANKYRA 2.0.0 (no micro-load rule),"ANKYRA 2.0.0, earlier version",14.6931,9.9123,32.89,4.43,22.4,21.42,0
 Drammen,preview,689,43,ANKYRA-201,ANKYRA 2.0.1 (within-day trust per lead block),"ANKYRA 2.0.1, earlier version",14.6931,9.9123,32.89,4.43,22.4,21.42,0
+Drammen,preview,689,43,ANKYRA-21,ANKYRA 2.1 (no gap tolerance),"ANKYRA 2.1, earlier version",14.6722,9.9042,32.84,4.43,22.32,21.41,0
 Drammen,preview,689,43,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",14.352,9.6192,32.22,1.45,21.3,20.69,0
 Drammen,preview,689,43,Chronos-2,Chronos-2,"load only, zero-shot foundation model",16.4156,10.7048,35.49,6.62,23.07,23.08,0
-Drammen,preview,689,43,ANKYRA,ANKYRA,,14.6722,9.9042,32.84,4.43,22.32,21.41,0
+Drammen,preview,689,43,ANKYRA,ANKYRA,,14.6694,9.9003,32.84,4.43,22.32,21.4,0
 Drammen,preview,689,43,GBT,GBT (zero-shot),zero-shot gradient boosting,20.5482,14.0332,48.28,4.29,32.62,30.2,0
 Drammen,preview,689,43,Holt-Winters,Holt-Winters,"load only, statistical",18.3609,12.934,41.62,2.95,28.39,27.79,0
 Drammen,preview,689,43,LYR-profile,Last-year profile,profile,18.8296,12.8701,43.19,2.83,28.97,27.53,0
@@ -196,6 +204,7 @@ CINELDI,preview,475,45,RIDGE-L,Ridge (per unit),per-unit regression,20.5768,13.7
 CINELDI,preview,475,45,ANKYRA-1x,ANKYRA 1.x (no within-day anchoring),"ANKYRA 1.x, earlier version",18.1073,11.7448,41.89,3.4,26.41,24.27,0
 CINELDI,preview,475,45,ANKYRA-200,ANKYRA 2.0.0 (no micro-load rule),"ANKYRA 2.0.0, earlier version",17.6882,11.4599,41.68,3.41,25.68,23.68,0
 CINELDI,preview,475,45,ANKYRA-201,ANKYRA 2.0.1 (within-day trust per lead block),"ANKYRA 2.0.1, earlier version",17.6882,11.4599,41.68,3.41,25.68,23.68,0
+CINELDI,preview,475,45,ANKYRA-21,ANKYRA 2.1 (no gap tolerance),"ANKYRA 2.1, earlier version",17.6808,11.4509,41.64,3.42,25.66,23.65,0
 CINELDI,preview,475,45,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",19.0608,10.5264,42.59,5.46,26.77,22.14,0
 CINELDI,preview,475,45,Chronos-2,Chronos-2,"load only, zero-shot foundation model",18.4511,10.0044,41.45,5.75,26.57,20.69,0
 CINELDI,preview,475,45,ANKYRA,ANKYRA,,17.6808,11.4509,41.64,3.42,25.66,23.65,0
@@ -220,6 +229,7 @@ Suzhou park,preview,64,4,RIDGE-L,Ridge (per unit),per-unit regression,130.6422,8
 Suzhou park,preview,64,4,ANKYRA-1x,ANKYRA 1.x (no within-day anchoring),"ANKYRA 1.x, earlier version",129.4079,81.2058,26.59,0.1,17.64,18.99,0
 Suzhou park,preview,64,4,ANKYRA-200,ANKYRA 2.0.0 (no micro-load rule),"ANKYRA 2.0.0, earlier version",124.936,79.5357,25.34,0.1,17.02,18.6,0
 Suzhou park,preview,64,4,ANKYRA-201,ANKYRA 2.0.1 (within-day trust per lead block),"ANKYRA 2.0.1, earlier version",124.936,79.5357,25.34,0.1,17.02,18.6,0
+Suzhou park,preview,64,4,ANKYRA-21,ANKYRA 2.1 (no gap tolerance),"ANKYRA 2.1, earlier version",124.9177,79.4703,25.26,0.1,16.96,18.58,0
 Suzhou park,preview,64,4,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",152.1322,91.9564,30.99,5.56,20.33,21.5,0
 Suzhou park,preview,64,4,Chronos-2,Chronos-2,"load only, zero-shot foundation model",157.4027,92.6696,32.98,2.2,20.5,21.67,0
 Suzhou park,preview,64,4,ANKYRA,ANKYRA,,124.9177,79.4703,25.26,0.1,16.96,18.58,0

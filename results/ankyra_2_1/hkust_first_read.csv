@@ -1,0 +1,27 @@
+error,comparator,windows,units,log_ratio,um_low,um_high,improvement_pct,resolved_at_seed_20261004,units_better_strict
+hourly,TimesFM 2.5,134,33,-0.087458,-0.230184,-0.001474,8.374,first better,24
+hourly,Chronos-2,134,33,-0.119868,-0.295757,0.000108,11.296,not resolved,29
+hourly,Seasonal naive (day),134,33,-0.263603,-0.426546,-0.142408,23.172,first better,28
+hourly,Seasonal naive (week),134,33,-0.274371,-0.445203,-0.168773,23.995,first better,29
+hourly,Four-week profile,134,33,-0.131771,-0.230888,-0.068237,12.346,first better,27
+hourly,Previous-month profile,134,33,-0.127675,-0.230453,-0.054365,11.986,first better,27
+hourly,Last-year profile,134,33,-0.209490,-0.384933,-0.102896,18.900,first better,24
+hourly,Per-unit ridge,123,32,-0.175925,-0.716545,0.021300,16.132,not resolved,17
+energy,TimesFM 2.5,134,33,-0.476882,-0.802150,-0.097480,37.928,first better,27
+energy,Chronos-2,134,33,-0.548024,-0.909000,0.135550,42.191,not resolved,29
+energy,Seasonal naive (day),134,33,-0.483705,-1.042326,0.259073,38.350,not resolved,21
+energy,Seasonal naive (week),134,33,-0.523233,-0.911294,0.238738,40.740,not resolved,26
+energy,Four-week profile,134,33,-0.522101,-0.807338,0.136179,40.673,not resolved,25
+energy,Previous-month profile,134,33,-0.490729,-0.762847,0.027274,38.782,not resolved,26
+energy,Last-year profile,134,33,-0.298336,-0.640419,0.244796,25.795,not resolved,17
+energy,Per-unit ridge,123,32,-0.267631,-0.655708,0.086424,23.481,not resolved,20
+hourly,Chronos-2-X,134,33,-0.036006,-0.131827,0.014678,3.537,not resolved,22
+hourly,TimesFM-X,134,33,-0.051256,-0.179105,0.033342,4.996,not resolved,22
+energy,Chronos-2-X,134,33,-0.040399,-0.599765,0.658812,3.959,not resolved,20
+energy,TimesFM-X,134,33,-0.323363,-0.626427,0.123226,27.629,not resolved,24
+hourly,Holt-Winters,134,33,-0.165973,-0.286561,-0.041050,15.293,first better,25
+hourly,MSTL,134,33,-0.250825,-0.431010,-0.094445,22.184,first better,30
+hourly,GBT (zero-shot),134,33,-0.843096,-1.337477,-0.107931,56.962,first better,33
+energy,Holt-Winters,134,33,-0.538688,-0.935232,0.095813,41.649,not resolved,23
+energy,MSTL,134,33,-0.692201,-0.971925,-0.119971,49.953,first better,29
+energy,GBT (zero-shot),134,33,-0.812235,-1.312399,0.010191,55.614,not resolved,30

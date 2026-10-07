@@ -369,6 +369,29 @@ rule fired. They are not a certificate that the inputs were validated: the off-s
 the foundation forecast. What the implementation's checks can and cannot establish about the inputs is stated in
 [Information at the origin](#information-at-the-origin).
 
+## Gap tolerance (2.2)
+
+Every quantity above that is estimated from completed pseudo-origins (the level weights, the handover weights, the
+within-day trust) needs, at each pseudo-origin $o-744k$, a complete 1,344-hour context and a complete 744-hour
+target month. Real meter records have short gaps, and a single missing hour inside those 2,088 hours removed the
+whole pseudo-origin; on the UNICON campuses this left 0.5 completed pairs per window out of 6. Since 2.2 the
+bookkeeping tolerates two things, both confined to the pre-origin record:
+
+1. **Short gaps are interpolated.** A gap of at most 6 missing hours is replaced by the straight line between its two
+   observed neighbours, provided the gap and both neighbours lie inside one 744-hour block counted back from the
+   origin. A pseudo-origin is a block boundary, so no interpolated hour before a pseudo-origin uses a value at or after
+   it. Gaps that touch the origin, the start of the record or a block boundary, and longer gaps, stay missing.
+2. **A pseudo-origin's target month may be partly observed.** It qualifies when at least 90% of its 744 hours are
+   observed; its window mean is the mean over the observed hours, and in the handover sums a day counts only with at
+   least 12 observed hours. The within-day triples still require complete windows.
+
+The context at the origin must still be complete (`ankyra.fill_short_gaps` applies rule 1 to a user's own record), the
+off-state and micro-load rules read the raw context, and `pseudo_origin_contexts` returns the interpolated pseudo-origin
+contexts so that the foundation model is asked for the same series the bookkeeping uses. `forecast(...,
+gap_tolerance=False)` reproduces 2.1; a record without gaps is unaffected. The frozen reference estimator
+(`ankyra/history/_*.py`) is unchanged: the partially observed target is handed to it with its missing hours set to the
+observed mean.
+
 ## Readouts
 
 **Energy.** Window energy is $744\,\ell$ kWh for loads in kW, read before the projection.
@@ -425,6 +448,7 @@ Code: `ankyra/readouts.py`; the properties as operators: `theory/operators.py`.
 | `level_weights` | the weight of each level candidate (keys below) |
 | `fixed_division_daily_means_kw` | the daily means of the fixed division: the six-candidate level plus the daily path, without the model candidate and without the handover |
 | `off_state`, `micro_load` | which of the two rules returned the foundation model's forecast, if any |
+| `anchoring_record` | `carrier_level_weight` (= `level_weights['fm']`), `history_vs_carrier_log_ratio` and `pseudo_origins`: the unit's own pseudo-forecast record on the level, read before the forecast and not used by it (2.2; see [Gap tolerance (2.2)](#gap-tolerance-22) and the README) |
 
 On off-state and micro-load windows the weights, counts and `fixed_division_daily_means_kw` keep their empty
 defaults, because the estimator is not run.
@@ -474,6 +498,12 @@ the six historical level candidates before the model candidate is added.
 Code: `ankyra/core.py` (`AnkyraForecast`), `ankyra/history/api.py` (`Estimate`).
 
 ## Constants
+
+The constants of the forecaster, each with where it was fixed and the measured sensitivity where one exists, are
+listed in [`results/constants.csv`](../results/constants.csv) (it also lists the scale floor; the temperature
+standardisation below is part of the frozen configuration and is not in it). The sensitivity runs are described in
+[EVALUATION.md](EVALUATION.md#sensitivity-to-the-shrinkage-constants), and what each part of the forecaster adds in
+[EVALUATION.md](EVALUATION.md#what-the-parts-buy).
 
 | Constant | Value | Where it was fixed |
 |---|---|---|

@@ -1,0 +1,64 @@
+{
+ "test": "external test of the ANKYRA 2.2 (re-evaluation of the external test of the frozen 2.1) on UNICON (La Trobe University, five campuses, Victoria, Australia); protocol frozen before any consumption value was read; amendment 01 (causal filling of gaps of at most 6 h in the inputs, written after the missingness was seen and before any forecast)",
+ "model": "ANKYRA 2.2 (package 2.2.0); registered and first scored with the frozen ANKYRA 2.1, re-read with 2.2 (same decisions)",
+ "seed": 20261006,
+ "primary": {
+  "what": "monthly energy error vs TimesFM 2.5, upper end of 95% unit-and-month interval < 0",
+  "um_high": 0.115839,
+  "pass": false
+ },
+ "secondary": {
+  "what": "hourly error vs TimesFM 2.5, lower end <= 0",
+  "um_low": -0.051634,
+  "pass": true
+ },
+ "confirmed": false,
+ "windows": 843,
+ "units": 60,
+ "months": 37,
+ "mean_unit_rank_14": {
+  "ANKYRA": 3.03,
+  "Chronos-2": 3.92,
+  "TimesFM 2.5": 4.2,
+  "TimesFM-X": 4.4,
+  "Per-unit ridge": 4.88,
+  "Chronos-2-X": 5.1,
+  "Four-week profile": 6.67,
+  "Holt-Winters": 8.78,
+  "MSTL": 9.53,
+  "Previous-month profile": 9.92,
+  "Seasonal naive (week)": 9.99,
+  "Last-year profile": 10.71,
+  "GBT (zero-shot)": 10.97,
+  "Seasonal naive (day)": 12.9
+ },
+ "by_origin_year_vs_TimesFM": {
+  "2018": {
+   "windows": 130,
+   "hourly_improvement_pct": 1.57,
+   "energy_improvement_pct": 3.35
+  },
+  "2019": {
+   "windows": 323,
+   "hourly_improvement_pct": 4.04,
+   "energy_improvement_pct": 15.86
+  },
+  "2020": {
+   "windows": 205,
+   "hourly_improvement_pct": -4.04,
+   "energy_improvement_pct": -18.68
+  },
+  "2021": {
+   "windows": 161,
+   "hourly_improvement_pct": -1.1,
+   "energy_improvement_pct": 0.8
+  },
+  "2022": {
+   "windows": 24,
+   "hourly_improvement_pct": 8.09,
+   "energy_improvement_pct": 22.0
+  }
+ },
+ "licence_note": "UNICON is CC BY-NC-SA 4.0 (research use only); its data are not redistributed here",
+ "diagnostic": "dense short gaps leave few complete pseudo-origin windows: the frozen 2.1 used on average 0.51 of 6 pseudo-origin pairs (its weights stayed close to their priors); with the gap tolerance of 2.2 the average is 3.49 pairs. Under 2.1 ANKYRA used on average 0.51 of 6 pseudo-origin pairs, so its weights stayed close to their priors"
+}

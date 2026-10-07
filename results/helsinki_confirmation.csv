@@ -1,27 +1,27 @@
 error,comparator,windows,units,log_ratio,um_low,um_high,improvement_pct,resolved_at_seed_20261005,units_better_strict
-energy,TimesFM 2.5,1165,200,-0.061430,-0.152174,0.104047,5.958,not resolved,107
-energy,Chronos-2,1165,200,-0.016981,-0.093669,0.198789,1.684,not resolved,82
-energy,Chronos-2-X,1165,200,0.130236,0.042237,0.331597,-13.910,second better,72
-energy,TimesFM-X,1165,200,-0.062386,-0.143063,0.138773,6.048,not resolved,89
-energy,Per-unit ridge,1165,200,-0.037769,-0.138167,0.296168,3.706,not resolved,103
-energy,GBT (zero-shot),1165,200,-0.028833,-0.210859,0.111366,2.842,not resolved,107
-energy,Holt-Winters,1165,200,-0.035555,-0.251130,0.090421,3.493,not resolved,109
-energy,MSTL,1165,200,-0.083233,-0.202043,0.154713,7.986,not resolved,111
-energy,Seasonal naive (day),1165,200,-0.319337,-0.465226,-0.066090,27.337,first better,170
-energy,Seasonal naive (week),1165,200,-0.057160,-0.161348,0.127949,5.556,not resolved,101
-energy,Four-week profile,1165,200,-0.000396,-0.447685,0.202382,0.040,not resolved,110
-energy,Previous-month profile,1165,200,-0.028066,-0.327831,0.210468,2.768,not resolved,112
-energy,Last-year profile,1165,200,-0.278557,-0.674639,-0.108786,24.312,first better,156
-hourly,TimesFM 2.5,1165,200,-0.043499,-0.092860,0.022227,4.257,not resolved,146
-hourly,Chronos-2,1165,200,-0.019281,-0.062834,0.051705,1.910,not resolved,111
-hourly,Chronos-2-X,1165,200,0.061363,0.011975,0.115503,-6.328,second better,79
-hourly,TimesFM-X,1165,200,-0.045942,-0.110977,0.031594,4.490,not resolved,120
-hourly,Per-unit ridge,1165,200,-0.045938,-0.104447,-0.002728,4.490,first better,149
-hourly,GBT (zero-shot),1165,200,-0.152609,-0.412790,-0.082738,14.154,first better,184
-hourly,Holt-Winters,1165,200,-0.078864,-0.297982,-0.020334,7.583,first better,141
-hourly,MSTL,1165,200,-0.102645,-0.191058,-0.021826,9.755,first better,162
-hourly,Seasonal naive (day),1165,200,-0.325778,-0.544095,-0.250352,27.803,first better,191
-hourly,Seasonal naive (week),1165,200,-0.116113,-0.206121,-0.020946,10.963,first better,174
-hourly,Four-week profile,1165,200,-0.052280,-0.279717,0.018350,5.094,not resolved,137
-hourly,Previous-month profile,1165,200,-0.120731,-0.480735,-0.036896,11.373,first better,165
-hourly,Last-year profile,1165,200,-0.242529,-0.511919,-0.134733,21.536,first better,176
+energy,TimesFM 2.5,1165,200,-0.064491,-0.168178,0.106412,6.245,not resolved,110
+energy,Chronos-2,1165,200,-0.020041,-0.103053,0.195693,1.984,not resolved,85
+energy,Chronos-2-X,1165,200,0.127176,0.029911,0.319276,-13.562,second better,77
+energy,TimesFM-X,1165,200,-0.065446,-0.155101,0.126519,6.335,not resolved,92
+energy,Per-unit ridge,1165,200,-0.040829,-0.152563,0.262568,4.001,not resolved,111
+energy,GBT (zero-shot),1165,200,-0.031894,-0.235711,0.103105,3.139,not resolved,107
+energy,Holt-Winters,1165,200,-0.038615,-0.270723,0.079647,3.788,not resolved,110
+energy,MSTL,1165,200,-0.086293,-0.212405,0.142195,8.267,not resolved,111
+energy,Seasonal naive (day),1165,200,-0.322397,-0.468315,-0.079716,27.559,first better,166
+energy,Seasonal naive (week),1165,200,-0.060220,-0.177409,0.124833,5.844,not resolved,103
+energy,Four-week profile,1165,200,-0.003456,-0.466207,0.192926,0.345,not resolved,113
+energy,Previous-month profile,1165,200,-0.031126,-0.344724,0.199479,3.065,not resolved,117
+energy,Last-year profile,1165,200,-0.281617,-0.680296,-0.117882,24.544,first better,161
+hourly,TimesFM 2.5,1165,200,-0.050438,-0.108627,0.018187,4.919,not resolved,153
+hourly,Chronos-2,1165,200,-0.026220,-0.077636,0.046205,2.588,not resolved,111
+hourly,Chronos-2-X,1165,200,0.054424,0.000763,0.106086,-5.593,second better,87
+hourly,TimesFM-X,1165,200,-0.052881,-0.125895,0.027745,5.151,not resolved,121
+hourly,Per-unit ridge,1165,200,-0.052877,-0.120699,-0.004975,5.150,first better,154
+hourly,GBT (zero-shot),1165,200,-0.159548,-0.425221,-0.087622,14.747,first better,182
+hourly,Holt-Winters,1165,200,-0.085803,-0.308481,-0.027600,8.222,first better,143
+hourly,MSTL,1165,200,-0.109584,-0.205757,-0.024376,10.379,first better,165
+hourly,Seasonal naive (day),1165,200,-0.332717,-0.553148,-0.262459,28.303,first better,189
+hourly,Seasonal naive (week),1165,200,-0.123052,-0.222419,-0.023287,11.578,first better,176
+hourly,Four-week profile,1165,200,-0.059219,-0.288663,0.008483,5.750,not resolved,140
+hourly,Previous-month profile,1165,200,-0.127670,-0.490512,-0.048314,11.986,first better,169
+hourly,Last-year profile,1165,200,-0.249467,-0.518715,-0.139405,22.078,first better,176

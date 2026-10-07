@@ -1,49 +1,59 @@
 set,tier,ablation,log_ratio,um_low,um_high,improvement_pct
-BDG2 2017,test,ANKYRA 2.0.1: within-day trust per lead block,-0.00093,-0.003896,0.000576,0.093
-BDG2 2017,test,ANKYRA 2.0.0: without the micro-load rule,-0.363616,-1.231055,-0.002631,30.484
-BDG2 2017,test,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.372948,-1.239824,-0.011189,31.13
-BDG2 2017,test,"without off-state rule (F1: the 1.x forecaster without the rule, so also without the within-day anchoring)",-0.372948,-1.239824,-0.011189,31.13
-BDG2 2017,test,"fixed division (F0: historical level and daily path with the TimesFM within-day shape; no handover, no off-state rule, no anchoring)",-0.454426,-1.355686,-0.087231,36.519
-Cambridge,test,ANKYRA 2.0.1: within-day trust per lead block,-0.000733,-0.002052,0.000539,0.073
-Cambridge,test,ANKYRA 2.0.0: without the micro-load rule,-0.000733,-0.002052,0.000539,0.073
-Cambridge,test,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.036568,-0.046121,-0.026696,3.591
-Cambridge,test,"without off-state rule (F1: the 1.x forecaster without the rule, so also without the within-day anchoring)",-0.036568,-0.046121,-0.026696,3.591
-Cambridge,test,"fixed division (F0: historical level and daily path with the TimesFM within-day shape; no handover, no off-state rule, no anchoring)",-0.063701,-0.092459,-0.043847,6.171
-HEEW Arizona,test,ANKYRA 2.0.1: within-day trust per lead block,-0.000558,-0.001566,0.000243,0.056
-HEEW Arizona,test,ANKYRA 2.0.0: without the micro-load rule,-0.000558,-0.001566,0.000243,0.056
-HEEW Arizona,test,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.013589,-0.018851,-0.009302,1.35
-HEEW Arizona,test,"without off-state rule (F1: the 1.x forecaster without the rule, so also without the within-day anchoring)",-0.013589,-0.018851,-0.009302,1.35
-HEEW Arizona,test,"fixed division (F0: historical level and daily path with the TimesFM within-day shape; no handover, no off-state rule, no anchoring)",-0.08078,-0.13086,-0.055328,7.76
-EWELD,test,ANKYRA 2.0.1: within-day trust per lead block,-0.001275,-0.003196,9.6e-05,0.127
-EWELD,test,ANKYRA 2.0.0: without the micro-load rule,-0.001275,-0.003196,9.6e-05,0.127
-EWELD,test,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.005521,-0.009863,-0.002239,0.551
-EWELD,test,"without off-state rule (F1: the 1.x forecaster without the rule, so also without the within-day anchoring)",-0.147068,-0.295368,-0.034002,13.677
-EWELD,test,"fixed division (F0: historical level and daily path with the TimesFM within-day shape; no handover, no off-state rule, no anchoring)",-0.307628,-0.495381,-0.145023,26.481
-GoiEner non-household,test,ANKYRA 2.0.1: within-day trust per lead block,-0.000104,-0.001344,0.002489,0.01
-GoiEner non-household,test,ANKYRA 2.0.0: without the micro-load rule,-0.000104,-0.001344,0.002489,0.01
-GoiEner non-household,test,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.025712,-0.054607,-0.002255,2.538
-GoiEner non-household,test,"without off-state rule (F1: the 1.x forecaster without the rule, so also without the within-day anchoring)",-0.044057,-0.087632,-0.009891,4.31
-GoiEner non-household,test,"fixed division (F0: historical level and daily path with the TimesFM within-day shape; no handover, no off-state rule, no anchoring)",-0.092989,-0.15868,-0.049932,8.88
-GoiEner households,test,ANKYRA 2.0.1: within-day trust per lead block,-0.000657,-0.002245,0.001296,0.066
-GoiEner households,test,ANKYRA 2.0.0: without the micro-load rule,-0.000657,-0.002245,0.001296,0.066
-GoiEner households,test,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.000142,-0.00173,0.004133,0.014
-GoiEner households,test,"without off-state rule (F1: the 1.x forecaster without the rule, so also without the within-day anchoring)",-0.043834,-0.102414,-0.01499,4.289
-GoiEner households,test,"fixed division (F0: historical level and daily path with the TimesFM within-day shape; no handover, no off-state rule, no anchoring)",-0.101439,-0.202854,-0.057218,9.646
+BDG2 2017,test,ANKYRA 2.1: without gap tolerance,-0.003186,-0.007356,0.001148,0.318
+BDG2 2017,test,ANKYRA 2.0.1: within-day trust per lead block,-0.004116,-0.008935,0.000449,0.411
+BDG2 2017,test,ANKYRA 2.0.0: without the micro-load rule,-0.366801,-1.231387,-0.005579,30.705
+BDG2 2017,test,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.376134,-1.240184,-0.014743,31.349
+BDG2 2017,test,"without off-state rule (F1: the 1.x forecaster without the rule, so also without the within-day anchoring)",-0.376134,-1.240184,-0.014743,31.349
+BDG2 2017,test,"fixed division (F0: historical level and daily path with the TimesFM within-day shape; no handover, no off-state rule, no anchoring)",-0.457612,-1.356455,-0.087275,36.721
+Cambridge,test,ANKYRA 2.1: without gap tolerance,0.000268,-0.001298,0.002453,-0.027
+Cambridge,test,ANKYRA 2.0.1: within-day trust per lead block,-0.000465,-0.002467,0.001859,0.046
+Cambridge,test,ANKYRA 2.0.0: without the micro-load rule,-0.000465,-0.002467,0.001859,0.046
+Cambridge,test,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.036301,-0.045871,-0.026053,3.565
+Cambridge,test,"without off-state rule (F1: the 1.x forecaster without the rule, so also without the within-day anchoring)",-0.036301,-0.045871,-0.026053,3.565
+Cambridge,test,"fixed division (F0: historical level and daily path with the TimesFM within-day shape; no handover, no off-state rule, no anchoring)",-0.063433,-0.091852,-0.043417,6.146
+HEEW Arizona,test,ANKYRA 2.1: without gap tolerance,-0.001266,-0.004534,0.001579,0.126
+HEEW Arizona,test,ANKYRA 2.0.1: within-day trust per lead block,-0.001823,-0.005205,0.001049,0.182
+HEEW Arizona,test,ANKYRA 2.0.0: without the micro-load rule,-0.001823,-0.005205,0.001049,0.182
+HEEW Arizona,test,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.014854,-0.020954,-0.009685,1.474
+HEEW Arizona,test,"without off-state rule (F1: the 1.x forecaster without the rule, so also without the within-day anchoring)",-0.014854,-0.020954,-0.009685,1.474
+HEEW Arizona,test,"fixed division (F0: historical level and daily path with the TimesFM within-day shape; no handover, no off-state rule, no anchoring)",-0.082045,-0.131819,-0.056974,7.877
+EWELD,test,ANKYRA 2.1: without gap tolerance,-0.001216,-0.003904,0.002025,0.122
+EWELD,test,ANKYRA 2.0.1: within-day trust per lead block,-0.002491,-0.005647,0.001225,0.249
+EWELD,test,ANKYRA 2.0.0: without the micro-load rule,-0.002491,-0.005647,0.001225,0.249
+EWELD,test,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.006738,-0.011639,-0.001811,0.671
+EWELD,test,"without off-state rule (F1: the 1.x forecaster without the rule, so also without the within-day anchoring)",-0.148285,-0.29623,-0.035724,13.781
+EWELD,test,"fixed division (F0: historical level and daily path with the TimesFM within-day shape; no handover, no off-state rule, no anchoring)",-0.308844,-0.495454,-0.14658,26.57
+GoiEner non-household,test,ANKYRA 2.1: without gap tolerance,7.8e-05,-1.4e-05,0.000491,-0.008
+GoiEner non-household,test,ANKYRA 2.0.1: within-day trust per lead block,-2.6e-05,-0.001285,0.002645,0.003
+GoiEner non-household,test,ANKYRA 2.0.0: without the micro-load rule,-2.6e-05,-0.001285,0.002645,0.003
+GoiEner non-household,test,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.025634,-0.05459,-0.002073,2.531
+GoiEner non-household,test,"without off-state rule (F1: the 1.x forecaster without the rule, so also without the within-day anchoring)",-0.043979,-0.087624,-0.009605,4.303
+GoiEner non-household,test,"fixed division (F0: historical level and daily path with the TimesFM within-day shape; no handover, no off-state rule, no anchoring)",-0.09291,-0.158603,-0.049876,8.872
+GoiEner households,test,ANKYRA 2.1: without gap tolerance,-0.00209,-0.005545,0.000258,0.209
+GoiEner households,test,ANKYRA 2.0.1: within-day trust per lead block,-0.002747,-0.006137,0.000767,0.274
+GoiEner households,test,ANKYRA 2.0.0: without the micro-load rule,-0.002747,-0.006137,0.000767,0.274
+GoiEner households,test,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.002232,-0.005227,0.003577,0.223
+GoiEner households,test,"without off-state rule (F1: the 1.x forecaster without the rule, so also without the within-day anchoring)",-0.045924,-0.104262,-0.017102,4.489
+GoiEner households,test,"fixed division (F0: historical level and daily path with the TimesFM within-day shape; no handover, no off-state rule, no anchoring)",-0.10353,-0.206355,-0.058594,9.835
+Oslo,preview,ANKYRA 2.1: without gap tolerance,0.0,-0.0,0.0,-0.0
 Oslo,preview,ANKYRA 2.0.1: within-day trust per lead block,-0.004469,-0.00754,-0.002229,0.446
 Oslo,preview,ANKYRA 2.0.0: without the micro-load rule,-0.004469,-0.00754,-0.002229,0.446
 Oslo,preview,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.047549,-0.060377,-0.037632,4.644
 Oslo,preview,"without off-state rule (F1: the 1.x forecaster without the rule, so also without the within-day anchoring)",-0.047549,-0.060377,-0.037632,4.644
 Oslo,preview,"fixed division (F0: historical level and daily path with the TimesFM within-day shape; no handover, no off-state rule, no anchoring)",-0.038478,-0.061907,-0.019483,3.775
-Drammen,preview,ANKYRA 2.0.1: within-day trust per lead block,-0.002082,-0.003592,-0.000865,0.208
-Drammen,preview,ANKYRA 2.0.0: without the micro-load rule,-0.002082,-0.003592,-0.000865,0.208
-Drammen,preview,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.036143,-0.049353,-0.025764,3.55
-Drammen,preview,"without off-state rule (F1: the 1.x forecaster without the rule, so also without the within-day anchoring)",-0.036143,-0.049353,-0.025764,3.55
-Drammen,preview,"fixed division (F0: historical level and daily path with the TimesFM within-day shape; no handover, no off-state rule, no anchoring)",-0.04006,-0.066447,-0.014081,3.927
+Drammen,preview,ANKYRA 2.1: without gap tolerance,-2.5e-05,-0.000223,0.000143,0.002
+Drammen,preview,ANKYRA 2.0.1: within-day trust per lead block,-0.002106,-0.003602,-0.000896,0.21
+Drammen,preview,ANKYRA 2.0.0: without the micro-load rule,-0.002106,-0.003602,-0.000896,0.21
+Drammen,preview,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.036167,-0.049431,-0.025769,3.552
+Drammen,preview,"without off-state rule (F1: the 1.x forecaster without the rule, so also without the within-day anchoring)",-0.036167,-0.049431,-0.025769,3.552
+Drammen,preview,"fixed division (F0: historical level and daily path with the TimesFM within-day shape; no handover, no off-state rule, no anchoring)",-0.040085,-0.066538,-0.014035,3.929
+CINELDI,preview,ANKYRA 2.1: without gap tolerance,-0.0,-0.0,0.0,0.0
 CINELDI,preview,ANKYRA 2.0.1: within-day trust per lead block,-0.001167,-0.002824,0.000612,0.117
 CINELDI,preview,ANKYRA 2.0.0: without the micro-load rule,-0.001167,-0.002824,0.000612,0.117
 CINELDI,preview,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.021348,-0.033564,-0.011234,2.112
 CINELDI,preview,"without off-state rule (F1: the 1.x forecaster without the rule, so also without the within-day anchoring)",-0.021348,-0.033564,-0.011234,2.112
 CINELDI,preview,"fixed division (F0: historical level and daily path with the TimesFM within-day shape; no handover, no off-state rule, no anchoring)",-0.036383,-0.07096,-0.012719,3.573
+Suzhou park,preview,ANKYRA 2.1: without gap tolerance,0.0,-0.0,0.0,-0.0
 Suzhou park,preview,ANKYRA 2.0.1: within-day trust per lead block,-0.000895,-0.007349,0.005121,0.089
 Suzhou park,preview,ANKYRA 2.0.0: without the micro-load rule,-0.000895,-0.007349,0.005121,0.089
 Suzhou park,preview,"ANKYRA 1.x: foundation within-day block, no anchoring",-0.030238,-0.065223,-0.006233,2.979

@@ -1,0 +1,22 @@
+set,subset,windows,units,model,model_label,mean_unit_rank,n_models
+LCL households,late,710,710,ANKYRA,ANKYRA,6.083098591549295,21
+LCL households,late,710,710,Chronos-2-X,Chronos-2-X,9.35774647887324,21
+LCL households,late,710,710,Chronos-2,Chronos-2,8.874647887323944,21
+LCL households,late,710,710,DLinear,DLinear,7.569014084507042,21
+LCL households,late,710,710,GBT-T,GBT-T,9.57887323943662,21
+LCL households,late,710,710,GBT,GBT (zero-shot),17.432394366197183,21
+LCL households,late,710,710,Holt-Winters,Holt-Winters,12.191549295774648,21
+LCL households,late,710,710,iTransformer-X,iTransformer-X,7.383098591549296,21
+LCL households,late,710,710,iTransformer,iTransformer,7.0084507042253525,21
+LCL households,late,710,710,LSTM,LSTM,11.677464788732394,21
+LCL households,late,710,710,LYR-profile,Last-year profile,18.5612676056338,21
+LCL households,late,710,710,MSTL,MSTL,17.550704225352113,21
+LCL households,late,710,710,PatchTST,PatchTST,7.3,21
+LCL households,late,710,710,SN-day,Seasonal naive (day),17.593661971830986,21
+LCL households,late,710,710,SN-week,Seasonal naive (week),18.197183098591548,21
+LCL households,late,710,710,SP-profile,Previous-month profile,9.304225352112676,21
+LCL households,late,710,710,TiDE,TiDE,7.338028169014085,21
+LCL households,late,710,710,TimesFM-X,TimesFM-X,9.03661971830986,21
+LCL households,late,710,710,WeekProf4,4-week profile,12.445070422535212,21
+LCL households,late,710,710,RIDGE-L,Ridge (per unit),6.4915492957746475,21
+LCL households,late,710,710,TimesFM,TimesFM,10.025352112676057,21

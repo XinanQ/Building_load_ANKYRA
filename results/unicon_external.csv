@@ -1,0 +1,35 @@
+error,comparator,role,windows,units,log_ratio,um_low,um_high,improvement_pct,resolved_at_seed_20261006,units_better_strict
+energy,TimesFM 2.5,comparator,843,60,-0.044846,-0.157342,0.115839,4.385,not resolved,39
+energy,Chronos-2,comparator,843,60,-0.027531,-0.146711,0.116767,2.716,not resolved,37
+energy,Chronos-2-X,comparator,843,60,-0.124621,-0.294125,0.028502,11.717,not resolved,39
+energy,TimesFM-X,comparator,843,60,-0.105770,-0.245698,0.044270,10.037,not resolved,47
+energy,Per-unit ridge,comparator,674,60,0.006228,-0.129330,0.138079,-0.625,not resolved,30
+energy,GBT (zero-shot),comparator,843,60,-0.220867,-0.377336,-0.038246,19.818,first better,50
+energy,Holt-Winters,comparator,843,60,-0.313084,-0.455677,-0.161833,26.881,first better,53
+energy,MSTL,comparator,843,60,-0.211834,-0.391830,-0.046403,19.090,first better,51
+energy,Seasonal naive (day),comparator,843,60,-0.498413,-0.737588,-0.330337,39.251,first better,56
+energy,Seasonal naive (week),comparator,843,60,-0.068557,-0.192195,0.070510,6.626,not resolved,43
+energy,Four-week profile,comparator,843,60,-0.054102,-0.189832,0.101231,5.266,not resolved,37
+energy,Previous-month profile,comparator,843,60,-0.098526,-0.225886,0.038005,9.383,not resolved,42
+energy,Last-year profile,comparator,843,60,-0.210074,-0.350228,-0.043370,18.948,first better,47
+energy,ANKYRA 2.0.1 (ablation: trust per lead block),descriptive arm,843,60,0.024316,-0.019547,0.065073,-2.461,not resolved,27
+energy,ANKYRA on Chronos-2-X (descriptive),descriptive arm,843,60,-0.017214,-0.134539,0.077409,1.707,not resolved,30
+energy,"Half history, half TimesFM (descriptive)",descriptive arm,843,60,0.012280,-0.040956,0.103586,-1.236,not resolved,26
+energy,One combination weight per unit (descriptive),descriptive arm,843,60,0.011825,-0.038536,0.100668,-1.190,not resolved,26
+hourly,TimesFM 2.5,comparator,843,60,-0.024247,-0.051634,0.011169,2.395,not resolved,44
+hourly,Chronos-2,comparator,843,60,-0.020924,-0.055266,0.017771,2.071,not resolved,38
+hourly,Chronos-2-X,comparator,843,60,-0.060063,-0.113744,-0.003180,5.829,first better,40
+hourly,TimesFM-X,comparator,843,60,-0.045262,-0.079637,-0.004388,4.425,first better,49
+hourly,Per-unit ridge,comparator,674,60,-0.042816,-0.095071,-0.007294,4.191,first better,43
+hourly,GBT (zero-shot),comparator,843,60,-0.296480,-0.369314,-0.214737,25.657,first better,60
+hourly,Holt-Winters,comparator,843,60,-0.157349,-0.209516,-0.102291,14.559,first better,56
+hourly,MSTL,comparator,843,60,-0.163641,-0.208600,-0.117379,15.095,first better,58
+hourly,Seasonal naive (day),comparator,843,60,-0.419476,-0.531400,-0.330053,34.261,first better,59
+hourly,Seasonal naive (week),comparator,843,60,-0.171830,-0.214989,-0.127573,15.788,first better,59
+hourly,Four-week profile,comparator,843,60,-0.067097,-0.113397,-0.019729,6.490,first better,46
+hourly,Previous-month profile,comparator,843,60,-0.189084,-0.247516,-0.142154,17.228,first better,56
+hourly,Last-year profile,comparator,843,60,-0.226071,-0.296351,-0.168164,20.234,first better,59
+hourly,ANKYRA 2.0.1 (ablation: trust per lead block),descriptive arm,843,60,0.001184,-0.010726,0.013095,-0.118,not resolved,31
+hourly,ANKYRA on Chronos-2-X (descriptive),descriptive arm,843,60,-0.014414,-0.051509,0.023147,1.431,not resolved,32
+hourly,"Half history, half TimesFM (descriptive)",descriptive arm,843,60,0.001102,-0.012079,0.012476,-0.110,not resolved,26
+hourly,One combination weight per unit (descriptive),descriptive arm,843,60,0.001310,-0.011335,0.013038,-0.131,not resolved,26

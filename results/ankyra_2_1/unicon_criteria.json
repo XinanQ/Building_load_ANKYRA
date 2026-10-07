@@ -1,0 +1,64 @@
+{
+ "test": "external test of the frozen ANKYRA 2.1 on UNICON (La Trobe University, five campuses, Victoria, Australia); protocol frozen before any consumption value was read; amendment 01 (causal filling of gaps of at most 6 h in the inputs, written after the missingness was seen and before any forecast)",
+ "model": "ANKYRA 2.1 (package 2.1.0)",
+ "seed": 20261006,
+ "primary": {
+  "what": "monthly energy error vs TimesFM 2.5, upper end of 95% unit-and-month interval < 0",
+  "um_high": 0.080093,
+  "pass": false
+ },
+ "secondary": {
+  "what": "hourly error vs TimesFM 2.5, lower end <= 0",
+  "um_low": -0.048006,
+  "pass": true
+ },
+ "confirmed": false,
+ "windows": 843,
+ "units": 60,
+ "months": 37,
+ "mean_unit_rank_14": {
+  "ANKYRA": 3.15,
+  "Chronos-2": 3.87,
+  "TimesFM 2.5": 4.22,
+  "TimesFM-X": 4.35,
+  "Per-unit ridge": 4.83,
+  "Chronos-2-X": 5.13,
+  "Four-week profile": 6.62,
+  "Holt-Winters": 8.83,
+  "MSTL": 9.55,
+  "Previous-month profile": 9.9,
+  "Seasonal naive (week)": 9.99,
+  "Last-year profile": 10.69,
+  "GBT (zero-shot)": 10.97,
+  "Seasonal naive (day)": 12.9
+ },
+ "by_origin_year_vs_TimesFM": {
+  "2018": {
+   "windows": 130,
+   "hourly_improvement_pct": 1.01,
+   "energy_improvement_pct": 1.6
+  },
+  "2019": {
+   "windows": 323,
+   "hourly_improvement_pct": 3.47,
+   "energy_improvement_pct": 16.6
+  },
+  "2020": {
+   "windows": 205,
+   "hourly_improvement_pct": -2.65,
+   "energy_improvement_pct": -13.63
+  },
+  "2021": {
+   "windows": 161,
+   "hourly_improvement_pct": -0.4,
+   "energy_improvement_pct": 5.06
+  },
+  "2022": {
+   "windows": 24,
+   "hourly_improvement_pct": 8.87,
+   "energy_improvement_pct": 36.11
+  }
+ },
+ "licence_note": "UNICON is CC BY-NC-SA 4.0 (research use only); its data are not redistributed here",
+ "diagnostic": "dense short gaps leave few complete pseudo-origin windows: ANKYRA used on average 0.51 of 6 pseudo-origin pairs, so its weights stayed close to their priors"
+}

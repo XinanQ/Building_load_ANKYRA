@@ -1,0 +1,17 @@
+constant,value,where_fixed,sensitivity
+context / horizon,"1,344 h / 744 h",before any evaluation,
+pseudo-origins for the level and path candidates,12,development data (household aggregates),
+pseudo-origins for the model level candidate and the handover,6,development data (Spanish development store),largest change of the nine-face mean log ratio over the values tried: 0.0019
+shrinkage K0 of the level weights,"8, towards equal weights",development data,
+shrinkage K0 of the daily-path weights,"2, towards equal weights",development data,
+shrinkage K0 of the handover weights,"2, towards 1/2",development data,largest change of the nine-face mean log ratio over the values tried: 0.0022
+handover split,"days 1-7, 8-14, 15-21, 22-31",development data; weekly vs monthly is not separable (component_contributions.csv),
+pseudo-origins for the within-day trust,3,2.0 design (development and pre-cutoff data),largest change of the nine-face mean log ratio over the values tried: 0.0023
+shrinkage of the within-day trust,"n/(n+2), towards 0",2.0 design,largest change of the nine-face mean log ratio over the values tried: 0.0034
+cap of the within-day trust,1/2,2.0 design,largest change of the nine-face mean log ratio over the values tried: 0.0032
+"analog days: day-of-year window, kept, required","+/-14 days, 8, 4",first version of the analog shape,
+analog guard,3 x max |context|,first version of the analog shape,
+scale floor,"max(0.01 |mean|, 1e-3 kW)",historical estimator (1.x),
+off-state rule,last 168 h <= 1e-6 kW,pre-existing zero threshold,
+micro-load rule,"1,344-h context within 1e-3 kW",pre-existing scale floor; rule written after the BDG2 2.0.0 result (post hoc),
+peak envelope,"4 most recent same-type days, kappa = 1",1.x readout,

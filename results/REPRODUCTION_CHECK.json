@@ -1,6 +1,6 @@
 {
- "utc": "2026-10-06T02:39:07.504608+00:00",
- "package_version": "2.1.0",
+ "utc": "2026-10-06T23:52:47.009215+00:00",
+ "package_version": "2.2.0",
  "faces": {
   "cambridge_late": {
    "subset": "late",
@@ -18,7 +18,10 @@
    "max_rel_diff_2_1_vs_panel": 6.190441371080825e-08,
    "daily_means_2_1_equal_2_0_1_and_one_trust": true,
    "micro_windows_2_1_equal_timesfm": null,
-   "median_seconds_cpu_side_2_1": 0.7225722074508667
+   "median_seconds_cpu_side_2_1": 0.7595103979110718,
+   "windows_with_complete_history": 0,
+   "2_2_identical_to_2_1_on_windows_with_complete_history": true,
+   "windows_2_2_differs_from_2_1": 10
   },
   "households_late": {
    "subset": "late",
@@ -36,7 +39,10 @@
    "max_rel_diff_2_1_vs_panel": 6.378715122395491e-08,
    "daily_means_2_1_equal_2_0_1_and_one_trust": true,
    "micro_windows_2_1_equal_timesfm": null,
-   "median_seconds_cpu_side_2_1": 0.5375617742538452
+   "median_seconds_cpu_side_2_1": 0.6074708700180054,
+   "windows_with_complete_history": 9,
+   "2_2_identical_to_2_1_on_windows_with_complete_history": true,
+   "windows_2_2_differs_from_2_1": 15
   },
   "goiener_confirm_late": {
    "subset": "late",
@@ -54,7 +60,10 @@
    "max_rel_diff_2_1_vs_panel": 7.374859543484671e-08,
    "daily_means_2_1_equal_2_0_1_and_one_trust": true,
    "micro_windows_2_1_equal_timesfm": null,
-   "median_seconds_cpu_side_2_1": 0.5585702657699585
+   "median_seconds_cpu_side_2_1": 0.6143877506256104,
+   "windows_with_complete_history": 20,
+   "2_2_identical_to_2_1_on_windows_with_complete_history": true,
+   "windows_2_2_differs_from_2_1": 1
   },
   "bdg2_late": {
    "subset": "late",
@@ -72,7 +81,10 @@
    "max_rel_diff_2_1_vs_panel": 5.8650740365281936e-08,
    "daily_means_2_1_equal_2_0_1_and_one_trust": true,
    "micro_windows_2_1_equal_timesfm": true,
-   "median_seconds_cpu_side_2_1": 0.0010030269622802734
+   "median_seconds_cpu_side_2_1": 0.0010025501251220703,
+   "windows_with_complete_history": 18,
+   "2_2_identical_to_2_1_on_windows_with_complete_history": true,
+   "windows_2_2_differs_from_2_1": 10
   },
   "bdg2_early": {
    "subset": "early",
@@ -90,7 +102,10 @@
    "max_rel_diff_2_1_vs_panel": 6.31033912683481e-08,
    "daily_means_2_1_equal_2_0_1_and_one_trust": true,
    "micro_windows_2_1_equal_timesfm": true,
-   "median_seconds_cpu_side_2_1": 0.4010593891143799
+   "median_seconds_cpu_side_2_1": 0.4009120464324951,
+   "windows_with_complete_history": 20,
+   "2_2_identical_to_2_1_on_windows_with_complete_history": true,
+   "windows_2_2_differs_from_2_1": 13
   },
   "eweld_late": {
    "subset": "late",
@@ -108,7 +123,10 @@
    "max_rel_diff_2_1_vs_panel": 6.735594444676258e-08,
    "daily_means_2_1_equal_2_0_1_and_one_trust": true,
    "micro_windows_2_1_equal_timesfm": true,
-   "median_seconds_cpu_side_2_1": 0.0
+   "median_seconds_cpu_side_2_1": 0.0,
+   "windows_with_complete_history": 0,
+   "2_2_identical_to_2_1_on_windows_with_complete_history": true,
+   "windows_2_2_differs_from_2_1": 4
   },
   "oslo_all": {
    "subset": "all",
@@ -126,7 +144,10 @@
    "max_rel_diff_2_1_vs_panel": 6.599124799887829e-08,
    "daily_means_2_1_equal_2_0_1_and_one_trust": true,
    "micro_windows_2_1_equal_timesfm": null,
-   "median_seconds_cpu_side_2_1": 0.6749236583709717
+   "median_seconds_cpu_side_2_1": 0.7627897262573242,
+   "windows_with_complete_history": 0,
+   "2_2_identical_to_2_1_on_windows_with_complete_history": true,
+   "windows_2_2_differs_from_2_1": 0
   },
   "park_all": {
    "subset": "all",
@@ -144,17 +165,20 @@
    "max_rel_diff_2_1_vs_panel": 6.231952724326108e-08,
    "daily_means_2_1_equal_2_0_1_and_one_trust": true,
    "micro_windows_2_1_equal_timesfm": null,
-   "median_seconds_cpu_side_2_1": 0.4075402021408081
+   "median_seconds_cpu_side_2_1": 0.46800172328948975,
+   "windows_with_complete_history": 25,
+   "2_2_identical_to_2_1_on_windows_with_complete_history": true,
+   "windows_2_2_differs_from_2_1": 0
   }
  },
  "pass": true,
  "micro_load_windows_checked_total": 263,
- "criterion": "2.1 vs the 2.1 panel, 2.0.0 mode and 2.0.1 mode vs their panels: relative to each window's largest value, <= 1e-5 (references stored as float32); 1.x mode: absolute <= 1e-6 kW; non-micro windows: 2.0.1 bit-identical to the package's 2.0.0 mode; 2.1: level and daily means bit-identical to 2.0.1, one trust value; micro-load windows: 2.1 and 2.0.1 bit-identical to the TimesFM forecast at the origin",
+ "criterion": "2.1 vs the 2.1 panel, 2.0.0 mode and 2.0.1 mode vs their panels: relative to each window's largest value, <= 1e-5 (references stored as float32); 1.x mode: absolute <= 1e-6 kW; non-micro windows: 2.0.1 bit-identical to the package's 2.0.0 mode; 2.1: level and daily means bit-identical to 2.0.1, one trust value; micro-load windows: 2.1 and 2.0.1 bit-identical to the TimesFM forecast at the origin; legacy modes run with gap_tolerance=False; 2.2 (default) bit-identical to 2.1 on windows whose whole history is complete",
  "package_files": {
-  "__init__.py": "d76eb96ff73dc1bb7914cc17d19d2a8555606f30015fa4c08826f9364a0f6a92",
+  "__init__.py": "b077553966009dc52317cd456e8184b2d957d94e0d285e3243dec247e47c5cd0",
   "analog.py": "faae948fa54d36cc8c355104daf40b500656072e301e6ba64376cd84faa3075d",
   "blocks.py": "cff12b09ab5fcf0076ac16dfd359906b1e6cfbe6b59db28b88272d66e5c58aa7",
-  "core.py": "7f9bd77057142734f47dc29d560db478c2167022f482cf4a138d041e782a6c7e",
+  "core.py": "2629928230467783a290cadae136b77f6bbc0483b2a53859ce4acddaeb307f4f",
   "metrics.py": "8d5470290b03a05331abcd74b0e8cb970e21939f6016e74467fb78459f629382",
   "readouts.py": "48c2ea1474ee0d48ad011b032682378336b1d21bc1e9007eb077d80e0729244a",
   "synthetic.py": "5afe56dd0c85282d5faae914cbce86ea0f03458f85c516e7d37672945529e451",

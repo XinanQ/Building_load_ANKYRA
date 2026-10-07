@@ -1,0 +1,413 @@
+{
+ "what": "ANKYRA 2.2 re-evaluations of the three frozen-model checks of ANKYRA 2.0.1. The tests are the 2.0.1 results (lcl_*, hkust_*, helsinki_* files); these numbers re-read the same targets with the 2.2 forecasts and are not tests. Improvement = 100[1 - exp(log ratio)], positive = ANKYRA lower; intervals in log units.",
+ "LCL": {
+  "windows": 1215,
+  "vs_matched_1x_all": {
+   "log_ratio": -0.010190521245414362,
+   "improvement_pct": 1.0138773810736024,
+   "UM": [
+    -0.014238735190484181,
+    -0.006392757456812438
+   ]
+  },
+  "vs_matched_1x_late": {
+   "log_ratio": -0.013169968791270577,
+   "improvement_pct": 1.308362421970266,
+   "UM": [
+    -0.017984932989516905,
+    -0.00849189601792831
+   ]
+  },
+  "vs_TimesFM_all": {
+   "log_ratio": -0.01590123279414575,
+   "improvement_pct": 1.577547563888837,
+   "UM": [
+    -0.030263096558918554,
+    0.0079757945724452
+   ]
+  },
+  "vs_TimesFM_late": {
+   "log_ratio": -0.017107592298596826,
+   "improvement_pct": 1.6962088363689176,
+   "UM": [
+    -0.03663895056445104,
+    0.023652456955916886
+   ]
+  },
+  "mean_unit_rank_late": {
+   "ANKYRA": 5.871830985915493,
+   "Chronos-2-X": 9.370422535211267,
+   "Chronos-2": 8.890140845070423,
+   "DLinear": 7.585915492957747,
+   "GBT-T": 9.592957746478874,
+   "GBT": 17.43380281690141,
+   "Holt-Winters": 12.208450704225353,
+   "iTransformer-X": 7.401408450704225,
+   "iTransformer": 7.022535211267606,
+   "LSTM": 11.684507042253522,
+   "LYR-profile": 18.564084507042253,
+   "MSTL": 17.55211267605634,
+   "PatchTST": 7.311267605633803,
+   "SN-day": 17.590845070422535,
+   "SN-week": 18.19154929577465,
+   "SP-profile": 9.328169014084507,
+   "TiDE": 7.356338028169014,
+   "TimesFM-X": 9.054929577464788,
+   "WeekProf4": 12.454929577464789,
+   "RIDGE": 6.507042253521127,
+   "TimesFM": 10.026760563380282
+  },
+  "holm_no_same_information_baseline_better": true,
+  "readouts": {
+   "independent_energy": {
+    "log_ratio": -0.48980867009070916,
+    "improvement_pct": 38.7256380849192,
+    "UM": [
+     -0.5950161434825242,
+     -0.38014651881006895
+    ]
+   },
+   "delivered_energy": {
+    "log_ratio": -0.4898173023491082,
+    "improvement_pct": 38.72616701876154,
+    "UM": [
+     -0.5950677140286118,
+     -0.3802077633778792
+    ]
+   },
+   "raw_peak": {
+    "log_ratio": -0.04826090905174729,
+    "improvement_pct": 4.711486171629886,
+    "UM": [
+     -0.07346578723026795,
+     -0.021948878747122858
+    ]
+   },
+   "envelope_peak": {
+    "log_ratio": -1.4947793642624172,
+    "improvement_pct": 77.57019125545311,
+    "UM": [
+     -1.6302207546535918,
+     -1.4182409269557879
+    ]
+   }
+  },
+  "2.2_vs_2.1": {
+   "log_ratio": -0.00212231823730495,
+   "improvement_pct": 0.21200677123462963,
+   "UM": [
+    -0.003905162365843041,
+    -0.0004030680127355632
+   ]
+  }
+ },
+ "HKUST": {
+  "hourly": {
+   "TimesFM": {
+    "improvement_pct": 8.828939686314353,
+    "um_low": -0.22995978615567775,
+    "um_high": -0.007028728533640706,
+    "resolved": "better"
+   },
+   "Chronos-2": {
+    "improvement_pct": 11.736447998955446,
+    "um_low": -0.29321549277158193,
+    "um_high": -0.0011870447008725518,
+    "resolved": "better"
+   },
+   "SN-day": {
+    "improvement_pct": 23.55341841155647,
+    "um_low": -0.4230347568967895,
+    "um_high": -0.1518557300715044,
+    "resolved": "better"
+   },
+   "SN-week": {
+    "improvement_pct": 24.37215712336771,
+    "um_low": -0.4422133817145507,
+    "um_high": -0.1714365875236943,
+    "resolved": "better"
+   },
+   "WeekProf4": {
+    "improvement_pct": 12.780870469473026,
+    "um_low": -0.2277890893868299,
+    "um_high": -0.06940235582344077,
+    "resolved": "better"
+   },
+   "SP-profile": {
+    "improvement_pct": 12.422895680639346,
+    "um_low": -0.22845481860073508,
+    "um_high": -0.05593290152928081,
+    "resolved": "better"
+   },
+   "LYR-profile": {
+    "improvement_pct": 19.302680118615555,
+    "um_low": -0.3800798979816174,
+    "um_high": -0.11350965981722118,
+    "resolved": "better"
+   },
+   "RIDGE-L": {
+    "improvement_pct": 16.56192447435869,
+    "um_low": -0.7144505105706416,
+    "um_high": 0.017875287474912058,
+    "resolved": "no"
+   }
+  },
+  "energy": {
+   "TimesFM": {
+    "improvement_pct": 42.8804517751851,
+    "um_low": -0.955259674359614,
+    "um_high": -0.10537353442841287,
+    "resolved": "better"
+   },
+   "Chronos-2": {
+    "improvement_pct": 46.80284384553989,
+    "um_low": -1.089949163768027,
+    "um_high": 0.08947740627818525,
+    "resolved": "no"
+   },
+   "SN-day": {
+    "improvement_pct": 43.2688118022063,
+    "um_low": -1.201438592639229,
+    "um_high": 0.20621556675680366,
+    "resolved": "no"
+   },
+   "SN-week": {
+    "improvement_pct": 45.46753254288799,
+    "um_low": -1.1077640596530456,
+    "um_high": 0.20317049418166755,
+    "resolved": "no"
+   },
+   "WeekProf4": {
+    "improvement_pct": 45.405778215049594,
+    "um_low": -0.9716467713526192,
+    "um_high": 0.13653391990394856,
+    "resolved": "no"
+   },
+   "SP-profile": {
+    "improvement_pct": 43.66591210808372,
+    "um_low": -0.9332802045301541,
+    "um_high": 0.0316612683923652,
+    "resolved": "no"
+   },
+   "LYR-profile": {
+    "improvement_pct": 31.714780091688066,
+    "um_low": -0.7502599248376097,
+    "um_high": 0.17671618430110303,
+    "resolved": "no"
+   },
+   "RIDGE-L": {
+    "improvement_pct": 29.786331216639795,
+    "um_low": -0.8259758852019793,
+    "um_high": 0.0664121854761954,
+    "resolved": "no"
+   }
+  },
+  "hourly_added": {
+   "Chronos-2-X": {
+    "improvement_pct": 4.0153199464622364,
+    "um_low": -0.12882792268029514,
+    "um_high": 0.012586878516045922
+   },
+   "TimesFM-X": {
+    "improvement_pct": 5.4679721776676455,
+    "um_low": -0.1797762951596766,
+    "um_high": 0.027129830858513476
+   }
+  },
+  "energy_added": {
+   "Chronos-2-X": {
+    "improvement_pct": 11.621366601048777,
+    "um_low": -0.7199989011578626,
+    "um_high": 0.6010171620369167
+   },
+   "TimesFM-X": {
+    "improvement_pct": 33.40260795410991,
+    "um_low": -0.7849620956887812,
+    "um_high": 0.0679056700207978
+   }
+  },
+  "mean_unit_rank_14_ridge_windows": {
+   "ANKYRA": 3.296875,
+   "RIDGE-L": 4.265625,
+   "TimesFM-X": 5.28125,
+   "TimesFM": 5.734375,
+   "Chronos-2-X": 6.125,
+   "SP-profile": 6.859375,
+   "Chronos-2": 6.96875,
+   "WeekProf4": 7.203125,
+   "Holt-Winters": 7.515625,
+   "LYR-profile": 8.59375,
+   "SN-day": 9.328125,
+   "MSTL": 10.015625,
+   "SN-week": 10.5,
+   "GBT": 13.3125
+  },
+  "days_lowest_of_14": {
+   "hourly": 15,
+   "energy_to_date": 24
+  }
+ },
+ "Helsinki": {
+  "criteria": {
+   "primary_energy_vs_TimesFM": {
+    "um_high": 0.10641157316024248,
+    "pass": false
+   },
+   "secondary_hourly_vs_TimesFM": {
+    "um_low": -0.10862657916123256,
+    "pass": true
+   },
+   "confirmed": false
+  },
+  "hourly": {
+   "TimesFM": {
+    "improvement_pct": 4.918739146654794,
+    "um_low": -0.10862657916123256,
+    "um_high": 0.01818724438165291
+   },
+   "Chronos-2": {
+    "improvement_pct": 2.587946684996001,
+    "um_low": -0.07763606412252415,
+    "um_high": 0.04620465847665041
+   },
+   "SN-day": {
+    "improvement_pct": 28.302712232319237,
+    "um_low": -0.5531479539559371,
+    "um_high": -0.26245913957965117
+   },
+   "SN-week": {
+    "improvement_pct": 11.57824157634253,
+    "um_low": -0.22241934109545633,
+    "um_high": -0.023286703586904565
+   },
+   "WeekProf4": {
+    "improvement_pct": 5.749949603287686,
+    "um_low": -0.2886632548916117,
+    "um_high": 0.008482738399295016
+   },
+   "SP-profile": {
+    "improvement_pct": 11.985600548173124,
+    "um_low": -0.49051226411078164,
+    "um_high": -0.04831418730550656
+   },
+   "LYR-profile": {
+    "improvement_pct": 22.078435843569345,
+    "um_low": -0.5187148250985495,
+    "um_high": -0.13940478211814594
+   },
+   "RIDGE-L": {
+    "improvement_pct": 5.1502891593258715,
+    "um_low": -0.1206993460056168,
+    "um_high": -0.0049745499261254185
+   },
+   "Holt-Winters": {
+    "improvement_pct": 8.222467988934445,
+    "um_low": -0.30848110575778015,
+    "um_high": -0.027600441337355893
+   },
+   "MSTL": {
+    "improvement_pct": 10.379340214091137,
+    "um_low": -0.2057568449713707,
+    "um_high": -0.02437598157899788
+   },
+   "GBT": {
+    "improvement_pct": 14.747127220651057,
+    "um_low": -0.42522058710213,
+    "um_high": -0.08762179496724959
+   },
+   "Chronos-2-X": {
+    "improvement_pct": -5.593209634787355,
+    "um_low": 0.0007633812017817945,
+    "um_high": 0.10608637021793675
+   },
+   "TimesFM-X": {
+    "improvement_pct": 5.150722439342925,
+    "um_low": -0.1258953895183431,
+    "um_high": 0.027745449160561896
+   }
+  },
+  "energy": {
+   "TimesFM": {
+    "improvement_pct": 6.2454994317267865,
+    "um_low": -0.16817777598717362,
+    "um_high": 0.10641157316024248
+   },
+   "Chronos-2": {
+    "improvement_pct": 1.9841976707799858,
+    "um_low": -0.10305276855911585,
+    "um_high": 0.19569313957608322
+   },
+   "SN-day": {
+    "improvement_pct": 27.558963169579876,
+    "um_low": -0.4683148368640308,
+    "um_high": -0.07971566820885019
+   },
+   "SN-week": {
+    "improvement_pct": 5.844306657814535,
+    "um_low": -0.17740934978267445,
+    "um_high": 0.12483275302331662
+   },
+   "WeekProf4": {
+    "improvement_pct": 0.3450052829476191,
+    "um_low": -0.4662071842306047,
+    "um_high": 0.19292561982865628
+   },
+   "SP-profile": {
+    "improvement_pct": 3.0646640235142186,
+    "um_low": -0.34472436835354864,
+    "um_high": 0.19947914856295243
+   },
+   "LYR-profile": {
+    "improvement_pct": 24.543748627411567,
+    "um_low": -0.6802955337695563,
+    "um_high": -0.11788153212727255
+   },
+   "RIDGE-L": {
+    "improvement_pct": 4.000700421520554,
+    "um_low": -0.15256286729714735,
+    "um_high": 0.26256802145829466
+   },
+   "Holt-Winters": {
+    "improvement_pct": 3.7878922019840666,
+    "um_low": -0.27072260452341373,
+    "um_high": 0.07964671642526551
+   },
+   "MSTL": {
+    "improvement_pct": 8.2674297966972,
+    "um_low": -0.21240486120263288,
+    "um_high": 0.14219538025430106
+   },
+   "GBT": {
+    "improvement_pct": 3.13903523936353,
+    "um_low": -0.23571069428114522,
+    "um_high": 0.10310466900522777
+   },
+   "Chronos-2-X": {
+    "improvement_pct": -13.561656626747464,
+    "um_low": 0.02991131439160396,
+    "um_high": 0.3192760820759251
+   },
+   "TimesFM-X": {
+    "improvement_pct": 6.335010105340344,
+    "um_low": -0.15510117226177828,
+    "um_high": 0.12651854185419886
+   }
+  },
+  "mean_unit_rank_14_ridge_windows": {
+   "Chronos-2-X": 4.115,
+   "ANKYRA": 4.17,
+   "Chronos-2": 4.915,
+   "TimesFM-X": 5.935,
+   "TimesFM": 6.09,
+   "WeekProf4": 6.41,
+   "RIDGE-L": 6.53,
+   "Holt-Winters": 7.535,
+   "MSTL": 8.425,
+   "SN-week": 8.9675,
+   "SP-profile": 9.065,
+   "GBT": 9.745,
+   "LYR-profile": 10.6425,
+   "SN-day": 12.455
+  }
+ }
+}

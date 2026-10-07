@@ -332,8 +332,42 @@ mean per-unit rank, the pooled ratio and conventional metrics.
 - TimesFM improved on the small trained neural forecaster of that study by 9.9% unit-equal, while its pooled MSE was
   2.5% higher.
 
+## Evidence bound
+
+**P20. Evidence bound for choosing among candidates.** The level block chooses, in effect, among $K$ candidate
+estimates of the same quantity from their errors at $T$ completed pseudo-origins ($K=7$ with the model candidate,
+$T\le 6$). Two statements bound what any such rule can do.
+
+- *Null benchmark (identity).* If the vectors of candidate errors at the $T$ pseudo-origins and at the target are
+  exchangeable, that is, no candidate is persistently better for the unit, then every rule that picks one candidate from
+  the pseudo errors picks the target's best candidate with probability exactly $1/K$, and lands in the best two with
+  probability $2/K$. A measured hit rate is therefore read against $1/K$, not against zero.
+- *Minimax rate (standard).* With $T$ independent error samples per candidate, no aggregation rule can guarantee an excess
+  squared error over the best candidate smaller than a constant times $\psi(K,T)=\min\lbrace K/T,\sqrt{\log K/T}\rbrace$
+  for convex combinations, or $\log K/T$ for selection, in units of the error variance (Tsybakov, 2003; Juditsky,
+  Rigollet and Tsybakov, 2008; Rigollet and Tsybakov, 2011). For $K=7$ and $T=6$ both rates are of the order of the
+  error itself ($\psi=1.17$, $\log K/T=0.32$); for $T=30$ they are $0.23$ and $0.06$. Below about two years of
+  monthly evidence, no weighting rule can be expected to approach the best fixed candidate; shrinkage towards equal
+  weights is the appropriate response, and it is what the weights of P8 do.
+
+*Evidence (this study).* Among the six historical candidates, the candidate with the smallest pseudo-origin RMS was the
+target's best on 19–29% of windows across thirteen populations (chance 17%) and in the best two on 35–47% (chance
+33%), whether the rule looked at the last six months, the same month a year earlier or the whole record with seasonal
+weights. A per-window choice made with hindsight would have cut the level error by 41–73% against ANKYRA; the same
+choice made from the record (all past months of the unit) changed it by −0.7% and −7.0% on the two populations where it
+could be tested. The equal-weight average was worse than ANKYRA's shrunk inverse-MSE weights on most populations
+(by 3–30%), so the weights carry some signal; the gap to the hindsight bound is the bound above, not an estimation
+defect. The pre-origin statistics that *do* predict the gain of anchoring are the unit's record of history against the
+carrier (`anchoring_record`), reported with every forecast.
+
 ## References
 
 - Bates, J. M., Granger, C. W. J. (1969). The combination of forecasts. *Operational Research Quarterly* 20(4),
   451–468.
+- Juditsky, A., Rigollet, P., Tsybakov, A. B. (2008). Learning by mirror averaging. *Annals of Statistics* 36(5),
+  2183–2206.
 - Koenker, R., Bassett, G. (1978). Regression quantiles. *Econometrica* 46(1), 33–50.
+- Rigollet, P., Tsybakov, A. B. (2011). Exponential screening and optimal rates of sparse estimation. *Annals of
+  Statistics* 39(2), 731–771.
+- Tsybakov, A. B. (2003). Optimal rates of aggregation. In *Learning Theory and Kernel Machines* (COLT 2003), Lecture
+  Notes in Computer Science 2777, 303–313.

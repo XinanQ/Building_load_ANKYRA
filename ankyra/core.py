@@ -50,6 +50,8 @@ from . import analog as _analog
 
 STEP = 744                # spacing of pseudo-origins
 K_FM = 6                  # pseudo-origins with foundation-model forecasts
+GAP_MAX_H = 6             # gap tolerance (2.2): gaps of at most this many hours are interpolated for the pseudo-origin bookkeeping
+TARGET_MIN_OBS = 0.9      # gap tolerance (2.2): a pseudo-origin's target month qualifies when this share of its hours is observed
 K0_WEEK = 2.0             # shrinkage of the lead-week weights towards 1/2
 ZERO_KW = 1e-6            # off-state threshold (kW)
 MICRO_KW = 1e-3           # micro-load threshold (kW, on |load|, compared in float64): the floor of the estimator's normalisation scale
@@ -88,6 +90,7 @@ class AnkyraForecast:
     within_pseudo_pairs: int = 0              # completed pseudo-origin triples behind the within-day trust (at most 3)
     analog_kept: bool = False                 # False when the whole-window guard returned the model's shape (or no analog shape was built)
     micro_load: bool = False                  # True when the whole 1,344-hour context stayed within 1e-3 kW of zero and the model was used unchanged
+    anchoring_record: dict = field(default_factory=dict)   # 2.2: the unit's own pseudo-forecast record on the level, read before the forecast (see anchoring_record_doc)
 
     @property
     def energy_kwh(self) -> float:
@@ -96,7 +99,7 @@ class AnkyraForecast:
 
 
 # ----------------------------------------------------------------------------- level with the model candidate
-def _level_parts(history: History, group: str, sigma: float):
+def _level_parts(history: History, group: str, sigma: float, min_target_obs: float = 1.0):
     """Level hypotheses, their pseudo-origin errors and the pseudo-origin bookkeeping of the reference estimator."""
     cfg = _api.frozen_config()
     if group not in GROUPS:
@@ -104,7 +107,7 @@ def _level_parts(history: History, group: str, sigma: float):
     gi = GROUPS.index(group)
     curves = {i: np.asarray(cfg["source_curves"][g], dtype=np.float64) for i, g in enumerate(GROUPS) if g in cfg["source_curves"]}
     store = _api._store(history, gi, sigma)
-    batcher = _api._PredictionBatcher(store)
+    batcher = _api._PredictionBatcher(store, min_target_obs=min_target_obs)
     sigs = _api._BoundarySignatures(store, curves, "strict")
     system = SimpleNamespace(lam=cfg["signature_lambda"], mu=np.zeros(len(GROUPS)))
     b, o = np.array([0]), np.array([store.origin])
@@ -156,6 +159,36 @@ def _level_path(h, names, w):
     return lvl[:, None] + w_w[:, None] * h["g_h"] + h["c_d"], w
 
 
+def anchoring_record(parts, fm_means_pseudo: Mapping[int, float], w_level: Mapping[str, float]) -> dict:
+    """Two statistics of the unit's own pseudo-forecast record on the monthly level, computable before the forecast (2.2).
+
+    carrier_level_weight          the weight the level block gives the foundation model's window mean (``level_weights['fm']``);
+    history_vs_carrier_log_ratio  log of (the smallest pseudo-origin RMS error among the six historical level candidates) over
+                                  (the pseudo-origin RMS error of the foundation model's window mean), both in the estimator's
+                                  normalised units over the completed pseudo-origins with a model forecast; negative = the unit's
+                                  history beat the model at its earlier origins; NaN with fewer than two such pseudo-origins;
+    pseudo_origins                the number of pseudo-origins behind the ratio.
+    Across the fourteen populations of the study the realised gain of ANKYRA over the foundation model fell monotonically with
+    both statistics (results/anchoring_gain_deciles.csv in the repository); the forecast itself does not use them."""
+    names = list(parts["names"]); K = parts["cfg"]["K"]; err = parts["err"]
+    efm = []
+    for k in range(1, K + 1):
+        pk = parts["pseudo"].get(k)
+        if pk is not None and k in fm_means_pseudo:
+            efm.append(((fm_means_pseudo[k] - pk["l0"]) / pk["s0"] - pk["truth"], k))
+    ratio = float("nan")
+    if len(efm) >= 2:
+        ks = [k - 1 for _, k in efm]; rms_fm = float(np.sqrt(np.mean([e ** 2 for e, _ in efm])))
+        hist = []
+        for n in names:
+            e = np.asarray(err[n][0, ks], dtype=np.float64); e = e[np.isfinite(e)]
+            if len(e) >= 2:
+                hist.append(float(np.sqrt(np.mean(e ** 2))))
+        if hist and rms_fm > 0:
+            ratio = float(np.log(max(min(hist), 1e-12) / rms_fm))
+    return {"carrier_level_weight": float(w_level.get("fm", float("nan"))), "history_vs_carrier_log_ratio": ratio, "pseudo_origins": int(len(efm))}
+
+
 def level_with_model_candidate(parts, fm_mean_origin: float, fm_means_pseudo: Mapping[int, float]):
     """Level (kW) with the foundation model's window mean as an extra candidate, and the candidate weights."""
     h, err, names, a = parts["h"], parts["err"], parts["names"], parts["cfg"]
@@ -189,8 +222,9 @@ def lead_week_weights(pairs, k0: float = K0_WEEK):
         for y, hh, ff in pairs:
             e_h = hh[a0:a1] - y[a0:a1]
             d = ff[a0:a1] - hh[a0:a1]
-            num += float((-e_h * d).sum())
-            den += float((d * d).sum())
+            m = np.isfinite(e_h)                                      # 2.2: days of a partially observed pseudo target drop out
+            num += float((-e_h[m] * d[m]).sum())
+            den += float((d[m] * d[m]).sum())
             n += 1
         lam = min(max(num / den, 0.0), 1.0) if den > 0 else 0.5
         out.append((n * lam + k0 * 0.5) / (n + k0))
@@ -206,17 +240,44 @@ def lead_week_transition(daily_hist, daily_fm, alphas):
 
 
 # ----------------------------------------------------------------------------- driver
-def pseudo_origin_contexts(load_kw: np.ndarray, k_max: int = K_FM):
+def fill_short_gaps(load_kw: np.ndarray, max_hours: int = GAP_MAX_H) -> np.ndarray:
+    """Gap tolerance (2.2): a copy of the pre-origin load in which every gap of at most ``max_hours`` missing hours is linearly
+    interpolated between its two observed neighbours, provided the gap and both neighbours lie inside one 744-hour block counted
+    back from the origin (the end of the array).  A pseudo-origin o - 744k is a block boundary, so no interpolated hour before a
+    pseudo-origin uses a value at or after it.  Gaps that touch the origin, the start, a block boundary, or are longer than
+    ``max_hours`` are left as NaN.  A record without such gaps is returned unchanged."""
+    load = np.array(load_kw, dtype=np.float64); o = len(load)
+    fin = np.isfinite(load)
+    if fin.all() or o == 0:
+        return load
+    block = (o - 1 - np.arange(o)) // STEP                                        # block index of each hour, 0 = the last 744 h
+    i = 0
+    while i < o:
+        if fin[i]:
+            i += 1; continue
+        j = i
+        while j < o and not fin[j]:
+            j += 1
+        if 1 <= j - i <= max_hours and i > 0 and j < o and block[i - 1] == block[j]:
+            load[i:j] = load[i - 1] + (load[j] - load[i - 1]) * (np.arange(1, j - i + 1) / (j - i + 1))
+        i = j
+    return load
+
+
+def pseudo_origin_contexts(load_kw: np.ndarray, k_max: int = K_FM, gap_tolerance: bool = True):
     """Contexts the foundation model must forecast from: k = 0 (the origin) and pseudo-origins o - 744k.
 
-    Returns {k: (1344,) context} for every k whose context is completely observed."""
+    Returns {k: (1344,) context} for every k whose context is completely observed; with ``gap_tolerance`` (2.2, default) the
+    pseudo-origin contexts (k >= 1) are taken from :func:`fill_short_gaps`, as the forecaster's own bookkeeping does; the
+    context at the origin (k = 0) is always the raw record."""
     load = np.asarray(load_kw, dtype=np.float64)
     o = len(load)
+    filled = fill_short_gaps(load) if gap_tolerance else load
     out = {}
     for k in range(0, k_max + 1):
-        ok = o - k * STEP
-        if ok - CONTEXT >= 0 and np.isfinite(load[ok - CONTEXT:ok]).all():
-            out[k] = load[ok - CONTEXT:ok]
+        ok = o - k * STEP; src = load if k == 0 else filled
+        if ok - CONTEXT >= 0 and np.isfinite(src[ok - CONTEXT:ok]).all():
+            out[k] = src[ok - CONTEXT:ok]
     return out
 
 
@@ -250,7 +311,7 @@ def _check_pseudo_forecasts(T: dict, used, within_anchor: bool) -> None:
 
 
 def forecast(history: History, *, group: str, temp_sigma_std: float, foundation: Optional[Foundation], dst_region: str = "none",
-             within_anchor: bool = True, micro_load_rule: bool = True, single_trust: bool = True) -> AnkyraForecast:
+             within_anchor: bool = True, micro_load_rule: bool = True, single_trust: bool = True, gap_tolerance: bool = True) -> AnkyraForecast:
     """ANKYRA forecast for the 744 hours after the end of ``history``.
 
     history         pre-origin hourly load and temperature and the calendar through the horizon (``ankyra.History``)
@@ -319,13 +380,17 @@ def forecast(history: History, *, group: str, temp_sigma_std: float, foundation:
     _check_inputs(history, group, temp_sigma_std)                    # the estimator's own checks, before any computation
     if within_anchor and dst_region not in _analog.REGIONS:
         raise ValueError(f"dst_region must be one of {_analog.REGIONS}")
-    parts = _level_parts(history, group, temp_sigma_std)
+    if gap_tolerance:                                                # 2.2: short gaps interpolated and partial pseudo targets accepted,
+        load = fill_short_gaps(load); obs = np.isfinite(load)         # for the pseudo-origin bookkeeping only (the origin context is raw)
+        history = replace(history, load_kw=load, observed=obs)
+    parts = _level_parts(history, group, temp_sigma_std, min_target_obs=TARGET_MIN_OBS if gap_tolerance else 1.0)
     _check_pseudo_forecasts(T, [k for k in range(1, K_FM + 1) if k in parts["pseudo"] and k in T], within_anchor)
     est = estimate_from_history(history, group=group, temp_sigma_std=temp_sigma_std)
     daily_f0 = est.level_kw + np.asarray(est.daily_path_kw, dtype=np.float64)          # fixed division of labour
 
     fm_ps = {k: float(T[k].mean()) for k in range(1, K_FM + 1) if k in parts["pseudo"] and k in T}
     lvl, w_level = level_with_model_candidate(parts, float(T0.mean()), fm_ps)
+    record = anchoring_record(parts, fm_ps, w_level)
     daily_level = daily_f0 - daily_f0.mean() + lvl                                     # model candidate in the level
 
     pairs = []                                   # fixed division vs the model at completed pseudo-origins (see module docstring)
@@ -337,7 +402,11 @@ def forecast(history: History, *, group: str, temp_sigma_std: float, foundation:
         ek = estimate_from_history(History(load_kw=load[:ok], temperature_c=temp[:ok], day_types=types[:ok + HORIZON],
                                            start_timestamp=history.start_timestamp, observed=obs[:ok]),
                                    group=group, temp_sigma_std=temp_sigma_std)
-        pairs.append((load[ok:ok + HORIZON].reshape(D, HR).mean(1), ek.level_kw + ek.daily_path_kw, T[k].reshape(D, HR).mean(1)))
+        yk = load[ok:ok + HORIZON].reshape(D, HR); nk = np.isfinite(yk).sum(1)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", RuntimeWarning)
+            yday = np.where(nk >= 12, np.nanmean(yk, axis=1), np.nan)    # 2.2: a day needs 12 observed hours; complete data: plain means
+        pairs.append((yday, ek.level_kw + ek.daily_path_kw, T[k].reshape(D, HR).mean(1)))
     alphas = lead_week_weights(pairs) if pairs else [0.5] * 4
     daily = lead_week_transition(daily_level, T0.reshape(D, HR).mean(1), alphas)
 
@@ -358,7 +427,7 @@ def forecast(history: History, *, group: str, temp_sigma_std: float, foundation:
     raw = np.repeat(daily, HR) + W
     return AnkyraForecast(trajectory_kw=np.maximum(raw, 0.0), level_kw=float(daily.mean()), daily_means_kw=daily,
                           within_day_kw=W, off_state=False, lead_week_weights=tuple(float(a) for a in alphas),
-                          level_weights=w_level, fixed_division_daily_means_kw=daily_f0, pseudo_pairs=len(pairs),
+                          level_weights=w_level, fixed_division_daily_means_kw=daily_f0, pseudo_pairs=len(pairs), anchoring_record=record,
                           foundation_within_day_kw=wT0, analog_shape_kw=S0, within_trust=trust, within_pseudo_pairs=n_w, analog_kept=kept)
 
 

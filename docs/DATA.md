@@ -1,7 +1,7 @@
 # Data: sources and preparation
 
-This page says where the eleven populations of the main evaluation and the two populations of the frozen-model
-checks (HKUST, Helsinki) come from and how the study prepared them. It is written for
+This page says where the eleven populations of the main evaluation and the three populations of the frozen-model
+checks (HKUST, Helsinki, UNICON) come from and how the study prepared them. It is written for
 a reader who wants to rebuild the evaluation inputs from the public sources.
 
 ## What is and is not in this repository
@@ -305,9 +305,10 @@ Unit and window counts (all / late) are in the table of
 
 ## Populations scored with the forecaster frozen
 
-These two populations were prepared after ANKYRA 2.0.1 was fixed. No rule or constant of the forecaster was chosen on
-them. ANKYRA 2.1 was adopted after they had been scored; its numbers on them are re-evaluations
-([FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md)). Results: [FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md).
+No rule or constant of the forecaster was chosen on these three populations. HKUST and Helsinki were prepared after
+ANKYRA 2.0.1 was fixed and first scored with it; ANKYRA 2.1 was adopted after they had been scored, so its numbers on
+them are re-evaluations. UNICON was prepared after 2.1 was fixed, for its external test. Results:
+[FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md).
 
 ### 12. HKUST campus incomer meters (Hong Kong)
 
@@ -346,6 +347,44 @@ them. ANKYRA 2.1 was adopted after they had been scored; its numbers on them are
 - **Windows.** Eleven month-start origins, 2025-11 to 2026-09, after the public release of both foundation models;
   common window rules; no thinning.
 
+### 14. UNICON, La Trobe University campuses (Australia)
+
+- **Source.** UNICON, Moraliyage et al., HSI 2022, doi:10.1109/HSI55341.2022.9869498; Kaggle dataset `cdaclab/unicon`,
+  version 1, obtained as one archive (148,437,018 bytes, SHA-256
+  `82dd8293a510101a65a2ef84962abc97c656e3331e84d762d7d0d057c47b6303`). **Licence CC BY-NC-SA 4.0** (non-commercial
+  research use). The data are not redistributed; this repository holds only scored statistics.
+- **Campuses.** Five campuses of La Trobe University in Victoria: Bundoora, Albury-Wodonga, Bendigo, Mildura and
+  Shepparton.
+- **Units.** Every (campus, meter) of `building_consumption.csv`, the building-level meters: 64 units, none selected by
+  use, size or consumption. The aggregate (`nmi_consumption.csv`) and sub-meter files are not used. Category `Public`.
+  60 units have at least one eligible window.
+- **Load.** 15-minute readings stamped at the end of their interval; grid hour h is formed from the readings at h:15,
+  h:30, h:45 and (h+1):00. The reading unit is not documented; the readings are taken as kWh per 15 minutes, so the four
+  readings of an hour sum to its mean kW. An hour with any missing reading is missing. Negative readings (on two meters)
+  are set missing; 1,363 records whose timestamps are not on the 15-minute grid are dropped.
+- **Grid.** The timestamps are local wall-clock time (AEST/AEDT). They are moved to a fixed UTC+10 grid, anchor
+  2018-01-01: summer-time records shift by one hour; the autumn wall-clock hour, of which the data hold one copy, is
+  given to both grid hours, which are flagged (flagged hours enter the context and the monthly energy, not the hourly
+  target loss).
+  `dst_region` none (the package has only the northern-hemisphere EU and US rules), as for HEEW, EWELD and the Suzhou
+  park.
+- **Temperature.** ERA5 2 m temperature through the Open-Meteo archive interface, one point per campus, at the public
+  coordinates of the campus town: Bundoora 37.72 S, 145.05 E; Albury-Wodonga (Wodonga campus) 36.12 S, 146.89 E;
+  Bendigo 36.78 S, 144.30 E; Mildura 34.19 S, 142.16 E; Shepparton 36.38 S, 145.40 E. The weather data shipped with the
+  dataset are not used.
+- **Day types.** Victorian public holidays, including substitute days, as listed on the Business Victoria pages for
+  each year (consulted 2026-10-06), = 7; Melbourne Cup Day is treated as state-wide. The university calendar file is
+  not used.
+- **Temperature-anomaly scale.** Fitted on the first 244 days of the grid, before every origin.
+- **Windows, and a departure from the common rules.** Month-start origins (possible from September 2018 to March
+  2022). Under the common rules no window qualified, because of dense short gaps. An amendment written after the
+  missingness had been seen and before any forecast changed the input handling: each window has its own series,
+  missing at and after its origin; inside each 1,344-hour context gaps of at most 6 hours are filled by linear
+  interpolation from observations before that context's own origin, never across an origin or pseudo-origin; target
+  values are never filled. A window needs a complete filled context, at least 95% of its target observed and a unit
+  mean of at least 10⁻⁶ kW. 843 windows of 60 units
+  ([details](FROZEN_MODEL_CHECKS.md#an-external-test-of-ankyra-21-unicon)).
+
 ## What cannot be rebuilt from this page
 
 - **GoiEner (both populations), BDG2, the Suzhou park and LCL.** The archive version, the load column, the unit
@@ -357,14 +396,15 @@ them. ANKYRA 2.1 was adopted after they had been scored; its numbers on them are
   [above](#the-input-format-the-forecaster-expects), but its value is not listed per population. The study's working
   notes say that the preparation scripts for two sources contain a path that fills temperature gaps from the full
   record; whether it was triggered was not assessed.
-- **File hashes.** Hashes are recorded for Drammen, EWELD and HEEW only.
+- **File hashes.** Hashes are recorded for Drammen, EWELD and HEEW, and for the UNICON archive (above).
 - **Licences of the sources** (checked on the providers' pages on 5 October 2026): CC BY 4.0 for BDG2 (Zenodo
   10.5281/zenodo.3887306), the Cambridge estate archive, HEEW, EWELD (figshare 10.6084/m9.figshare.21893808.v3),
   GoiEner (Zenodo 10.5281/zenodo.7362094 and 10.5281/zenodo.7859413), COFACTOR Drammen (Zenodo
   10.5281/zenodo.14752397), COFACTOR-SBHUB Oslo (data.sintef.no, 10.60609/czgf-5e46), CINELDI (Zenodo
   10.5281/zenodo.10361330) and the Suzhou park (OSF 10.17605/OSF.IO/AGK8S);
   "Creative Commons Attribution" (version not given on the page) for LCL on the London Datastore; CC0 for HKUST
-  (Dryad). The Helsinki data are listed as CC BY 4.0 in the national catalogues, but the provider's pages could not be
+  (Dryad); CC BY-NC-SA 4.0 for UNICON (Kaggle `cdaclab/unicon`, as stated on its page when the protocol was written on
+  6 October 2026), which restricts its use to non-commercial research. The Helsinki data are listed as CC BY 4.0 in the national catalogues, but the provider's pages could not be
   opened from the study's network, so that licence is not confirmed. The repository redistributes no raw data except the Cambridge example
   window (CC BY 4.0, attributed in `results/example_window_cambridge.json`); `results/bdg2_micro_load_windows.csv`
   names BDG2 meters with monthly means and maxima (CC BY 4.0, Miller et al. 2020).

@@ -6,7 +6,10 @@
 >   current files.
 > - ANKYRA 2.1 differs from 2.0.1 only in the within-day trust (one value per window instead of one per lead block).
 >   Level, daily means, handover, energy readout and the off-state and micro-load rules are bit-identical, so files
->   that depend only on them, or that record the frozen-model checks made with 2.0.1, are identical to the current ones.
+>   that depend only on them are identical to the current ones.
+> - The frozen-model checks on HKUST, Helsinki and LCL were first scored with 2.0.1. Their files here are those
+>   2.0.1 scorings; since 6 October 2026 the current files hold ANKYRA 2.1 on the same targets, with the same
+>   verdicts. `lcl_audit.json`, the arithmetic re-check of the 2.0.1 LCL scoring, is kept only here.
 > - `REPRODUCTION_CHECK.json` is the check on package 2.0.3 (code of 2.0.2, model 2.0.1); `REPRODUCTION_CHECK_2_0_1.json`
 >   is the check on package 2.0.1. In both, `faces` are the window sets checked (`goiener_confirm` = GoiEner
 >   non-household, `households` = GoiEner households, `park` = Suzhou park), "panel" is the set of scored forecasts and
@@ -21,7 +24,7 @@ tables of the 2.0.1 release, exported from the study's evaluation outputs; nothi
 micro-load rule, written after the BDG2 result of 2.0.0 had been seen.
 
 **Files that differ from the current (2.1) files**: the within-day block and the quantities computed from the delivered
-trajectory, plus the records that name the package.
+trajectory, the records that name the package, and the frozen-model checks as first scored with 2.0.1.
 
 | File | Content |
 |---|---|
@@ -42,13 +45,15 @@ trajectory, plus the records that name the package.
 | `example_window_cambridge.csv` | The Cambridge example window with the 2.0.1 forecast (Figures 6, 7). |
 | `carrier_swap.csv`, `carrier_swap_x.csv`, `carrier_swap_combined.csv` | The anchoring of 2.0.1 with Chronos-2 and Chronos-2-X as foundation models, and the three configurations on the same windows. The current files repeat these runs with 2.1; the resolved counts are the same. |
 | `REPRODUCTION_CHECK.json` | The reproduction check of package 2.0.3 (code of 2.0.2) on 484 windows of seven populations. |
+| `hkust_first_read.csv`, `hkust_by_day.csv` | The HKUST first read with the frozen 2.0.1, with the comparators added afterwards and the recomputed forecasts after the causal correction of the temperature scale; per-day curves of the 14 forecasters (they were Figure 18 a, b of the 2.0.1 release). |
+| `helsinki_confirmation.csv`, `helsinki_criteria.json`, `helsinki_by_day.csv` | The pre-registered Helsinki confirmation test as scored with the frozen 2.0.1 (not confirmed); per-day curves (Figure 18 c, d of the 2.0.1 release). |
+| `lcl_pairwise.csv`, `lcl_pairwise_late.csv`, `lcl_mean_unit_rank_late.csv`, `lcl_shared_information_holm.csv`, `lcl_readouts.csv`, `lcl_conventional_metrics.csv`, `lcl_conventional_metrics_late.csv`, `lcl_lead_day_metrics.csv`, `lcl_lead_day_metrics_late.csv`, `lcl_results.json` | The LCL evaluation of the frozen 2.0.1, scored once on 3 October 2026; `lcl_results.json` is its full record, and the CSV files are extracts of it. There is no 2.0.1 version of `lcl_by_day.csv`. |
+| `lcl_audit.json` | The arithmetic re-check of the 2.0.1 LCL outputs with a second implementation: 96,032 comparisons, no difference. Not an independent review; the saved targets were opened once for scoring and once for this check. Kept only here. |
 
 **Files identical to the current ones**, kept so that the folder is a complete 2.0.1 set: `REPRODUCTION_CHECK_2_0_1.json`,
 `bdg2_micro_load_windows.csv`, `cost_per_window.csv`, `datasets.csv`, `example_window_cambridge.json`,
-`handover_granularity.csv`, `closeout_status.json`, the frozen-model checks made with 2.0.1 (`hkust_first_read.csv`,
-`hkust_by_day.csv`, `helsinki_confirmation.csv`, `helsinki_criteria.json`, `helsinki_by_day.csv`) and the LCL
-evaluation of 2.0.1 (`lcl_*`). The 2.1 re-evaluations of the frozen-model checks are in
-[`../reevaluation_2_1.json`](../reevaluation_2_1.json).
+`handover_granularity.csv`, `closeout_status.json` and `lcl_metric_definitions.json`. A summary of the 2.1
+re-evaluations of the three frozen-model checks is in [`../reevaluation_2_1.json`](../reevaluation_2_1.json).
 
 Model classes:
 

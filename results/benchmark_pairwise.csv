@@ -1,201 +1,201 @@
 set,tier,subset,windows,units,model,model_label,model_class,log_ratio,um_low,um_high,improvement_pct,pooled_mse_ratio
-BDG2 2017,test,full,934,178,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.059282,-0.07954,0.222485,5.756,0.816345
-BDG2 2017,test,full,934,178,RIDGE-L,Ridge (per unit),per-unit regression,-0.438115,-1.300526,-0.055366,35.475,1.124335
-BDG2 2017,test,full,934,178,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.142222,-0.378611,0.043709,13.257,0.948444
-BDG2 2017,test,full,934,178,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.053124,-0.096584,0.342045,5.174,0.80594
-BDG2 2017,test,full,934,178,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.726409,-1.278704,-0.37858,51.636,0.430633
-BDG2 2017,test,full,934,178,Holt-Winters,Holt-Winters,"load only, statistical",-0.194574,-0.245778,-0.12455,17.681,0.694806
-BDG2 2017,test,full,934,178,LYR-profile,Last-year profile,profile,-0.455347,-1.233264,-0.252108,36.577,0.447756
-BDG2 2017,test,full,934,178,MSTL,MSTL,"load only, statistical",0.061348,-0.192435,1.167926,-6.327,0.752244
-BDG2 2017,test,full,934,178,SN-day,Seasonal naive (day),naive,-0.419175,-0.505087,-0.319026,34.241,0.741277
-BDG2 2017,test,full,934,178,SN-week,Seasonal naive (week),naive,-0.226809,-0.259763,-0.168732,20.293,0.64448
-BDG2 2017,test,full,934,178,SP-profile,Previous-month profile,profile,0.117892,-0.216998,1.377705,-12.512,0.757896
-BDG2 2017,test,full,934,178,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.440066,-1.293883,-0.077925,35.601,0.829881
-BDG2 2017,test,full,934,178,WeekProf4,4-week profile,profile,-0.151679,-0.196597,-0.094711,14.074,0.765215
-BDG2 2017,test,late,474,142,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.024993,-0.074824,0.254311,2.468,0.822784
-BDG2 2017,test,late,474,142,RIDGE-L,Ridge (per unit),per-unit regression,-0.550281,-1.486991,-0.069642,42.321,0.988517
-BDG2 2017,test,late,474,142,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.128425,-0.419272,0.05636,12.052,0.911166
-BDG2 2017,test,late,474,142,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.015104,-0.097996,0.386517,1.499,0.88481
-BDG2 2017,test,late,474,142,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.816581,-1.451041,-0.463236,55.806,0.262104
-BDG2 2017,test,late,474,142,Holt-Winters,Holt-Winters,"load only, statistical",-0.229397,-0.326939,-0.147775,20.499,0.537228
-BDG2 2017,test,late,474,142,LYR-profile,Last-year profile,profile,-0.410121,-1.268079,-0.128411,33.643,0.482658
-BDG2 2017,test,late,474,142,MSTL,MSTL,"load only, statistical",0.17008,-0.211642,1.325329,-18.54,0.688086
-BDG2 2017,test,late,474,142,SN-day,Seasonal naive (day),naive,-0.418747,-0.620658,-0.308146,34.213,0.659366
-BDG2 2017,test,late,474,142,SN-week,Seasonal naive (week),naive,-0.217657,-0.278314,-0.138626,19.56,0.591874
-BDG2 2017,test,late,474,142,SP-profile,Previous-month profile,profile,0.190985,-0.268456,1.459028,-21.044,0.634078
-BDG2 2017,test,late,474,142,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.519642,-1.443987,-0.074721,40.527,0.753296
-BDG2 2017,test,late,474,142,WeekProf4,4-week profile,profile,-0.182239,-0.240563,-0.129576,16.66,0.617808
-BDG2 2017,test,late,474,142,DLinear,DLinear,"load only, trained",-0.60613,-1.584623,-0.110454,45.454,0.868519
-BDG2 2017,test,late,474,142,GBT-T,GBT-T,"same information, trained",-0.626049,-1.698162,-0.09171,46.53,0.908133
-BDG2 2017,test,late,474,142,iTransformer-X,iTransformer-X,"same information, trained",-0.497244,-1.180028,-0.131032,39.18,0.746818
-BDG2 2017,test,late,474,142,iTransformer,iTransformer,"load only, trained",-0.485857,-1.159869,-0.119915,38.483,0.712005
-BDG2 2017,test,late,474,142,LSTM,LSTM,"load only, trained",-0.687888,-1.679219,-0.201058,49.736,0.830169
-BDG2 2017,test,late,474,142,PatchTST,PatchTST,"load only, trained",-0.472742,-1.106967,-0.125822,37.671,0.83363
-BDG2 2017,test,late,474,142,TiDE,TiDE,"same information, trained",-0.608017,-1.590425,-0.112679,45.557,0.866681
-Cambridge,test,full,1456,119,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.101628,-0.122627,-0.071216,9.663,0.861241
-Cambridge,test,full,1456,119,RIDGE-L,Ridge (per unit),per-unit regression,-0.087735,-0.116561,-0.040252,8.4,0.932909
-Cambridge,test,full,1456,119,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",0.007367,-0.032729,0.050298,-0.739,0.970284
-Cambridge,test,full,1456,119,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.138853,-0.168969,-0.091546,12.964,0.80029
-Cambridge,test,full,1456,119,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.362225,-0.411842,-0.306279,30.387,0.671007
-Cambridge,test,full,1456,119,Holt-Winters,Holt-Winters,"load only, statistical",-0.183603,-0.229027,-0.137858,16.773,0.806677
-Cambridge,test,full,1456,119,LYR-profile,Last-year profile,profile,-0.378725,-0.459698,-0.298891,31.527,0.578675
-Cambridge,test,full,1456,119,MSTL,MSTL,"load only, statistical",-0.293424,-0.329526,-0.235156,25.429,0.684615
-Cambridge,test,full,1456,119,SN-day,Seasonal naive (day),naive,-0.535267,-0.606719,-0.476113,41.449,0.435671
-Cambridge,test,full,1456,119,SN-week,Seasonal naive (week),naive,-0.305449,-0.345597,-0.246768,26.321,0.678057
-Cambridge,test,full,1456,119,SP-profile,Previous-month profile,profile,-0.229124,-0.284139,-0.190347,20.477,0.86618
-Cambridge,test,full,1456,119,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.155993,-0.188513,-0.089218,14.443,0.848417
-Cambridge,test,full,1456,119,WeekProf4,4-week profile,profile,-0.111133,-0.151983,-0.074724,10.518,1.049586
-Cambridge,test,late,730,108,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.086856,-0.115802,-0.052068,8.319,0.893396
-Cambridge,test,late,730,108,RIDGE-L,Ridge (per unit),per-unit regression,-0.065823,-0.102648,-0.028998,6.37,0.942115
-Cambridge,test,late,730,108,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.02573,-0.065873,0.030033,2.54,0.954437
-Cambridge,test,late,730,108,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.104079,-0.136662,-0.056312,9.885,0.817123
-Cambridge,test,late,730,108,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.273911,-0.337681,-0.218398,23.96,0.768326
-Cambridge,test,late,730,108,Holt-Winters,Holt-Winters,"load only, statistical",-0.189338,-0.245336,-0.127562,17.249,0.819715
-Cambridge,test,late,730,108,LYR-profile,Last-year profile,profile,-0.427407,-0.530584,-0.323301,34.78,0.576952
-Cambridge,test,late,730,108,MSTL,MSTL,"load only, statistical",-0.240016,-0.291851,-0.188592,21.338,0.733032
-Cambridge,test,late,730,108,SN-day,Seasonal naive (day),naive,-0.49051,-0.580232,-0.419701,38.769,0.51777
-Cambridge,test,late,730,108,SN-week,Seasonal naive (week),naive,-0.245351,-0.297498,-0.203437,21.757,0.737082
-Cambridge,test,late,730,108,SP-profile,Previous-month profile,profile,-0.225046,-0.289643,-0.182268,20.152,0.925555
-Cambridge,test,late,730,108,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.103333,-0.138756,-0.053392,9.817,0.868341
-Cambridge,test,late,730,108,WeekProf4,4-week profile,profile,-0.120293,-0.167766,-0.074914,11.334,1.084212
-Cambridge,test,late,730,108,DLinear,DLinear,"load only, trained",-0.179111,-0.253432,-0.134287,16.399,0.884602
-Cambridge,test,late,730,108,GBT-T,GBT-T,"same information, trained",-0.055568,-0.167498,0.069773,5.405,0.473899
-Cambridge,test,late,730,108,iTransformer-X,iTransformer-X,"same information, trained",-0.014642,-0.063461,0.028276,1.454,1.140738
-Cambridge,test,late,730,108,iTransformer,iTransformer,"load only, trained",-0.070905,-0.134209,-0.013925,6.845,1.071124
-Cambridge,test,late,730,108,LSTM,LSTM,"load only, trained",-0.369739,-0.481449,-0.284785,30.909,0.274713
-Cambridge,test,late,730,108,PatchTST,PatchTST,"load only, trained",-0.076929,-0.125878,-0.038611,7.404,1.017787
-Cambridge,test,late,730,108,TiDE,TiDE,"same information, trained",-0.207081,-0.287835,-0.158115,18.705,0.832459
-HEEW Arizona,test,full,1282,142,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.04654,-0.063949,-0.000747,4.547,0.748026
-HEEW Arizona,test,full,1282,142,RIDGE-L,Ridge (per unit),per-unit regression,-0.082336,-0.112325,-0.050846,7.904,0.797083
-HEEW Arizona,test,full,1282,142,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.036328,-0.073515,0.016757,3.568,0.78167
-HEEW Arizona,test,full,1282,142,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.099121,-0.133131,-0.043675,9.437,0.745459
-HEEW Arizona,test,full,1282,142,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.455754,-0.518864,-0.382803,36.603,0.385468
-HEEW Arizona,test,full,1282,142,Holt-Winters,Holt-Winters,"load only, statistical",-0.228254,-0.282807,-0.18119,20.408,0.315137
-HEEW Arizona,test,full,1282,142,LYR-profile,Last-year profile,profile,-0.485645,-0.576793,-0.4015,38.47,0.724062
-HEEW Arizona,test,full,1282,142,MSTL,MSTL,"load only, statistical",-0.20521,-0.248696,-0.161799,18.552,0.523368
-HEEW Arizona,test,full,1282,142,SN-day,Seasonal naive (day),naive,-0.403585,-0.472312,-0.341356,33.208,0.467352
-HEEW Arizona,test,full,1282,142,SN-week,Seasonal naive (week),naive,-0.232969,-0.270652,-0.183405,20.782,0.602816
-HEEW Arizona,test,full,1282,142,SP-profile,Previous-month profile,profile,-0.274175,-0.32115,-0.235011,23.98,0.417182
-HEEW Arizona,test,full,1282,142,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.081917,-0.105946,-0.045445,7.865,0.783652
-HEEW Arizona,test,full,1282,142,WeekProf4,4-week profile,profile,-0.188435,-0.226063,-0.14965,17.175,0.43068
-HEEW Arizona,test,late,658,138,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.037876,-0.06192,0.077864,3.717,0.849934
-HEEW Arizona,test,late,658,138,RIDGE-L,Ridge (per unit),per-unit regression,-0.054835,-0.099841,-0.024491,5.336,0.652548
-HEEW Arizona,test,late,658,138,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.020196,-0.054279,0.056179,1.999,0.87101
-HEEW Arizona,test,late,658,138,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.068087,-0.10986,0.016319,6.582,0.650317
-HEEW Arizona,test,late,658,138,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.362622,-0.439864,-0.300956,30.415,0.333946
-HEEW Arizona,test,late,658,138,Holt-Winters,Holt-Winters,"load only, statistical",-0.19025,-0.259499,-0.124634,17.325,0.571683
-HEEW Arizona,test,late,658,138,LYR-profile,Last-year profile,profile,-0.553361,-0.702305,-0.41517,42.499,0.663067
-HEEW Arizona,test,late,658,138,MSTL,MSTL,"load only, statistical",-0.157989,-0.214966,-0.111901,14.614,0.735271
-HEEW Arizona,test,late,658,138,SN-day,Seasonal naive (day),naive,-0.298679,-0.378692,-0.244098,25.82,0.498978
-HEEW Arizona,test,late,658,138,SN-week,Seasonal naive (week),naive,-0.197929,-0.252726,-0.150442,17.957,0.536356
-HEEW Arizona,test,late,658,138,SP-profile,Previous-month profile,profile,-0.245759,-0.30032,-0.201221,21.789,0.259578
-HEEW Arizona,test,late,658,138,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.060209,-0.095446,-0.009219,5.843,0.911969
-HEEW Arizona,test,late,658,138,WeekProf4,4-week profile,profile,-0.174376,-0.218425,-0.1233,16.002,0.270201
-HEEW Arizona,test,late,658,138,DLinear,DLinear,"load only, trained",-0.219353,-0.336507,-0.166664,19.696,0.5631
-HEEW Arizona,test,late,658,138,GBT-T,GBT-T,"same information, trained",-0.067316,-0.147908,-0.01181,6.51,1.328672
-HEEW Arizona,test,late,658,138,iTransformer-X,iTransformer-X,"same information, trained",-0.064029,-0.10995,-0.030972,6.202,0.495066
-HEEW Arizona,test,late,658,138,iTransformer,iTransformer,"load only, trained",-0.098835,-0.136021,-0.068917,9.411,0.5688
-HEEW Arizona,test,late,658,138,LSTM,LSTM,"load only, trained",-0.398005,-0.53494,-0.330666,32.834,0.405128
-HEEW Arizona,test,late,658,138,PatchTST,PatchTST,"load only, trained",-0.076903,-0.119475,-0.050484,7.402,0.821111
-HEEW Arizona,test,late,658,138,TiDE,TiDE,"same information, trained",-0.218688,-0.334054,-0.167682,19.643,0.558201
-EWELD,test,full,1023,274,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.032186,-0.051138,-0.007029,3.167,0.965317
-EWELD,test,full,1023,274,RIDGE-L,Ridge (per unit),per-unit regression,-0.15145,-0.294735,-0.013617,14.054,1.231215
-EWELD,test,full,1023,274,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.073248,-0.16346,0.005308,7.063,1.537455
-EWELD,test,full,1023,274,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.045684,-0.168484,0.003969,4.466,1.31546
-EWELD,test,full,1023,274,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.321577,-0.495007,-0.119912,27.5,0.732537
-EWELD,test,full,1023,274,Holt-Winters,Holt-Winters,"load only, statistical",-0.364633,-0.547481,-0.24135,30.555,1.254378
-EWELD,test,full,1023,274,LYR-profile,Last-year profile,profile,-0.648577,-0.860411,-0.461399,47.721,0.316256
-EWELD,test,full,1023,274,MSTL,MSTL,"load only, statistical",-0.269022,-0.407306,-0.16769,23.587,1.205751
-EWELD,test,full,1023,274,SN-day,Seasonal naive (day),naive,-0.178923,-0.22085,-0.135733,16.383,0.536182
-EWELD,test,full,1023,274,SN-week,Seasonal naive (week),naive,-0.164907,-0.20657,-0.133947,15.203,0.902786
-EWELD,test,full,1023,274,SP-profile,Previous-month profile,profile,-0.22107,-0.40402,-0.115998,19.834,0.813346
-EWELD,test,full,1023,274,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.111056,-0.23308,-0.011963,10.511,1.143701
-EWELD,test,full,1023,274,WeekProf4,4-week profile,profile,-0.185583,-0.331034,-0.1064,16.938,0.855025
-EWELD,test,late,523,197,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.026317,-0.055873,0.066128,2.597,1.034677
-EWELD,test,late,523,197,RIDGE-L,Ridge (per unit),per-unit regression,-0.211864,-0.38728,-0.06106,19.093,0.95614
-EWELD,test,late,523,197,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.157402,-0.272263,-0.008212,14.564,0.959022
-EWELD,test,late,523,197,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.086239,-0.21234,0.01613,8.263,1.215907
-EWELD,test,late,523,197,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.383746,-0.615758,-0.07475,31.87,0.617288
-EWELD,test,late,523,197,Holt-Winters,Holt-Winters,"load only, statistical",-0.414199,-0.652107,-0.234209,33.913,1.049635
-EWELD,test,late,523,197,LYR-profile,Last-year profile,profile,-0.85084,-1.090201,-0.52918,57.294,0.150341
-EWELD,test,late,523,197,MSTL,MSTL,"load only, statistical",-0.323572,-0.510168,-0.177557,27.644,1.134288
-EWELD,test,late,523,197,SN-day,Seasonal naive (day),naive,-0.153236,-0.201019,-0.088725,14.207,1.181527
-EWELD,test,late,523,197,SN-week,Seasonal naive (week),naive,-0.176987,-0.232428,-0.131061,16.221,0.828054
-EWELD,test,late,523,197,SP-profile,Previous-month profile,profile,-0.314296,-0.542795,-0.15083,26.97,0.848975
-EWELD,test,late,523,197,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.182935,-0.334474,-0.030143,16.718,1.013671
-EWELD,test,late,523,197,WeekProf4,4-week profile,profile,-0.206082,-0.376495,-0.08976,18.623,0.832275
-EWELD,test,late,523,197,DLinear,DLinear,"load only, trained",-0.403679,-0.670992,-0.165249,33.214,0.793212
-EWELD,test,late,523,197,GBT-T,GBT-T,"same information, trained",-0.620142,-0.906163,-0.304985,46.213,0.500392
-EWELD,test,late,523,197,iTransformer-X,iTransformer-X,"same information, trained",-0.232006,-0.427951,-0.063549,20.706,0.97972
-EWELD,test,late,523,197,iTransformer,iTransformer,"load only, trained",-0.257398,-0.468585,-0.097126,22.694,0.888786
-EWELD,test,late,523,197,LSTM,LSTM,"load only, trained",-0.517146,-0.792325,-0.273058,40.378,0.496646
-EWELD,test,late,523,197,PatchTST,PatchTST,"load only, trained",-0.292806,-0.537205,-0.108083,25.383,0.994438
-EWELD,test,late,523,197,TiDE,TiDE,"same information, trained",-0.406128,-0.673957,-0.16669,33.378,0.785134
-GoiEner non-household,test,full,1237,486,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.044248,-0.07284,0.011398,4.328,0.857637
-GoiEner non-household,test,full,1237,486,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.034762,-0.057382,0.032524,3.416,0.656754
-GoiEner non-household,test,full,1237,486,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.033,-0.054433,0.018336,3.246,0.640122
-GoiEner non-household,test,full,1237,486,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.338796,-0.466574,-0.217128,28.737,0.469273
-GoiEner non-household,test,full,1237,486,Holt-Winters,Holt-Winters,"load only, statistical",-0.217707,-0.302699,-0.139458,19.564,0.696809
-GoiEner non-household,test,full,1237,486,LYR-profile,Last-year profile,profile,-0.347272,-0.452592,-0.267336,29.339,1.000113
-GoiEner non-household,test,full,1237,486,MSTL,MSTL,"load only, statistical",-0.251583,-0.332343,-0.19303,22.243,0.51926
-GoiEner non-household,test,full,1237,486,SN-day,Seasonal naive (day),naive,-0.240762,-0.288355,-0.17602,21.397,0.372852
-GoiEner non-household,test,full,1237,486,SN-week,Seasonal naive (week),naive,-0.244299,-0.280457,-0.178573,21.675,0.508644
-GoiEner non-household,test,full,1237,486,SP-profile,Previous-month profile,profile,-0.236956,-0.352058,-0.126212,21.097,0.598818
-GoiEner non-household,test,full,1237,486,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.071669,-0.109762,-0.032952,6.916,0.82132
-GoiEner non-household,test,full,1237,486,WeekProf4,4-week profile,profile,-0.218219,-0.319555,-0.114575,19.605,0.71041
-GoiEner non-household,test,late,890,481,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.056142,-0.081635,0.033456,5.46,0.761058
-GoiEner non-household,test,late,890,481,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.014228,-0.047056,0.052126,1.413,1.060986
-GoiEner non-household,test,late,890,481,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.037592,-0.06237,0.038919,3.689,0.754023
-GoiEner non-household,test,late,890,481,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.414944,-0.509688,-0.276528,33.962,0.476708
-GoiEner non-household,test,late,890,481,Holt-Winters,Holt-Winters,"load only, statistical",-0.279066,-0.343602,-0.198834,24.351,0.623561
-GoiEner non-household,test,late,890,481,LYR-profile,Last-year profile,profile,-0.38778,-0.507637,-0.282324,32.144,1.054702
-GoiEner non-household,test,late,890,481,MSTL,MSTL,"load only, statistical",-0.299709,-0.37092,-0.229752,25.897,0.519186
-GoiEner non-household,test,late,890,481,SN-day,Seasonal naive (day),naive,-0.242328,-0.298215,-0.111791,21.52,0.388349
-GoiEner non-household,test,late,890,481,SN-week,Seasonal naive (week),naive,-0.250886,-0.289876,-0.128105,22.189,0.658959
-GoiEner non-household,test,late,890,481,SP-profile,Previous-month profile,profile,-0.314993,-0.392423,-0.245842,27.021,0.517966
-GoiEner non-household,test,late,890,481,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.085436,-0.119261,-0.024563,8.189,0.904946
-GoiEner non-household,test,late,890,481,WeekProf4,4-week profile,profile,-0.282283,-0.359008,-0.199921,24.594,0.619237
-GoiEner non-household,test,late,890,481,DLinear,DLinear,"load only, trained",-0.179489,-0.284073,-0.13388,16.43,0.783573
-GoiEner non-household,test,late,890,481,GBT-T,GBT-T,"same information, trained",-0.390164,-0.487017,-0.263485,32.305,0.499784
-GoiEner non-household,test,late,890,481,iTransformer-X,iTransformer-X,"same information, trained",-0.098841,-0.178623,-0.045649,9.411,0.731662
-GoiEner non-household,test,late,890,481,iTransformer,iTransformer,"load only, trained",-0.062756,-0.125748,-0.008203,6.083,0.725562
-GoiEner non-household,test,late,890,481,LSTM,LSTM,"load only, trained",-0.22218,-0.314515,-0.179978,19.923,0.643066
-GoiEner non-household,test,late,890,481,PatchTST,PatchTST,"load only, trained",-0.158708,-0.238295,-0.100552,14.675,0.699014
-GoiEner non-household,test,late,890,481,RIDGE-L,Ridge (per unit),per-unit regression,-0.118467,-0.201399,-0.068765,11.172,1.047682
-GoiEner non-household,test,late,890,481,TiDE,TiDE,"same information, trained",-0.187065,-0.29166,-0.139534,17.061,0.765341
-GoiEner households,test,full,1258,1109,TimesFM,TimesFM,"load only, zero-shot foundation model",0.024337,-0.005406,0.103071,-2.464,0.931506
-GoiEner households,test,full,1258,1109,RIDGE-L,Ridge (per unit),per-unit regression,-0.093676,-0.199669,-0.051004,8.942,1.015281
-GoiEner households,test,full,1258,1109,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.00333,-0.034566,0.04664,0.332,0.925025
-GoiEner households,test,full,1258,1109,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.020243,-0.05576,0.032313,2.004,0.539504
-GoiEner households,test,full,1258,1109,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.308985,-0.479749,-0.243536,26.581,0.565777
-GoiEner households,test,full,1258,1109,Holt-Winters,Holt-Winters,"load only, statistical",-0.214673,-0.324626,-0.167355,19.319,0.748873
-GoiEner households,test,full,1258,1109,LYR-profile,Last-year profile,profile,-0.476957,-0.571952,-0.409597,37.933,0.611478
-GoiEner households,test,full,1258,1109,MSTL,MSTL,"load only, statistical",-0.343717,-0.472026,-0.285792,29.087,0.709088
-GoiEner households,test,full,1258,1109,SN-day,Seasonal naive (day),naive,-0.205043,-0.245529,-0.128973,18.539,0.629432
-GoiEner households,test,full,1258,1109,SN-week,Seasonal naive (week),naive,-0.262578,-0.325241,-0.207538,23.093,0.689484
-GoiEner households,test,full,1258,1109,SP-profile,Previous-month profile,profile,-0.170126,-0.295877,-0.120317,15.644,0.909248
-GoiEner households,test,full,1258,1109,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.048695,-0.105454,-0.013813,4.753,0.950948
-GoiEner households,test,full,1258,1109,WeekProf4,4-week profile,profile,-0.204307,-0.331054,-0.148708,18.479,0.879906
-GoiEner households,test,late,696,696,TimesFM,TimesFM,"load only, zero-shot foundation model",0.037827,0.004249,0.091731,-3.855,0.89915
-GoiEner households,test,late,696,696,RIDGE-L,Ridge (per unit),per-unit regression,-0.090551,-0.151162,-0.044102,8.657,1.022159
-GoiEner households,test,late,696,696,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.001978,-0.048841,0.046812,0.198,0.932397
-GoiEner households,test,late,696,696,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.002583,-0.057052,0.051421,0.258,0.911821
-GoiEner households,test,late,696,696,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.326901,-0.441733,-0.257571,27.884,0.401105
-GoiEner households,test,late,696,696,Holt-Winters,Holt-Winters,"load only, statistical",-0.207373,-0.282696,-0.148815,18.728,0.728706
-GoiEner households,test,late,696,696,LYR-profile,Last-year profile,profile,-0.487605,-0.58094,-0.362257,38.59,0.556587
-GoiEner households,test,late,696,696,MSTL,MSTL,"load only, statistical",-0.314768,-0.40902,-0.252937,27.004,0.700848
-GoiEner households,test,late,696,696,SN-day,Seasonal naive (day),naive,-0.165763,-0.223213,-0.119475,15.275,0.635111
-GoiEner households,test,late,696,696,SN-week,Seasonal naive (week),naive,-0.238715,-0.339402,-0.180938,21.236,0.688767
-GoiEner households,test,late,696,696,SP-profile,Previous-month profile,profile,-0.172087,-0.252258,-0.108084,15.809,0.882387
-GoiEner households,test,late,696,696,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.02896,-0.069921,0.011087,2.855,0.937915
-GoiEner households,test,late,696,696,WeekProf4,4-week profile,profile,-0.183375,-0.278711,-0.119995,16.754,0.869297
-GoiEner households,test,late,696,696,DLinear,DLinear,"load only, trained",-0.158298,-0.223391,-0.103334,14.64,0.967169
-GoiEner households,test,late,696,696,GBT-T,GBT-T,"same information, trained",-0.173418,-0.260894,-0.117499,15.921,0.957193
-GoiEner households,test,late,696,696,iTransformer-X,iTransformer-X,"same information, trained",-0.127275,-0.20707,-0.064355,11.951,0.898251
-GoiEner households,test,late,696,696,iTransformer,iTransformer,"load only, trained",-0.128345,-0.207593,-0.057893,12.045,0.845084
-GoiEner households,test,late,696,696,LSTM,LSTM,"load only, trained",-0.138454,-0.19208,-0.086013,12.93,0.901077
-GoiEner households,test,late,696,696,PatchTST,PatchTST,"load only, trained",-0.115109,-0.192582,-0.054556,10.873,0.915534
-GoiEner households,test,late,696,696,TiDE,TiDE,"same information, trained",-0.157928,-0.222017,-0.103138,14.609,0.966776
+BDG2 2017,test,full,934,178,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.062468,-0.081749,0.221024,6.056,0.816621
+BDG2 2017,test,full,934,178,RIDGE-L,Ridge (per unit),per-unit regression,-0.441301,-1.30225,-0.057581,35.68,1.124715
+BDG2 2017,test,full,934,178,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.145407,-0.380378,0.039487,13.533,0.948765
+BDG2 2017,test,full,934,178,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.056309,-0.100138,0.340155,5.475,0.806213
+BDG2 2017,test,full,934,178,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.729595,-1.280915,-0.379613,51.79,0.430778
+BDG2 2017,test,full,934,178,Holt-Winters,Holt-Winters,"load only, statistical",-0.197814,-0.249666,-0.125508,17.948,0.695041
+BDG2 2017,test,full,934,178,LYR-profile,Last-year profile,profile,-0.458569,-1.237306,-0.254145,36.781,0.447908
+BDG2 2017,test,full,934,178,MSTL,MSTL,"load only, statistical",0.058162,-0.194916,1.165571,-5.989,0.752498
+BDG2 2017,test,full,934,178,SN-day,Seasonal naive (day),naive,-0.422416,-0.509462,-0.320559,34.454,0.741528
+BDG2 2017,test,full,934,178,SN-week,Seasonal naive (week),naive,-0.23005,-0.263534,-0.170414,20.551,0.644698
+BDG2 2017,test,full,934,178,SP-profile,Previous-month profile,profile,0.114707,-0.219232,1.373492,-12.154,0.758153
+BDG2 2017,test,full,934,178,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.443251,-1.299362,-0.081414,35.805,0.830161
+BDG2 2017,test,full,934,178,WeekProf4,4-week profile,profile,-0.154919,-0.200721,-0.096738,14.352,0.765474
+BDG2 2017,test,late,474,142,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.02768,-0.076971,0.252676,2.73,0.823541
+BDG2 2017,test,late,474,142,RIDGE-L,Ridge (per unit),per-unit regression,-0.552968,-1.492957,-0.072017,42.476,0.989426
+BDG2 2017,test,late,474,142,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.131112,-0.420245,0.056368,12.288,0.912004
+BDG2 2017,test,late,474,142,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.017792,-0.099684,0.387674,1.763,0.885624
+BDG2 2017,test,late,474,142,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.819269,-1.450864,-0.464199,55.925,0.262345
+BDG2 2017,test,late,474,142,Holt-Winters,Holt-Winters,"load only, statistical",-0.232142,-0.331003,-0.146449,20.717,0.537722
+BDG2 2017,test,late,474,142,LYR-profile,Last-year profile,profile,-0.412847,-1.269531,-0.13084,33.824,0.483102
+BDG2 2017,test,late,474,142,MSTL,MSTL,"load only, statistical",0.167392,-0.215941,1.324249,-18.222,0.688719
+BDG2 2017,test,late,474,142,SN-day,Seasonal naive (day),naive,-0.421512,-0.627244,-0.3085,34.395,0.659972
+BDG2 2017,test,late,474,142,SN-week,Seasonal naive (week),naive,-0.220422,-0.282945,-0.139072,19.782,0.592419
+BDG2 2017,test,late,474,142,SP-profile,Previous-month profile,profile,0.188297,-0.271912,1.459425,-20.719,0.634661
+BDG2 2017,test,late,474,142,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.52233,-1.446312,-0.076148,40.686,0.753989
+BDG2 2017,test,late,474,142,WeekProf4,4-week profile,profile,-0.185004,-0.244646,-0.128768,16.89,0.618377
+BDG2 2017,test,late,474,142,DLinear,DLinear,"load only, trained",-0.608817,-1.584337,-0.112246,45.601,0.869318
+BDG2 2017,test,late,474,142,GBT-T,GBT-T,"same information, trained",-0.628736,-1.697981,-0.094664,46.673,0.908969
+BDG2 2017,test,late,474,142,iTransformer-X,iTransformer-X,"same information, trained",-0.499932,-1.180056,-0.131571,39.343,0.747505
+BDG2 2017,test,late,474,142,iTransformer,iTransformer,"load only, trained",-0.488544,-1.160558,-0.121137,38.648,0.71266
+BDG2 2017,test,late,474,142,LSTM,LSTM,"load only, trained",-0.690576,-1.680804,-0.204868,49.871,0.830932
+BDG2 2017,test,late,474,142,PatchTST,PatchTST,"load only, trained",-0.47543,-1.108226,-0.126889,37.838,0.834397
+BDG2 2017,test,late,474,142,TiDE,TiDE,"same information, trained",-0.610704,-1.590468,-0.115116,45.703,0.867478
+Cambridge,test,full,1456,119,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.10136,-0.12239,-0.07093,9.639,0.861588
+Cambridge,test,full,1456,119,RIDGE-L,Ridge (per unit),per-unit regression,-0.087467,-0.11672,-0.039921,8.375,0.933285
+Cambridge,test,full,1456,119,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",0.007635,-0.032709,0.050295,-0.766,0.970674
+Cambridge,test,full,1456,119,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.138585,-0.169026,-0.090638,12.941,0.800612
+Cambridge,test,full,1456,119,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.361957,-0.411611,-0.305973,30.369,0.671277
+Cambridge,test,full,1456,119,Holt-Winters,Holt-Winters,"load only, statistical",-0.183335,-0.228734,-0.137505,16.751,0.807002
+Cambridge,test,full,1456,119,LYR-profile,Last-year profile,profile,-0.378457,-0.459956,-0.298238,31.508,0.578908
+Cambridge,test,full,1456,119,MSTL,MSTL,"load only, statistical",-0.293156,-0.329336,-0.234668,25.409,0.68489
+Cambridge,test,full,1456,119,SN-day,Seasonal naive (day),naive,-0.534999,-0.605939,-0.476165,41.433,0.435847
+Cambridge,test,full,1456,119,SN-week,Seasonal naive (week),naive,-0.305181,-0.345888,-0.246318,26.301,0.67833
+Cambridge,test,full,1456,119,SP-profile,Previous-month profile,profile,-0.228856,-0.283849,-0.189578,20.456,0.866528
+Cambridge,test,full,1456,119,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.155725,-0.188079,-0.089104,14.421,0.848759
+Cambridge,test,full,1456,119,WeekProf4,4-week profile,profile,-0.110865,-0.151285,-0.074593,10.494,1.050008
+Cambridge,test,late,730,108,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.086381,-0.115062,-0.050769,8.276,0.893442
+Cambridge,test,late,730,108,RIDGE-L,Ridge (per unit),per-unit regression,-0.065348,-0.102763,-0.028586,6.326,0.942163
+Cambridge,test,late,730,108,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.025256,-0.065835,0.030388,2.494,0.954486
+Cambridge,test,late,730,108,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.103605,-0.135937,-0.056226,9.842,0.817165
+Cambridge,test,late,730,108,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.273436,-0.337249,-0.217119,23.924,0.768365
+Cambridge,test,late,730,108,Holt-Winters,Holt-Winters,"load only, statistical",-0.188864,-0.245618,-0.127018,17.21,0.819756
+Cambridge,test,late,730,108,LYR-profile,Last-year profile,profile,-0.426932,-0.530831,-0.322015,34.749,0.576981
+Cambridge,test,late,730,108,MSTL,MSTL,"load only, statistical",-0.239541,-0.291794,-0.186363,21.301,0.733069
+Cambridge,test,late,730,108,SN-day,Seasonal naive (day),naive,-0.490035,-0.579329,-0.417269,38.739,0.517796
+Cambridge,test,late,730,108,SN-week,Seasonal naive (week),naive,-0.244876,-0.297046,-0.201442,21.72,0.737119
+Cambridge,test,late,730,108,SP-profile,Previous-month profile,profile,-0.224571,-0.289062,-0.181399,20.114,0.925602
+Cambridge,test,late,730,108,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.102858,-0.138842,-0.051984,9.774,0.868386
+Cambridge,test,late,730,108,WeekProf4,4-week profile,profile,-0.119818,-0.167385,-0.074487,11.292,1.084268
+Cambridge,test,late,730,108,DLinear,DLinear,"load only, trained",-0.178637,-0.253253,-0.1334,16.359,0.884647
+Cambridge,test,late,730,108,GBT-T,GBT-T,"same information, trained",-0.055094,-0.165864,0.069007,5.36,0.473923
+Cambridge,test,late,730,108,iTransformer-X,iTransformer-X,"same information, trained",-0.014167,-0.063277,0.028391,1.407,1.140797
+Cambridge,test,late,730,108,iTransformer,iTransformer,"load only, trained",-0.07043,-0.134037,-0.013278,6.801,1.071179
+Cambridge,test,late,730,108,LSTM,LSTM,"load only, trained",-0.369265,-0.480712,-0.284936,30.876,0.274727
+Cambridge,test,late,730,108,PatchTST,PatchTST,"load only, trained",-0.076454,-0.125354,-0.038348,7.36,1.017839
+Cambridge,test,late,730,108,TiDE,TiDE,"same information, trained",-0.206606,-0.287632,-0.157353,18.666,0.832501
+HEEW Arizona,test,full,1282,142,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.047806,-0.065464,-0.002263,4.668,0.741031
+HEEW Arizona,test,full,1282,142,RIDGE-L,Ridge (per unit),per-unit regression,-0.083601,-0.113864,-0.051668,8.02,0.789629
+HEEW Arizona,test,full,1282,142,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.037593,-0.074773,0.015775,3.69,0.77436
+HEEW Arizona,test,full,1282,142,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.100386,-0.135313,-0.044557,9.551,0.738488
+HEEW Arizona,test,full,1282,142,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.45702,-0.520244,-0.383333,36.683,0.381863
+HEEW Arizona,test,full,1282,142,Holt-Winters,Holt-Winters,"load only, statistical",-0.22952,-0.284563,-0.182104,20.509,0.31219
+HEEW Arizona,test,full,1282,142,LYR-profile,Last-year profile,profile,-0.48691,-0.578416,-0.402465,38.548,0.717291
+HEEW Arizona,test,full,1282,142,MSTL,MSTL,"load only, statistical",-0.206476,-0.249861,-0.163166,18.655,0.518474
+HEEW Arizona,test,full,1282,142,SN-day,Seasonal naive (day),naive,-0.404851,-0.473848,-0.341975,33.292,0.462982
+HEEW Arizona,test,full,1282,142,SN-week,Seasonal naive (week),naive,-0.234235,-0.273054,-0.183199,20.882,0.597179
+HEEW Arizona,test,full,1282,142,SP-profile,Previous-month profile,profile,-0.275441,-0.321991,-0.235607,24.076,0.41328
+HEEW Arizona,test,full,1282,142,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.083183,-0.107727,-0.046149,7.982,0.776324
+HEEW Arizona,test,full,1282,142,WeekProf4,4-week profile,profile,-0.1897,-0.227706,-0.150663,17.279,0.426653
+HEEW Arizona,test,late,658,138,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.037493,-0.06309,0.077701,3.68,0.846302
+HEEW Arizona,test,late,658,138,RIDGE-L,Ridge (per unit),per-unit regression,-0.054453,-0.099774,-0.024024,5.3,0.649759
+HEEW Arizona,test,late,658,138,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.019814,-0.054596,0.056387,1.962,0.867288
+HEEW Arizona,test,late,658,138,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.067704,-0.109926,0.015425,6.546,0.647538
+HEEW Arizona,test,late,658,138,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.362239,-0.44023,-0.300447,30.388,0.332519
+HEEW Arizona,test,late,658,138,Holt-Winters,Holt-Winters,"load only, statistical",-0.189868,-0.260446,-0.124486,17.293,0.56924
+HEEW Arizona,test,late,658,138,LYR-profile,Last-year profile,profile,-0.552979,-0.70247,-0.415111,42.477,0.660234
+HEEW Arizona,test,late,658,138,MSTL,MSTL,"load only, statistical",-0.157607,-0.215647,-0.111239,14.581,0.732129
+HEEW Arizona,test,late,658,138,SN-day,Seasonal naive (day),naive,-0.298296,-0.378805,-0.24344,25.792,0.496846
+HEEW Arizona,test,late,658,138,SN-week,Seasonal naive (week),naive,-0.197547,-0.251998,-0.151313,17.926,0.534063
+HEEW Arizona,test,late,658,138,SP-profile,Previous-month profile,profile,-0.245377,-0.300671,-0.201734,21.759,0.258469
+HEEW Arizona,test,late,658,138,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.059826,-0.094925,-0.009053,5.807,0.908072
+HEEW Arizona,test,late,658,138,WeekProf4,4-week profile,profile,-0.173994,-0.217944,-0.124181,15.97,0.269046
+HEEW Arizona,test,late,658,138,DLinear,DLinear,"load only, trained",-0.21897,-0.334988,-0.16601,19.665,0.560694
+HEEW Arizona,test,late,658,138,GBT-T,GBT-T,"same information, trained",-0.066933,-0.148526,-0.011957,6.474,1.322994
+HEEW Arizona,test,late,658,138,iTransformer-X,iTransformer-X,"same information, trained",-0.063646,-0.109883,-0.030771,6.166,0.492951
+HEEW Arizona,test,late,658,138,iTransformer,iTransformer,"load only, trained",-0.098452,-0.135783,-0.068935,9.376,0.566369
+HEEW Arizona,test,late,658,138,LSTM,LSTM,"load only, trained",-0.397623,-0.534732,-0.33043,32.808,0.403397
+HEEW Arizona,test,late,658,138,PatchTST,PatchTST,"load only, trained",-0.07652,-0.119562,-0.050256,7.367,0.817602
+HEEW Arizona,test,late,658,138,TiDE,TiDE,"same information, trained",-0.218305,-0.333621,-0.167509,19.612,0.555816
+EWELD,test,full,1023,274,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.033402,-0.052063,-0.0081,3.285,0.967711
+EWELD,test,full,1023,274,RIDGE-L,Ridge (per unit),per-unit regression,-0.152666,-0.295504,-0.013858,14.158,1.234268
+EWELD,test,full,1023,274,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.074464,-0.163582,0.003654,7.176,1.541268
+EWELD,test,full,1023,274,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.0469,-0.167981,0.002809,4.582,1.318722
+EWELD,test,full,1023,274,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.322793,-0.494805,-0.120816,27.588,0.734354
+EWELD,test,full,1023,274,Holt-Winters,Holt-Winters,"load only, statistical",-0.365849,-0.545153,-0.242367,30.639,1.257489
+EWELD,test,full,1023,274,LYR-profile,Last-year profile,profile,-0.649813,-0.860245,-0.461482,47.786,0.31704
+EWELD,test,full,1023,274,MSTL,MSTL,"load only, statistical",-0.270238,-0.407034,-0.168637,23.68,1.208741
+EWELD,test,full,1023,274,SN-day,Seasonal naive (day),naive,-0.18018,-0.221983,-0.136658,16.488,0.537512
+EWELD,test,full,1023,274,SN-week,Seasonal naive (week),naive,-0.166164,-0.20678,-0.135459,15.309,0.905025
+EWELD,test,full,1023,274,SP-profile,Previous-month profile,profile,-0.222286,-0.404734,-0.116775,19.931,0.815363
+EWELD,test,full,1023,274,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.112272,-0.233618,-0.01336,10.62,1.146537
+EWELD,test,full,1023,274,WeekProf4,4-week profile,profile,-0.186819,-0.331572,-0.108377,17.041,0.857146
+EWELD,test,late,523,197,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.026236,-0.055586,0.06556,2.589,1.041242
+EWELD,test,late,523,197,RIDGE-L,Ridge (per unit),per-unit regression,-0.211783,-0.387574,-0.060809,19.086,0.962207
+EWELD,test,late,523,197,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.157321,-0.272829,-0.010483,14.557,0.965107
+EWELD,test,late,523,197,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.086158,-0.214195,0.016395,8.255,1.223622
+EWELD,test,late,523,197,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.383665,-0.615903,-0.073939,31.864,0.621205
+EWELD,test,late,523,197,Holt-Winters,Holt-Winters,"load only, statistical",-0.414118,-0.653454,-0.233196,33.908,1.056295
+EWELD,test,late,523,197,LYR-profile,Last-year profile,profile,-0.850759,-1.089528,-0.530611,57.291,0.151295
+EWELD,test,late,523,197,MSTL,MSTL,"load only, statistical",-0.323491,-0.508732,-0.177478,27.638,1.141485
+EWELD,test,late,523,197,SN-day,Seasonal naive (day),naive,-0.153151,-0.200692,-0.089677,14.2,1.189024
+EWELD,test,late,523,197,SN-week,Seasonal naive (week),naive,-0.176902,-0.232145,-0.131641,16.214,0.833308
+EWELD,test,late,523,197,SP-profile,Previous-month profile,profile,-0.314215,-0.54224,-0.151318,26.964,0.854362
+EWELD,test,late,523,197,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.182854,-0.33471,-0.03022,16.711,1.020103
+EWELD,test,late,523,197,WeekProf4,4-week profile,profile,-0.205998,-0.375473,-0.090132,18.617,0.837556
+EWELD,test,late,523,197,DLinear,DLinear,"load only, trained",-0.403598,-0.671082,-0.1644,33.209,0.798245
+EWELD,test,late,523,197,GBT-T,GBT-T,"same information, trained",-0.620061,-0.907889,-0.304649,46.209,0.503567
+EWELD,test,late,523,197,iTransformer-X,iTransformer-X,"same information, trained",-0.231925,-0.430321,-0.064688,20.699,0.985937
+EWELD,test,late,523,197,iTransformer,iTransformer,"load only, trained",-0.257317,-0.467809,-0.097241,22.688,0.894426
+EWELD,test,late,523,197,LSTM,LSTM,"load only, trained",-0.517065,-0.793806,-0.273878,40.373,0.499797
+EWELD,test,late,523,197,PatchTST,PatchTST,"load only, trained",-0.292725,-0.536708,-0.10945,25.377,1.000748
+EWELD,test,late,523,197,TiDE,TiDE,"same information, trained",-0.406047,-0.674522,-0.166591,33.372,0.790116
+GoiEner non-household,test,full,1237,486,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.04417,-0.07285,0.011404,4.321,0.857743
+GoiEner non-household,test,full,1237,486,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.034683,-0.057334,0.032526,3.409,0.656835
+GoiEner non-household,test,full,1237,486,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.032921,-0.054408,0.019031,3.239,0.640201
+GoiEner non-household,test,full,1237,486,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.338717,-0.466404,-0.217051,28.732,0.469332
+GoiEner non-household,test,full,1237,486,Holt-Winters,Holt-Winters,"load only, statistical",-0.217629,-0.302527,-0.139446,19.558,0.696895
+GoiEner non-household,test,full,1237,486,LYR-profile,Last-year profile,profile,-0.347193,-0.452237,-0.267334,29.333,1.000237
+GoiEner non-household,test,full,1237,486,MSTL,MSTL,"load only, statistical",-0.251505,-0.331838,-0.19295,22.237,0.519325
+GoiEner non-household,test,full,1237,486,SN-day,Seasonal naive (day),naive,-0.240683,-0.288336,-0.17585,21.391,0.372898
+GoiEner non-household,test,full,1237,486,SN-week,Seasonal naive (week),naive,-0.24422,-0.280446,-0.178568,21.668,0.508707
+GoiEner non-household,test,full,1237,486,SP-profile,Previous-month profile,profile,-0.236877,-0.351994,-0.126223,21.091,0.598892
+GoiEner non-household,test,full,1237,486,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.071591,-0.109304,-0.032906,6.909,0.821421
+GoiEner non-household,test,full,1237,486,WeekProf4,4-week profile,profile,-0.21814,-0.319388,-0.114216,19.599,0.710498
+GoiEner non-household,test,late,890,481,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.056125,-0.081633,0.033586,5.458,0.76079
+GoiEner non-household,test,late,890,481,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.01421,-0.046976,0.05213,1.411,1.060613
+GoiEner non-household,test,late,890,481,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.037575,-0.062373,0.038921,3.688,0.753757
+GoiEner non-household,test,late,890,481,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.414927,-0.509646,-0.276507,33.961,0.476541
+GoiEner non-household,test,late,890,481,Holt-Winters,Holt-Winters,"load only, statistical",-0.279049,-0.343602,-0.198812,24.35,0.623341
+GoiEner non-household,test,late,890,481,LYR-profile,Last-year profile,profile,-0.387762,-0.507575,-0.282312,32.143,1.054331
+GoiEner non-household,test,late,890,481,MSTL,MSTL,"load only, statistical",-0.299691,-0.37092,-0.229752,25.895,0.519004
+GoiEner non-household,test,late,890,481,SN-day,Seasonal naive (day),naive,-0.24231,-0.298197,-0.111456,21.519,0.388213
+GoiEner non-household,test,late,890,481,SN-week,Seasonal naive (week),naive,-0.250869,-0.289885,-0.128082,22.188,0.658727
+GoiEner non-household,test,late,890,481,SP-profile,Previous-month profile,profile,-0.314975,-0.392418,-0.24589,27.019,0.517784
+GoiEner non-household,test,late,890,481,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.085418,-0.119257,-0.024533,8.187,0.904628
+GoiEner non-household,test,late,890,481,WeekProf4,4-week profile,profile,-0.282265,-0.358992,-0.199898,24.593,0.619019
+GoiEner non-household,test,late,890,481,DLinear,DLinear,"load only, trained",-0.179471,-0.284012,-0.133878,16.429,0.783297
+GoiEner non-household,test,late,890,481,GBT-T,GBT-T,"same information, trained",-0.390146,-0.487017,-0.263446,32.304,0.499608
+GoiEner non-household,test,late,890,481,iTransformer-X,iTransformer-X,"same information, trained",-0.098823,-0.178602,-0.045647,9.41,0.731405
+GoiEner non-household,test,late,890,481,iTransformer,iTransformer,"load only, trained",-0.062738,-0.125763,-0.008192,6.081,0.725306
+GoiEner non-household,test,late,890,481,LSTM,LSTM,"load only, trained",-0.222162,-0.314512,-0.179938,19.921,0.64284
+GoiEner non-household,test,late,890,481,PatchTST,PatchTST,"load only, trained",-0.15869,-0.238307,-0.10055,14.674,0.698768
+GoiEner non-household,test,late,890,481,RIDGE-L,Ridge (per unit),per-unit regression,-0.118449,-0.2014,-0.068735,11.17,1.047313
+GoiEner non-household,test,late,890,481,TiDE,TiDE,"same information, trained",-0.187047,-0.291613,-0.139534,17.06,0.765072
+GoiEner households,test,full,1258,1109,TimesFM,TimesFM,"load only, zero-shot foundation model",0.022246,-0.006626,0.100993,-2.25,0.929661
+GoiEner households,test,full,1258,1109,RIDGE-L,Ridge (per unit),per-unit regression,-0.095767,-0.199865,-0.05279,9.132,1.01327
+GoiEner households,test,full,1258,1109,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.00542,-0.035969,0.043574,0.541,0.923192
+GoiEner households,test,full,1258,1109,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.022333,-0.056845,0.028537,2.209,0.538435
+GoiEner households,test,full,1258,1109,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.311076,-0.479716,-0.245924,26.734,0.564656
+GoiEner households,test,full,1258,1109,Holt-Winters,Holt-Winters,"load only, statistical",-0.216763,-0.325973,-0.16959,19.488,0.74739
+GoiEner households,test,full,1258,1109,LYR-profile,Last-year profile,profile,-0.479062,-0.574502,-0.410128,38.064,0.610267
+GoiEner households,test,full,1258,1109,MSTL,MSTL,"load only, statistical",-0.345808,-0.472303,-0.28886,29.235,0.707683
+GoiEner households,test,full,1258,1109,SN-day,Seasonal naive (day),naive,-0.207182,-0.245299,-0.132931,18.713,0.628185
+GoiEner households,test,full,1258,1109,SN-week,Seasonal naive (week),naive,-0.264699,-0.326219,-0.211851,23.256,0.688118
+GoiEner households,test,full,1258,1109,SP-profile,Previous-month profile,profile,-0.172216,-0.296292,-0.122316,15.82,0.907447
+GoiEner households,test,full,1258,1109,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.050785,-0.107809,-0.015816,4.952,0.949064
+GoiEner households,test,full,1258,1109,WeekProf4,4-week profile,profile,-0.206397,-0.331337,-0.151168,18.649,0.878163
+GoiEner households,test,late,696,696,TimesFM,TimesFM,"load only, zero-shot foundation model",0.034497,0.002615,0.090248,-3.51,0.894785
+GoiEner households,test,late,696,696,RIDGE-L,Ridge (per unit),per-unit regression,-0.093882,-0.152681,-0.048314,8.961,1.017197
+GoiEner households,test,late,696,696,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.005308,-0.050712,0.043747,0.529,0.92787
+GoiEner households,test,late,696,696,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.005914,-0.058254,0.049241,0.59,0.907395
+GoiEner households,test,late,696,696,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.330231,-0.442306,-0.26116,28.124,0.399158
+GoiEner households,test,late,696,696,Holt-Winters,Holt-Winters,"load only, statistical",-0.210703,-0.284202,-0.151999,18.999,0.725169
+GoiEner households,test,late,696,696,LYR-profile,Last-year profile,profile,-0.490964,-0.586299,-0.362214,38.796,0.553885
+GoiEner households,test,late,696,696,MSTL,MSTL,"load only, statistical",-0.318098,-0.40911,-0.257927,27.247,0.697445
+GoiEner households,test,late,696,696,SN-day,Seasonal naive (day),naive,-0.169181,-0.223942,-0.122162,15.564,0.632028
+GoiEner households,test,late,696,696,SN-week,Seasonal naive (week),naive,-0.242094,-0.34026,-0.187072,21.502,0.685423
+GoiEner households,test,late,696,696,SP-profile,Previous-month profile,profile,-0.175418,-0.252812,-0.111462,16.089,0.878103
+GoiEner households,test,late,696,696,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.032291,-0.07336,0.007625,3.178,0.933362
+GoiEner households,test,late,696,696,WeekProf4,4-week profile,profile,-0.186705,-0.278583,-0.125122,17.031,0.865076
+GoiEner households,test,late,696,696,DLinear,DLinear,"load only, trained",-0.161629,-0.224452,-0.105134,14.924,0.962474
+GoiEner households,test,late,696,696,GBT-T,GBT-T,"same information, trained",-0.176749,-0.261642,-0.120573,16.201,0.952546
+GoiEner households,test,late,696,696,iTransformer-X,iTransformer-X,"same information, trained",-0.130606,-0.208535,-0.068297,12.244,0.89389
+GoiEner households,test,late,696,696,iTransformer,iTransformer,"load only, trained",-0.131675,-0.208432,-0.061039,12.337,0.840981
+GoiEner households,test,late,696,696,LSTM,LSTM,"load only, trained",-0.141785,-0.195064,-0.088406,13.219,0.896702
+GoiEner households,test,late,696,696,PatchTST,PatchTST,"load only, trained",-0.118439,-0.193892,-0.058071,11.169,0.911089
+GoiEner households,test,late,696,696,TiDE,TiDE,"same information, trained",-0.161258,-0.223878,-0.104738,14.893,0.962082
 Oslo,preview,full,1147,45,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.119916,-0.146472,-0.092532,11.301,0.781199
 Oslo,preview,full,1147,45,RIDGE-L,Ridge (per unit),per-unit regression,-0.117578,-0.168676,-0.076204,11.093,0.846827
 Oslo,preview,full,1147,45,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.002317,-0.057477,0.051556,0.231,1.028641
@@ -229,39 +229,39 @@ Oslo,preview,late,581,41,iTransformer,iTransformer,"load only, trained",-0.02791
 Oslo,preview,late,581,41,LSTM,LSTM,"load only, trained",-0.403958,-0.564483,-0.277946,33.233,0.500836
 Oslo,preview,late,581,41,PatchTST,PatchTST,"load only, trained",-0.024669,-0.091592,0.048645,2.437,1.010592
 Oslo,preview,late,581,41,TiDE,TiDE,"same information, trained",-0.171175,-0.261011,-0.107112,15.733,0.838949
-Drammen,preview,full,1375,45,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.121561,-0.158221,-0.086729,11.446,0.753384
-Drammen,preview,full,1375,45,RIDGE-L,Ridge (per unit),per-unit regression,-0.009473,-0.056686,0.033061,0.943,0.986217
-Drammen,preview,full,1375,45,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",1.7e-05,-0.063427,0.06379,-0.002,0.996836
-Drammen,preview,full,1375,45,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.087511,-0.141547,-0.031765,8.379,0.818782
-Drammen,preview,full,1375,45,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.368634,-0.445201,-0.293434,30.832,0.544489
-Drammen,preview,full,1375,45,Holt-Winters,Holt-Winters,"load only, statistical",-0.240811,-0.315816,-0.16623,21.401,0.608938
-Drammen,preview,full,1375,45,LYR-profile,Last-year profile,profile,-0.274276,-0.363166,-0.176151,23.988,0.635867
-Drammen,preview,full,1375,45,MSTL,MSTL,"load only, statistical",-0.222666,-0.288027,-0.165319,19.962,0.606463
-Drammen,preview,full,1375,45,SN-day,Seasonal naive (day),naive,-0.53664,-0.633791,-0.444906,41.529,0.381521
-Drammen,preview,full,1375,45,SN-week,Seasonal naive (week),naive,-0.237463,-0.290616,-0.191488,21.137,0.635075
-Drammen,preview,full,1375,45,SP-profile,Previous-month profile,profile,-0.337166,-0.413366,-0.265106,28.621,0.54194
-Drammen,preview,full,1375,45,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.104596,-0.154017,-0.05614,9.931,0.83511
-Drammen,preview,full,1375,45,WeekProf4,4-week profile,profile,-0.252656,-0.331766,-0.184286,22.326,0.603843
-Drammen,preview,late,689,43,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.135387,-0.196859,-0.075735,12.662,0.73702
-Drammen,preview,late,689,43,RIDGE-L,Ridge (per unit),per-unit regression,-0.002675,-0.066083,0.052715,0.267,1.006692
-Drammen,preview,late,689,43,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",0.023611,-0.078277,0.115021,-2.389,1.053914
-Drammen,preview,late,689,43,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.097818,-0.176714,-0.016042,9.319,0.788268
-Drammen,preview,late,689,43,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.391857,-0.49704,-0.290007,32.42,0.551066
-Drammen,preview,late,689,43,Holt-Winters,Holt-Winters,"load only, statistical",-0.226693,-0.337637,-0.128594,20.283,0.6455
-Drammen,preview,late,689,43,LYR-profile,Last-year profile,profile,-0.274401,-0.406295,-0.140382,23.997,0.63512
-Drammen,preview,late,689,43,MSTL,MSTL,"load only, statistical",-0.231455,-0.292355,-0.171196,20.662,0.599049
-Drammen,preview,late,689,43,SN-day,Seasonal naive (day),naive,-0.57531,-0.701578,-0.458106,43.747,0.368715
-Drammen,preview,late,689,43,SN-week,Seasonal naive (week),naive,-0.242997,-0.298498,-0.193485,21.573,0.633269
-Drammen,preview,late,689,43,SP-profile,Previous-month profile,profile,-0.354499,-0.486037,-0.251168,29.848,0.544112
-Drammen,preview,late,689,43,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.082549,-0.167084,-0.014967,7.923,0.876768
-Drammen,preview,late,689,43,WeekProf4,4-week profile,profile,-0.255575,-0.388514,-0.155636,22.553,0.607871
-Drammen,preview,late,689,43,DLinear,DLinear,"load only, trained",-0.050654,-0.121064,0.009338,4.939,0.91586
-Drammen,preview,late,689,43,GBT-T,GBT-T,"same information, trained",-0.020936,-0.096636,0.053149,2.072,0.99851
-Drammen,preview,late,689,43,iTransformer-X,iTransformer-X,"same information, trained",-0.025951,-0.100712,0.049212,2.562,0.98977
-Drammen,preview,late,689,43,iTransformer,iTransformer,"load only, trained",-0.025697,-0.117428,0.063737,2.537,0.904228
-Drammen,preview,late,689,43,LSTM,LSTM,"load only, trained",-0.254856,-0.318288,-0.198438,22.497,0.672258
-Drammen,preview,late,689,43,PatchTST,PatchTST,"load only, trained",-0.039492,-0.114295,0.032478,3.872,0.950741
-Drammen,preview,late,689,43,TiDE,TiDE,"same information, trained",-0.05487,-0.126276,0.005333,5.339,0.907018
+Drammen,preview,full,1375,45,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.121586,-0.158388,-0.086756,11.448,0.753348
+Drammen,preview,full,1375,45,RIDGE-L,Ridge (per unit),per-unit regression,-0.009498,-0.056473,0.033191,0.945,0.986169
+Drammen,preview,full,1375,45,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-7e-06,-0.063467,0.063744,0.001,0.996788
+Drammen,preview,full,1375,45,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.087535,-0.141604,-0.031868,8.381,0.818743
+Drammen,preview,full,1375,45,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.368658,-0.445236,-0.293406,30.834,0.544463
+Drammen,preview,full,1375,45,Holt-Winters,Holt-Winters,"load only, statistical",-0.240835,-0.315872,-0.166222,21.403,0.608909
+Drammen,preview,full,1375,45,LYR-profile,Last-year profile,profile,-0.2743,-0.363258,-0.176146,23.99,0.635836
+Drammen,preview,full,1375,45,MSTL,MSTL,"load only, statistical",-0.222691,-0.287928,-0.165569,19.964,0.606433
+Drammen,preview,full,1375,45,SN-day,Seasonal naive (day),naive,-0.536665,-0.633806,-0.444949,41.53,0.381503
+Drammen,preview,full,1375,45,SN-week,Seasonal naive (week),naive,-0.237488,-0.29065,-0.191531,21.139,0.635044
+Drammen,preview,full,1375,45,SP-profile,Previous-month profile,profile,-0.337191,-0.413362,-0.265192,28.623,0.541914
+Drammen,preview,full,1375,45,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.104621,-0.154029,-0.056108,9.933,0.83507
+Drammen,preview,full,1375,45,WeekProf4,4-week profile,profile,-0.25268,-0.331682,-0.184301,22.328,0.603814
+Drammen,preview,late,689,43,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.135574,-0.197263,-0.075744,12.679,0.736912
+Drammen,preview,late,689,43,RIDGE-L,Ridge (per unit),per-unit regression,-0.002863,-0.066609,0.05273,0.286,1.006544
+Drammen,preview,late,689,43,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",0.023424,-0.07844,0.115039,-2.37,1.053759
+Drammen,preview,late,689,43,Chronos-2,Chronos-2,"load only, zero-shot foundation model",-0.098006,-0.176799,-0.016451,9.336,0.788152
+Drammen,preview,late,689,43,GBT,GBT (zero-shot),zero-shot gradient boosting,-0.392045,-0.497178,-0.29019,32.433,0.550985
+Drammen,preview,late,689,43,Holt-Winters,Holt-Winters,"load only, statistical",-0.226881,-0.338021,-0.128617,20.298,0.645405
+Drammen,preview,late,689,43,LYR-profile,Last-year profile,profile,-0.274589,-0.40662,-0.140506,24.012,0.635027
+Drammen,preview,late,689,43,MSTL,MSTL,"load only, statistical",-0.231642,-0.293045,-0.171427,20.677,0.598961
+Drammen,preview,late,689,43,SN-day,Seasonal naive (day),naive,-0.575497,-0.701586,-0.458438,43.757,0.36866
+Drammen,preview,late,689,43,SN-week,Seasonal naive (week),naive,-0.243185,-0.298476,-0.193642,21.587,0.633176
+Drammen,preview,late,689,43,SP-profile,Previous-month profile,profile,-0.354687,-0.486797,-0.251422,29.861,0.544032
+Drammen,preview,late,689,43,TimesFM-X,TimesFM-X,"same information, zero-shot foundation model",-0.082737,-0.167073,-0.015008,7.941,0.876639
+Drammen,preview,late,689,43,WeekProf4,4-week profile,profile,-0.255763,-0.388514,-0.15565,22.567,0.607782
+Drammen,preview,late,689,43,DLinear,DLinear,"load only, trained",-0.050842,-0.121191,0.009296,4.957,0.915725
+Drammen,preview,late,689,43,GBT-T,GBT-T,"same information, trained",-0.021124,-0.096719,0.052936,2.09,0.998363
+Drammen,preview,late,689,43,iTransformer-X,iTransformer-X,"same information, trained",-0.026139,-0.10077,0.048928,2.58,0.989624
+Drammen,preview,late,689,43,iTransformer,iTransformer,"load only, trained",-0.025884,-0.117751,0.063688,2.555,0.904095
+Drammen,preview,late,689,43,LSTM,LSTM,"load only, trained",-0.255044,-0.318464,-0.19856,22.512,0.672159
+Drammen,preview,late,689,43,PatchTST,PatchTST,"load only, trained",-0.03968,-0.114826,0.032237,3.89,0.950601
+Drammen,preview,late,689,43,TiDE,TiDE,"same information, trained",-0.055058,-0.126258,0.005271,5.357,0.906885
 CINELDI,preview,full,929,45,TimesFM,TimesFM,"load only, zero-shot foundation model",-0.069054,-0.098643,-0.034672,6.672,0.609879
 CINELDI,preview,full,929,45,RIDGE-L,Ridge (per unit),per-unit regression,-0.042312,-0.080086,-0.011726,4.143,0.679461
 CINELDI,preview,full,929,45,Chronos-2-X,Chronos-2-X,"same information, zero-shot foundation model",-0.032309,-0.078415,0.018463,3.179,0.766359

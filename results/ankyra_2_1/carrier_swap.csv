@@ -1,0 +1,141 @@
+population,subset,windows,error,contrast,log_ratio,um_low,um_high,improvement_pct,resolved
+GoiEner non-household,full,1237,hourly,ANKYRA-C vs Chronos-2,-0.044689,-0.071343,0.016511,4.371,not resolved
+GoiEner non-household,full,1237,hourly,ANKYRA vs TimesFM,-0.044248,-0.072760,0.013675,4.328,not resolved
+GoiEner non-household,full,1237,hourly,ANKYRA-C vs ANKYRA,-0.011689,-0.046655,0.012300,1.162,not resolved
+GoiEner non-household,full,1237,hourly,Chronos-2 vs TimesFM,-0.011249,-0.057769,0.016511,1.119,not resolved
+GoiEner non-household,full,1237,energy,ANKYRA-C vs Chronos-2,-0.223042,-0.440030,-0.098997,19.992,first better
+GoiEner non-household,full,1237,energy,ANKYRA vs TimesFM,-0.180808,-0.432191,-0.081240,16.540,first better
+GoiEner non-household,full,1237,energy,ANKYRA-C vs ANKYRA,-0.061283,-0.142865,0.009488,5.944,not resolved
+GoiEner non-household,late,890,hourly,ANKYRA-C vs Chronos-2,-0.055385,-0.077732,0.044574,5.388,not resolved
+GoiEner non-household,late,890,hourly,ANKYRA vs TimesFM,-0.056142,-0.080982,0.024366,5.460,not resolved
+GoiEner non-household,late,890,hourly,ANKYRA-C vs ANKYRA,-0.017792,-0.052886,0.017103,1.763,not resolved
+GoiEner non-household,late,890,hourly,Chronos-2 vs TimesFM,-0.018550,-0.066594,0.012140,1.838,not resolved
+GoiEner non-household,late,890,energy,ANKYRA-C vs Chronos-2,-0.314340,-0.503412,-0.047174,26.973,first better
+GoiEner non-household,late,890,energy,ANKYRA vs TimesFM,-0.286606,-0.494782,-0.084606,24.919,first better
+GoiEner non-household,late,890,energy,ANKYRA-C vs ANKYRA,-0.055681,-0.185691,0.018515,5.416,not resolved
+GoiEner households,full,1258,hourly,ANKYRA-C vs Chronos-2,0.007771,-0.010507,0.067728,-0.780,not resolved
+GoiEner households,full,1258,hourly,ANKYRA vs TimesFM,0.024337,-0.004400,0.109052,-2.464,not resolved
+GoiEner households,full,1258,hourly,ANKYRA-C vs ANKYRA,0.028014,0.005089,0.074681,-2.841,first worse
+GoiEner households,full,1258,hourly,Chronos-2 vs TimesFM,0.044580,0.011590,0.121435,-4.559,first worse
+GoiEner households,full,1258,energy,ANKYRA-C vs Chronos-2,-0.384033,-0.518385,-0.206596,31.889,first better
+GoiEner households,full,1258,energy,ANKYRA vs TimesFM,-0.319240,-0.446414,-0.157887,27.330,first better
+GoiEner households,full,1258,energy,ANKYRA-C vs ANKYRA,0.001207,-0.056571,0.077949,-0.121,not resolved
+GoiEner households,late,696,hourly,ANKYRA-C vs Chronos-2,0.024212,-0.002947,0.072269,-2.451,not resolved
+GoiEner households,late,696,hourly,ANKYRA vs TimesFM,0.037827,0.003177,0.093075,-3.855,first worse
+GoiEner households,late,696,hourly,ANKYRA-C vs ANKYRA,0.026796,-0.001978,0.063919,-2.716,not resolved
+GoiEner households,late,696,hourly,Chronos-2 vs TimesFM,0.040411,-0.003420,0.093705,-4.124,not resolved
+GoiEner households,late,696,energy,ANKYRA-C vs Chronos-2,-0.332298,-0.487733,-0.195640,28.273,first better
+GoiEner households,late,696,energy,ANKYRA vs TimesFM,-0.284162,-0.405276,-0.154845,24.736,first better
+GoiEner households,late,696,energy,ANKYRA-C vs ANKYRA,-0.015992,-0.122805,0.059960,1.586,not resolved
+EWELD,full,1023,hourly,ANKYRA-C vs Chronos-2,-0.026185,-0.043640,-0.005908,2.584,first better
+EWELD,full,1023,hourly,ANKYRA vs TimesFM,-0.032186,-0.051318,-0.006822,3.167,first better
+EWELD,full,1023,hourly,ANKYRA-C vs ANKYRA,0.016519,-0.030730,0.130510,-1.666,not resolved
+EWELD,full,1023,hourly,Chronos-2 vs TimesFM,0.013498,-0.033591,0.131172,-1.359,not resolved
+EWELD,full,1023,energy,ANKYRA-C vs Chronos-2,-0.086127,-0.199292,0.017354,8.252,not resolved
+EWELD,full,1023,energy,ANKYRA vs TimesFM,-0.052725,-0.208977,0.064922,5.136,not resolved
+EWELD,full,1023,energy,ANKYRA-C vs ANKYRA,0.006116,-0.095967,0.169014,-0.613,not resolved
+EWELD,late,523,hourly,ANKYRA-C vs Chronos-2,-0.016278,-0.039477,0.014301,1.615,not resolved
+EWELD,late,523,hourly,ANKYRA vs TimesFM,-0.026317,-0.056494,0.052085,2.597,not resolved
+EWELD,late,523,hourly,ANKYRA-C vs ANKYRA,0.066321,-0.028220,0.209544,-6.857,not resolved
+EWELD,late,523,hourly,Chronos-2 vs TimesFM,0.059923,-0.033444,0.222438,-6.175,not resolved
+EWELD,late,523,energy,ANKYRA-C vs Chronos-2,-0.081657,-0.224310,0.070760,7.841,not resolved
+EWELD,late,523,energy,ANKYRA vs TimesFM,-0.082331,-0.296336,0.130446,7.903,not resolved
+EWELD,late,523,energy,ANKYRA-C vs ANKYRA,0.060230,-0.123377,0.247709,-6.208,not resolved
+BDG2 2017,full,934,hourly,ANKYRA-C vs Chronos-2,-0.072205,-0.091247,0.240882,6.966,not resolved
+BDG2 2017,full,934,hourly,ANKYRA vs TimesFM,-0.059282,-0.078957,0.223092,5.756,not resolved
+BDG2 2017,full,934,hourly,ANKYRA-C vs ANKYRA,-0.019081,-0.127145,0.027177,1.890,not resolved
+BDG2 2017,full,934,hourly,Chronos-2 vs TimesFM,-0.006158,-0.140103,0.070726,0.614,not resolved
+BDG2 2017,full,934,energy,ANKYRA-C vs Chronos-2,-0.180317,-0.266440,0.116578,16.499,not resolved
+BDG2 2017,full,934,energy,ANKYRA vs TimesFM,-0.191225,-0.297247,0.111079,17.405,not resolved
+BDG2 2017,full,934,energy,ANKYRA-C vs ANKYRA,0.004448,-0.114987,0.083324,-0.446,not resolved
+BDG2 2017,late,474,hourly,ANKYRA-C vs Chronos-2,-0.032467,-0.094503,0.285331,3.195,not resolved
+BDG2 2017,late,474,hourly,ANKYRA vs TimesFM,-0.024993,-0.074867,0.286640,2.468,not resolved
+BDG2 2017,late,474,hourly,ANKYRA-C vs ANKYRA,-0.017362,-0.146765,0.038931,1.721,not resolved
+BDG2 2017,late,474,hourly,Chronos-2 vs TimesFM,-0.009889,-0.179860,0.134987,0.984,not resolved
+BDG2 2017,late,474,energy,ANKYRA-C vs Chronos-2,-0.132431,-0.255580,0.190830,12.404,not resolved
+BDG2 2017,late,474,energy,ANKYRA vs TimesFM,-0.126392,-0.229894,0.236640,11.873,not resolved
+BDG2 2017,late,474,energy,ANKYRA-C vs ANKYRA,-0.052742,-0.170224,0.055870,5.138,not resolved
+Cambridge,full,1456,hourly,ANKYRA-C vs Chronos-2,-0.122613,-0.142317,-0.090157,11.539,first better
+Cambridge,full,1456,hourly,ANKYRA vs TimesFM,-0.101628,-0.122607,-0.072092,9.663,first better
+Cambridge,full,1456,hourly,ANKYRA-C vs ANKYRA,0.016239,-0.004843,0.035030,-1.637,not resolved
+Cambridge,full,1456,hourly,Chronos-2 vs TimesFM,0.037225,0.000778,0.070182,-3.793,first worse
+Cambridge,full,1456,energy,ANKYRA-C vs Chronos-2,-0.209391,-0.277631,-0.146692,18.892,first better
+Cambridge,full,1456,energy,ANKYRA vs TimesFM,-0.170679,-0.231894,-0.090627,15.691,first better
+Cambridge,full,1456,energy,ANKYRA-C vs ANKYRA,0.052590,-0.007848,0.094892,-5.400,not resolved
+Cambridge,late,730,hourly,ANKYRA-C vs Chronos-2,-0.098158,-0.125525,-0.057754,9.349,first better
+Cambridge,late,730,hourly,ANKYRA vs TimesFM,-0.086856,-0.114309,-0.051122,8.319,first better
+Cambridge,late,730,hourly,ANKYRA-C vs ANKYRA,0.005922,-0.014207,0.023066,-0.594,not resolved
+Cambridge,late,730,hourly,Chronos-2 vs TimesFM,0.017223,-0.016688,0.042640,-1.737,not resolved
+Cambridge,late,730,energy,ANKYRA-C vs Chronos-2,-0.199644,-0.333269,-0.082199,18.098,first better
+Cambridge,late,730,energy,ANKYRA vs TimesFM,-0.157770,-0.268872,-0.067163,14.595,first better
+Cambridge,late,730,energy,ANKYRA-C vs ANKYRA,0.042770,-0.082128,0.124757,-4.370,not resolved
+Arizona (HEEW),full,1282,hourly,ANKYRA-C vs Chronos-2,-0.080648,-0.105069,-0.030082,7.748,first better
+Arizona (HEEW),full,1282,hourly,ANKYRA vs TimesFM,-0.046540,-0.065680,0.000000,4.547,not resolved
+Arizona (HEEW),full,1282,hourly,ANKYRA-C vs ANKYRA,0.018472,-0.001450,0.042058,-1.864,not resolved
+Arizona (HEEW),full,1282,hourly,Chronos-2 vs TimesFM,0.052581,0.018236,0.092995,-5.399,first worse
+Arizona (HEEW),full,1282,energy,ANKYRA-C vs Chronos-2,-0.158014,-0.247917,-0.028441,14.616,first better
+Arizona (HEEW),full,1282,energy,ANKYRA vs TimesFM,-0.106328,-0.185598,0.045212,10.087,not resolved
+Arizona (HEEW),full,1282,energy,ANKYRA-C vs ANKYRA,0.015184,-0.038581,0.096987,-1.530,not resolved
+Arizona (HEEW),late,658,hourly,ANKYRA-C vs Chronos-2,-0.059247,-0.090544,0.013384,5.753,not resolved
+Arizona (HEEW),late,658,hourly,ANKYRA vs TimesFM,-0.037876,-0.064089,0.057904,3.717,not resolved
+Arizona (HEEW),late,658,hourly,ANKYRA-C vs ANKYRA,0.008840,-0.009091,0.034495,-0.888,not resolved
+Arizona (HEEW),late,658,hourly,Chronos-2 vs TimesFM,0.030211,-0.006706,0.086868,-3.067,not resolved
+Arizona (HEEW),late,658,energy,ANKYRA-C vs Chronos-2,-0.104921,-0.233132,0.077561,9.960,not resolved
+Arizona (HEEW),late,658,energy,ANKYRA vs TimesFM,-0.044959,-0.150364,0.121553,4.396,not resolved
+Arizona (HEEW),late,658,energy,ANKYRA-C vs ANKYRA,0.004829,-0.064750,0.089169,-0.484,not resolved
+Oslo,full,1147,hourly,ANKYRA-C vs Chronos-2,-0.130443,-0.159810,-0.097351,12.229,first better
+Oslo,full,1147,hourly,ANKYRA vs TimesFM,-0.119916,-0.146619,-0.091793,11.301,first better
+Oslo,full,1147,hourly,ANKYRA-C vs ANKYRA,-0.001665,-0.027253,0.023222,0.166,not resolved
+Oslo,full,1147,hourly,Chronos-2 vs TimesFM,0.008862,-0.030042,0.047982,-0.890,not resolved
+Oslo,full,1147,energy,ANKYRA-C vs Chronos-2,-0.197689,-0.266449,-0.089678,17.938,first better
+Oslo,full,1147,energy,ANKYRA vs TimesFM,-0.175930,-0.246856,-0.075583,16.132,first better
+Oslo,full,1147,energy,ANKYRA-C vs ANKYRA,0.010337,-0.047464,0.062899,-1.039,not resolved
+Oslo,late,581,hourly,ANKYRA-C vs Chronos-2,-0.127722,-0.164442,-0.086943,11.990,first better
+Oslo,late,581,hourly,ANKYRA vs TimesFM,-0.116303,-0.153074,-0.078963,10.979,first better
+Oslo,late,581,hourly,ANKYRA-C vs ANKYRA,-0.005118,-0.042629,0.029197,0.510,not resolved
+Oslo,late,581,hourly,Chronos-2 vs TimesFM,0.006300,-0.050504,0.060724,-0.632,not resolved
+Oslo,late,581,energy,ANKYRA-C vs Chronos-2,-0.206982,-0.298152,-0.070491,18.697,first better
+Oslo,late,581,energy,ANKYRA vs TimesFM,-0.180708,-0.284633,-0.057517,16.532,first better
+Oslo,late,581,energy,ANKYRA-C vs ANKYRA,0.007388,-0.083499,0.080062,-0.742,not resolved
+Drammen,full,1375,hourly,ANKYRA-C vs Chronos-2,-0.104454,-0.139241,-0.070455,9.918,first better
+Drammen,full,1375,hourly,ANKYRA vs TimesFM,-0.121561,-0.159392,-0.088371,11.446,first better
+Drammen,full,1375,hourly,ANKYRA-C vs ANKYRA,-0.016943,-0.040731,0.007708,1.680,not resolved
+Drammen,full,1375,hourly,Chronos-2 vs TimesFM,-0.034050,-0.076508,0.006118,3.348,not resolved
+Drammen,full,1375,energy,ANKYRA-C vs Chronos-2,-0.214215,-0.326537,-0.125970,19.283,first better
+Drammen,full,1375,energy,ANKYRA vs TimesFM,-0.224040,-0.357471,-0.127097,20.072,first better
+Drammen,full,1375,energy,ANKYRA-C vs ANKYRA,-0.011504,-0.091450,0.054514,1.144,not resolved
+Drammen,late,689,hourly,ANKYRA-C vs Chronos-2,-0.115375,-0.171556,-0.056218,10.897,first better
+Drammen,late,689,hourly,ANKYRA vs TimesFM,-0.135387,-0.199714,-0.076988,12.662,first better
+Drammen,late,689,hourly,ANKYRA-C vs ANKYRA,-0.017557,-0.049492,0.015759,1.740,not resolved
+Drammen,late,689,hourly,Chronos-2 vs TimesFM,-0.037569,-0.094039,0.010586,3.687,not resolved
+Drammen,late,689,energy,ANKYRA-C vs Chronos-2,-0.215555,-0.401678,-0.080343,19.391,first better
+Drammen,late,689,energy,ANKYRA vs TimesFM,-0.228277,-0.478378,-0.077587,20.410,first better
+Drammen,late,689,energy,ANKYRA-C vs ANKYRA,-0.009262,-0.121652,0.076552,0.922,not resolved
+CINELDI,full,929,hourly,ANKYRA-C vs Chronos-2,-0.061511,-0.086607,-0.034087,5.966,first better
+CINELDI,full,929,hourly,ANKYRA vs TimesFM,-0.069054,-0.098590,-0.036654,6.672,first better
+CINELDI,full,929,hourly,ANKYRA-C vs ANKYRA,-0.015369,-0.036885,0.003262,1.525,not resolved
+CINELDI,full,929,hourly,Chronos-2 vs TimesFM,-0.022912,-0.061874,0.010559,2.265,not resolved
+CINELDI,full,929,energy,ANKYRA-C vs Chronos-2,-0.178117,-0.271442,-0.081230,16.316,first better
+CINELDI,full,929,energy,ANKYRA vs TimesFM,-0.187906,-0.261693,-0.096702,17.131,first better
+CINELDI,full,929,energy,ANKYRA-C vs ANKYRA,-0.033847,-0.100455,0.023727,3.328,not resolved
+CINELDI,late,475,hourly,ANKYRA-C vs Chronos-2,-0.060719,-0.087808,-0.035568,5.891,first better
+CINELDI,late,475,hourly,ANKYRA vs TimesFM,-0.067445,-0.107373,-0.029628,6.522,first better
+CINELDI,late,475,hourly,ANKYRA-C vs ANKYRA,-0.015161,-0.041977,0.003269,1.505,not resolved
+CINELDI,late,475,hourly,Chronos-2 vs TimesFM,-0.021886,-0.067052,0.014835,2.165,not resolved
+CINELDI,late,475,energy,ANKYRA-C vs Chronos-2,-0.181049,-0.281705,-0.067918,16.561,first better
+CINELDI,late,475,energy,ANKYRA vs TimesFM,-0.175335,-0.261147,-0.052601,16.082,first better
+CINELDI,late,475,energy,ANKYRA-C vs ANKYRA,-0.038478,-0.122123,0.028293,3.775,not resolved
+Suzhou park,full,127,hourly,ANKYRA-C vs Chronos-2,-0.196406,-0.304538,-0.087253,17.832,first better
+Suzhou park,full,127,hourly,ANKYRA vs TimesFM,-0.126534,-0.209148,-0.045039,11.886,first better
+Suzhou park,full,127,hourly,ANKYRA-C vs ANKYRA,0.025778,-0.020662,0.064253,-2.611,not resolved
+Suzhou park,full,127,hourly,Chronos-2 vs TimesFM,0.095650,0.022386,0.193176,-10.037,first worse
+Suzhou park,full,127,energy,ANKYRA-C vs Chronos-2,-0.259675,-0.472464,-0.111864,22.870,first better
+Suzhou park,full,127,energy,ANKYRA vs TimesFM,-0.178602,-0.293219,-0.063005,16.356,first better
+Suzhou park,full,127,energy,ANKYRA-C vs ANKYRA,0.026617,-0.066952,0.096430,-2.697,not resolved
+Suzhou park,late,64,hourly,ANKYRA-C vs Chronos-2,-0.239864,-0.414401,-0.081072,21.327,first better
+Suzhou park,late,64,hourly,ANKYRA vs TimesFM,-0.112140,-0.195787,-0.030279,10.608,first better
+Suzhou park,late,64,hourly,ANKYRA-C vs ANKYRA,0.018202,-0.046190,0.070102,-1.837,not resolved
+Suzhou park,late,64,hourly,Chronos-2 vs TimesFM,0.145926,0.019146,0.302543,-15.711,first worse
+Suzhou park,late,64,energy,ANKYRA-C vs Chronos-2,-0.371460,-0.817682,-0.045389,31.027,first better
+Suzhou park,late,64,energy,ANKYRA vs TimesFM,-0.171997,-0.389353,0.022379,15.802,not resolved
+Suzhou park,late,64,energy,ANKYRA-C vs ANKYRA,0.022414,-0.172398,0.158730,-2.267,not resolved
