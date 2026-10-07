@@ -70,7 +70,8 @@ that a rule or an analysis was *fixed in advance*, it was written down in those 
 - **First read:** the population was scored for the first time after the handover had been fixed.
 
 **Spanish development store.** A separate set of GoiEner non-household supply points in four categories, disjoint
-from the GoiEner non-household test population, on which the method was developed. It is not scored in any table and
+from the GoiEner non-household test population, on which the method was developed. It is not scored in any comparison table (its windows enter only the pooled
+anchoring-gain deciles of `results/anchoring_gain_deciles.csv`), and
 its data are not described in [DATA.md](DATA.md). "Development store" below always means this set.
 
 ¹ **BDG2 under 2.0.1.** The micro-load rule was written after the BDG2 test result of 2.0.0 had been seen, in response

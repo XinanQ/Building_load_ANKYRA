@@ -193,7 +193,8 @@ Unit and window counts (all / late) are in the table of
 - **Units.** Category-labelled supply points, not certified individual buildings: 486 units (Industrial 159,
   Office 80, Public 247). They are disjoint from the supply points of the Spanish development store: a separate set
   of GoiEner non-household supply points on which the method was developed. That store is not one of the eleven
-  populations and is not scored in any table.
+  populations and is not scored in any comparison table; its windows enter only the pooled deciles of
+  `results/anchoring_gain_deciles.csv`.
 - **Grid.** Anchor 2018-01-01.
 - **Daylight-saving region.** EU.
 - **Load column and unit conversion, temperature source, holiday calendar, the rule that assigns the categories:**
@@ -414,6 +415,7 @@ them are re-evaluations. UNICON was prepared after 2.1 was fixed, for its extern
   ([METHOD.md](METHOD.md#information-at-the-origin)).
 - **The Spanish development store.** A separate set of GoiEner non-household supply points, disjoint from
   population 5, on which the method was developed. It is not one of the eleven populations, it is not scored in any
-  table, and its units and preparation are not described here.
+  comparison table (its windows enter only the pooled anchoring-gain deciles), and its units and preparation are not
+  described here.
 - **Prepared stores and forecasts.** The prepared arrays, the foundation-model forecasts and the trained baselines'
   checkpoints are not distributed. The scored statistics are in [`results/`](../results).

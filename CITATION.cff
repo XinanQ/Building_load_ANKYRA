@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use this software or its results, please cite it as below. A journal article is in preparation."
+type: software
+title: "ANKYRA: anchoring a time-series foundation model to each unit's own history for month-ahead load forecasting"
+abstract: >-
+  ANKYRA is a month-ahead hourly load forecaster for buildings, industrial meters and households. For each unit it
+  combines the zero-shot forecast of a frozen time-series foundation model (TimesFM 2.5) with a forecast built from
+  the unit's own history, using weights set by the unit's errors at its own completed pseudo-forecast origins. No
+  network is trained or fine-tuned. An exact decomposition of the 744-hour trajectory into monthly level, daily path
+  and within-day shape provides energy, peak and interval readouts. The repository contains the package, its tests
+  and exact properties, the scored results against 20 forecasters on ten populations and four external
+  populations, and the code that regenerates every figure.
+authors:
+  - family-names: Qin
+    given-names: Xinan
+    # orcid: "https://orcid.org/0000-0000-0000-0000"   # add if available
+version: "2.2.0"
+date-released: "2026-10-06"
+license: MIT
+repository-code: "https://github.com/XinanQ/Building_load_ANKYRA"
+# doi: "10.5281/zenodo.XXXXXXX"   # add the Zenodo DOI after the first archived release
+keywords:
+  - load forecasting
+  - month-ahead forecasting
+  - time-series foundation models
+  - forecast combination
+  - building energy
+  - energy readout
+  - peak demand
+  - prediction intervals
