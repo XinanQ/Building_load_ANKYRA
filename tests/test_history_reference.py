@@ -15,7 +15,8 @@ torch.set_num_threads(1)
 class HistoryReferenceTests(unittest.TestCase):
     def test_documented_synthetic_level(self):
         e = estimate_from_history(synthetic_history(16000), group="Office", temp_sigma_std=0.25)
-        self.assertAlmostEqual(e.level_kw, 22.5983831772, places=8)
+        # 1e-6 kW: the last digits of the level differ across platforms' numerical libraries (Linux CI gives 22.5983831666)
+        self.assertAlmostEqual(e.level_kw, 22.5983831772, places=6)
         self.assertLess(abs(e.daily_path_kw.sum()), 1e-9)
         self.assertAlmostEqual(sum(e.diagnostics["level_weights"].values()), 1.0, places=12)
 
