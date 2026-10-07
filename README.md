@@ -59,7 +59,7 @@ others) are defined in [Terms used on this page](#terms-used-on-this-page).
 - **How it works:** [Handover](#how-the-handover-works) · [Within-day anchoring](#within-day-anchoring-20) ·
   [What the parts buy](#what-the-parts-buy) · [Readouts](#readouts-peak-and-prediction-interval) ·
   [When anchoring is expected to help](#when-anchoring-is-expected-to-help) ·
-  [When anchoring is expected to help](#when-anchoring-is-expected-to-help) ·
+  [Long-context models and generic combinations](#long-context-foundation-models-and-generic-combinations) ·
   [Theory](#theory-exact-properties)
 - **Check it:** [Reproducibility](#reproducibility) · [What changed in 2.0, 2.0.1, 2.1 and 2.2](#what-changed-in-20-201-21-and-22) ·
   [Version history](#version-history) · [License and acknowledgements](#license-and-acknowledgements)
@@ -1174,8 +1174,8 @@ Every forecast carries two statistics of the unit's own record on the monthly le
 not used by it (`anchoring_record`, 2.2): the weight the level block gives the foundation model's window mean
 (`carrier_level_weight`) and the log ratio of the best historical candidate's pseudo-origin RMS error to the foundation
 model's (`history_vs_carrier_log_ratio`; negative means the unit's history beat the model at its earlier origins). On
-the fourteen populations of this repository (the ten above, the development store, HKUST, Helsinki and UNICON; 14,170
-windows) the realised gain of ANKYRA over TimesFM falls with both. Deciles are global over all windows; gains are the
+the fourteen populations of this repository (the ten above, the development store, HKUST, Helsinki and UNICON; 14,177
+windows, 14,006 where the log ratio is defined) the realised gain of ANKYRA over TimesFM falls with both. Deciles are global over all windows; gains are the
 unit-equal log RMS ratio with its 95% unit-and-month interval ([`results/anchoring_gain_deciles.csv`](results/anchoring_gain_deciles.csv)).
 
 | `history_vs_carrier_log_ratio` decile | range | monthly-energy gain over TimesFM | hourly gain over TimesFM |
@@ -1196,6 +1196,56 @@ to pay, not which window will. A value of `history_vs_carrier_log_ratio` near or
 about 0.2, means the unit's own record gives no reason to expect a gain over the foundation model alone. The forecaster
 does not act on these statistics: a per-window shrinkage rule built on them improved the development store and failed
 the validation populations ([P20](theory/README.md)); the weights stay as they are and the statistics are reported.
+
+## Long-context foundation models and generic combinations
+
+Two descriptive experiments on ANKYRA 2.2, run under a protocol fixed before anything was scored (no pass line, one
+implementation each, nothing tuned). Every population had been read before: the numbers are re-evaluations, not
+tests. 95% unit-and-month intervals, seed 20261007.
+
+**A year of context for the foundation model.** TimesFM 2.5 with an 8,736-hour context (`TimesFM-8736`), Chronos-2 with
+8,192 hours (its limit) and the unchanged package anchored to TimesFM-8736 (`ANKYRA-T8736`), on the late windows of the
+ten populations ([`results/long_context_carriers.csv`](results/long_context_carriers.csv)). Counts of ten: point
+estimate better / resolved better / resolved worse for the first-named forecaster.
+
+| Contrast | Hourly | Monthly energy |
+|---|---|---|
+| ANKYRA vs TimesFM-8736 | 8 / 4 / 1 | 9 / 4 / 0 |
+| ANKYRA vs Chronos-2-8192 | 9 / 6 / 1 | 10 / 6 / 0 |
+| ANKYRA-T8736 vs TimesFM-8736 | 9 / 5 / 1 | 9 / 6 / 0 |
+| TimesFM-8736 vs TimesFM-1344 | 9 / 4 / 0 | 8 / 2 / 0 |
+
+The longer context helps TimesFM somewhat, but anchoring still lowers the error on the one-year-context carrier, and
+the monthly-energy gain is no smaller than with 1,344 hours; the exception is the GoiEner households on hourly error,
+the single resolved-worse population in every ANKYRA row.
+
+**Generic combination partners.** B2(X) is the B2 combination ([above](#what-the-parts-buy)) with the history-side
+forecast H replaced by a generic local forecast X (weekly seasonal naive, 4-week profile, last-year profile); EW(X) is
+the half-and-half average of TimesFM and X (X also the per-unit ridge or MSTL where saved). Twelve populations, all
+windows ([`results/generic_combinations.csv`](results/generic_combinations.csv)). Counts of twelve: first-named better /
+worse / not resolved.
+
+| Contrast | Hourly | Monthly energy |
+|---|---|---|
+| B2(H) vs B2(seasonal naive, week) | 8 / 0 / 4 | 7 / 0 / 5 |
+| B2(H) vs B2(4-week profile) | 8 / 0 / 4 | 7 / 0 / 5 |
+| B2(H) vs B2(last-year profile) | 3 / 0 / 9 | 1 / 1 / 10 |
+| B2(H) vs best B2(X) | 2 / 0 / 10 | 0 / 1 / 11 |
+| B2(H) vs best equal-weight average | 4 / 0 / 8 | 1 / 1 / 10 |
+| ANKYRA vs best generic combination | 0 / 0 / 12 | 0 / 1 / 11 |
+
+"Best" was picked after scoring, per population and error, which favours the generic side; the best B2(X) is the
+last-year profile on ten of twelve populations, and the one resolved-worse energy row is Oslo. The gain comes from the
+per-unit, error-weighted combination with a long-memory history forecast: the history side is about as good a partner
+as the last-year profile and better than the short-memory forecasts.
+
+**Three candidate changes, none adopted.** Under the same protocol three changes to the forecaster were tested on the
+ten populations against criteria written before scoring: a seasonal-phase climatology (the annual temperature harmonic
+may take a negative amplitude, i.e. the southern-hemisphere phase) together with a prior temperature curve for the
+Commercial group; prediction-interval residuals taken from combined pseudo-forecasts; and a one-weight (B2) point
+forecast. None met its criteria, so none was adopted and the package stays 2.2. On UNICON (descriptive only) the
+phase-corrected climatology changed the errors by −0.01% hourly and −0.2% on monthly energy, so the northern-hemisphere
+phase does not explain the UNICON result.
 
 ## Theory: exact properties
 
@@ -1233,9 +1283,10 @@ forecaster in their own folder, [theory/](theory/), which the forecaster does no
 - **Estimands (P19).** Pooled and unit-equal summaries can disagree in sign for an algebraic reason, so the evaluation
   reports both, with the mean rank and conventional metrics.
 - **Evidence bound (P20).** Seven level candidates judged on at most six pseudo-origin errors cannot be told apart
-  reliably (the minimax rate of aggregation is of the order of the error itself; the measured hit rate of the selected
-  candidate is 19–29% against a chance of 17%). The weights are shrunk for this reason, and the record statistics that
-  do predict the gain of anchoring are reported with each forecast ([`anchoring_record`](#what-comes-out)).
+  reliably (the known minimax rates of aggregation, Nemirovski 2000 and Tsybakov 2003, are a sizeable fraction of the
+  error variance at six pseudo-origins; the measured hit rate of the selected candidate is 19–29% against a chance of
+  17%). The weights are shrunk for this reason, and the record statistics that indicate, between populations, where
+  anchoring pays are reported with each forecast ([`anchoring_record`](#what-comes-out)).
 
 Each is written as a function in `theory/operators.py` or carried by the forecaster's own functions (P1, P3, P15, P19),
 and checked by `python -m unittest discover -s theory -t .`.

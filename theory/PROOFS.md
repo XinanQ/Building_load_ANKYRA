@@ -1,7 +1,7 @@
 # Proofs of the exact properties
 
 ANKYRA is assembled from identities and elementary bounds rather than from fitted relationships. This page states
-them, numbered P1–P19 in the order of the pipeline, with proofs and counterexamples. They make the construction
+them, numbered P1–P20 in the order of the pipeline, with proofs and counterexamples. They make the construction
 auditable:
 
 - any division of labour between two forecasters can be scored from block losses;
@@ -344,11 +344,12 @@ $T\le 6$). Two statements bound what any such rule can do.
   probability $2/K$. A measured hit rate is therefore read against $1/K$, not against zero.
 - *Minimax rate (standard).* With $T$ independent error samples per candidate, no aggregation rule can guarantee an excess
   squared error over the best candidate smaller than a constant times $\psi(K,T)=\min\lbrace K/T,\sqrt{\log K/T}\rbrace$
-  for convex combinations, or $\log K/T$ for selection, in units of the error variance (Tsybakov, 2003; Juditsky,
-  Rigollet and Tsybakov, 2008; Rigollet and Tsybakov, 2011). For $K=7$ and $T=6$ both rates are of the order of the
-  error itself ($\psi=1.17$, $\log K/T=0.32$); for $T=30$ they are $0.23$ and $0.06$. Below about two years of
-  monthly evidence, no weighting rule can be expected to approach the best fixed candidate; shrinkage towards equal
-  weights is the appropriate response, and it is what the weights of P8 do.
+  for convex combinations, or $\log K/T$ for selection, in units of the error variance (Nemirovski, 2000; Tsybakov, 2003; Juditsky,
+  Rigollet and Tsybakov, 2008; Rigollet and Tsybakov, 2011). For $K=7$ and $T=6$ the rates are $\psi=0.57$ and $\log K/T=0.32$ (for $T=30$: $0.23$ and $0.06$), up to unspecified
+  constants and under independence, which pseudo-origins only approximate. They are worst-case orders, not predictions
+  for these data; they indicate that with a few months of evidence per candidate strongly shrunk weights are the
+  reasonable choice, which is what the weights of P8 do. (The historical candidates use up to 12 pseudo-origins, the
+  foundation-model candidate at most 6.)
 
 *Evidence (this study).* Among the six historical candidates, the candidate with the smallest pseudo-origin RMS was the
 target's best on 19–29% of windows across thirteen populations (chance 17%) and in the best two on 35–47% (chance
@@ -356,8 +357,8 @@ target's best on 19–29% of windows across thirteen populations (chance 17%) an
 weights. A per-window choice made with hindsight would have cut the level error by 41–73% against ANKYRA; the same
 choice made from the record (all past months of the unit) changed it by −0.7% and −7.0% on the two populations where it
 could be tested. The equal-weight average was worse than ANKYRA's shrunk inverse-MSE weights on most populations
-(by 3–30%), so the weights carry some signal; the gap to the hindsight bound is the bound above, not an estimation
-defect. The pre-origin statistics that *do* predict the gain of anchoring are the unit's record of history against the
+(by 3–30%), so the weights carry some signal; the per-window hindsight choice is not attainable by any rule that uses the record
+only, so its 41–73% is an upper reference, not a target. The pre-origin statistics that *do* predict the gain of anchoring are the unit's record of history against the
 carrier (`anchoring_record`), reported with every forecast.
 
 ## References
@@ -367,6 +368,8 @@ carrier (`anchoring_record`), reported with every forecast.
 - Juditsky, A., Rigollet, P., Tsybakov, A. B. (2008). Learning by mirror averaging. *Annals of Statistics* 36(5),
   2183–2206.
 - Koenker, R., Bassett, G. (1978). Regression quantiles. *Econometrica* 46(1), 33–50.
+- Nemirovski, A. (2000). Topics in non-parametric statistics. In *Lectures on Probability Theory and Statistics* (Saint-Flour
+  1998), Lecture Notes in Mathematics 1738, 85–277. Springer.
 - Rigollet, P., Tsybakov, A. B. (2011). Exponential screening and optimal rates of sparse estimation. *Annals of
   Statistics* 39(2), 731–771.
 - Tsybakov, A. B. (2003). Optimal rates of aggregation. In *Learning Theory and Kernel Machines* (COLT 2003), Lecture

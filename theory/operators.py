@@ -1,6 +1,6 @@
 """Exact properties of the blocks, the historical weights and the readouts, written as operators.
 
-Each function states one property that ANKYRA's design relies on.  ``PROOFS.md`` in this folder numbers them P1-P19
+Each function states one property that ANKYRA's design relies on.  ``PROOFS.md`` in this folder numbers them P1-P20
 and gives the proofs, and ``test_operators.py`` checks every one numerically, including the counterexamples that limit
 what is claimed.  The operators do not depend on the foundation model: they apply to any forecaster's 744-hour
 trajectory and to the historical estimator.  They are kept apart from the forecaster (``ankyra/``), which does not

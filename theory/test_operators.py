@@ -1,4 +1,4 @@
-"""Exact properties P1-P19 of theory/PROOFS.md, checked numerically, together with the counterexamples that bound them.
+"""Exact properties P1-P20 of theory/PROOFS.md, checked numerically, together with the counterexamples that bound them.
 
     python -m unittest discover -s theory -t .
 """

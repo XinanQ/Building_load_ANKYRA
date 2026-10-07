@@ -22,7 +22,9 @@ version they were measured on. New summary: `reevaluation_2_2.json`. Earlier the
 `hkust_first_read.csv`, `hkust_by_day.csv`, `helsinki_confirmation.csv`, `helsinki_criteria.json`,
 `helsinki_by_day.csv` and the `lcl_*` files (`lcl_metric_definitions.json` is version-free and unchanged). Moved:
 `lcl_audit.json`, a record of the 2.0.1 scoring, to `ankyra_2_0_1/`. Figure 18 no longer exists: its per-day curves of
-HKUST and Helsinki are panels of Figures 9 and 9b, with LCL and UNICON.
+HKUST and Helsinki are panels of Figures 9 and 9b, with LCL and UNICON. **Added afterwards** (ANKYRA 2.2):
+`long_context_carriers.csv` and `generic_combinations.csv`
+([below](#long-context-foundation-models-and-generic-combinations)).
 
 - **What differs from 2.0.1.** The within-day block and everything computed from the delivered trajectory: hourly
   errors, ranks, intervals, the trajectory peak, and delivered energy where the projection onto nonnegative load binds.
@@ -527,7 +529,7 @@ Columns of the other files:
 ## The anchoring record
 
 **`anchoring_gain_deciles.csv`** - the two statistics of `anchoring_record` (package 2.2) against the realised gain of ANKYRA
-2.2 over TimesFM on fourteen populations (14,170 windows: the ten of the main comparison, the GoiEner development store, HKUST,
+2.2 over TimesFM on fourteen populations (14,177 windows, 14,006 with a defined log ratio: the ten of the main comparison, the GoiEner development store, HKUST,
 Helsinki and UNICON). Columns: `statistic`, `decile` (global over all windows), `lower_edge`, `upper_edge`, `windows`, `populations`,
 then the unit-equal log RMS improvement in per cent and the 95% unit-and-month interval of the log ratio for the monthly level
 (= monthly energy) and for the hourly error ([README section](../README.md#when-anchoring-is-expected-to-help)).
@@ -591,6 +593,54 @@ of 60 units), columns as in `hkust_by_day.csv`. The UNICON panels of Figures 9 a
 
 The three carrier-swap files were recomputed with 2.1 and are unchanged under 2.2; the 2.0.1 runs are in `ankyra_2_0_1/`, with the same resolved
 counts.
+
+## Long-context foundation models and generic combinations
+
+Two descriptive experiments on **ANKYRA 2.2**, run after 2.2 under a protocol that was fixed before anything was
+scored (one implementation each, no pass line, nothing tuned). Every population had been read before, so all numbers
+are re-evaluations of read data, not tests. Interval: 95% unit-and-month bootstrap, 2,000 draws, seed **20261007**
+(a new generator per contrast). Both files are printed with full floating-point precision, copied exactly from the
+scoring records; the bootstrap does not support that many digits. `resolved` is `first better`, `second better` or
+`not resolved`; `improvement_pct` is positive when the first-named forecaster is better. README section:
+[Long-context foundation models and generic combinations](../README.md#long-context-foundation-models-and-generic-combinations).
+
+**`long_context_carriers.csv`** — Does the anchoring gain survive when the foundation model sees a year of history
+instead of 1,344 hours? Ten populations, the late windows of `datasets.csv` (`subset` = `late`; `windows`, `units` =
+`windows_late`, `units_late`), hourly and monthly-energy error (`error`). Forecasters:
+
+- `TimesFM-8736`: TimesFM 2.5 with an 8,736-hour (52-week) context; `Chronos-2-8192`: Chronos-2 with 8,192 hours, the
+  limit of its configuration. When the record is shorter or a gap falls inside that span, the context is the longest
+  completely observed run of hours ending at the origin (never shorter than 1,344 hours on these windows).
+- `ANKYRA-T8736`: the unchanged 2.2 package with TimesFM-8736 as its foundation model, at the origin and at the same
+  pseudo-origins as in the scored forecasts.
+- `ANKYRA` (2.2) and `TimesFM-1344` are the scored forecasts behind the main tables; the row `ANKYRA vs TimesFM-1344`
+  reproduces their point estimates (its intervals differ only by the seed).
+
+Columns: `set`, `tier`, `subset`, `windows`, `units`, `contrast` (first model vs second; `ANKYRA vs TimesFM-8736`,
+`ANKYRA vs Chronos-2-8192`, `ANKYRA-T8736 vs TimesFM-8736`, `TimesFM-8736 vs TimesFM-1344`, `ANKYRA vs
+TimesFM-1344`), `error`, `log_ratio`, `um_low`, `um_high`, `improvement_pct`, `resolved`.
+
+**`generic_combinations.csv`** — Is ANKYRA's history-side forecast (H) a better combination partner for TimesFM than a
+generic local forecast X? Twelve populations (the ten, HKUST and Helsinki; `tier` = `frozen-model check` for the last
+two), all windows of the B2 comparison (`subset` = `full`), hourly and monthly-energy error.
+
+- `B2(X)`: the B2 procedure of `component_contributions.csv` (one whole-window least-squares weight per unit from its
+  pseudo-origin errors, clipped to [0, 1] and shrunk towards ½) with H replaced by X; X is `SN-week`, `WeekProf4` or
+  `LYR-profile`, which can be computed from the history at every pseudo-origin. `B2(H)` is B2 itself. Windows on which
+  B2(H) returns TimesFM (off-state, micro-load, no pseudo-origin) return TimesFM in every B2(X) as well.
+- `EW(X)`: the equal-weight combination max(½ TimesFM + ½ X, 0), for every X whose scored forecast exists:
+  `SN-week`, `WeekProf4`, `LYR-profile`, `RIDGE-L`, `MSTL`.
+- `contrast`: `B2(H) vs B2(SN-week)`, `B2(H) vs B2(WeekProf4)`, `B2(H) vs B2(LYR-profile)`, `B2(H) vs best B2(X)`,
+  `B2(H) vs best equal-weight` and `ANKYRA vs best generic`.
+- **How "best" was chosen.** After scoring, separately for each population and each `error`: the candidate with the
+  lowest error, i.e. the largest log ratio of the first-named forecaster against it. `best` names it and `candidates`
+  lists the candidates; for `ANKYRA vs best generic` they are all B2(X) and all EW(X) available on every window. This
+  choice favours the generic side.
+- `availability_note`: an X whose forecast exists on part of the windows only (`RIDGE-L` on 917 of 1,234 GoiEner
+  non-household windows and on 113 of 120 HKUST windows; no saved `MSTL` on HKUST) is not a candidate for best; the note
+  is given on the two rows whose candidates it affects.
+- `units` is blank: the scoring record holds the window counts only.
+- Other columns: `set`, `tier`, `windows`, `error`, `log_ratio`, `um_low`, `um_high`, `improvement_pct`, `resolved`.
 
 ## Two candidates examined after 2.0.1 and not adopted
 
