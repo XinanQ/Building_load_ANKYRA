@@ -14,7 +14,7 @@ the LCL arithmetic re-check `lcl_audit.json`) in [`ankyra_2_0_1/`](ankyra_2_0_1/
 **Changed on 6 October 2026.** Every CSV and JSON file in this directory was re-exported for ANKYRA 2.2 (gap
 tolerance in the pseudo-origin bookkeeping; the forecaster is otherwise 2.1); the 2.1 versions of all of them are in
 `ankyra_2_1/`. Files whose values do not depend on the gap tolerance (`carrier_swap*.csv`, `component_contributions.csv`,
-`constants*.csv`, `robustness.csv`, `intervals_winkler_contrasts.csv`, `cost_per_window.csv`, `closeout_status.json`,
+`constants_sensitivity.csv`, `robustness.csv`, `intervals_winkler_contrasts.csv`, `cost_per_window.csv`, `closeout_status.json`,
 `bdg2_micro_load_windows.csv`, `datasets.csv`, `handover_granularity.csv`) are unchanged; their entries say which
 version they were measured on. New summary: `reevaluation_2_2.json`. Earlier the same day: new
 `unicon_external.csv`, `unicon_criteria.json`, `unicon_by_day.csv`,
@@ -247,9 +247,11 @@ step is included)
 - `weekly vs monthly handover weights`: the weekly handover against one weight per unit and month, from the
   simplification study, measured against 2.0.1 (`kind` says so).
 
-**`constants.csv`** — Every constant of the forecaster: `constant`, `value`, `where_fixed` (the data or design step on
+**`constants.csv`** — Every constant of the forecaster, 20 rows: `group` (problem definition, evidence window, shrinkage,
+analog shape and readout, numerical safeguard, data-state rule, frozen historical estimator), `constant`, `value`, `where_fixed` (the data or design step on
 which it was fixed) and `sensitivity` (where measured, the largest change of the nine-set mean log ratio over the
-values tried, from `constants_sensitivity.csv`; blank where no sensitivity run exists).
+values tried, from `constants_sensitivity.csv`; blank where no sensitivity run exists). The `group` column and the rows for the short-gap rule and the climatology were added on 7 October 2026; the values are
+those of package 2.2.0 (unchanged).
 
 **`handover_granularity.csv`** — An ablation of the handover on the ten populations, specified before it was run. It
 is a record of 1.x; the handover is unchanged since. Four arms: ANKYRA's weekly per-unit weights (`AW`), a fixed half

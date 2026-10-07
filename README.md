@@ -1110,8 +1110,11 @@ B2 is a simpler special case of ANKYRA (one weight per window). It has not been 
 data read before. On UNICON, where B2 was a pre-specified descriptive arm, it is not separated from ANKYRA either
 ([above](#external-test-of-the-frozen-21-unicon)).
 
-**Constants.** [`results/constants.csv`](results/constants.csv) lists every constant of the forecaster, its value,
-where it was fixed (before any evaluation, on development data, in the 2.0 design, or by an earlier component) and,
+**Constants.** [`results/constants.csv`](results/constants.csv) lists every constant of the forecaster (20 rows) in seven groups: fixed by the
+problem definition (context, horizon, weekly handover split), the evidence window (numbers of pseudo-origins), shrinkage
+(the five design choices that weight the unit's own errors), the analog shape and peak readout, numerical safeguards,
+data-state rules (off-state, micro-load, short-gap) and the frozen historical estimator (climatology). It gives each
+constant's value, where it was fixed (before any evaluation, on development data, in the 2.0 design, or by an earlier component) and,
 where measured, its sensitivity. For the five constants that were varied one at a time on the nine design sets (the
 number of pseudo-origins for the handover and for the within-day trust, the shrinkage of the handover weights and of
 the trust, the cap of the trust), the mean log ratio over the nine sets moves by at most 0.0034 over the values tried

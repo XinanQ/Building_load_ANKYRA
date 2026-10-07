@@ -1,17 +1,21 @@
-constant,value,where_fixed,sensitivity
-context / horizon,"1,344 h / 744 h",before any evaluation,
-pseudo-origins for the level and path candidates,12,development data (household aggregates),
-pseudo-origins for the model level candidate and the handover,6,development data (Spanish development store),largest change of the nine-face mean log ratio over the values tried: 0.0019
-shrinkage K0 of the level weights,"8, towards equal weights",development data,
-shrinkage K0 of the daily-path weights,"2, towards equal weights",development data,
-shrinkage K0 of the handover weights,"2, towards 1/2",development data,largest change of the nine-face mean log ratio over the values tried: 0.0022
-handover split,"days 1-7, 8-14, 15-21, 22-31",development data; weekly vs monthly is not separable (component_contributions.csv),
-pseudo-origins for the within-day trust,3,2.0 design (development and pre-cutoff data),largest change of the nine-face mean log ratio over the values tried: 0.0023
-shrinkage of the within-day trust,"n/(n+2), towards 0",2.0 design,largest change of the nine-face mean log ratio over the values tried: 0.0034
-cap of the within-day trust,1/2,2.0 design,largest change of the nine-face mean log ratio over the values tried: 0.0032
-"analog days: day-of-year window, kept, required","+/-14 days, 8, 4",first version of the analog shape,
-analog guard,3 x max |context|,first version of the analog shape,
-scale floor,"max(0.01 |mean|, 1e-3 kW)",historical estimator (1.x),
-off-state rule,last 168 h <= 1e-6 kW,pre-existing zero threshold,
-micro-load rule,"1,344-h context within 1e-3 kW",pre-existing scale floor; rule written after the BDG2 2.0.0 result (post hoc),
-peak envelope,"4 most recent same-type days, kappa = 1",1.x readout,
+group,constant,value,where_fixed,sensitivity
+problem definition,context / horizon,"1,344 h / 744 h",before any evaluation,
+problem definition,handover split,"days 1-7, 8-14, 15-21, 22-31",development data; weekly vs monthly is not separable (component_contributions.csv),
+evidence window,pseudo-origins for the level and path candidates,12,development data (household aggregates),
+evidence window,pseudo-origins for the model level candidate and the handover,6,development data (Spanish development store),largest change of the nine-face mean log ratio over the values tried: 0.0019
+evidence window,pseudo-origins for the within-day trust,3,2.0 design (development and pre-cutoff data),largest change of the nine-face mean log ratio over the values tried: 0.0023
+shrinkage,shrinkage K0 of the level weights,"8, towards equal weights",development data,
+shrinkage,shrinkage K0 of the daily-path weights,"2, towards equal weights",development data,
+shrinkage,shrinkage K0 of the handover weights,"2, towards 1/2",development data,largest change of the nine-face mean log ratio over the values tried: 0.0022
+shrinkage,shrinkage of the within-day trust,"n/(n+2), towards 0",2.0 design,largest change of the nine-face mean log ratio over the values tried: 0.0034
+shrinkage,cap of the within-day trust,1/2,2.0 design,largest change of the nine-face mean log ratio over the values tried: 0.0032
+analog shape and readout,"analog days: day-of-year window, kept, required","+/-14 days, 8, 4",first version of the analog shape,
+analog shape and readout,peak envelope,"4 most recent same-type days, kappa = 1",1.x readout,
+numerical safeguard,analog guard,3 x max |context|,first version of the analog shape,
+numerical safeguard,scale floor,"max(0.01 |mean|, 1e-3 kW)",historical estimator (1.x),
+data-state rule,off-state rule,last 168 h <= 1e-6 kW,pre-existing zero threshold,
+data-state rule,micro-load rule,"1,344-h context within 1e-3 kW",pre-existing scale floor; rule written after the BDG2 2.0.0 result (post hoc),
+data-state rule,short-gap rule: longest interpolated gap,6 h,"2.2 specification, written before implementation (after UNICON's few pseudo-origin pairs were seen); applies only to the pseudo-origin bookkeeping",
+data-state rule,short-gap rule: observed share of a pseudo-origin's target month,0.9,"2.2 specification, written before implementation",
+frozen historical estimator,"climatology prior: amplitude, strength","10 degC, 60 days","historical estimator (1.x), frozen",
+frozen historical estimator,climatology phase and amplitude range,"coldest day at day 19.5 of the year (northern hemisphere); amplitude clipped to [0, 25] degC","historical estimator (1.x), frozen; at southern sites the climatology is flat (Supplement S50.8; results README)","UNICON with the phase corrected in a development copy: -0.01% hourly, -0.2% energy"
