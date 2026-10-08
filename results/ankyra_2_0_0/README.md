@@ -1,5 +1,5 @@
-> **Archived record of ANKYRA 2.0.0 (without the micro-load rule), kept unchanged beside the 2.1 results (2.0.1 in
-> [`ankyra_2_0_1/`](../ankyra_2_0_1/)).** The
+> **Archived record of ANKYRA 2.0.0 (without the micro-load rule), kept unchanged beside the later results (2.0.1 in
+> [`ankyra_2_0_1/`](../ankyra_2_0_1/), 2.1 in [`ankyra_2_1/`](../ankyra_2_1/), mostly 2.2 in `results/`).** The
 > current files are in [`results/`](../), with a full description of the columns in
 > [`results/README.md`](../README.md).
 >

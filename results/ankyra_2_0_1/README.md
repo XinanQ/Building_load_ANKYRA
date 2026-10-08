@@ -1,15 +1,16 @@
 > **Archived record of ANKYRA 2.0.1 (packages 2.0.1 to 2.0.3; within-day trust estimated per lead block), kept
-> unchanged beside the 2.1 results.** The current files are in [`results/`](../), with a full description of the
-> columns in [`results/README.md`](../README.md).
+> unchanged beside the later results.** The current files (mostly ANKYRA 2.2; each file's version is given in its
+> entry) are in [`results/`](../), with a full description of the columns in [`results/README.md`](../README.md); the
+> 2.1 files are in [`results/ankyra_2_1/`](../ankyra_2_1/).
 >
 > - These are the files of `results/` as released with package 2.0.3 (tag `v2.0.3`). Column names are those of the
 >   current files.
 > - ANKYRA 2.1 differs from 2.0.1 only in the within-day trust (one value per window instead of one per lead block).
 >   Level, daily means, handover, energy readout and the off-state and micro-load rules are bit-identical, so files
->   that depend only on them are identical to the current ones.
+>   that depend only on them are identical to the 2.1 files (2.2 can differ on units whose history has short gaps).
 > - The frozen-model checks on HKUST, Helsinki and LCL were first scored with 2.0.1. Their files here are those
->   2.0.1 scorings; since 6 October 2026 the current files hold ANKYRA 2.1 on the same targets, with the same
->   verdicts. `lcl_audit.json`, the arithmetic re-check of the 2.0.1 LCL scoring, is kept only here.
+>   2.0.1 scorings; the current files hold ANKYRA 2.2 on the same targets (the 2.1 re-reads are in `ankyra_2_1/`),
+>   with the same verdicts except two HKUST contrasts noted in `results/README.md`. `lcl_audit.json`, the arithmetic re-check of the 2.0.1 LCL scoring, is kept only here.
 > - `REPRODUCTION_CHECK.json` is the check on package 2.0.3 (code of 2.0.2, model 2.0.1); `REPRODUCTION_CHECK_2_0_1.json`
 >   is the check on package 2.0.1. In both, `faces` are the window sets checked (`goiener_confirm` = GoiEner
 >   non-household, `households` = GoiEner households, `park` = Suzhou park), "panel" is the set of scored forecasts and

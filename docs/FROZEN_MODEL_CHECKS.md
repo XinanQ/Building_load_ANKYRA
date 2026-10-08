@@ -2,7 +2,9 @@
 
 Every check was run with the public package and all its defaults, the forecaster frozen. None changes the forecaster
 or the result tables of the ten populations. The HKUST, Helsinki, LCL and UNICON numbers on this page are those of **ANKYRA 2.2** (one within-day trust
-per window, with gap tolerance in the pseudo-origin bookkeeping); the carrier-swap tables are those of ANKYRA 2.1.
+per window, with gap tolerance in the pseudo-origin bookkeeping); the carrier-swap tables (`results/carrier_swap.csv`,
+`carrier_swap_x.csv`, `carrier_swap_combined.csv`) are those of ANKYRA 2.1 (gap tolerance off) and were not recomputed
+for 2.2.
 
 - **HKUST, Helsinki and LCL** ([LCL_AND_CLOSEOUT.md](LCL_AND_CLOSEOUT.md)) were first scored with the frozen ANKYRA
   2.0.1, before 2.1 and 2.2 were adopted on 6 October 2026; the same targets were then read again with 2.1 and 2.2, so
@@ -253,7 +255,7 @@ explains beyond the calendar is 0.10 at the median Helsinki unit, inside the ran
 (0.05–0.70), unrelated to the gap to Chronos-2-X across them, and the gap is similar in the least and most
 temperature-sensitive thirds of the Helsinki units. Boundary of use: on a new population, a covariate-informed
 foundation model can forecast the monthly level better than ANKYRA's history-weighted level. The anchoring itself does
-not depend on TimesFM: anchored to Chronos-2-X, it is level with Chronos-2-X on Helsinki (+0.8% hourly, +0.6% energy,
+not depend on TimesFM: anchored to Chronos-2-X (with the anchoring of 2.1), it is level with Chronos-2-X on Helsinki (+0.8% hourly, +0.6% energy,
 neither resolved) and resolvably better than the TimesFM-anchored ANKYRA
 ([below](#a-post-hoc-exploration-ankyra-anchored-to-chronos-2-x)).
 

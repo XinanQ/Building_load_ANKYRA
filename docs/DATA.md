@@ -28,7 +28,7 @@ arguments of `ankyra.forecast`.
 
 | Input | Content |
 |---|---|
-| `load_kw` | Hourly load in kW, from the record anchor up to the origin. The last 1,344 hours must be completely observed. Earlier gaps are allowed as NaN; they remove support for candidates and pseudo-origins. |
+| `load_kw` | Hourly load in kW, from the record anchor up to the origin. The last 1,344 hours (the context at the origin) must be completely observed: the package never fills them, and a gap there raises an input error, so the caller has to fill it. Earlier gaps are allowed as NaN; they remove support for candidates and pseudo-origins, except that since 2.2 gaps of at most 6 hours inside one 744-hour block are interpolated for the pseudo-origin bookkeeping and a pseudo-origin's target month qualifies with at least 90% of its hours observed ([METHOD.md](METHOD.md#gap-tolerance-22)). |
 | `observed` | Optional boolean mask of the load, same length. `False` marks an hour as unobserved even if a value is present; an hour marked `True` must hold a finite value. Default: every finite hour is observed. |
 | `temperature_c` | Hourly outdoor temperature in °C, same length as the load, finite everywhere. Nothing after the origin. |
 | `day_types` | One integer per hour for the history plus the 744 forecast hours: Monday = 0 … Sunday = 6, public holiday = 7. Constant within each calendar day of the grid. |
@@ -44,10 +44,19 @@ The first five rows are fields of `History`; the last three are arguments of `an
 1. Standardise the temperature as (T − 15 °C) / 10 °C.
 2. Take daily means.
 3. Subtract a centred 31-day moving mean. What remains is the daily temperature anomaly.
-4. `temp_sigma_std` is the standard deviation of that anomaly, pooled over the units of the population, on the first
-   244 days of the record (15 days are dropped at each end, where the centred mean is incomplete).
+4. `temp_sigma_std` is the standard deviation of that anomaly, pooled over the units of the population, on a fit
+   period that ends at or before the population's first scored origin (15 days are dropped at each end, where the
+   centred mean is incomplete):
+   - the first 244 days of the record for BDG2, the GoiEner non-household confirmation set (and the GoiEner
+     development store) and the Suzhou park;
+   - the complete days before the first scored origin for the other seven populations: Cambridge 456 days, HEEW 455,
+     CINELDI 427, Drammen 454, Oslo 731 (pooled over the 45 units that have windows), EWELD 456 (the 350 units that
+     have windows) and the GoiEner households 455 (the 4,417 units that have windows).
 
-The value is therefore in units of 10 °C. It is fitted once, before the first origin, and kept fixed. The package
+   In every population the fit period ends at or before the first scored origin, so it overlaps no scored target
+   period (checked on 8 October 2026).
+
+The value is therefore in units of 10 °C. It is fitted once, before the first scored origin, and kept fixed. The package
 does not compute it and checks only that it is a finite positive number. The values used for the eleven populations
 are not listed in this repository.
 
@@ -82,7 +91,8 @@ Points that matter when rebuilding:
   every *k*-th window per unit in origin order, with *k* = ⌈N / cap⌉; if one window per unit is still too many, every
   *m*-th unit in sorted order.
 - **Masking.** Hours that a provider imputed, replaced or zero-filled are set to missing where the provider documents
-  it or where the stated rule below detects it. A masked hour makes its window ineligible; it is never filled.
+  it or where the stated rule below detects it. A masked hour makes its window ineligible; the preparation never fills it. (Before the context, the package's own
+  gap tolerance of 2.2 may interpolate short gaps for the pseudo-origin bookkeeping; [METHOD.md](METHOD.md#gap-tolerance-22).)
 - **Late windows.** Trained baselines are fitted on targets that end before a cutoff and scored on origins after it.
   The cutoff is the first day of the month that contains the population's median evaluation origin.
 
@@ -300,15 +310,16 @@ Unit and window counts (all / late) are in the table of
 - **Load column and the conversion from the provider's readings to hourly kW, temperature source, time zone handling,
   holiday calendar, the category label:** not recorded here; see the provider.
 - **Caveat.** LCL was held out of the ten-population comparison and scored once with the frozen 2.0.1 forecaster.
-  ANKYRA 2.1 was re-scored on it afterwards, as a re-evaluation.
+  ANKYRA 2.1 and 2.2 were re-scored on it afterwards, as re-evaluations.
   Its 1.x result had been seen earlier, so it is not an unexposed population
   ([LCL evaluation](LCL_AND_CLOSEOUT.md#lcl-final-stage)).
 
 ## Populations scored with the forecaster frozen
 
 No rule or constant of the forecaster was chosen on these three populations. HKUST and Helsinki were prepared after
-ANKYRA 2.0.1 was fixed and first scored with it; ANKYRA 2.1 was adopted after they had been scored, so its numbers on
-them are re-evaluations. UNICON was prepared after 2.1 was fixed, for its external test. Results:
+ANKYRA 2.0.1 was fixed and first scored with it; ANKYRA 2.1 and 2.2 were adopted after they had been scored, so their numbers on
+them are re-evaluations. UNICON was prepared after 2.1 was fixed, for its external test; its 2.2 numbers are a
+re-evaluation. Results:
 [FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md).
 
 ### 12. HKUST campus incomer meters (Hong Kong)
@@ -394,9 +405,15 @@ them are re-evaluations. UNICON was prepared after 2.1 was fixed, for its extern
 - **Unit and window lists.** The exact units and origins of each panel are not published. The rules above reproduce
   the selection only if the same archive version and the same unit order are used.
 - **The temperature-anomaly scale.** The recipe for `temp_sigma_std` is given
-  [above](#the-input-format-the-forecaster-expects), but its value is not listed per population. The study's working
-  notes say that the preparation scripts for two sources contain a path that fills temperature gaps from the full
-  record; whether it was triggered was not assessed.
+  [above](#the-input-format-the-forecaster-expects), but its value is not listed per population. The study's sigma
+  scripts for GoiEner (development store), BDG2 and the Suzhou park contain a branch that fills missing temperature
+  with a whole-record unit mean. It was checked on 8 October 2026 and never acted: the prepared stores contain no
+  missing temperature hour. Gaps had been filled when the stores were built: last reading carried forward for BDG2,
+  GoiEner and the park (a leading gap takes the first later reading: BDG2 at most 7 hours, GoiEner at most 2 hours,
+  the park's Public series 4,354 hours in the first half of 2016, all before every origin); linear interpolation for
+  Drammen and Oslo, with no gap spanning an origin. For the ten populations no filled hour before an origin takes a
+  value recorded after that origin. This check covers the registered stores and code; the providers' own cleaning,
+  later revisions of the weather archives and the foundation models' pretraining exposure are not verified.
 - **File hashes.** Hashes are recorded for Drammen, EWELD and HEEW, and for the UNICON archive (above).
 - **Licences of the sources** (checked on the providers' pages on 5 October 2026): CC BY 4.0 for BDG2 (Zenodo
   10.5281/zenodo.3887306), the Cambridge estate archive, HEEW, EWELD (figshare 10.6084/m9.figshare.21893808.v3),

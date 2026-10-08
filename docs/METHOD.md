@@ -1,8 +1,9 @@
 # Method
 
-This document describes ANKYRA 2.1, the model implemented by package 2.1.0. ANKYRA 2.0.1 (packages 2.0.1 to 2.0.3;
-2.0.2 masks hours marked unobserved once for every branch, 2.0.3 changes documentation only) differs from it only in
-the within-day trust. The model versions differ in three places:
+This document describes ANKYRA 2.2, the model implemented by package 2.2.0. ANKYRA 2.1 (package 2.1.0) differs from it
+only in the pseudo-origin bookkeeping of records with short gaps; ANKYRA 2.0.1 (packages 2.0.1 to 2.0.3; 2.0.2 masks
+hours marked unobserved once for every branch, 2.0.3 changes documentation only) differs from 2.1 only in the
+within-day trust. The model versions differ in four places:
 
 - 1.x used the foundation model's within-day shape unchanged. Section [Within-day shape](#within-day-shape) gives the
   rule introduced in 2.0.
@@ -10,9 +11,16 @@ the within-day trust. The model versions differ in three places:
   whole 1,344-hour context stays within $10^{-3}$ kW of zero.
 - 2.1 estimates the [within-day trust](#within-day-shape) as one value per window, pooled over the four lead blocks,
   instead of one value per lead block.
+- 2.2 adds the [gap tolerance](#gap-tolerance-22) of the pseudo-origin bookkeeping: before the origin, gaps of at most
+  6 hours inside one 744-hour block are interpolated (`fill_short_gaps`, `GAP_MAX_H = 6`), and a pseudo-origin's target
+  month qualifies when at least 90% of its hours are observed (`TARGET_MIN_OBS = 0.9`). The context at the origin is
+  never filled. A record without gaps gives the 2.1 forecast.
 
-`forecast(..., single_trust=False)` reproduces 2.0.1, `forecast(..., single_trust=False, micro_load_rule=False)`
-reproduces 2.0.0, and `forecast(..., within_anchor=False, micro_load_rule=False)` reproduces 1.x exactly.
+`forecast(..., gap_tolerance=False)` reproduces 2.1, `forecast(..., gap_tolerance=False, single_trust=False)` reproduces
+2.0.1, `forecast(..., gap_tolerance=False, single_trust=False, micro_load_rule=False)` reproduces 2.0.0, and
+`forecast(..., gap_tolerance=False, within_anchor=False, micro_load_rule=False)` reproduces 1.x exactly.
+`forecast(..., foundation=None)` is the [history-only configuration](#within-day-shape), a reduced configuration for
+ablation and offline use, not a released version.
 
 Two changes examined after 2.0.1, a daily path taken partly from a per-unit ridge regression and a new interval
 rule, were not adopted and change nothing described here
@@ -22,7 +30,8 @@ Contents: [Information at the origin](#information-at-the-origin) ·
 [Inputs and features](#inputs-and-features-the-shared-information-set) ·
 [Three orthogonal blocks](#three-orthogonal-blocks) · [Level](#level) · [Centred daily path](#centred-daily-path) ·
 [Within-day shape](#within-day-shape) · [Week-by-week handover](#week-by-week-handover) ·
-[Off-state and micro-load rules](#off-state-and-micro-load-rules) · [Readouts](#readouts) ·
+[Off-state and micro-load rules](#off-state-and-micro-load-rules) · [Gap tolerance (2.2)](#gap-tolerance-22) ·
+[Readouts](#readouts) ·
 [Output fields](#output-fields) · [Constants](#constants)
 
 ## Information at the origin
@@ -50,9 +59,11 @@ Two exceptions concern only the pre-origin record.
 - One daily-path candidate, the path implied by the level construction, reuses the weather weight estimated at the
   origin. Its pseudo-errors are therefore not strictly out of sample with respect to that weight, although all of
   them precede the origin.
-- The temperature-anomaly scale is fitted once, on the first 244 days of a population's record. A pseudo-origin that
-  falls inside those days uses a scale that reflects temperature recorded after it. All of that temperature precedes
-  the origin.
+- The temperature-anomaly scale is fitted once per population, on a period that ends at or before its first scored
+  origin: the first 244 days of the record for BDG2, the GoiEner confirmation set (and the development store) and the
+  Suzhou park, and the complete days before the first scored origin for the other seven populations
+  ([details](#the-temperature-anomaly-scale-temp_sigma_std)). A pseudo-origin that falls inside the fit period uses a
+  scale that reflects temperature recorded after it. All of that temperature precedes the origin.
 
 Two fixed components come from outside the unit's record: the pretrained foundation model and the signature prior.
 Neither sees the unit's future. Both may, however, reflect data recorded later than the oldest evaluation windows, for
@@ -197,10 +208,16 @@ The package does not estimate it; the caller supplies it. The study computed it 
 1. standardise the temperature as $(T-15\,^\circ\mathrm{C})/10\,^\circ\mathrm{C}$;
 2. take daily means;
 3. subtract a centred 31-day moving mean, which leaves the daily anomaly;
-4. take the standard deviation of that anomaly, pooled over the units of the population, on the first 244 days of
-   the record (15 days are dropped at each end, where the moving mean is incomplete).
+4. take the standard deviation of that anomaly, pooled over the units of the population, on a fit period that ends
+   at or before the population's first scored origin (15 days are dropped at each end, where the moving mean is
+   incomplete): the first 244 days of the record for BDG2, the GoiEner confirmation set (and the development store)
+   and the Suzhou park; the complete days before the first scored origin for the other seven populations (Cambridge
+   456 days, HEEW 455, CINELDI 427, Drammen 454, Oslo 731, EWELD 456, GoiEner households 455; for Oslo, EWELD and
+   the households pooled over the units that have windows). The per-population rules are listed in
+   [DATA.md](DATA.md#the-input-format-the-forecaster-expects).
 
-It is fitted once, before the first origin, and then kept fixed. The package checks only that the value is a finite
+It is fitted once, before the first scored origin, and then kept fixed; in no population does the fit period overlap
+a scored target period. The package checks only that the value is a finite
 positive number; it cannot check when or how it was fitted. The values used for the evaluation populations are not
 listed in this repository.
 
@@ -264,8 +281,8 @@ The weight is a least-squares weight on the disagreement between the two shapes,
 
 Up to 2.0.1 the weight was estimated separately for each lead block $k$ = days 1–7, 8–14, 15–21, 22–31 (the sums of
 $\hat\lambda$ restricted to the hours of block $k$), giving four weights $\omega_k$; `forecast(..., single_trust=False)`
-keeps that form. One weight per window was chosen in 2.1 after all twelve scored populations had been forecast with
-2.0.1, under a non-inferiority criterion fixed before scoring and met on all twelve; its numbers are a re-evaluation
+keeps that form (with `gap_tolerance=False` as well it reproduces 2.0.1). One weight per window was chosen in 2.1
+after all twelve scored populations had been forecast with 2.0.1, under a non-inferiority criterion fixed before scoring and met on all twelve; its numbers are a re-evaluation
 of data used before ([EVALUATION.md](EVALUATION.md#one-within-day-trust-per-window-21)).
 
 - Both $w^T$ and $S$ have zero daily means, so the pre-projection daily means are unchanged by the anchoring, and with
@@ -385,12 +402,16 @@ bookkeeping tolerates two things, both confined to the pre-origin record:
    observed; its window mean is the mean over the observed hours, and in the handover sums a day counts only with at
    least 12 observed hours. The within-day triples still require complete windows.
 
-The context at the origin must still be complete (`ankyra.fill_short_gaps` applies rule 1 to a user's own record), the
-off-state and micro-load rules read the raw context, and `pseudo_origin_contexts` returns the interpolated pseudo-origin
+The context at the origin is never filled by the package: it must be complete, a gap in it raises an input error, and
+the caller has to fill it (`ankyra.fill_short_gaps` applies rule 1 to a user's own record). The off-state and
+micro-load rules read the raw context, and `pseudo_origin_contexts` returns the interpolated pseudo-origin
 contexts so that the foundation model is asked for the same series the bookkeeping uses. `forecast(...,
 gap_tolerance=False)` reproduces 2.1; a record without gaps is unaffected. The frozen reference estimator
 (`ankyra/history/_*.py`) is unchanged: the partially observed target is handed to it with its missing hours set to the
 observed mean.
+
+Code: `ankyra/core.py` (`fill_short_gaps`, `GAP_MAX_H = 6`, `TARGET_MIN_OBS = 0.9`, `pseudo_origin_contexts`, `forecast`)
+and `ankyra/history/api.py` (the partially observed pseudo targets).
 
 ## Readouts
 
@@ -514,5 +535,6 @@ standardisation below is part of the frozen configuration and is not in it). The
 | Analog days: window, kept, required, guard | ±14 days of year, 8, 4, $3\times\max\lvert\text{context}\rvert$ | with the first version of the analog-day shape; never changed |
 | Off-state threshold | $10^{-6}$ kW | the pre-existing zero-load threshold |
 | Micro-load threshold (2.0.1) | $10^{-3}$ kW on the magnitude of the load, over the 1,344-hour context | the pre-existing floor of the normalisation scale; the rule was added after the BDG2 test result of 2.0.0 had been seen |
+| Gap tolerance (2.2): longest interpolated gap; observed share of a pseudo-origin's target month | 6 h (`GAP_MAX_H`); 0.9 (`TARGET_MIN_OBS`) | the 2.2 specification, written before implementation, after UNICON's few completed pseudo-origins had been seen; pseudo-origin bookkeeping only |
 | Peak envelope | 4 most recent same-type days, $\kappa=1$ | in the earlier version of this model ([theory/PROOFS.md](../theory/PROOFS.md#peak), evidence under P18) |
 | Temperature standardisation; signature hinges | $(T-15\,^\circ\mathrm{C})/10\,^\circ\mathrm{C}$; every 5 °C from −10 °C to 40 °C | in the frozen configuration, with the signature prior (`ankyra/history/frozen_config.json`) |

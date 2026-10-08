@@ -227,7 +227,10 @@ ratios (P19 in [theory/PROOFS.md](../theory/PROOFS.md)). No single summary is th
 All results below are for **ANKYRA 2.2**: 2.1 (2.0.1, that is 2.0.0 plus the micro-load rule,
 [METHOD.md](METHOD.md#off-state-and-micro-load-rules), with one within-day trust per window instead of one per lead
 block, [One within-day trust per window (2.1)](#one-within-day-trust-per-window-21)) plus the gap tolerance of the
-pseudo-origin bookkeeping ([METHOD.md](METHOD.md#gap-tolerance-22)).
+pseudo-origin bookkeeping ([METHOD.md](METHOD.md#gap-tolerance-22)). Where a result was not recomputed for 2.2, its
+section names the version it was measured on (for example the Winkler contrasts, 2.1, 2.0.1 and 2.0.0, and the
+contributions of the parts, 2.1); the version of each result file is given in
+[results/README.md](../results/README.md).
 
 - **What differs from 2.1.** Only the pseudo-origin record on units whose history has short gaps: gaps of at most 6
   hours inside one 744-hour block are interpolated, and a pseudo-origin's target month qualifies with 90% observed
@@ -923,7 +926,7 @@ Read plainly: the measurable gain over TimesFM comes from the history-side forec
 path and the analog-day shape, with TimesFM's window mean as one level candidate) and from weighting it against the
 foundation model by the unit's own pseudo-forecast errors. Splitting those weights by block adds nothing measurable on
 these populations, in line with the handover result below (weekly weights add nothing over one weight per month) and
-with 2.1 (one within-day trust is as good as one per lead block). The block decomposition remains the exact identity
+with 2.1 (one within-day trust per window was non-inferior to one per lead block under a margin fixed before scoring). The block decomposition remains the exact identity
 used to attribute the error, to define the readouts and to diagnose failures (Figure 14,
 [METHOD.md](METHOD.md#three-orthogonal-blocks)); it is not, on this evidence, a source of accuracy by itself. B2 is in
 effect a simpler special case of ANKYRA; these numbers are a re-evaluation and were not used to change the forecaster.
@@ -1234,7 +1237,7 @@ In 2.0 and 2.0.1 the within-day trust ω is estimated separately for each of the
 15–21, 22–31). ANKYRA 2.1 estimates one ω per window from the same three pseudo-origins, pooled over all 744 hours of
 each, with the same shrinkage n/(n+2) towards 0 and the same cap ½. The level, the daily path, the weekly handover,
 the daily means, the energy readout and the off-state and micro-load rules are bit-identical to 2.0.1;
-`forecast(..., single_trust=False)` reproduces 2.0.1.
+`forecast(..., gap_tolerance=False, single_trust=False)` reproduces 2.0.1.
 
 **How it was chosen.** A simplification study compared reduced variants with 2.0.1 on all twelve populations already
 scored (the ten here, HKUST and Helsinki) under a non-inferiority criterion fixed before scoring: on every population
@@ -1318,8 +1321,9 @@ population; one level of each corruption, fixed before the run).
   and the scale floor, which is also the micro-load threshold (10⁻³ kW). Loads must be supplied in kW. The ×0.5 and ×2
   of this test move no Drammen window across a threshold, and the result is the same for 2.0.0, 2.0.1, 2.1 and 2.2
   (`robustness.csv` is unchanged by 2.2: these Drammen records have no qualifying gaps).
-- The package refuses a context with missing hours (an input error, not a silent fill): gaps have to be filled
-  upstream, as they were here.
+- The package refuses a context at the origin with missing hours (an input error, not a silent fill): such gaps have
+  to be filled upstream, as they were here. Only the pseudo-origin bookkeeping interpolates short gaps (at most 6
+  hours, since 2.2; [METHOD.md](METHOD.md#gap-tolerance-22)).
 - **A single large spike is the weak point.** It moves the recent-level candidates and the normalisation scale, and
   the peak envelope, which takes the largest recent excursion, reads the spike as the unit's peak. On these windows the
   spike cancels ANKYRA's lead over TimesFM and makes the peak readout useless.
@@ -1420,8 +1424,8 @@ issued every 744 hours, or when a window is re-run.
   weights stayed near their priors there; the gap tolerance of 2.2, written in response, raises the completed pairs
   to 3.49 per window and moves the hourly contrast with TimesFM by −0.1 points, unresolved
   ([FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md#an-external-test-of-ankyra-21-unicon)).
-- **Block-wise weighting.** One whole-window combination weight per unit of the same two forecasts is about as
-  accurate as ANKYRA on twelve populations; the accuracy gain is not attributable to splitting the weights by block
+- **Block-wise weighting.** One whole-window combination weight per unit of the same two forecasts was within ±2%
+  of ANKYRA in hourly error on twelve populations (resolvably better on two, worse on one); the accuracy gain is not attributable to splitting the weights by block
   ([What the parts buy](#what-the-parts-buy)).
 - **Interval.** The interval was scored for the benchmark on households only; on the ten populations it was applied
   afterwards as a description. It is not sharper than Chronos-2's native quantiles, its coverage falls with lead

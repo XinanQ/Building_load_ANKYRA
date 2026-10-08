@@ -1,6 +1,7 @@
 # Proofs of the exact properties
 
-ANKYRA is assembled from identities and elementary bounds rather than from fitted relationships. This page states
+The properties below follow from ANKYRA's construction (identities and elementary bounds), not from fitted
+relationships; the historical estimates and the weights themselves are fitted to each unit's record. This page states
 them, numbered P1–P20 in the order of the pipeline, with proofs and counterexamples. They make the construction
 auditable:
 
