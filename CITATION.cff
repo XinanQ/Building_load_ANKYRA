@@ -14,8 +14,8 @@ authors:
   - family-names: Qin
     given-names: Xinan
     # orcid: "https://orcid.org/0000-0000-0000-0000"   # add if available
-version: "2.2.0"
-date-released: "2026-10-06"
+version: "2.2.1"
+date-released: "2026-10-10"
 license: MIT
 repository-code: "https://github.com/XinanQ/Building_load_ANKYRA"
 # doi: "10.5281/zenodo.XXXXXXX"   # add the Zenodo DOI after the first archived release

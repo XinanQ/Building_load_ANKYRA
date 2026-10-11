@@ -28,7 +28,7 @@ arguments of `ankyra.forecast`.
 
 | Input | Content |
 |---|---|
-| `load_kw` | Hourly load in kW, from the record anchor up to the origin. The last 1,344 hours (the context at the origin) must be completely observed: the package never fills them, and a gap there raises an input error, so the caller has to fill it. Earlier gaps are allowed as NaN; they remove support for candidates and pseudo-origins, except that since 2.2 gaps of at most 6 hours inside one 744-hour block are interpolated for the pseudo-origin bookkeeping and a pseudo-origin's target month qualifies with at least 90% of its hours observed ([METHOD.md](METHOD.md#gap-tolerance-22)). |
+| `load_kw` | Hourly load in kW, from the record anchor up to the origin. The last 1,344 hours (the context at the origin) must be completely observed: the package never fills them, and a gap there raises an input error, so the caller has to fill it. Earlier gaps are allowed as NaN; they remove support for candidates and pseudo-origins, except that since 2.2 gaps of at most 6 hours inside one 744-hour block are interpolated for the pseudo-origin bookkeeping and a pseudo-origin's target month qualifies with at least 90% of its hours observed ([METHOD.md](METHOD.md#short-gap-rule-22)). |
 | `observed` | Optional boolean mask of the load, same length. `False` marks an hour as unobserved even if a value is present; an hour marked `True` must hold a finite value. Default: every finite hour is observed. |
 | `temperature_c` | Hourly outdoor temperature in °C, same length as the load, finite everywhere. Nothing after the origin. |
 | `day_types` | One integer per hour for the history plus the 744 forecast hours: Monday = 0 … Sunday = 6, public holiday = 7. Constant within each calendar day of the grid. |
@@ -92,7 +92,7 @@ Points that matter when rebuilding:
   *m*-th unit in sorted order.
 - **Masking.** Hours that a provider imputed, replaced or zero-filled are set to missing where the provider documents
   it or where the stated rule below detects it. A masked hour makes its window ineligible; the preparation never fills it. (Before the context, the package's own
-  gap tolerance of 2.2 may interpolate short gaps for the pseudo-origin bookkeeping; [METHOD.md](METHOD.md#gap-tolerance-22).)
+  short-gap rule of 2.2 may interpolate short gaps in the copy of the record its estimator reads; [METHOD.md](METHOD.md#short-gap-rule-22).)
 - **Late windows.** Trained baselines are fitted on targets that end before a cutoff and scored on origins after it.
   The cutoff is the first day of the month that contains the population's median evaluation origin.
 
@@ -126,8 +126,9 @@ Unit and window counts (all / late) are in the table of
 - **Load column and unit conversion, temperature source, time zone handling, holiday calendar, category mapping,
   daylight-saving region:** not recorded here; see the provider.
 - **Caveats.**
-  - Seven BDG2 sites (Bear, Bull, Cockatoo, Fox, Hog, Panther, Rat) are listed in a public pretraining corpus of the
-    foundation models. Unlisted does not mean unseen.
+  - Seven BDG2 sites (Bear, Bull, Cockatoo, Fox, Hog, Panther, Rat) are listed in the GIFT-Eval pretraining collection that the
+    TimesFM 2.5 model card names as training data (and in LOTSA); they are not named in the Chronos or Chronos-2 training
+    tables (checked 10 October 2026). Unlisted does not mean unseen.
   - The signature prior of the forecaster was fitted once on BDG2 windows ending before July 2016.
   - Nine meters at one site read 0.0002–0.0005 kW for months
     ([details](EVALUATION.md#the-near-zero-meters-and-the-micro-load-rule-201)). They are kept as released.
@@ -332,7 +333,9 @@ re-evaluation. Results:
   per hour = mean kW); an hour is missing when a needed reading is missing or a difference is negative. Many meters are
   quantised at 10 or 100 kWh.
 - **Grid.** Fixed UTC+8 (no daylight saving), anchor 2022-01-01. `dst_region` none.
-- **Temperature.** ERA5 2 m temperature at the campus through the Open-Meteo archive interface.
+- **Temperature.** ERA5 2 m temperature at the campus through the Open-Meteo archive interface. Contains modified Copernicus Climate Change Service information [2026]; ERA5 hourly data (Hersbach et al., 2020,
+  doi:10.1002/qj.3803; dataset doi:10.24381/cds.adbb2d47) retrieved through the Open-Meteo historical weather API
+  (Zippenfenig, doi:10.5281/zenodo.7970649, CC BY 4.0).
 - **Day types.** Hong Kong general holidays as gazetted by the HKSAR Government = 7.
 - **Windows.** Month-start origins with the common rules (six pseudo-origins, complete context and target).
 - **Temperature-anomaly scale.** Fitted on the 243 complete days before the first origin (it had first been fitted on
@@ -343,7 +346,8 @@ re-evaluation. Results:
 
 - **Source.** City of Helsinki, Urban Environment Division: energy consumption of the city's service properties, Nuuka
   Open API (`helsinki-openapi.nuuka.cloud`, no authentication), published 2020-04-16. Licence listed as CC BY 4.0 in the
-  Helsinki Region Infoshare and national open-data catalogues. Pulled 2026-10-05; the pull is not redistributed.
+  catalogue (Helsinki Region Infoshare and the national open-data catalogue); not confirmed on the dataset page (access
+  refused from the study's network). Pulled 2026-10-05; the pull is not redistributed.
 - **Sample.** 300 property codes drawn by SHA-256 of the code from the city's property list (647 codes), after
   excluding three properties looked at before the protocol was frozen; 285 electricity series, 201 with at least one
   complete window, 1,168 windows.
@@ -353,7 +357,9 @@ re-evaluation. Results:
   summer-time records shift by one hour; the autumn repeated hour, which the provider reports as one record holding
   two hours, is split evenly over the two grid hours and flagged (flagged hours are left out of hourly scoring and kept
   in energy). `dst_region` EU.
-- **Temperature.** ERA5 2 m temperature at 60.17 N, 24.94 E through the Open-Meteo archive interface.
+- **Temperature.** ERA5 2 m temperature at 60.17 N, 24.94 E through the Open-Meteo archive interface. Contains modified Copernicus Climate Change Service information [2026]; ERA5 hourly data (Hersbach et al., 2020,
+  doi:10.1002/qj.3803; dataset doi:10.24381/cds.adbb2d47) retrieved through the Open-Meteo historical weather API
+  (Zippenfenig, doi:10.5281/zenodo.7970649, CC BY 4.0).
 - **Day types.** Paid public holidays listed by the University of Helsinki Almanac Office, plus Midsummer Day, Midsummer
   Eve and Christmas Eve = 7.
 - **Windows.** Eleven month-start origins, 2025-11 to 2026-09, after the public release of both foundation models;
@@ -383,7 +389,9 @@ re-evaluation. Results:
 - **Temperature.** ERA5 2 m temperature through the Open-Meteo archive interface, one point per campus, at the public
   coordinates of the campus town: Bundoora 37.72 S, 145.05 E; Albury-Wodonga (Wodonga campus) 36.12 S, 146.89 E;
   Bendigo 36.78 S, 144.30 E; Mildura 34.19 S, 142.16 E; Shepparton 36.38 S, 145.40 E. The weather data shipped with the
-  dataset are not used.
+  dataset are not used. Contains modified Copernicus Climate Change Service information [2026]; ERA5 hourly data (Hersbach et al., 2020,
+  doi:10.1002/qj.3803; dataset doi:10.24381/cds.adbb2d47) retrieved through the Open-Meteo historical weather API
+  (Zippenfenig, doi:10.5281/zenodo.7970649, CC BY 4.0).
 - **Day types.** Victorian public holidays, including substitute days, as listed on the Business Victoria pages for
   each year (consulted 2026-10-06), = 7; Melbourne Cup Day is treated as state-wide. The university calendar file is
   not used.
@@ -422,8 +430,8 @@ re-evaluation. Results:
   10.5281/zenodo.10361330) and the Suzhou park (OSF 10.17605/OSF.IO/AGK8S);
   "Creative Commons Attribution" (version not given on the page) for LCL on the London Datastore; CC0 for HKUST
   (Dryad); CC BY-NC-SA 4.0 for UNICON (Kaggle `cdaclab/unicon`, as stated on its page when the protocol was written on
-  6 October 2026), which restricts its use to non-commercial research. The Helsinki data are listed as CC BY 4.0 in the national catalogues, but the provider's pages could not be
-  opened from the study's network, so that licence is not confirmed. The repository redistributes no raw data except the Cambridge example
+  6 October 2026), which restricts its use to non-commercial research. The Helsinki data are listed as CC BY 4.0 in the catalogue; not confirmed on the dataset page (access refused from
+  the study's network). The repository redistributes no raw data except the Cambridge example
   window (CC BY 4.0, attributed in `results/example_window_cambridge.json`); `results/bdg2_micro_load_windows.csv`
   names BDG2 meters with monthly means and maxima (CC BY 4.0, Miller et al. 2020).
 - **Provider-side processing.** A complete, finite prepared series does not show that every value is a direct

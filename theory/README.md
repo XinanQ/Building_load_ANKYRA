@@ -16,13 +16,17 @@ Each property is supported in three ways:
 |---|---|
 | [PROOFS.md](PROOFS.md) | statement, proof and the counterexamples that mark where it stops; where a study measured a consequence on data, that evidence |
 | [operators.py](operators.py) | the property as a function that applies to any forecaster's 744-hour trajectory |
-| [test_operators.py](test_operators.py) | a numerical check, counterexamples included (29 checks) |
+| [test_operators.py](test_operators.py) | a numerical check, counterexamples included (31 checks) |
 
 ```bash
 python -m unittest discover -s theory -t .
 ```
 
 ![Exact properties on a test window](../figures/fig7_operators.png)
+
+*In panel a the label "(= ANKYRA)" on the third bar holds for ANKYRA 1.x, whose within-day block is the foundation
+model's. Since 2.0 the within-day block is anchored as well, so TimesFM with ANKYRA's level and daily path is the 1.x
+forecast before the projection, not the current one.*
 
 ## The twenty properties
 

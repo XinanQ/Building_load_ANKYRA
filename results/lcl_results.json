@@ -1,6 +1,7 @@
 {
-  "record": "Low Carbon London (LCL) households, ANKYRA 2.2. LCL was first scored once with the frozen ANKYRA 2.0.1 forecaster (that record is results/ankyra_2_1/lcl_results.json); the numbers here re-read the same targets with the 2.1 forecasts, made from the same frozen inputs (a re-evaluation, not a second test). The CSV files lcl_pairwise*.csv, lcl_mean_unit_rank_late.csv, lcl_shared_information_holm.csv and lcl_readouts.csv are extracts of this record.",
+  "record": "Low Carbon London (LCL) households, ANKYRA 2.2. LCL was first scored once with the frozen ANKYRA 2.0.1 forecaster (that first-scoring record is results/ankyra_2_0_1/lcl_results.json; the 2.1 re-reading is results/ankyra_2_1/lcl_results.json); the numbers here re-read the same targets with the 2.2 forecasts, made from the same frozen inputs (a re-evaluation, not a second test). 'utc' is the time of the first scoring with 2.0.1; 'exported_utc' is when this 2.2 record was exported. The CSV files lcl_pairwise*.csv, lcl_mean_unit_rank_late.csv, lcl_shared_information_holm.csv and lcl_readouts.csv are extracts of this record.",
   "utc": "2026-10-03T23:50:02.516228+00:00",
+  "exported_utc": "2026-10-10T20:49:47+00:00",
   "model": "ANKYRA 2.2",
   "windows": 1215,
   "units": 965,
@@ -760,8 +761,8 @@
   "micro_load_windows": 0,
   "micro_load_note": "No LCL window triggers the micro-load rule, so LCL is not a test of that rule.",
   "largest_within_day_trust_weight": 0.5,
-  "times_targets_opened_for_scoring": "1 (the 2.0.1 scoring); read again once for this 2.1 re-evaluation",
-  "intervals": "not assessed on LCL (neither for 2.0.1 nor for 2.1); the 1.x interval result was not recomputed",
+  "times_targets_opened_for_scoring": "1 (the 2.0.1 scoring); read again for the 2.1 re-evaluation and for this 2.2 re-evaluation",
+  "intervals": "not assessed on LCL (for 2.0.1, 2.1 or 2.2); the 1.x interval result was not recomputed",
   "lcl_1x_results_known_before_this_scoring": true,
   "study_workspace_hashes": {
     "note": "SHA-256 of two files of the study workspace. They are not in this repository; the values identify what was scored.",

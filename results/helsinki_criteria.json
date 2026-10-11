@@ -1,5 +1,5 @@
 {
- "test": "pre-registered confirmation, Helsinki city service buildings; registered and first scored with ANKYRA 2.0.1 frozen (results/ankyra_2_1/helsinki_criteria.json); the numbers here re-read the same targets with ANKYRA 2.2 (re-evaluation); the verdicts are the same",
+ "test": "confirmation test with criteria fixed and hashed locally before any load value was parsed (not publicly registered), Helsinki city service buildings; criteria fixed and first scored with ANKYRA 2.0.1 frozen (results/ankyra_2_0_1/helsinki_criteria.json; the 2.1 re-reading is results/ankyra_2_1/helsinki_criteria.json); the numbers here re-read the same targets with ANKYRA 2.2 (re-evaluation); the verdicts are the same",
  "model": "ANKYRA 2.2",
  "seed": 20261005,
  "primary": {

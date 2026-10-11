@@ -89,7 +89,7 @@ Three further populations were scored with the forecaster frozen and are reporte
 UNICON (the external test of 2.1, reported with 2.2). Like LCL they are not in the ten-population tables; their per-day curves are panels
 of Figures 9 and 9b.
 
-**Tiers of the equal-information comparison.** ANKYRA was fixed first. The covariate-informed baselines were then
+**Tiers of the shared-covariate-set comparison.** ANKYRA was fixed first. The covariate-informed baselines were then
 generated for every population and scored in two steps:
 
 1. a preview on four populations, used for diagnosis;
@@ -111,7 +111,7 @@ scored on the same windows:
 - the single within-day trust of 2.1 (one trust per window instead of one per lead block), chosen in a
   simplification study after all populations had been scored with 2.0.1; every 2.1 number is a re-evaluation
   ([One within-day trust per window (2.1)](#one-within-day-trust-per-window-21));
-- the gap tolerance of 2.2 in the pseudo-origin bookkeeping ([METHOD.md](METHOD.md#gap-tolerance-22)), written after
+- the short-gap rule of 2.2 in the pseudo-origin bookkeeping ([METHOD.md](METHOD.md#short-gap-rule-22)), written after
   the UNICON test of 2.1; every 2.2 number is a re-evaluation (2.2 against 2.1: −0.03% to +0.32% hourly on the ten
   populations, none resolved, [`results/ablation.csv`](../results/ablation.csv)).
 
@@ -226,8 +226,8 @@ ratios (P19 in [theory/PROOFS.md](../theory/PROOFS.md)). No single summary is th
 
 All results below are for **ANKYRA 2.2**: 2.1 (2.0.1, that is 2.0.0 plus the micro-load rule,
 [METHOD.md](METHOD.md#off-state-and-micro-load-rules), with one within-day trust per window instead of one per lead
-block, [One within-day trust per window (2.1)](#one-within-day-trust-per-window-21)) plus the gap tolerance of the
-pseudo-origin bookkeeping ([METHOD.md](METHOD.md#gap-tolerance-22)). Where a result was not recomputed for 2.2, its
+block, [One within-day trust per window (2.1)](#one-within-day-trust-per-window-21)) plus the short-gap rule of the
+pseudo-origin bookkeeping ([METHOD.md](METHOD.md#short-gap-rule-22)). Where a result was not recomputed for 2.2, its
 section names the version it was measured on (for example the Winkler contrasts, 2.1, 2.0.1 and 2.0.0, and the
 contributions of the parts, 2.1); the version of each result file is given in
 [results/README.md](../results/README.md).
@@ -280,7 +280,7 @@ rows at the bottom are a secondary summary.
 
 \* resolved in ANKYRA's favour; (+) resolved against ANKYRA. ‡ Corrected implementation; see
 [Correction of the GBT-T baseline](#correction-of-the-gbt-t-baseline). § 2.0.0 against 1.x isolates the within-day
-anchoring. 2.2 differs from 2.0.0 on all six by the single trust and the gap tolerance; 2.1 against 1.x on these
+anchoring. 2.2 differs from 2.0.0 on all six by the single trust and the short-gap rule; 2.1 against 1.x on these
 late windows was +2.9% * (Cambridge), +1.0% * (HEEW), +0.5% (EWELD), +3.8% * (GoiEner NH) and −0.1% (households)
 (the 2.2 values of this contrast on the late windows were not exported). On BDG2, 2.2 against 1.x also contains the
 micro-load rule (+37.1%; 2.1: +37.0%).
@@ -304,7 +304,7 @@ The column describes what the rule changes; it is not a test of the rule
 - **Without the three meters** (10 of the 474 late windows) the point estimates of 2.0.0, 2.0.1 and 2.1 agree to 0.01
   points: +2.5% against TimesFM and −2.1% against Chronos-2-X, and +10.4%, +11.9%, +8.8% and +6.8% against TiDE,
   iTransformer-X, GBT-T and TimesFM-X; 2.2 moves them by up to 0.3 points (+2.8%, −1.8%, +10.6%, +12.1%, +9.0% and
-  +7.0%), because the gap tolerance acts on other BDG2 windows. The intervals do not agree, because six further meters have micro-load windows:
+  +7.0%), because the short-gap rule acts on other BDG2 windows. The intervals do not agree, because six further meters have micro-load windows:
   14 of the 20 contrasts are resolved in ANKYRA's favour under 2.0.1, 2.1 and 2.2 and 11 under 2.0.0 (iTransformer-X,
   iTransformer and PatchTST only with the rule). The reading that does not involve the rule at all is 2.0.0 without the three meters:
   resolved better than 11 of 20, none worse, first by rank. ANKYRA's mean rank is 4.41 with the three meters and 4.31
@@ -437,7 +437,7 @@ ranks; its per-day curves are a panel of Figures 9 and 9b.
   TimesFM-X (+1.8%) are not resolved.
 - **Rank.** On the late windows ANKYRA has the lowest mean per-unit rank of the 21 forecasters (5.87; 2.1: 6.08; per-unit ridge
   6.51). The ridge is not resolvably worse there (+1.6%), so this is not a significant hourly advantage.
-- **Same-information baselines.** None of the five, nor the per-unit ridge, is significantly better than ANKYRA
+- **Baselines given the shared covariate set.** None of the five, nor the per-unit ridge, is significantly better than ANKYRA
   (six one-sided tests with Holm's correction). This does not show that ANKYRA is better than all six.
 - **Status.** The 1.x result on LCL was known beforehand, and the 2.2 numbers re-read targets already scored with
   2.0.1 and 2.1. LCL is therefore not an unexposed population, and this is not a first read. No LCL window meets the
@@ -485,7 +485,7 @@ is lower there (0.1721 kW).
 - MAE and WAPE are minimised by the median of the predictive distribution, squared-error metrics by its mean. On MAE and
   WAPE, zero-shot Chronos-2 or TimesFM variants are lower than ANKYRA on EWELD and on both GoiEner populations.
 - These metrics weight units differently from the unit-equal log ratio, which remains the primary estimand.
-- GBT-T's EWELD errors remain the largest among the same-information models (unit-mean RMSE 153.9 kW, against 99.4
+- GBT-T's EWELD errors remain the largest among the models given the shared covariate set (unit-mean RMSE 153.9 kW, against 99.4
   for ANKYRA), because its per-window scaling still overshoots there (see the GBT-T correction above).
 
 ### Loss by forecast day
@@ -597,7 +597,7 @@ Helsinki, UNICON) read `energy_to_date_gm_cv_pct` from the same files as there.
 
 On LCL ANKYRA is fifth to eleventh of 21 through the month; on Helsinki Chronos-2-X is lower on 25 of the 31 days.
 Under 2.1 the four rows read 0, 24, 3 and 16 days lowest and 8.6%, 7.9%, 31.0% and 10.3% at day 31; the UNICON change
-is the gap tolerance acting on the record it was written for.
+is the short-gap rule acting on the record it was written for.
 
 The table below covers the seven late-window populations.
 
@@ -621,7 +621,7 @@ The table below covers the seven late-window populations.
   fifth on EWELD.
 - **BDG2 under 2.0.1, 2.1 and 2.2.** Under 2.0.1 and 2.1 the BDG2 row was the same as for 2.0.0 (day 31: 7.92% against 7.91%), for the reason given
   under Figure 9: the three near-zero meters are outside the fixed unit set. Under 2.2 it reads 7.79% at day 31, the
-  gap tolerance acting on other BDG2 units; the Cambridge, HEEW, EWELD and household rows move likewise (2.1: 8.5%,
+  short-gap rule acting on other BDG2 units; the Cambridge, HEEW, EWELD and household rows move likewise (2.1: 8.5%,
   7.6%, 16.7% and 11.7%; lowest on 19, 18, 20 and 0 days).
 
 ### Monthly energy error
@@ -641,7 +641,7 @@ error of every forecaster).
   the BDG2 item below), 14 on households (2.1: 12; 2.0.1: 11), 9 on HEEW and 6 on the Suzhou park. (The energy error is computed on the
   delivered, projected trajectories; under 2.1, outside BDG2, the values differed from 1.x by at most 0.2 points and no contrast
   changed resolution between 1.x and 2.1; 2.0.1 differed from 1.x by up to 0.4 points, and its household contrast with
-  PatchTST was unresolved. Under 2.2 the level itself moves where the gap tolerance adds pseudo-origins: outside BDG2
+  PatchTST was unresolved. Under 2.2 the level itself moves where the short-gap rule adds pseudo-origins: outside BDG2
   the values differ from 1.x by at most 1.4 points (EWELD), and two household contrasts, GBT-T and the last-year
   profile, are resolved in ANKYRA's favour that were not under 1.x or 2.1.)
 - **Where the hourly view favours the foundation models.** On GoiEner households ANKYRA's monthly energy error is 23–28%
@@ -674,7 +674,7 @@ error of every forecaster).
 ### Readouts
 
 - **Peak operator** (unchanged by 2.0 and 2.1 up to the nonnegativity projection; 2.2 moves it on the units whose
-  daily means the gap tolerance changes):
+  daily means the short-gap rule changes):
   - against the maximum of the same trajectory, 18–65% lower peak error on all 10 scored populations (all resolved);
   - against last month's observed peak, better on Drammen, Oslo and HEEW (12–16%, resolved) and worse on CINELDI (19%,
     resolved) and EWELD (20%; resolved under 2.0.1, interval [+0.004, +0.400] in log units, but not under 2.1,
@@ -698,6 +698,9 @@ quantiles of TimesFM 2.5 and Chronos-2 computed from the same contexts
 ([`results/intervals_by_population.csv`](../results/intervals_by_population.csv); descriptive, computed after scoring).
 
 ![Interval coverage on ten populations](../figures/fig16_intervals_ten_populations.png)
+
+The pooled residuals in the figure's title are those of the history-only forecaster at each unit's pseudo-origins (no
+foundation model); their quantiles are added to the ANKYRA forecast.
 
 | Population | Coverage at nominal 80%: ANKYRA / Chronos-2 / TimesFM | At nominal 90%: ANKYRA / Chronos-2 | ANKYRA by week 1–4 | Winkler(80), ANKYRA vs TimesFM | vs Chronos-2 |
 |---|---:|---:|---:|---:|---:|
@@ -904,7 +907,7 @@ below, and the 2.2 chain (F0 → 2.2) in the current [`results/ablation.csv`](..
 | micro-load rule (2.0.0 → 2.0.1) | +30.42% on BDG2 (post hoc, the near-zero meters); zero elsewhere |
 | one within-day trust value (2.0.1 → 2.1) | +0.01% to +0.45%; resolved on Oslo and Drammen |
 | all steps (F0 → 2.1) | +1.24% (Suzhou park) to +36.52% (BDG2); resolved on nine, not on the Suzhou park |
-| gap tolerance (2.1 → 2.2; from `ablation.csv`, not in `component_contributions.csv`) | −0.03% (Cambridge) to +0.32% (BDG2); none resolved; zero on Oslo, Drammen, CINELDI and the Suzhou park, whose records have no qualifying gaps |
+| short-gap rule (2.1 → 2.2; row `gap tolerance` of `ablation.csv`, not in `component_contributions.csv`) | −0.03% (Cambridge) to +0.32% (BDG2); none resolved; zero on Oslo, CINELDI and the Suzhou park, where the two versions give the same forecasts, and +0.002% on Drammen |
 | weekly against monthly handover weights | −0.34% to +0.80%; never resolved for the weekly weights, resolved for the monthly ones on the two GoiEner populations (0.17%, 0.21%) |
 
 **Block-wise weights against one whole-window weight.** ANKYRA weights its two sources, the history-side forecast and
@@ -961,7 +964,8 @@ so the BDG2 row includes the near-zero meters without it.
 Unit-equal improvement of the first arm; * resolved in its favour, (+) resolved against it.
 
 - **Mixing.** Mixing in the model's daily means at a fixed half weight gives most of the gain on five test populations.
-- **Per-unit weights.** Estimating the weight per unit adds 0.8–1.2%, resolved on three test populations.
+- **Per-unit weights.** Estimating the weight per unit adds 0.2–2.0% on the six test populations; the gain is resolved
+  on three of them (0.8–1.2%).
 - **Weekly weights.** Separate weekly weights add nothing over one weight per unit and month.
 - **Preview populations.** On the four preview populations, where the fixed division is already strong, a fixed half
   weight lowers accuracy (unresolved). The per-unit weights reduce this loss.
@@ -1062,7 +1066,7 @@ micro-load rule, and † 2.1's hourly contrast with 1.x includes it.
 - The level, daily path, energy readout and peak readout are identical to 1.x by construction (pre-projection daily
   means agree to 2×10⁻¹² kW on every population). This holds for 2.0.0, and for 2.0.1 and 2.1 outside the 46 BDG2 micro-load
   windows, where every block of the forecast is TimesFM's. Under 2.2 it holds only on units without qualifying gaps:
-  where the gap tolerance adds pseudo-origins, the level and daily path move as well.
+  where the short-gap rule adds pseudo-origins, the level and daily path move as well.
 - No further foundation-model call: the three pseudo-origin forecasts are among the six already computed.
 - Loss by forecast day: 2.0 is lower than 1.x on 30–31 of the 31 days on BDG2, Cambridge, HEEW and GoiEner
   non-household, with the gain growing with lead time (Cambridge: +0.6% on days 1–3, +4.0% on days 22–31). The counts
@@ -1166,7 +1170,7 @@ Sources: [`results/benchmark_pairwise.csv`](../results/benchmark_pairwise.csv),
 [`results/bdg2_near_zero_sensitivity.csv`](../results/bdg2_near_zero_sensitivity.csv), which also has the full
 windows. Without the three meters the late panel has 464 windows of 139 units (10 windows removed). The 2.1 and 2.0.1 values
 of this table are in [`results/ankyra_2_1/`](../results/ankyra_2_1/) and [`results/ankyra_2_0_1/`](../results/ankyra_2_0_1/);
-2.1 differs from 2.0.1 by at most 0.012 points, and 2.2 from 2.1 by at most 0.33 points (the gap tolerance also moves
+2.1 differs from 2.0.1 by at most 0.012 points, and 2.2 from 2.1 by at most 0.33 points (the short-gap rule also moves
 the profile and naive contrasts, which the micro-load rule and the single trust left unchanged). No star changes
 between 2.1 and 2.2.
 
@@ -1180,7 +1184,7 @@ between 2.1 and 2.2.
 - **Without the three meters the point estimates agree**: to 0.01 points on the late windows (2.0.1 against 2.0.0:
   −0.007%, so 2.0.1 is marginally worse) and to 0.03 points on all windows (+0.03%); 2.1 against 2.0.0: +0.003% and
   +0.13%. 2.2 against 2.0.0 is +0.28% on the late windows (unresolved) and +0.45% on all windows (resolved,
-  [−0.791, −0.0004]); that part is the gap tolerance, not the rule.
+  [−0.791, −0.0004]); that part is the short-gap rule, not the micro-load rule.
 - **The intervals of that column do not agree.** Six further meters keep 23 late micro-load windows (35 in all) in it.
   - Against TimesFM, Chronos-2, Chronos-2-X, MSTL and the previous-month profile the upper ends come down (TimesFM:
     +1.05 → +0.22 in log units).
@@ -1195,7 +1199,7 @@ between 2.1 and 2.2.
   first by rank ([`results/ankyra_2_0_0/bdg2_near_zero_sensitivity.csv`](../results/ankyra_2_0_0/bdg2_near_zero_sensitivity.csv)).
 - **Ablation arms.** Of the reduced versions in [`results/ablation.csv`](../results/ablation.csv) only the 2.0.0 arm
   isolates the rule (in the 2.0.1 files; in the 2.1 files the 2.0.0 arm also contains the single trust, which the
-  2.0.1 arm isolates; in the 2.2 files both arms also contain the gap tolerance, which the 2.1 arm isolates). The other three do not carry the rule, so on BDG2 their contrasts with 2.2 include it: +31.3%
+  2.0.1 arm isolates; in the 2.2 files both arms also contain the short-gap rule, which the 2.1 arm isolates). The other three do not carry the rule, so on BDG2 their contrasts with 2.2 include it: +31.3%
   against 1.x, +31.3% against F1 (without the off-state rule) and +36.7% against F0 (the fixed division), where 2.0.0
   had +0.9%, +0.9% and +8.7% (2.1: +31.1%, +31.1% and +36.5%). F1 and F0 are the 1.x-era forecasters, so they lack the within-day anchoring as well;
   where the off-state rule never fires the F1 row equals the 1.x row, as it does on BDG2. On the other nine
@@ -1248,7 +1252,7 @@ alone or with the single trust, did not establish non-inferiority (upper ends up
 was not adopted. The per-block form of 2.0 was not decisive: 2.1 pools it without loss.
 
 **Evidence status.** The change was chosen after every population had been scored with 2.0.1, so every 2.1 number on
-this page is a re-evaluation of data already read, never a test; the same holds for 2.2, whose gap tolerance was
+this page is a re-evaluation of data already read, never a test; the same holds for 2.2, whose short-gap rule was
 written after the UNICON test of 2.1. The frozen-model checks on LCL, HKUST and Helsinki
 were first scored with 2.0.1; they are reported with the 2.2 numbers, re-evaluations of the same targets with the
 same verdicts, with one exception: on HKUST the hourly contrast with Chronos-2 (+11.7%, [−0.293, −0.001]) and the
@@ -1260,7 +1264,7 @@ re-evaluations are in [`results/reevaluation_2_1.json`](../results/reevaluation_
 is the external test on UNICON ([FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md#an-external-test-of-ankyra-21-unicon)),
 also re-read with 2.2 (its verdicts unchanged: primary criterion failed, hourly first of 14).
 
-**On the ten populations** (all windows, 2.1 against 2.0.1, both without gap tolerance,
+**On the ten populations** (all windows, 2.1 against 2.0.1, both without the short-gap rule,
 [`results/ankyra_2_1/ablation.csv`](../results/ankyra_2_1/ablation.csv)): BDG2
 +0.09%, Cambridge +0.07%, HEEW +0.06%, EWELD +0.13%, GoiEner non-household +0.01%, households +0.07%, Oslo +0.45% \*,
 Drammen +0.21% \*, CINELDI +0.12%, Suzhou park +0.09%; 8,532 of the 10,768 windows change. The mean trust ranges from
@@ -1319,11 +1323,12 @@ population; one level of each corruption, fixed before the run).
 - **Scale.** On these windows ANKYRA is exactly scale-equivariant. In general it is scale-equivariant only as long as
   a rescaling does not move a record across one of its absolute thresholds in kW: the off-state threshold (10⁻⁶ kW)
   and the scale floor, which is also the micro-load threshold (10⁻³ kW). Loads must be supplied in kW. The ×0.5 and ×2
-  of this test move no Drammen window across a threshold, and the result is the same for 2.0.0, 2.0.1, 2.1 and 2.2
-  (`robustness.csv` is unchanged by 2.2: these Drammen records have no qualifying gaps).
+  of this test move no Drammen window across a threshold, and the result is the same for 2.0.0, 2.0.1 and 2.1
+  (`robustness.csv` was measured with 2.1 and not re-run for 2.2; over all Drammen windows the short-gap rule changes
+  the hourly error by 0.002%).
 - The package refuses a context at the origin with missing hours (an input error, not a silent fill): such gaps have
-  to be filled upstream, as they were here. Only the pseudo-origin bookkeeping interpolates short gaps (at most 6
-  hours, since 2.2; [METHOD.md](METHOD.md#gap-tolerance-22)).
+  to be filled upstream, as they were here. Since 2.2 the package interpolates short gaps (at most 6 hours) that lie
+  before the context at the origin, in the copy of the record its estimator reads ([METHOD.md](METHOD.md#short-gap-rule-22)).
 - **A single large spike is the weak point.** It moves the recent-level candidates and the normalisation scale, and
   the peak envelope, which takes the largest recent excursion, reads the spike as the unit's peak. On these windows the
   spike cancels ANKYRA's lead over TimesFM and makes the peak readout useless.
@@ -1377,7 +1382,9 @@ issued every 744 hours, or when a window is re-run.
 ## Limitations
 
 - **Pretraining exposure.** Most populations were public before TimesFM 2.5 and Chronos-2 were trained. Seven BDG2
-  sites are in their pretraining corpora.
+  sites are in the GIFT-Eval pretraining collection named by the TimesFM 2.5 model card, and the London households (LCL)
+  are in that collection and in the Chronos and Chronos-2 training data (checked 10 October 2026;
+  [LCL_AND_CLOSEOUT.md](LCL_AND_CLOSEOUT.md)).
 - **Design exposure.** Eight of the eleven populations were seen when some component was specified. The three
   first-read populations (Cambridge, CINELDI, HEEW) are the clean evidence for the handover. The 2.0 within-day rule
   was selected using the pre-cutoff windows of all six test cohorts and evaluated on their post-cutoff windows, which
@@ -1386,7 +1393,7 @@ issued every 744 hours, or when a window is re-run.
   written after the BDG2 result of that evaluation had been seen, so under 2.0.1, 2.1 and 2.2 BDG2 is not a test set scored with
   the model fixed.
 - **Re-evaluation of 2.1 and 2.2.** The single within-day trust of 2.1 was chosen after all populations, LCL, HKUST and
-  Helsinki included, had been scored with 2.0.1, and the gap tolerance of 2.2 after UNICON had been scored with 2.1.
+  Helsinki included, had been scored with 2.0.1, and the short-gap rule of 2.2 after UNICON had been scored with 2.1.
   Every 2.1 and 2.2 number is a re-evaluation of data already read.
 - **LCL.** The reserved population was scored with the frozen forecaster, but its 1.x result was known, so it is not
   an unexposed population. The contrasts with the four foundation-model variants are not resolved there
@@ -1421,7 +1428,7 @@ issued every 744 hours, or when a window is re-run.
   energy error was 6.7% below TimesFM's under the tested 2.1 (4.4% under the 2.2 re-read) with an interval that includes zero, so the primary criterion failed, as on
   Helsinki; hourly, ANKYRA ranks first of 14 and is resolvably better than both covariate-informed foundation models,
   but not than TimesFM or Chronos-2, under both versions. Dense gaps left 2.1 with 0.51 of its 6 pseudo-origin pairs on average, so its
-  weights stayed near their priors there; the gap tolerance of 2.2, written in response, raises the completed pairs
+  weights stayed near their priors there; the short-gap rule of 2.2, written in response, raises the completed pairs
   to 3.49 per window and moves the hourly contrast with TimesFM by −0.1 points, unresolved
   ([FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md#an-external-test-of-ankyra-21-unicon)).
 - **Block-wise weighting.** One whole-window combination weight per unit of the same two forecasts was within ±2%
@@ -1434,7 +1441,8 @@ issued every 744 hours, or when a window is re-run.
 ## Reproduction record
 
 [`results/REPRODUCTION_CHECK.json`](../results/REPRODUCTION_CHECK.json) records the check of the current package
-(2.2.0) against the evaluated forecasts; the 2.1.0 record is kept as
+(2.2.1; the 2.2.0 record is [`results/REPRODUCTION_CHECK_2_2_0.json`](../results/REPRODUCTION_CHECK_2_2_0.json))
+against the evaluated forecasts; the 2.1.0 record is kept as
 [`results/ankyra_2_1/REPRODUCTION_CHECK.json`](../results/ankyra_2_1/REPRODUCTION_CHECK.json). The record of the 2.0.1 package is kept as
 [`results/REPRODUCTION_CHECK_2_0_1.json`](../results/REPRODUCTION_CHECK_2_0_1.json), and that of package 2.0.3 as
 [`results/ankyra_2_0_1/REPRODUCTION_CHECK.json`](../results/ankyra_2_0_1/REPRODUCTION_CHECK.json). It covers 484 windows of seven populations: post-cutoff windows of Cambridge, households,
@@ -1442,7 +1450,7 @@ GoiEner non-household, BDG2 and EWELD; pre-cutoff windows of BDG2; Oslo and the 
 micro-load window of BDG2 (46) and of the EWELD post-cutoff windows (217), 263 in all.
 
 - **2.2.** `ankyra.forecast` (default, `gap_tolerance=True`) is bit-identical to its 2.1 mode on every checked window
-  whose whole history is complete (92 of the 484) and differs from it on 53 windows, where the gap tolerance adds or
+  whose whole history is complete (92 of the 484) and differs from it on 53 windows, where the short-gap rule adds or
   completes pseudo-origins. The legacy modes below run with `gap_tolerance=False`.
 - **2.1 mode.** With `gap_tolerance=False` it reproduces the evaluated 2.1 trajectories to the precision of their float32 storage
   (largest relative difference 7.4×10⁻⁸); level and daily means are bit-identical to 2.0.1, with one trust value per
@@ -1458,7 +1466,7 @@ micro-load window of BDG2 (46) and of the EWELD post-cutoff windows (217), 263 i
   (largest absolute difference 3.4×10⁻¹³ kW). `within_anchor=False` alone no longer does on micro-load contexts.
 - **Tests.** `tests/` holds the forecaster's tests, among them those of the micro-load rule
   (`tests/test_micro_load.py`) and of input isolation (`tests/test_no_future_information.py`), and the tests of the
-  evaluation module (`tests/test_evaluation.py`). `theory/` holds the 29 checks of the exact properties. Run them
+  evaluation module (`tests/test_evaluation.py`). `theory/` holds the 31 checks of the exact properties. Run them
   with `python -m unittest discover -s tests -t .` and `python -m unittest discover -s theory -t .`.
 
 The earlier records are kept: [`results/ankyra_2_0_0/REPRODUCTION_CHECK.json`](../results/ankyra_2_0_0/REPRODUCTION_CHECK.json)
@@ -1466,11 +1474,12 @@ The earlier records are kept: [`results/ankyra_2_0_0/REPRODUCTION_CHECK.json`](.
 run on the 2.0.0 code before the version string was raised) and
 [`results/ankyra_1x/REPRODUCTION_CHECK.json`](../results/ankyra_1x/REPRODUCTION_CHECK.json) (ANKYRA forecasts on 613
 windows of two populations including every off-state window, the TimesFM adapter, the peak operator, the within-day
-default and the household intervals, all exact). Those components are unchanged in 2.0, 2.0.1, 2.0.2, 2.0.3, 2.1.0 and 2.2.0.
+default and the household intervals, all exact). Those components are unchanged in 2.0, 2.0.1, 2.0.2, 2.0.3, 2.1.0, 2.2.0 and 2.2.1.
 
 **File hashes and line endings.** Two records carry SHA-256 values of the frozen estimator's files:
 `ankyra/history/provenance.json` (the six modules `_climate.py`, `_day.py`, `_eo.py`, `_level.py`, `_signature.py`,
 `_span.py` and `frozen_config.json`) and `results/ankyra_1x/REPRODUCTION_CHECK.json` (field `package_files_sha256`).
 They were taken on a Windows working copy in which these files have CRLF line endings. The repository stores text
 files with LF line endings, so a checkout with LF gives different hashes for the same content. Converting the line
-endings to CRLF gives the recorded values. The files' content has not changed.
+endings to CRLF gives the recorded values. The files' content has not changed. The `package_files` hashes of the
+current record are described in [results/README.md](../results/README.md).

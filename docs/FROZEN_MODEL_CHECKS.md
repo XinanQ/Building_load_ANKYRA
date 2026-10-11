@@ -2,15 +2,15 @@
 
 Every check was run with the public package and all its defaults, the forecaster frozen. None changes the forecaster
 or the result tables of the ten populations. The HKUST, Helsinki, LCL and UNICON numbers on this page are those of **ANKYRA 2.2** (one within-day trust
-per window, with gap tolerance in the pseudo-origin bookkeeping); the carrier-swap tables (`results/carrier_swap.csv`,
-`carrier_swap_x.csv`, `carrier_swap_combined.csv`) are those of ANKYRA 2.1 (gap tolerance off) and were not recomputed
+per window, with the short-gap rule in the pseudo-origin bookkeeping); the carrier-swap tables (`results/carrier_swap.csv`,
+`carrier_swap_x.csv`, `carrier_swap_combined.csv`) are those of ANKYRA 2.1 (short-gap rule off) and were not recomputed
 for 2.2.
 
 - **HKUST, Helsinki and LCL** ([LCL_AND_CLOSEOUT.md](LCL_AND_CLOSEOUT.md)) were first scored with the frozen ANKYRA
   2.0.1, before 2.1 and 2.2 were adopted on 6 October 2026; the same targets were then read again with 2.1 and 2.2, so
-  their 2.2 numbers are re-evaluations, not first reads. The verdicts are the same under all versions, with two
-  exceptions noted below (on HKUST the hourly contrast against Chronos-2 and the energy contrast against GBT are
-  resolved under 2.2, not before); the
+  their 2.2 numbers are re-evaluations, not first reads. The verdicts are those of the first scoring under every version; on HKUST the hourly contrast against
+  Chronos-2 and the energy contrast against GBT (zero-shot), borderline in the first reading, have 2.2 re-read intervals
+  ending just below zero (noted below), and the first reading stands; the
   2.0.1 files are in [`results/ankyra_2_0_1/`](../results/ankyra_2_0_1/) and the 2.1 files in
   [`results/ankyra_2_1/`](../results/ankyra_2_1/).
 - **UNICON** is the external test of the frozen 2.1, a first read of a population the project had never used; the
@@ -34,7 +34,7 @@ model). See [EVALUATION.md](EVALUATION.md) for the estimand.
 
 ![Two checks with the forecaster frozen](../figures/fig17_frozen_checks.png)
 
-*Figure 17. a: anchoring gain with either foundation model (ten populations, all windows). b, c: HKUST campus, ANKYRA 2.2 against each of ten comparators (`results/hkust_first_read.csv`; first scored with 2.0.1, same verdicts except the hourly contrast against Chronos-2, resolved under 2.2). Filled markers: the 95% interval excludes zero; diamonds: borderline. The per-day curves of HKUST, Helsinki, LCL and UNICON are panels of Figures 9 and 9b ([EVALUATION.md](EVALUATION.md#loss-by-forecast-day)).*
+*Figure 17. a: anchoring gain with either foundation model (ten populations, all windows). b, c: HKUST campus, ANKYRA 2.2 against each of ten comparators (`results/hkust_first_read.csv`; first scored with 2.0.1, same verdicts; the hourly contrasts against TimesFM and Chronos-2 were borderline in the first scoring and that verdict stands, the 2.2 re-read intervals ending at −0.007 and −0.001). Filled markers: the 95% interval excludes zero; diamonds: borderline. The per-day curves of HKUST, Helsinki, LCL and UNICON are panels of Figures 9 and 9b ([EVALUATION.md](EVALUATION.md#loss-by-forecast-day)).*
 
 ## Another foundation model
 
@@ -112,7 +112,8 @@ method; TimesFM is the carrier of the released forecaster.
 **Question.** What does the frozen forecaster do on data the project had never read? This is a blind test in the
 following sense: no rule or constant of ANKYRA was chosen with this population in view, the units and the scoring
 plan were fixed before any load value was opened, inputs were truncated at each origin, and the forecasts were saved
-before any target loss was computed. It is not blind for the foundation models, whose pretraining data were not checked.
+before any target loss was computed. It is not blind for the foundation models, whose training data could contain it; its name is not in their published
+training-data lists (checked 10 October 2026), which does not establish absence.
 
 **Data.** The smart-meter database of the Hong Kong University of Science and Technology campus (Li, Wang, Qu, Chui and Leung-Shea, *Scientific Data* 11, 1284, 2024, doi:10.1038/s41597-024-04106-1; data on Dryad,
 doi:10.5061/dryad.k3j9kd5h6, CC0; 1 January 2022 to 27 May 2024). Units are the meters of the incomer circuit
@@ -124,9 +125,10 @@ ERA5 reanalysis for the campus; Hong Kong general holidays are day type 7; the c
 were saved with a hash before any target loss was computed, and the first read was one scoring pass, with the frozen
 ANKYRA 2.0.1. Comparators, a carrier exploration and a correction of the temperature scale were added afterwards
 (below). The numbers on this page are ANKYRA 2.2 on the recomputed forecasts: the same targets read again, a
-re-evaluation and not a second blind test. Every verdict is the same as for 2.0.1 (files in `results/ankyra_2_0_1/`)
-and 2.1 (`results/ankyra_2_1/`), except that the hourly contrast against Chronos-2, borderline under 2.0.1 and 2.1,
-is resolved under 2.2. The usual eligibility rule
+re-evaluation and not a second blind test. The verdicts are those of the first scoring with 2.0.1 (files in `results/ankyra_2_0_1/`), and 2.1
+(`results/ankyra_2_1/`) reads the same; the hourly contrasts against TimesFM and Chronos-2 were borderline there (upper
+ends −0.001 and +0.000). Re-read with 2.2 the intervals end at −0.007 and −0.001 in log units; the verdict of the first
+scoring (borderline) stands. The usual eligibility rule
 (complete load for the context, the six pseudo-origins and the target) leaves **134 windows on 33 units in 19
 months**. Three incomers read zero throughout; there the off-state and micro-load rules return TimesFM, both errors
 are zero, and the units drop out of the ratio (30 effective units). 125 windows have less than two years of history.
@@ -148,7 +150,7 @@ Mean unit rank among the eight models first scored on all windows: ANKYRA 2.03, 
 added models: ANKYRA 2.52, TimesFM-X 4.03, TimesFM 4.58, Chronos-2-X 4.76.
 The per-unit ridge is defined on 123 windows of 32 units. Baselines that must be trained on the population were not fitted.
 
-**The two covariate-informed foundation models** (Chronos-2-X and TimesFM-X, which receive the same information as
+**The two covariate-informed foundation models** (Chronos-2-X and TimesFM-X, which receive the shared covariate set of
 ANKYRA) were run afterwards on the same windows, with the features and calls of the ten-population comparison. ANKYRA's
 forecasts were already frozen and scored, so this completes the comparison and is not a second blind test. ANKYRA is
 not separated from either, on hourly or energy error, under any of six bootstrap seeds; its mean unit rank stays
@@ -158,7 +160,7 @@ first. This matches the ten populations, where Chronos-2-X is the closest compet
 the population) were then run the same way, again against the frozen forecasts and again not a blind test. With them
 the HKUST comparison has the same 14 forecasters as the full-window comparison of the ten populations. ANKYRA's hourly
 error is 15.7%, 22.6% and 57.2% lower than theirs, each resolved under every seed; on monthly energy it is resolved
-against MSTL (53.9%) and GBT (59.2%, upper end −0.011; not resolved under 2.0.1 and 2.1). Mean unit rank among the 14 on
+against MSTL (53.9%); against GBT (59.2%) the 2.2 re-read interval ends at −0.011, where the first reading under 2.0.1 (and 2.1) was borderline, and that reading stands. Mean unit rank among the 14 on
 the 123 ridge-defined windows: ANKYRA 3.30, per-unit ridge 4.27, TimesFM-X 5.28, TimesFM 5.73. The per-day curves, with the definitions of Figures 9 and 9b, are the HKUST panel of
 those figures ([`results/hkust_by_day.csv`](../results/hkust_by_day.csv); quantised readings flatten the hourly curves):
 ANKYRA has the lowest hourly error of the 14 on 15 of 31 days and the lowest energy error to date on 24.
@@ -181,7 +183,8 @@ ANKYRA has the lowest hourly error of the 14 on 15 of 31 days and the lowest ene
   peak, every result changes by at most 0.001 percentage points and no decision changes. The result files
   (`results/hkust_*`, `results/carrier_swap_*`), Figure 17 and the HKUST panels of Figures 9 and 9b come from the
   recomputed forecasts. No forecaster and no constant uses information after its origin.
-- Whether TimesFM or Chronos-2 was pretrained on this dataset (published 2024) was not checked.
+- The dataset (published 2024) is not named in the published training-data lists of TimesFM 2.5 (GIFT-Eval pretraining
+  collection), Chronos (Table 3) or Chronos-2 (Table 6), checked 10 October 2026; absence is not thereby established.
 
 This is one population with one original first read, followed by added comparators, a carrier exploration and a causal correction. It is not merged into the ten-population tables and it does not show that the
 forecaster generalises; it shows that the frozen forecaster did not fail on first contact with an unseen estate.
@@ -199,7 +202,7 @@ Chronos-2 (25 of the 30 non-zero units are better).
 any load value is read?
 
 **Data.** Energy consumption of the City of Helsinki's service properties, Nuuka Open API (City of Helsinki, Urban
-Environment Division; licence listed as CC BY 4.0 in the regional and national open-data catalogues). Hourly electricity,
+Environment Division; licence listed as CC BY 4.0 in the catalogue; not confirmed on the dataset page, access refused from the study's network). Hourly electricity,
 2023-01-01 to 2026-10-03, pulled on 5 October 2026 and not redistributed. Preparation: [DATA.md](DATA.md).
 
 **Procedure.** The protocol fixed the sample (300 property codes drawn by SHA-256 of the code, after excluding three
@@ -368,8 +371,8 @@ on TimesFM has median 0.5): UNICON cannot tell block-wise from whole-window weig
 4.5% hourly and 10.2% on monthly energy, both resolved (study record; not in the exported file).
 
 **Limits.** One university, five campuses. The amendment was made after the missingness had been seen (but before any
-forecast or error). The target months precede the release of TimesFM 2.5 and Chronos-2; whether UNICON is in their
-pretraining corpora could not be checked. The meters' reading unit is not documented; the readings were taken as kWh
+forecast or error). The target months precede the release of TimesFM 2.5 and Chronos-2; UNICON is not named in their
+published training-data lists (checked 10 October 2026), which does not establish absence. The meters' reading unit is not documented; the readings were taken as kWh
 per 15 minutes. Ratios do not depend on that choice; only the absolute off-state and micro-load thresholds would, and
 neither fires here.
 
@@ -385,7 +388,7 @@ of ANKYRA 2.1; the run was first made with 2.0.1 (`results/ankyra_2_0_1/carrier_
 counts. An exploration, not a test.
 
 **Procedure.** `ankyra.forecast` received Chronos-2-X point forecasts as its foundation forecasts: at the origin the forecasts already
-scored, at the pseudo-origins k = 1..6 new forecasts with the covariates of the equal-information set built at each pseudo-origin from
+scored, at the pseudo-origins k = 1..6 new forecasts with the covariates of the shared covariate set built at each pseudo-origin from
 data before it (about 60,000 contexts). Unit-equal log RMS ratio, 95% unit-and-month interval (seed 20261005), all windows.
 
 |Population|Windows|vs Chronos-2-X, hourly|vs Chronos-2-X, energy|vs ANKYRA, hourly|vs ANKYRA, energy|

@@ -1,5 +1,5 @@
 {
-  "record": "Low Carbon London (LCL) households, ANKYRA 2.1. LCL was first scored once with the frozen ANKYRA 2.0.1 forecaster (that record is results/ankyra_2_0_1/lcl_results.json); the numbers here re-read the same targets with the 2.1 forecasts, made from the same frozen inputs (a re-evaluation, not a second test). The CSV files lcl_pairwise*.csv, lcl_mean_unit_rank_late.csv, lcl_shared_information_holm.csv and lcl_readouts.csv are extracts of this record.",
+  "record": "Low Carbon London (LCL) households, ANKYRA 2.1. LCL was first scored once with the frozen ANKYRA 2.0.1 forecaster (that record is results/ankyra_2_0_1/lcl_results.json); the numbers here re-read the same targets with the 2.1 forecasts, made from the same frozen inputs (a re-evaluation, not a second test); the 2.2 re-reading is results/lcl_results.json. 'utc' is the time of the first scoring with 2.0.1; the export time of this 2.1 re-reading was not recorded. The CSV files lcl_pairwise*.csv, lcl_mean_unit_rank_late.csv, lcl_shared_information_holm.csv and lcl_readouts.csv are extracts of this record.",
   "utc": "2026-10-03T23:50:02.516228+00:00",
   "model": "ANKYRA 2.1",
   "windows": 1215,

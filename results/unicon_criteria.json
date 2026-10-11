@@ -1,5 +1,5 @@
 {
- "test": "external test of the ANKYRA 2.2 (re-evaluation of the external test of the frozen 2.1) on UNICON (La Trobe University, five campuses, Victoria, Australia); protocol frozen before any consumption value was read; amendment 01 (causal filling of gaps of at most 6 h in the inputs, written after the missingness was seen and before any forecast)",
+ "test": "external test of ANKYRA 2.2 (re-evaluation of the external test of the frozen 2.1) on UNICON (La Trobe University, five campuses, Victoria, Australia); protocol frozen before any consumption value was read; amendment 01 (causal filling of gaps of at most 6 h in the inputs, written after the missingness was seen and before any forecast)",
  "model": "ANKYRA 2.2 (package 2.2.0); registered and first scored with the frozen ANKYRA 2.1, re-read with 2.2 (same decisions)",
  "seed": 20261006,
  "primary": {
@@ -60,5 +60,5 @@
   }
  },
  "licence_note": "UNICON is CC BY-NC-SA 4.0 (research use only); its data are not redistributed here",
- "diagnostic": "dense short gaps leave few complete pseudo-origin windows: the frozen 2.1 used on average 0.51 of 6 pseudo-origin pairs (its weights stayed close to their priors); with the gap tolerance of 2.2 the average is 3.49 pairs. Under 2.1 ANKYRA used on average 0.51 of 6 pseudo-origin pairs, so its weights stayed close to their priors"
+ "diagnostic": "dense short gaps leave few complete pseudo-origin windows: the frozen 2.1 used on average 0.51 of 6 pseudo-origin pairs (its weights stayed close to their priors); with the gap tolerance of 2.2 the average is 3.49 pairs"
 }

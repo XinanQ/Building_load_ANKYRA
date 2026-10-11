@@ -297,7 +297,8 @@ def pinball(pred, truth, tau):
 
 # ----------------------------------------------------------------------------- P20 evidence bound
 def aggregation_rate(K, T):
-    """Minimax rate psi(K, T) = min(K/T, sqrt(log K / T)) of convex aggregation of K candidates from T samples (Tsybakov 2003)."""
+    """Order psi(K, T) = min(K/T, sqrt(log K / T)) of the minimax rate of convex aggregation of K candidates from T samples
+    (a simplified form of the rate in Tsybakov 2003; constants unspecified)."""
     return float(min(K / T, np.sqrt(np.log(K) / T)))
 
 

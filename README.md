@@ -10,7 +10,7 @@ without training or fine-tuning a neural network on each of them. It combines th
 TimesFM 2.5, with estimates from the unit's own past load, outdoor temperature and calendar, and weights the two by how
 well each has forecast the unit's own earlier months.
 
-Current package version: **2.2.0**; the forecasting model is ANKYRA 2.2 (6 October 2026; `gap_tolerance=False` reproduces 2.1; `gap_tolerance=False, single_trust=False` reproduces 2.0.1)
+Current package version: **2.2.1** (input validation only; forecasts of 2.2.0); the forecasting model is ANKYRA 2.2 (6 October 2026; `gap_tolerance=False` reproduces 2.1; `gap_tolerance=False, single_trust=False` reproduces 2.0.1)
 ([what changed](#what-changed-in-20-201-21-and-22) · [version history](#version-history)).
 
 ![ANKYRA architecture](figures/fig1_architecture.png)
@@ -44,7 +44,7 @@ others) are defined in [Terms used on this page](#terms-used-on-this-page).
 - Three **readout operators** reuse the same computation:
   - energy from the level, before the nonnegativity projection;
   - a monthly peak from a historical excursion envelope;
-  - a prediction interval from pseudo-forecast residuals.
+  - a prediction interval from the residuals of history-only pseudo-forecasts of the same unit.
 - The design choices and their limits are explained by **exact properties**: identities, bounds and the counterexamples
   that mark where they stop. They are kept in their own folder, [theory/](theory/), apart from the forecaster in
   [ankyra/](ankyra/): each has a proof, an operator and a numerical check.
@@ -159,8 +159,9 @@ python examples/quickstart.py --timesfm
 `ankyra.forecast` forecasts the 744 hours that follow the last value of `load_kw`. Put the unit on one regular hourly
 grid first: the forecaster does no resampling, no filling of the context at the origin and no time-zone or
 daylight-saving conversion ([details](docs/DATA.md#the-input-format-the-forecaster-expects)). An input that breaks the
-contract below raises an error; nothing is repaired silently. The one documented exception is the gap tolerance of 2.2
-(`gap_tolerance`, below): for the pseudo-origin bookkeeping only, short gaps before the origin are interpolated.
+contract below raises an error; nothing is repaired silently. The one documented exception is the short-gap rule of 2.2
+(`gap_tolerance`, below): short gaps that lie before the context at the origin are interpolated in the copy of the
+record the estimator reads, so that earlier pseudo-origins with such gaps still count.
 
 ### The inputs
 
@@ -254,9 +255,10 @@ The other arguments of `ankyra.forecast`:
   micro_load_rule=False` reproduces the 1.x forecast.
 - `single_trust` (default `True`): one within-day trust value per window (2.1). `False` estimates one value per
   forecast week; `gap_tolerance=False, single_trust=False` reproduces the 2.0.1 forecast.
-- `gap_tolerance` (default `True`): the gap tolerance of 2.2 ([definition](docs/METHOD.md#gap-tolerance-22)). For the
-  pseudo-origin bookkeeping only, gaps of at most 6 hours inside one 744-hour block are interpolated and a pseudo-origin's
-  target month counts when at least 90% of its hours are observed. The context at the origin is never filled: it must
+- `gap_tolerance` (default `True`): the short-gap rule of 2.2 ([definition](docs/METHOD.md#short-gap-rule-22)). Gaps of at most
+  6 hours inside one 744-hour block are interpolated in the copy of the pre-origin record that the estimator reads (the
+  pseudo-origins, the origin's own historical candidates and the analog days all read that copy), and a pseudo-origin's
+  target month counts for the level and the handover when at least 90% of its hours are observed. The context at the origin is never filled: it must
   be complete, and a gap in it raises an error (`ankyra.fill_short_gaps` applies the same rule to your own record, but
   leaves a gap that touches the origin or a block boundary, or is longer than 6 hours, missing). `False` reproduces the 2.1 forecast; on a record
   without gaps the two are identical.
@@ -273,7 +275,7 @@ See [docs/METHOD.md](docs/METHOD.md) for the equations and all constants.
 | `trajectory_first_day_kw` | `trajectory_kw[:24]` | `trajectory_kw` is the hourly forecast in kW, 744 values; element 0 is the hour after the last load value. It is nonnegative, except when one of the two rules in the last row returned the model's forecast unchanged. |
 | `level_kw`, `energy_kwh` | same names | The level is the mean of the 744 forecast hours, and the month's energy is 744 × the level. Both are read before negative hours are set to zero. |
 | `peak_kw` | computed by `readouts.peak_readout` | The monthly peak: the largest, over the 31 days, of the forecast daily mean plus the largest recent excursion of that day's type. |
-| `interval_80pct_first_hour_kw` | computed by `readouts.interval_bands` | The 80% prediction interval of the first forecast hour: its lower and upper bound in kW. The interval adds quantiles of the unit's own pseudo-forecast residuals to the forecast. |
+| `interval_80pct_first_hour_kw` | computed by `readouts.interval_bands` | The 80% prediction interval of the first forecast hour: its lower and upper bound in kW. The interval adds residual quantiles to the forecast. The residuals are those of the history-only forecaster (historical level and daily path with a same-day-type within-day default, no foundation model) at the unit's earlier pseudo-origins, not residuals of ANKYRA's own forecasts. |
 | `interval_pseudo_windows` | returned by `readouts.residual_quantiles` | The number of completed pseudo-origins whose residuals the interval uses (at most 12). |
 | `lead_week_weights_on_model` | `lead_week_weights` | The handover: the weight on the foundation model's daily means in days 1–7, 8–14, 15–21 and 22–31. ½ means no evidence. |
 | `level_weights` | same name | The weight of each level candidate. `s`, `l` and `a` are the recent 7-day mean, the long-history mean and the mean of the window one year earlier; `_u` is without and `_w` with weather adjustment; `fm` is the foundation model's own window mean. |
@@ -282,7 +284,7 @@ See [docs/METHOD.md](docs/METHOD.md) for the equations and all constants.
 | `within_day_pseudo_origin_triples` | `within_pseudo_pairs` | The number of completed pseudo-origins behind the trust (at most 3). |
 | `analog_shape_kept` | `analog_kept` | `False` when the analog shape was implausibly large (more than three times the largest context value) and the model's shape was used for the whole window. |
 | `off_state`, `micro_load` | same names | `True` when the off-state or the micro-load rule fired. The foundation model's forecast is then returned unchanged, without setting negative hours to zero. |
-| `anchoring_record` | same name | Two statistics of the unit's own pseudo-forecast record on the level, read before the forecast and not used by it (2.2): `carrier_level_weight` (the weight of the foundation model's window mean in the level, `level_weights['fm']`) and `history_vs_carrier_log_ratio` (log of the best historical candidate's pseudo-origin RMS error over the foundation model's; negative = the unit's history beat the model at its earlier origins), with `pseudo_origins`. Across the fourteen populations the realised gain over the foundation model fell with both ([table](results/anchoring_gain_deciles.csv); [section](#when-anchoring-is-expected-to-help)). Empty on off-state and micro-load windows. |
+| `anchoring_record` | same name | Two statistics of the unit's own pseudo-forecast record on the level, read before the forecast and not used by it (2.2): `carrier_level_weight` (the weight of the foundation model's window mean in the level, `level_weights['fm']`) and `history_vs_carrier_log_ratio` (log of the best historical candidate's pseudo-origin RMS error over the foundation model's; negative = the unit's history beat the model at its earlier origins), with `pseudo_origins`. Across the fourteen populations the realised gain over the foundation model fell overall, though not strictly monotonically, with both ([table](results/anchoring_gain_deciles.csv); [section](#when-anchoring-is-expected-to-help)). Empty on off-state and micro-load windows. |
 
 Further fields: `daily_means_kw` (the 31 daily means after the handover), `within_day_kw` (the delivered within-day
 block), `foundation_within_day_kw` and `analog_shape_kw` (the two shapes it is mixed from) and
@@ -330,7 +332,7 @@ Use ANKYRA for hourly, month-ahead forecasts of buildings and non-household supp
 history, above all when the monthly energy or the later weeks of the month matter. On the evidence of this page it is
 not the better choice in these cases:
 
-- **Households.** On GoiEner households zero-shot TimesFM has the lower hourly error (3.9%, resolved); on LCL
+- **Households.** On GoiEner households zero-shot TimesFM has the lower hourly error (3.5%, resolved, late windows); on LCL
   households the two are not separated. ANKYRA's monthly energy error is still lower. The weakness does not come from
   TimesFM: with Chronos-2 as the foundation model it is the same
   ([check](#three-checks-with-the-forecaster-frozen)).
@@ -385,7 +387,7 @@ The evidence for the first eight points is in the results sections below. The la
 - **Training cutoff, late windows**: the trained baselines are fitted on targets that end before a cutoff date, one
   per population. The *late* (post-cutoff) windows are those after it, the only ones on which all 21 forecasters
   exist.
-- **Same-information baseline**: one of the five baselines given ANKYRA's inputs (TiDE, iTransformer-X, GBT-T,
+- **Baseline given the shared covariate set**: one of the five baselines given ANKYRA's inputs (TiDE, iTransformer-X, GBT-T,
   Chronos-2-X, TimesFM-X).
 - **Resolved**: the 95% interval of a contrast excludes zero.
 - **Tier**: the role of a population in the evaluation: *test* (scored once, after the forecaster had been fixed),
@@ -431,7 +433,7 @@ At an origin, ANKYRA uses only what is known at that moment.
   after the origin, or after each pseudo-origin. It checks that the forecast, the model's inputs, the pseudo-origin
   errors and the interval stay bit-identical.
 - **Evaluation.**
-  - The baselines receive the same information set, with leakage assertions on feature and lag time indices,
+  - The baselines receive the shared covariate set, with leakage assertions on feature and lag time indices,
     normalisation statistics and training-target ends.
   - Trained baselines are scored only after their training cutoff.
   - The six test populations were scored once for 1.x, after the model was fixed, and nothing was tuned on them. The
@@ -451,16 +453,17 @@ information. Three sources lie outside the implementation:
 - the providers' data preparation, such as gap filling (imputed or zero-filled hours are masked where documented);
 - weather archives, whose past values may have been quality-controlled later;
 - the pretraining corpora of TimesFM 2.5 and Chronos-2, which may contain some evaluation series (seven BDG2 sites are
-  listed in them). This could favour every forecaster built on these models, ANKYRA included
+  listed in the GIFT-Eval pretraining collection named by the TimesFM 2.5 model card, and the London households (LCL) are
+  listed there and in the Chronos and Chronos-2 training data; checked 10 October 2026). This could favour every forecaster built on these models, ANKYRA included
   ([limitations](docs/EVALUATION.md#limitations)).
 
 The information set is detailed in [docs/METHOD.md](docs/METHOD.md#information-at-the-origin).
 
 ## Inputs and features: one information set for every forecaster
 
-A comparison is only meaningful when the forecasters are given the same information. The shared information set was
+A comparison is only meaningful when the forecasters are given the same covariates. The shared covariate set was
 fixed in writing before the baselines were run. ANKYRA receives it as the raw record (load, temperature, day types,
-category) and forms its own quantities from it; the same-information baselines receive it as engineered features.
+category) and forms its own quantities from it; the baselines given the shared covariate set receive it as engineered features.
 **Nothing in the set is observed after the origin.**
 
 **Hourly features** (past = the 1,344-hour context, future = the 744-hour horizon):
@@ -520,7 +523,7 @@ Each uses the part its architecture accepts:
 
 PatchTST is channel-independent, so its forecast is the same with or without these inputs. The six test populations
 were scored **once, after the model had been fixed**, for 1.x; the numbers below are those of 2.2, a re-evaluation: 2.1 was chosen after every population had been scored
-with 2.0.1, 2.2 adds the gap tolerance, and the counts in the table equal those of 2.0.1 and 2.1 ([`results/ankyra_2_0_1/`](results/ankyra_2_0_1/),
+with 2.0.1, 2.2 adds the short-gap rule, and the counts in the table equal those of 2.0.1 and 2.1 ([`results/ankyra_2_0_1/`](results/ankyra_2_0_1/),
 [`results/ankyra_2_1/`](results/ankyra_2_1/)). The
 BDG2 row (†) also includes the micro-load rule, which was written after that population's 2.0.0 result had been seen.
 
@@ -535,7 +538,7 @@ is r = the mean over units of log(RMS of ANKYRA / RMS of the baseline).
 - The mean per-unit rank is a secondary summary: it stays defined when some units have zero error, but it does not
   replace the ratio.
 
-| Test population | Country | Units / windows | Resolved better than (of 20) | …of them, same-information (of 5) | Resolved worse than | Rank among 21 |
+| Test population | Country | Units / windows | Resolved better than (of 20) | …of them, given the shared covariate set (of 5) | Resolved worse than | Rank among 21 |
 |---|---|---:|:---:|:---:|:---:|:---:|
 | BDG2 2017 (commercial and institutional meters) † | USA / Europe | 142 / 474 | 15 | 4 | — | 1 |
 | University of Cambridge estate | UK | 108 / 730 | 17 | 2 | — | 1 |
@@ -549,7 +552,7 @@ Windows are those after each population's training cutoff, where all 21 forecast
 
 † The BDG2 row includes the micro-load rule, written after the BDG2 result of 2.0.0 had been seen. It describes what
 the rule changes and is not a test of it. ANKYRA 2.0.0 was resolved better than 10 of 20 (2 of the 5
-same-information baselines), resolved worse than none, and ranked first. Without the three near-zero meters 2.0.1 is
+baselines given the shared covariate set), resolved worse than none, and ranked first. Without the three near-zero meters 2.0.1 is
 resolved better than 14 and 2.0.0 than 11. Three of the 14 are resolved only under the rule, so the reading that does
 not involve the rule is 11 of 20. The BDG2 item under *Where ANKYRA falls behind* gives the comparison.
 
@@ -826,7 +829,7 @@ files are in [`results/ankyra_2_0_1/`](results/ankyra_2_0_1/), the 2.1 files in 
   Chronos-2, Chronos-2-X and TimesFM-X (+1.4% to +1.9%) are not resolved either.
 - By mean per-unit rank on the late windows it is first of 21 (5.87; the per-unit ridge is next at 6.51). The
   contrast with the ridge is resolved on all windows (+2.3%) but not on the late windows (+1.6%).
-- No same-information baseline, and not the per-unit ridge, is significantly better than ANKYRA (six one-sided tests
+- No baseline given the shared covariate set, and not the per-unit ridge, is significantly better than ANKYRA (six one-sided tests
   with Holm correction). This does not show that ANKYRA is better than each of them.
 - Two windows are off-state windows and none is a micro-load window, so LCL is not a test of the micro-load rule.
   The prediction interval was not scored on LCL.
@@ -855,8 +858,8 @@ Each was run with the released forecaster and all its defaults, under a protocol
 two on 4 October 2026, the third on 5 October); the section also reports one post-hoc exploration (the Chronos-2-X
 anchoring, 5 October), which had no criterion fixed in advance. None of them changes the forecaster or any table
 above. All three were first run with the frozen 2.0.1; the numbers below re-read the same targets with ANKYRA 2.2
-(before that with 2.1), and every verdict is the same except on HKUST, where the two borderline hourly contrasts are
-resolved under 2.2 (below; the 2.0.1 files are in [`results/ankyra_2_0_1/`](results/ankyra_2_0_1/), the 2.1 files in
+(before that with 2.1), and every verdict is the one of the first scoring; on HKUST the two borderline hourly contrasts, re-read with 2.2, have
+intervals ending at −0.007 and −0.001 in log units, and the borderline verdict stands (below; the 2.0.1 files are in [`results/ankyra_2_0_1/`](results/ankyra_2_0_1/), the 2.1 files in
 [`results/ankyra_2_1/`](results/ankyra_2_1/)). The three carrier-swap files were not recomputed for 2.2; they use
 the anchoring of 2.1. Details, limits
 and files: [docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md).
@@ -867,7 +870,7 @@ foundation model with nothing selected again. It was run three times: with Times
 Chronos-2 (4 October, a pre-specified new arm, ten populations) and with the covariate-informed Chronos-2-X
 (5 October, post hoc after the Helsinki result, all twelve populations). The table gives the gain of each anchored
 version over its own foundation model, all scored on the same windows with the same bootstrap seed, with the anchoring
-of 2.1 (gap tolerance off; the 2.0.1 runs, in `results/ankyra_2_0_1/`, give the same resolved cells). `*`: the 95%
+of 2.1 (short-gap rule off; the 2.0.1 runs, in `results/ankyra_2_0_1/`, give the same resolved cells). `*`: the 95%
 unit-and-month interval excludes zero in favour of the anchored version; no interval excludes zero against it; `—`:
 not run.
 
@@ -909,15 +912,16 @@ not run.
 **A blind test on a population never used before.** "Blind" here means that no rule or constant of ANKYRA was
 chosen with this population in view, that the units and the scoring were fixed before any load value was opened, and
 that inputs were truncated at each origin and the forecasts saved before any target loss was computed. It does not mean that the foundation models had never
-seen the data: whether TimesFM or Chronos-2 was pretrained on it was not checked. The frozen forecaster had one original first read on the incomer meters of the HKUST campus
+seen the data: its name is not in the published training-data lists of TimesFM 2.5, Chronos or Chronos-2 (checked 10 October 2026), which does not establish absence. The frozen forecaster had one original first read on the incomer meters of the HKUST campus
 (Hong Kong; 134 windows, 33 units, 30 of them non-zero), a dataset the project had not read. Units were fixed from
 the metadata before any load value was opened, and forecasts were saved before any target loss was computed. Comparators,
 a carrier exploration and a correction of one constant (below) were added afterwards.
 
 - Monthly energy error is 42.9% below TimesFM's (interval 10–62%), and the interval excludes zero.
-- Hourly error is 8.8% below TimesFM's and 11.7% below Chronos-2's, intervals [−0.230, −0.007] and [−0.293, −0.001]
-  in log units: **resolved under 2.2**. This reading changed with 2.2: under 2.0.1 and 2.1 (8.4% and 11.3%) both
-  intervals ended at zero (upper ends −0.001 and +0.000), borderline and not counted as resolved. The meters are
+- Hourly error: in the first scoring (2.0.1) ANKYRA was 8.4% below TimesFM's and 11.3% below Chronos-2's, with
+  intervals ending at −0.001 and +0.000 in log units: borderline, not resolved, and that is the verdict of the blind
+  test (2.1 reads the same). Re-read with 2.2 the two contrasts are 8.8% and 11.7% and the intervals end at −0.007
+  and −0.001 in log units ([−0.230, −0.007] and [−0.293, −0.001]); the verdict of the first scoring (borderline) stands. The meters are
   quantised at 10 or 100 kWh, and the hourly gain comes from the 19 finely metered units.
 - Against naive and profile forecasts the hourly gain is 12–24% and resolved. Trained baselines were not run.
 - The two covariate-informed foundation models were added afterwards: ANKYRA is **not separated** from Chronos-2-X
@@ -996,7 +1000,7 @@ same (the 2.1 files are in [`results/ankyra_2_1/`](results/ankyra_2_1/)). The da
   energy it is 3–12% better than every foundation model, none resolved.
 - **Diagnostic** (written after the forecasts were frozen, before scoring). The dense gaps leave few complete
   pseudo-origin windows: ANKYRA 2.1 used on average 0.51 of its 6 pseudo-origin pairs, so its weights stayed close to
-  their priors (with the gap tolerance of 2.2 it uses 3.49). This test measured the frozen 2.1 on gap-dense data where
+  their priors (with the short-gap rule of 2.2 it uses 3.49). This test measured the frozen 2.1 on gap-dense data where
   its error weighting barely acts. The descriptive arms do not separate: the 2.0.1 arm is −0.1% hourly and −2.5% for
   energy against 2.2 (2.1: +0.0%), and a single whole-window combination weight or a half-and-half average is not
   separated from ANKYRA (hourly −0.1% for both, energy −1.2% for both; 2.1: −0.0%, +0.0% and +1.2%), so UNICON
@@ -1039,7 +1043,8 @@ ANKYRA's history-weighted level anticipates the rise. The balance between the tw
 - **Which part matters.** An ablation fixed before it was run separates the pieces. On the six test populations:
   - mixing in the model's daily means at a fixed half weight already gives most of the gain (63–96% on five, 10% on
     Cambridge);
-  - estimating the weight per unit adds 0.8–1.2%, resolved on three of the six and never resolvably worse;
+  - estimating the weight per unit adds 0.2–2.0% (0.8–1.2% on the three populations where the gain is resolved) and is
+    never resolvably worse;
   - separate weights for each week add nothing over one weight per unit and month (0.2% worse on GoiEner
     non-household).
 
@@ -1157,8 +1162,9 @@ median property under a stated working distribution. Its error splits into level
 terms, so ANKYRA's level gains carry into the peak.
 
 - Against the maximum of the same trajectory, it reduces peak error by **18–66% on all ten populations**.
-- Against last month's observed peak, it is better on regularly operated buildings (Drammen, Oslo, HEEW: 12–16%) and
-  worse on CINELDI's industrial customers and on EWELD.
+- Against last month's observed peak, it is better on regularly operated buildings (Drammen, Oslo, HEEW: 12–16%,
+  resolved) and worse on CINELDI's industrial customers (19%, resolved). On EWELD it is 20% worse at the point
+  estimate, but the interval includes zero.
 
 ![Peak operator](figures/fig5_peak_operator.png)
 
@@ -1188,7 +1194,8 @@ window, and it should not be used for units that switch off, where its width exp
 
 ![Interval coverage on ten populations](figures/fig16_intervals_ten_populations.png)
 
-*Figure 16. Interval coverage on ten populations.*
+*Figure 16. Interval coverage on ten populations. The pooled residuals in the figure's title are those of the
+history-only forecaster at each unit's pseudo-origins (no foundation model), added to the ANKYRA forecast.*
 
 ## When anchoring is expected to help
 
@@ -1197,7 +1204,7 @@ not used by it (`anchoring_record`, 2.2): the weight the level block gives the f
 (`carrier_level_weight`) and the log ratio of the best historical candidate's pseudo-origin RMS error to the foundation
 model's (`history_vs_carrier_log_ratio`; negative means the unit's history beat the model at its earlier origins). On
 the fourteen populations of this repository (the ten above, the development store, HKUST, Helsinki and UNICON; 14,177
-windows, 14,006 where the log ratio is defined) the realised gain of ANKYRA over TimesFM falls with both. Deciles are global over all windows; gains are the
+windows, 14,006 where the log ratio is defined) the realised gain of ANKYRA over TimesFM falls overall with both, though not from every decile to the next. Deciles are global over all windows; gains are the
 unit-equal log RMS ratio with its 95% unit-and-month interval ([`results/anchoring_gain_deciles.csv`](results/anchoring_gain_deciles.csv)).
 
 | `history_vs_carrier_log_ratio` decile | range | monthly-energy gain over TimesFM | hourly gain over TimesFM |
@@ -1276,6 +1283,10 @@ phase does not explain the UNICON result.
 
 *Figure 7. Exact properties on a test window.*
 
+*In panel a the label "(= ANKYRA)" on the third bar holds for ANKYRA 1.x, whose within-day block is the foundation
+model's. Since 2.0 the within-day block is anchored as well, so TimesFM with ANKYRA's level and daily path is the 1.x
+forecast before the projection, not the current one.*
+
 The construction is auditable because each step has a stated property. These mathematical contributions sit beside the
 forecaster in their own folder, [theory/](theory/), which the forecaster does not import:
 
@@ -1306,9 +1317,10 @@ forecaster in their own folder, [theory/](theory/), which the forecaster does no
 - **Estimands (P19).** Pooled and unit-equal summaries can disagree in sign for an algebraic reason, so the evaluation
   reports both, with the mean rank and conventional metrics.
 - **Evidence bound (P20).** Seven level candidates judged on at most six pseudo-origin errors cannot be told apart
-  reliably (the known minimax rates of aggregation, Nemirovski 2000 and Tsybakov 2003, are a sizeable fraction of the
-  error variance at six pseudo-origins; the measured hit rate of the selected candidate is 19–29% against a chance of
-  17%). The weights are shrunk for this reason, and the record statistics that indicate, between populations, where
+  reliably (the known minimax rates of aggregation, Nemirovski 2000 and Tsybakov 2003, are in order of magnitude a
+  sizeable fraction of the error variance at six pseudo-origins; on most populations the measured hit rate of the
+  pseudo-selected candidate is only a little above the chance rate of 1/6 among the six historical candidates). The
+  weights are shrunk for this reason, and the record statistics that indicate, between populations, where
   anchoring pays are reported with each forecast ([`anchoring_record`](#what-comes-out)).
 
 Each is written as a function in `theory/operators.py` or carried by the forecaster's own functions (P1, P3, P15, P19),
@@ -1327,15 +1339,16 @@ and checked by `python -m unittest discover -s theory -t .`.
   mode (`gap_tolerance=False, within_anchor=False, micro_load_rule=False`) matches the evaluated 1.x forecasts exactly (largest difference 3.4×10⁻¹³ kW). On micro-load windows 2.1 and
   2.0.1 are bit-identical to the TimesFM forecast; elsewhere 2.0.1 is bit-identical to the 2.0.0 mode. The TimesFM
   adapter, the peak operator and the interval functions are unchanged and were exact in the 1.x record.
-  The current record ([results/REPRODUCTION_CHECK.json](results/REPRODUCTION_CHECK.json)) was taken on the code of
-  this release (package 2.2.0); the record of package 2.1.0 is kept as
+  The current record ([results/REPRODUCTION_CHECK.json](results/REPRODUCTION_CHECK.json)) was taken on package 2.2.1
+  ([note on its file hashes](results/README.md)); the
+  2.2.0 record is `results/REPRODUCTION_CHECK_2_2_0.json`, and the record of package 2.1.0 is kept as
   [results/ankyra_2_1/REPRODUCTION_CHECK.json](results/ankyra_2_1/REPRODUCTION_CHECK.json), the record of package 2.0.3 as
   [results/ankyra_2_0_1/REPRODUCTION_CHECK.json](results/ankyra_2_0_1/REPRODUCTION_CHECK.json), and the record of the
   2.0.1 package is
   [results/REPRODUCTION_CHECK_2_0_1.json](results/REPRODUCTION_CHECK_2_0_1.json); the 2.0.0 and 1.x records are
   [results/ankyra_2_0_0/REPRODUCTION_CHECK.json](results/ankyra_2_0_0/REPRODUCTION_CHECK.json) and
   [results/ankyra_1x/REPRODUCTION_CHECK.json](results/ankyra_1x/REPRODUCTION_CHECK.json).
-- `results/` holds every scored statistic behind the figures and tables. Most files are ANKYRA 2.2; files not re-exported for 2.2 keep the version they were measured on: the three carrier-swap files (`carrier_swap.csv`, `carrier_swap_x.csv`, `carrier_swap_combined.csv`), `component_contributions.csv`, `constants_sensitivity.csv`, `robustness.csv` and `intervals_winkler_contrasts.csv` were measured with 2.1 (gap tolerance off), `cost_per_window.csv` with 2.0.0 and `handover_granularity.csv` with 1.x, and `bdg2_micro_load_windows.csv` compares 2.0.0 with 2.0.1. The two experiments added afterwards (`long_context_carriers.csv`, `generic_combinations.csv`) use 2.2. Each file's entry in [results/README.md](results/README.md) names its version. The LCL (`lcl_*`), HKUST
+- `results/` holds every scored statistic behind the figures and tables. Most files are ANKYRA 2.2; files not re-exported for 2.2 keep the version they were measured on: the three carrier-swap files (`carrier_swap.csv`, `carrier_swap_x.csv`, `carrier_swap_combined.csv`), `component_contributions.csv`, `constants_sensitivity.csv`, `robustness.csv` and `intervals_winkler_contrasts.csv` were measured with 2.1 (short-gap rule off), `cost_per_window.csv` with 2.0.0 and `handover_granularity.csv` with 1.x, and `bdg2_micro_load_windows.csv` compares 2.0.0 with 2.0.1. The two experiments added afterwards (`long_context_carriers.csv`, `generic_combinations.csv`) use 2.2. Each file's entry in [results/README.md](results/README.md) names its version. The LCL (`lcl_*`), HKUST
   (`hkust_*`), Helsinki (`helsinki_*`) and UNICON (`unicon_*`) files are 2.2 re-reads; the first three were first scored with
   2.0.1, whose files are in `results/ankyra_2_0_1/` (with `lcl_audit.json`, moved there), UNICON with 2.1, whose files
   are in `results/ankyra_2_1/` with every other 2.1 file;
@@ -1367,7 +1380,7 @@ and checked by `python -m unittest discover -s theory -t .`.
     shapes or the interval; the handover's limits, the off-state rule and the micro-load rule; the within-day
     anchoring's bounds and invariances, the single trust value of 2.1 and `single_trust=False` giving the 2.0.1 form;
     the readouts; and the reference estimator's documented values;
-  - `python -m unittest discover -s theory -t .` runs the 29 checks of the exact properties
+  - `python -m unittest discover -s theory -t .` runs the 31 checks of the exact properties
     ([theory/](theory/README.md)), with their counterexamples.
 - **Integrity hashes.** The hashes in `ankyra/history/provenance.json` and
   `results/ankyra_1x/REPRODUCTION_CHECK.json` were taken on a Windows working copy with CRLF line endings. The
@@ -1381,9 +1394,11 @@ and checked by `python -m unittest discover -s theory -t .`.
 
 ## What changed in 2.0, 2.0.1, 2.1 and 2.2
 
-- **2.2: gap tolerance.** In the pseudo-origin bookkeeping only, gaps of at most 6 hours inside one 744-hour block are
-  interpolated between their neighbours, and a pseudo-origin's target month qualifies when 90% of its hours are
-  observed. Candidates, weights, constants, readouts and the origin context's completeness requirement are unchanged;
+- **2.2: the short-gap rule (`gap_tolerance`).** It serves the pseudo-origin bookkeeping: gaps of at most 6 hours inside one 744-hour block are
+  interpolated between their neighbours, and a pseudo-origin's target month qualifies for the level and the handover
+  when 90% of its hours are observed. The interpolation is made in the copy of the pre-origin record that the whole
+  estimator reads, so the interpolated hours also enter the origin's own historical candidates and the analog-day
+  pool ([what the rule reaches](docs/METHOD.md#short-gap-rule-22)). Candidates, weights, constants, readouts and the origin context's completeness requirement are unchanged;
   a record without gaps gives the 2.1 forecast bit for bit (`gap_tolerance=False` reproduces 2.1). On the ten
   populations 2.2 differs from 2.1 within ±0.5% hourly (none resolved); on UNICON the completed pseudo-origin pairs
   rise from 0.51 to 3.49 per window; on LCL the hourly error falls by 0.2% (resolved). Every 2.2 number is a
@@ -1449,7 +1464,19 @@ Each entry describes its release as it was. A switch named in an entry reproduce
 package; with package 2.2.0 add `gap_tolerance=False` (the commands for 2.2.0 are under
 [What changed](#what-changed-in-20-201-21-and-22)).
 
-- **2.2.0 (6 October 2026)** — model ANKYRA 2.2: gap tolerance in the pseudo-origin bookkeeping (`ankyra/core.py`
+- **2.2.1 (10 October 2026; forecasts unchanged)** — a non-finite value in a pseudo-origin foundation forecast (k ≥ 1)
+  now raises `ValueError` (`_check_pseudo_forecasts`); before, it was accepted and that pseudo-origin's evidence was
+  dropped silently, against the documented contract. Two tests added: the refusal, and the no-future-information
+  property under the short-gap rule (gaps in pseudo contexts and a partially observed pseudo target). On finite inputs
+  2.2.1 equals 2.2.0 bit for bit (reproduction check v8, `results/REPRODUCTION_CHECK.json`; the 2.2.0 record is kept
+  as `results/REPRODUCTION_CHECK_2_2_0.json`). The registered prospective Helsinki test names the code of tag
+  `v2.2.0`, whose forecasts are identical.
+  Documentation was corrected in the same release: docstrings and comments in `ankyra/` (no executable statement
+  changed), [METHOD.md](docs/METHOD.md) (daily-path weights, what the short-gap rule reaches, constants),
+  [theory/PROOFS.md](theory/PROOFS.md), notes in `results/`, and the count of theory checks (31, all run when
+  `theory/test_operators.py` is executed directly). The reproduction record was taken
+  after these edits, so its `package_files` hashes are those of the released files ([results/README.md](results/README.md)).
+- **2.2.0 (6 October 2026)** — model ANKYRA 2.2: the short-gap rule (`gap_tolerance`) in the pseudo-origin bookkeeping (`ankyra/core.py`
   `fill_short_gaps`, `forecast(..., gap_tolerance=True)`; `ankyra/history/api.py`): gaps of at most 6 hours inside one
   744-hour block are interpolated between their neighbours, and a pseudo-origin's target month qualifies when 90% of
   its hours are observed (its truth is the mean over the observed hours; days with fewer than 12 observed hours leave
@@ -1553,9 +1580,12 @@ evaluation used public datasets from GoiEner, the COFACTOR projects (Drammen, Os
 estate archive, CINELDI, HEEW, the Building Data Genome Project 2, the Suzhou industrial-park dataset and the London
 Low Carbon London project; see [docs/EVALUATION.md](docs/EVALUATION.md) for references. The external test used
 UNICON (La Trobe University; CC BY-NC-SA 4.0, research use only), which is not redistributed. The example window in `results/`
-is from the University of Cambridge estate archive (CC BY 4.0).
+is from the University of Cambridge estate archive (CC BY 4.0). The HKUST, Helsinki and UNICON temperatures are ERA5
+reanalysis: Contains modified Copernicus Climate Change Service information [2026]; ERA5 hourly data (Hersbach et al.,
+2020, doi:10.1002/qj.3803; dataset doi:10.24381/cds.adbb2d47) retrieved through the Open-Meteo historical weather API
+(Zippenfenig, doi:10.5281/zenodo.7970649, CC BY 4.0).
 
-To cite the software, use [CITATION.cff](CITATION.cff) (package 2.2.0, tag `v2.2.0`); an archive DOI has not been
+To cite the software, use [CITATION.cff](CITATION.cff) (package 2.2.1, tag `v2.2.1`; the frozen code of the registered prospective test is tag `v2.2.0`, forecasts identical); an archive DOI has not been
 assigned yet.
 
 Questions and bug reports: the [issue tracker](https://github.com/XinanQ/Building_load_ANKYRA/issues).

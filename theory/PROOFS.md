@@ -14,6 +14,9 @@ implemented in [`operators.py`](operators.py) (or in the forecaster's `ankyra.bl
 `ankyra.metrics`) and checked in [`test_operators.py`](test_operators.py), counterexamples included. Where a study
 measured a property's consequence on data, the evidence follows the statement.
 
+P1–P10 are identities and one-step bounds. Their arguments are short and are given with the statements, not as
+separate proofs; the numerical checks cover each of them.
+
 - *Earlier study* means the first, unpublished version of this model, evaluated on Spanish supply points and BDG2.
   Its data and outputs are not in this repository. Its numbers are quoted for context and cannot be recomputed from
   the files here.
@@ -26,6 +29,10 @@ Several statements are standard, and they are marked as such. None of them is an
 measured in [docs/EVALUATION.md](../docs/EVALUATION.md).
 
 ![Exact properties on a test window](../figures/fig7_operators.png)
+
+*In panel a the label "(= ANKYRA)" on the third bar holds for ANKYRA 1.x, whose within-day block is the foundation
+model's. Since 2.0 the within-day block is anchored as well, so TimesFM with ANKYRA's level and daily path is the 1.x
+forecast before the projection, not the current one.*
 
 ## Blocks
 
@@ -103,7 +110,9 @@ units whose historical daily means fail badly can outweigh a majority that gain.
 ANKYRA's per-unit weights and weekly handover respond to this: each unit's own record decides how much of each source
 it uses.
 
-**P6. Correction accounting (standard).** Let $e=y-\hat y$ be a reference error and $D$ a correction. Then
+**P6. Correction accounting (standard).** Let $e=y-\hat y$ be a reference error and $D$ a correction added to the
+forecast. (This $e$ is the truth minus the forecast, the opposite sign to $e=F-y$ in P1; the sign matters for the
+cross term below.) Then
 
 $$\Delta\mathrm{MSE}=\mathbb E[D^2]-2\,\mathbb E[eD].$$
 
@@ -157,9 +166,12 @@ contexts overlap.
 
 - Every candidate subset $B$ satisfies $(1-\rho)p(B)\le w(B)\le(1-\rho)p(B)+\rho$.
 - A combined prediction moves from the prior combination by at most $\rho R_h\,\mathrm{TV}(q,p)$, where $R_h$ is the
-  range of the candidate predictions. For a uniform prior on $m$ candidates this is at most $\rho(1-1/m)R_h$.
+  range of the candidate predictions and $\mathrm{TV}(q,p)=\tfrac12\sum_j|q_j-p_j|$ is the total-variation distance
+  between the two weight vectors. For a uniform prior on $m$ candidates this is at most $\rho(1-1/m)R_h$.
 
-For the four non-annual level candidates of the historical estimator with matched support $k\ge2$, $\rho=k/(k+8)$.
+*Matched support* $k$ means that every candidate in the set has completed errors at the same $k$ pseudo-origins, so
+that the prior and the data weights live on the same candidates. For the four non-annual level candidates of the
+historical estimator with matched support $k\ge2$, $\rho=k/(k+8)$.
 The total weather weight therefore lies in $[(1-\rho)/2,(1+\rho)/2]$: [0.4, 0.6] at $k=2$, [1/3, 2/3] at 4 and
 [0.2, 0.8] at 12. ANKYRA's level adds the model candidate. Its prior weather mass is then 3/7 when all seven candidates are supported
 (2/5 before the annual candidates are), and the general bound applies with that $p(B)$.
@@ -173,8 +185,10 @@ $$\rho_R=\frac{\rho Q}{(1-\rho)P+\rho Q},$$
 
 and the bounds of P8 must be re-evaluated.
 
-- *Counterexample.* Take four candidates with a uniform prior, $q$ concentrated on the third, $\rho=0.2$ and
-  $R=\lbrace1,3\rbrace$. Then $\rho_R=1/3$, and the weather mass becomes 2/3, above the old bound 0.6 (Figure 7c).
+- *Counterexample.* Take the four non-annual candidates in the order recent, long-history, recent weather-adjusted,
+  long-history weather-adjusted, so that the third and fourth are the weather candidates. With a uniform prior, $q$
+  concentrated on the third, $\rho=0.2$ and $R=\lbrace1,3\rbrace$, $P=1/2$ and $Q=1$, so $\rho_R=1/3$. The weather
+  mass becomes $(1-\rho_R)/2+\rho_R=2/3$, above the old bound 0.6 (Figure 7c).
 - *Discontinuity.* The two-error threshold is a jump. In a limiting example, going from one error (equal weights) to
   two moves the weights by an L1 distance of 0.3.
 
@@ -182,8 +196,10 @@ and the bounds of P8 must be re-evaluated.
 component, the two weights behave differently:
 
 - the inverse-MSE weight $\mathrm{MSE}_a/(\mathrm{MSE}_a+\mathrm{MSE}_b)$ tends to 1/2 as the shared variance grows;
-- the least-squares weight $\langle y-a,\,b-a\rangle/\Vert b-a\Vert^2$ depends only on the part in which the forecasts
-  differ.
+- the least-squares weight $\langle y-a,\,b-a\rangle/\Vert b-a\Vert^2$ does not depend on the shared component when
+  that component is uncorrelated with the difference $b-a$: write $a=y+c+\varepsilon_a$ and $b=y+c+\varepsilon_b$; the
+  numerator is $-\langle c+\varepsilon_a,\,\varepsilon_b-\varepsilon_a\rangle$, and its $c$ term vanishes exactly
+  under that condition. If the shared component is correlated with the difference, it enters the weight.
 
 ANKYRA's weekly handover therefore uses the least-squares weight ([Bates and Granger, 1969](#references)), shrunk
 towards 1/2 with
@@ -232,8 +248,9 @@ The guarantee is relative to the unprojected trajectory, not to the clipped one.
 
 *Evidence (earlier study; a set of Spanish supply points already used in development).*
 
-- Against hourly clipping alone the option was non-inferior: −0.0009 [−0.0030, +0.0002] on the windows whose
-  realised load is not zero throughout, pooled MSE ratio 1.00003.
+- Against hourly clipping alone the option was not separated: −0.0009 [−0.0030, +0.0002] on the windows whose
+  realised load is not zero throughout (the interval includes zero; no margin had been set in advance), pooled MSE
+  ratio 1.00003.
 - There was no violation in the 139 windows covered by the condition.
 - In 93 of the 173 windows outside it, the daily-mean error rose, as the condition allows.
 
@@ -280,10 +297,14 @@ has no universal sign, and the net error has to be measured. On the Cambridge te
 If $((m-1)/m)^n<1/2$, the lower median of the future maximum equals the envelope. With four samples, three future days
 of that type suffice.
 
-Neither assumption can be dropped:
+Two of these conditions are shown to be needed by counterexamples:
 
-- excursions (0, 1, 2, 3) over two equal-level days give a median of 2, not 3;
-- three days with levels (0, −100, −100) give a median of 1.
+- *the count condition:* excursions (0, 1, 2, 3) over two equal-level days ($m=4$, $n=2$, $(3/4)^2>1/2$) give a
+  median of 2, not 3;
+- *constant levels:* three days with levels (0, −100, −100) give a median of 1.
+
+Independence of the draws is part of the working distribution. No counterexample is given for it here, so the
+statement does not say what happens without it.
 
 Under continuous iid sampling, the joint maximum of $m$ historical and $n$ future values is historical with probability
 $m/(m+n)$. This is an unconditional sampling fact, not coverage for a particular building.
@@ -339,28 +360,39 @@ mean per-unit rank, the pooled ratio and conventional metrics.
 estimates of the same quantity from their errors at $T$ completed pseudo-origins ($K=7$ with the model candidate,
 $T\le 6$). Two statements bound what any such rule can do.
 
-- *Null benchmark (identity).* If the vectors of candidate errors at the $T$ pseudo-origins and at the target are
-  exchangeable, that is, no candidate is persistently better for the unit, then every rule that picks one candidate from
-  the pseudo errors picks the target's best candidate with probability exactly $1/K$, and lands in the best two with
-  probability $2/K$. A measured hit rate is therefore read against $1/K$, not against zero.
-- *Minimax rate (standard).* With $T$ independent error samples per candidate, no aggregation rule can guarantee an excess
-  squared error over the best candidate smaller than a constant times $\psi(K,T)=\min\lbrace K/T,\sqrt{\log K/T}\rbrace$
-  for convex combinations, or $\log K/T$ for selection, in units of the error variance (Nemirovski, 2000; Tsybakov, 2003; Juditsky,
-  Rigollet and Tsybakov, 2008; Rigollet and Tsybakov, 2011). For $K=7$ and $T=6$ the rates are $\psi=0.57$ and $\log K/T=0.32$ (for $T=30$: $0.23$ and $0.06$), up to unspecified
-  constants and under independence, which pseudo-origins only approximate. They are worst-case orders, not predictions
-  for these data; they indicate that with a few months of evidence per candidate strongly shrunk weights are the
-  reasonable choice, which is what the weights of P8 do. (The historical candidates use up to 12 pseudo-origins, the
+- *Null benchmark (identity).* Suppose that, given the candidate errors at the $T$ pseudo-origins, the $K$ candidate
+  errors at the target are exchangeable over the candidate labels (their joint distribution does not change when the
+  labels are permuted) and have no ties. This is the case in which the pseudo errors carry no information on which
+  candidate will be best at the target. Then every rule that picks one candidate from the pseudo errors picks the
+  target's best candidate with probability exactly $1/K$, and lands in the best two with probability $2/K$. A
+  measured hit rate is therefore read against $1/K$, not against zero.
+- *Minimax rate (standard).* With $T$ independent error samples per candidate, the known results on aggregation
+  (Nemirovski, 2000; Tsybakov, 2003; Juditsky, Rigollet and Tsybakov, 2008; Rigollet and Tsybakov, 2011) say that no
+  rule can guarantee, for every distribution, an excess squared error of smaller order than
+  - $\psi(K,T)=\min\lbrace K/T,\sqrt{\log K/T}\rbrace$ over the best *convex combination* of the candidates (convex
+    aggregation), or
+  - $\log K/T$ over the best *single* candidate (model selection),
+
+  in units of the error variance. The two rates have different comparators. $\psi$ is written here in a simplified
+  form: the published rate has a different logarithmic factor when $K$ exceeds $\sqrt T$, and the constants are not
+  specified. For $K=7$ and $T=6$ the simplified expressions give $\psi=0.57$ and $\log K/T=0.32$ (for $T=30$: $0.23$
+  and $0.06$). These are orders of magnitude, not values of a bound, and they assume independence, which
+  pseudo-origins only approximate. They are worst-case orders, not predictions for these data; they indicate that
+  with a few months of evidence per candidate strongly shrunk weights are the reasonable choice, which is what the
+  weights of P8 do. (The historical candidates use up to 12 pseudo-origins, the
   foundation-model candidate at most 6.)
 
-*Evidence (this study).* Among the six historical candidates, the candidate with the smallest pseudo-origin RMS was the
-target's best on 19–29% of windows across thirteen populations (chance 17%) and in the best two on 35–47% (chance
-33%), whether the rule looked at the last six months, the same month a year earlier or the whole record with seasonal
-weights. A per-window choice made with hindsight would have cut the level error by 41–73% against ANKYRA; the same
-choice made from the record (all past months of the unit) changed it by −0.7% and −7.0% on the two populations where it
-could be tested. The equal-weight average was worse than ANKYRA's shrunk inverse-MSE weights on most populations
-(by 3–30%), so the weights carry some signal; the per-window hindsight choice is not attainable by any rule that uses the record
-only, so its 41–73% is an upper reference, not a target. The pre-origin statistics that *do* predict the gain of anchoring are the unit's record of history against the
-carrier (`anchoring_record`), reported with every forecast.
+*Evidence (this study; thirteen populations, numbers in the paper's supplement, not in this repository's result
+files).* Among the six historical candidates, the candidate with the smallest pseudo-origin RMS was the target's best
+only a little more often than chance (1/6, or 17%) on most populations, and in the best two only a little more often
+than chance (33%); two populations were clearly above chance. A per-window choice made with hindsight would have cut
+the level error by 41–73% against ANKYRA. The same kind of choice made forward, from all past months of the unit, did
+not improve the level on the two populations where it could be tested: the level error was 0.7% and 7.0% higher than
+ANKYRA's. The equal-weight average was worse than ANKYRA's shrunk inverse-MSE weights on most populations (by
+3–30%), so the weights carry some signal. The per-window hindsight choice is not attainable by any rule that uses
+the record only, so its 41–73% is an upper reference, not a target. The pre-origin statistics that are related to the
+gain of anchoring, between populations and units, are the unit's record of history against the carrier
+(`anchoring_record`), reported with every forecast.
 
 ## References
 

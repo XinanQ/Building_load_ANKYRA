@@ -1,7 +1,8 @@
 # Method
 
-This document describes ANKYRA 2.2, the model implemented by package 2.2.0. ANKYRA 2.1 (package 2.1.0) differs from it
-only in the pseudo-origin bookkeeping of records with short gaps; ANKYRA 2.0.1 (packages 2.0.1 to 2.0.3; 2.0.2 masks
+This document describes ANKYRA 2.2, the model implemented by packages 2.2.0 and 2.2.1 (2.2.1 adds an input check and
+gives the same forecasts). ANKYRA 2.1 (package 2.1.0) differs from it only in how records with short gaps are handled
+([short-gap rule](#short-gap-rule-22)); ANKYRA 2.0.1 (packages 2.0.1 to 2.0.3; 2.0.2 masks
 hours marked unobserved once for every branch, 2.0.3 changes documentation only) differs from 2.1 only in the
 within-day trust. The model versions differ in four places:
 
@@ -11,10 +12,11 @@ within-day trust. The model versions differ in four places:
   whole 1,344-hour context stays within $10^{-3}$ kW of zero.
 - 2.1 estimates the [within-day trust](#within-day-shape) as one value per window, pooled over the four lead blocks,
   instead of one value per lead block.
-- 2.2 adds the [gap tolerance](#gap-tolerance-22) of the pseudo-origin bookkeeping: before the origin, gaps of at most
-  6 hours inside one 744-hour block are interpolated (`fill_short_gaps`, `GAP_MAX_H = 6`), and a pseudo-origin's target
-  month qualifies when at least 90% of its hours are observed (`TARGET_MIN_OBS = 0.9`). The context at the origin is
-  never filled. A record without gaps gives the 2.1 forecast.
+- 2.2 adds the [short-gap rule](#short-gap-rule-22) (`gap_tolerance`): the estimator reads a copy of the pre-origin
+  record in which gaps of at most 6 hours inside one 744-hour block are interpolated (`fill_short_gaps`,
+  `GAP_MAX_H = 6`), and a pseudo-origin's target month qualifies for the seven-candidate level and the handover when at
+  least 90% of its hours are observed (`TARGET_MIN_OBS = 0.9`). The context at the origin is never filled. A record
+  without gaps gives the 2.1 forecast.
 
 `forecast(..., gap_tolerance=False)` reproduces 2.1, `forecast(..., gap_tolerance=False, single_trust=False)` reproduces
 2.0.1, `forecast(..., gap_tolerance=False, single_trust=False, micro_load_rule=False)` reproduces 2.0.0, and
@@ -30,7 +32,7 @@ Contents: [Information at the origin](#information-at-the-origin) ·
 [Inputs and features](#inputs-and-features-the-shared-information-set) ·
 [Three orthogonal blocks](#three-orthogonal-blocks) · [Level](#level) · [Centred daily path](#centred-daily-path) ·
 [Within-day shape](#within-day-shape) · [Week-by-week handover](#week-by-week-handover) ·
-[Off-state and micro-load rules](#off-state-and-micro-load-rules) · [Gap tolerance (2.2)](#gap-tolerance-22) ·
+[Off-state and micro-load rules](#off-state-and-micro-load-rules) · [Short-gap rule (2.2)](#short-gap-rule-22) ·
 [Readouts](#readouts) ·
 [Output fields](#output-fields) · [Constants](#constants)
 
@@ -82,7 +84,7 @@ forecast in it was issued at the time.
 
 ## Inputs and features: the shared information set
 
-Every forecaster in the evaluation — ANKYRA and the five same-information baselines — was given the same information,
+Every forecaster in the evaluation — ANKYRA and the five baselines given the shared covariate set — was given the same covariates,
 fixed in writing before the baselines were run. ANKYRA receives it as the raw record (load, temperature, day types,
 category) and forms its own quantities from it; the baselines receive it as the engineered features their
 architectures accept. Nothing in the set is observed after the origin.
@@ -93,7 +95,7 @@ architectures accept. Nothing in the set is observed after the origin.
 |---|---|:---:|:---:|---|---|
 | 1 | load | observed | — | per-unit z-score; statistics from the context or from before the training cutoff | level candidates, daily-path candidates, analog-day shapes, pseudo-origin errors, the foundation model's context |
 | 2 | temperature | observed | climatology | horizon values are the frozen annual harmonic fitted on pre-origin temperature; **observed future temperature is never used** | weather-adjusted level and path candidates (signature response), analog-day selection |
-| 3 | load one year earlier | ✓ | ✓ | $t-8{,}736$ h (52 weeks, weekday-aligned; always before $o$), same normalisation as 1, 0 where missing | the annual level and path candidates |
+| 3 | load one year earlier | ✓ | ✓ | $t-8{,}736$ h (52 weeks, weekday-aligned; always before $o$), same normalisation as 1, 0 where missing | ANKYRA does not use this feature as constructed: its annual level and path candidates read the window 8,760 h (365 days) before the origin from the raw record (`annual_lag_hours` in `frozen_config.json`). The 8,736-hour lag is the baselines' feature |
 | 4 | availability of 3 | ✓ | ✓ | 1 where feature 3 is observed | annual candidates switched off without support |
 | 5–6 | hour of day | sin, cos | sin, cos | period 24 | the hour grid of every block |
 | 7–8 | weekday | sin, cos | sin, cos | period 7 | day types Monday … Sunday |
@@ -245,8 +247,17 @@ Seven candidate paths for the 31 daily means:
 - that window's daily means in date order;
 - the weather-response path.
 
-They are weighted as above with $K_0=2$, and the result sums to zero, so it redistributes energy between days
-without changing the level.
+They are combined with inverse-square weights shrunk towards equal weights, as for the level, with $K_0=2$ and up to
+12 pseudo-origins. The rule differs from the level's in three places (`ankyra/history/_day.py`, `weights_c`):
+
+- a candidate's error at one pseudo-origin is the RMS, over the 31 days, of its centred-path error, and its score
+  $s_j$ is the **median** of these values over the pseudo-origins (at least two), not their RMS;
+- $K_{\rm eff}$ counts the pseudo-origins at which the first candidate, the path implied by the level construction
+  (`cur`), has an error;
+- when no candidate has two errors, all weight goes to `cur`, not to equal weights.
+
+The annual candidates get weight zero at an origin whose own annual window is incomplete, and the rest are
+renormalised. The result sums to zero, so it redistributes energy between days without changing the level.
 
 ## Within-day shape
 
@@ -333,8 +344,10 @@ The weights are estimated on the fixed division and applied to $m^H$, which incl
 fixed division at the pseudo-origins avoids nested pseudo-origins. If no pair or no disagreement is available,
 $\alpha_w=1/2$.
 
-An ablation fixed before it was run shows that one weight per unit for the whole month is as accurate as the four
-weekly weights ([EVALUATION.md](EVALUATION.md#what-the-handover-contributes)). The weekly form is kept as evaluated.
+An ablation fixed before it was run does not separate the four weekly weights from one weight per unit for the whole
+month on nine of the ten populations; on GoiEner non-household the weekly weights are 0.2% worse, resolved
+([EVALUATION.md](EVALUATION.md#what-the-handover-contributes),
+[`results/handover_granularity.csv`](../results/handover_granularity.csv)). The weekly form is kept as evaluated.
 
 The forecast is $F_{d,h}=m_d+w_{d,h}$, projected onto $F\ge0$. It needs seven TimesFM calls per window (one at the
 origin, six at pseudo-origins).
@@ -386,13 +399,13 @@ rule fired. They are not a certificate that the inputs were validated: the off-s
 the foundation forecast. What the implementation's checks can and cannot establish about the inputs is stated in
 [Information at the origin](#information-at-the-origin).
 
-## Gap tolerance (2.2)
+## Short-gap rule (2.2)
 
 Every quantity above that is estimated from completed pseudo-origins (the level weights, the handover weights, the
 within-day trust) needs, at each pseudo-origin $o-744k$, a complete 1,344-hour context and a complete 744-hour
 target month. Real meter records have short gaps, and a single missing hour inside those 2,088 hours removed the
 whole pseudo-origin; on the UNICON campuses this left 0.5 completed pairs per window out of 6. Since 2.2 the
-bookkeeping tolerates two things, both confined to the pre-origin record:
+forecaster tolerates two things, both confined to the pre-origin record:
 
 1. **Short gaps are interpolated.** A gap of at most 6 missing hours is replaced by the straight line between its two
    observed neighbours, provided the gap and both neighbours lie inside one 744-hour block counted back from the
@@ -400,15 +413,35 @@ bookkeeping tolerates two things, both confined to the pre-origin record:
    it. Gaps that touch the origin, the start of the record or a block boundary, and longer gaps, stay missing.
 2. **A pseudo-origin's target month may be partly observed.** It qualifies when at least 90% of its 744 hours are
    observed; its window mean is the mean over the observed hours, and in the handover sums a day counts only with at
-   least 12 observed hours. The within-day triples still require complete windows.
+   least 12 observed hours. This applies to the level with the model candidate (seven candidates) and to the handover
+   pairs only.
+
+**What the rule reaches.** Rule 1 is not confined to the pseudo-origins. After the off-state and micro-load checks the
+whole pre-origin record is replaced by the interpolated copy, and every later step reads that copy:
+
+- the contexts and targets of the pseudo-origins;
+- the origin's own historical candidates (for example the long-history mean and the annual window) and the fit of
+  the temperature signature;
+- the pool of analog days.
+
+Rule 2 is narrower than rule 1. The weights of the daily path, the six-candidate level of the fixed division and the
+within-day triples still require a completely observed target month, counted on the interpolated copy. The
+interval readout (`ankyra.readouts.residual_quantiles`) is a separate call on the record the caller passes and
+applies neither rule.
 
 The context at the origin is never filled by the package: it must be complete, a gap in it raises an input error, and
 the caller has to fill it (`ankyra.fill_short_gaps` applies rule 1 to a user's own record). The off-state and
 micro-load rules read the raw context, and `pseudo_origin_contexts` returns the interpolated pseudo-origin
-contexts so that the foundation model is asked for the same series the bookkeeping uses. `forecast(...,
+contexts so that the foundation model is asked for the same series the estimator uses. `forecast(...,
 gap_tolerance=False)` reproduces 2.1; a record without gaps is unaffected. The frozen reference estimator
 (`ankyra/history/_*.py`) is unchanged: the partially observed target is handed to it with its missing hours set to the
 observed mean.
+
+One detail of `gap_tolerance=False` with a callable `foundation`: the callable is still given the interpolated
+pseudo-origin contexts (`forecast` calls `pseudo_origin_contexts` with its default). On a record with short gaps the
+model can therefore be asked for a few pseudo-origins that the 2.1 rules do not accept. Those forecasts are not read,
+so the result is the 2.1 forecast and the only cost is the extra model calls. With a mapping of stored forecasts
+nothing extra is computed.
 
 Code: `ankyra/core.py` (`fill_short_gaps`, `GAP_MAX_H = 6`, `TARGET_MIN_OBS = 0.9`, `pseudo_origin_contexts`, `forecast`)
 and `ankyra/history/api.py` (the partially observed pseudo targets).
@@ -440,7 +473,9 @@ This operator has four properties:
    $U-M=\ell(e)+[b_{d^\ast}(F)-b_{d^\ast}(y)]+[A_{\tau_{d^\ast}}-a_{d^\ast}(y)]+\Delta_{\rm sel}$ with $\Delta_{\rm sel}\ge0$.
    Level and daily-path gains therefore carry into the peak.
 
-**Interval.** Hourly residuals of historical pseudo-forecasts at up to 12 completed pseudo-origins are normalised by
+**Interval.** The residuals come from the history-only forecaster (historical level and daily path with the
+same-day-type within-day default, no foundation model), not from ANKYRA's own forecasts. Its hourly residuals at up
+to 12 completed pseudo-origins are normalised by
 each pseudo-window's origin scale and pooled by hour of day and workday status. Their empirical quantiles are added to
 the forecast and scaled by the origin's scale.
 
@@ -469,7 +504,7 @@ Code: `ankyra/readouts.py`; the properties as operators: `theory/operators.py`.
 | `level_weights` | the weight of each level candidate (keys below) |
 | `fixed_division_daily_means_kw` | the daily means of the fixed division: the six-candidate level plus the daily path, without the model candidate and without the handover |
 | `off_state`, `micro_load` | which of the two rules returned the foundation model's forecast, if any |
-| `anchoring_record` | `carrier_level_weight` (= `level_weights['fm']`), `history_vs_carrier_log_ratio` and `pseudo_origins`: the unit's own pseudo-forecast record on the level, read before the forecast and not used by it (2.2; see [Gap tolerance (2.2)](#gap-tolerance-22) and the README) |
+| `anchoring_record` | `carrier_level_weight` (= `level_weights['fm']`), `history_vs_carrier_log_ratio` and `pseudo_origins`: the unit's own pseudo-forecast record on the level, read before the forecast and not used by it (2.2). The log ratio is the smallest pseudo-origin RMS error among the six historical level candidates over that of the foundation model's window mean (NaN with fewer than two such pseudo-origins). See [When anchoring is expected to help](../README.md#when-anchoring-is-expected-to-help) |
 
 On off-state and micro-load windows the weights, counts and `fixed_division_daily_means_kw` keep their empty
 defaults, because the estimator is not run.
@@ -526,6 +561,20 @@ standardisation below is part of the frozen configuration and is not in it). The
 [EVALUATION.md](EVALUATION.md#sensitivity-to-the-shrinkage-constants), and what each part of the forecaster adds in
 [EVALUATION.md](EVALUATION.md#what-the-parts-buy).
 
+Two notes on that file.
+
+- *Climatology prior.* The strength 60 is the ridge coefficient on the amplitude of the annual harmonic
+  (`CLIM_PRIOR_STRENGTH` in `ankyra/history/_climate.py`), not a number of days. The data term it is weighed against
+  is the sum of the squared cosine over the pre-origin days, about half the number of days, so the prior counts as
+  much as about 120 days of daily temperatures.
+- *Constants in the code that the file does not list.* A day of a partly observed pseudo-target enters the handover
+  sums with at least 12 observed hours (`ankyra/core.py`, `forecast`). The interval readout searches 12 pseudo-origins
+  (`K_INTERVAL` in `ankyra/readouts.py`) and needs at least 5 residuals in an hour-of-day and workday cell. The
+  same-day-type within-day default uses the 8 most recent days of each type (`K_RECENT` in `ankyra/history/_eo.py`).
+  The temperature signature needs 60 observed days in the last 365 and has shrinkage strength 3
+  (`signature_lambda`), and a weight needs two pseudo-origin errors (`min_pseudo_errors`); the last two are in
+  `ankyra/history/frozen_config.json`.
+
 | Constant | Value | Where it was fixed |
 |---|---|---|
 | Context / horizon | 1,344 h / 744 h | before any evaluation |
@@ -535,6 +584,6 @@ standardisation below is part of the frozen configuration and is not in it). The
 | Analog days: window, kept, required, guard | ±14 days of year, 8, 4, $3\times\max\lvert\text{context}\rvert$ | with the first version of the analog-day shape; never changed |
 | Off-state threshold | $10^{-6}$ kW | the pre-existing zero-load threshold |
 | Micro-load threshold (2.0.1) | $10^{-3}$ kW on the magnitude of the load, over the 1,344-hour context | the pre-existing floor of the normalisation scale; the rule was added after the BDG2 test result of 2.0.0 had been seen |
-| Gap tolerance (2.2): longest interpolated gap; observed share of a pseudo-origin's target month | 6 h (`GAP_MAX_H`); 0.9 (`TARGET_MIN_OBS`) | the 2.2 specification, written before implementation, after UNICON's few completed pseudo-origins had been seen; pseudo-origin bookkeeping only |
+| Short-gap rule (2.2, `gap_tolerance`): longest interpolated gap; observed share of a pseudo-origin's target month | 6 h (`GAP_MAX_H`); 0.9 (`TARGET_MIN_OBS`) | the 2.2 specification, written before implementation, after UNICON's few completed pseudo-origins had been seen. The interpolation applies to the whole pre-origin record the estimator reads; the 0.9 share applies to the seven-candidate level and the handover pairs ([Short-gap rule](#short-gap-rule-22)) |
 | Peak envelope | 4 most recent same-type days, $\kappa=1$ | in the earlier version of this model ([theory/PROOFS.md](../theory/PROOFS.md#peak), evidence under P18) |
 | Temperature standardisation; signature hinges | $(T-15\,^\circ\mathrm{C})/10\,^\circ\mathrm{C}$; every 5 °C from −10 °C to 40 °C | in the frozen configuration, with the signature prior (`ankyra/history/frozen_config.json`) |

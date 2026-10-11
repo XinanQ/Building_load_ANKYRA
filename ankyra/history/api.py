@@ -287,9 +287,12 @@ def estimate_from_history(history: History, *, group: str, temp_sigma_std: float
     is not estimated here. The study computed it once per population, before the
     first origin: standardise temperature as (T - 15 C) / 10 C, take daily means,
     subtract a centred 31-day moving mean; temp_sigma_std is the standard
-    deviation of that anomaly, pooled over the units of the population, on the
-    first 244 days of the record (15 days dropped at each end). The per-population
-    values are not listed in the repository.
+    deviation of that anomaly, pooled over the units of the population, on a fit
+    period that ends at or before the population's first scored origin (15 days
+    dropped at each end): the first 244 days of the record for BDG2, the GoiEner
+    non-household sets and the Suzhou park, and the complete days before the first
+    scored origin for the other seven populations. The per-population values are
+    not listed in the repository.
 
     boundary_policy 'strict' (default, as evaluated) raises SignatureDegeneracy
     when the temperature does not vary; 'source_prior' uses the category prior in

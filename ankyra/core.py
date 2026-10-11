@@ -7,7 +7,11 @@ For a forecast origin o the 744-hour trajectory is assembled from three orthogon
                       adjustment) plus the foundation model's own window mean, weighted by the inverse mean squared
                       window-mean error of each candidate at earlier pseudo-origins o - 744k and shrunk towards equal
                       weights (K0 = 8);
-* centred daily path  seven historical candidate paths weighted the same way (K0 = 2).
+* centred daily path  seven historical candidate paths with inverse-square weights shrunk towards equal weights
+                      (K0 = 2).  The rule differs from the level's in three places: a candidate's score is the median
+                      over the pseudo-origins of its 31-day RMS error, the evidence count is the number of errors of
+                      the path implied by the level construction (``cur``), and without evidence all weight goes to
+                      ``cur`` instead of equal weights.
 
 Since 2.0 the within-day block is anchored as well (``ankyra.analog``): the unit's own analog-day shape competes with
 the foundation model's shape, with a weight set by the unit's own errors at three completed pseudo-origins, shrunk
@@ -28,9 +32,19 @@ zero (micro-load rule): that value is the floor of the scale in which the histor
 record that never leaves it for eight weeks is treated as switched off.  Otherwise the delivered trajectory is
 projected onto nonnegative load.
 
+Since 2.2 (``gap_tolerance``, the short-gap rule) the estimator works on a copy of the pre-origin record in which gaps
+of at most six hours inside one 744-hour block are interpolated.  The interpolated hours belong to that record for
+everything computed after the off-state and micro-load checks: the pseudo-origin contexts and targets, the origin's
+own historical candidates and the analog-day pool.  In addition, a pseudo-origin's target month qualifies for the
+seven-candidate level and for the handover pairs when at least 90% of its hours are observed.  The daily-path weights,
+the six-candidate level of the fixed division and the within-day triples still need completely observed target months
+of the interpolated record.  The context at the origin is never filled: it must be complete in the supplied record.
+Package 2.2.1 adds a check that the pseudo-origin foundation forecasts are finite; on finite inputs its forecasts are
+those of 2.2.0.
+
 Nothing is trained on the target series.  The historical estimator is the frozen reference implementation shipped in
 ``ankyra.history``; this module adds the foundation-model level candidate, the week-by-week handover, the off-state
-rule and the micro-load rule exactly as evaluated in the study.
+rule, the micro-load rule and the short-gap rule exactly as evaluated in the study.
 """
 from __future__ import annotations
 
@@ -50,8 +64,8 @@ from . import analog as _analog
 
 STEP = 744                # spacing of pseudo-origins
 K_FM = 6                  # pseudo-origins with foundation-model forecasts
-GAP_MAX_H = 6             # gap tolerance (2.2): gaps of at most this many hours are interpolated for the pseudo-origin bookkeeping
-TARGET_MIN_OBS = 0.9      # gap tolerance (2.2): a pseudo-origin's target month qualifies when this share of its hours is observed
+GAP_MAX_H = 6             # gap tolerance (2.2): gaps of at most this many hours are interpolated in the copy of the pre-origin record the estimator reads
+TARGET_MIN_OBS = 0.9      # gap tolerance (2.2): a pseudo-origin's target month qualifies (seven-candidate level, handover pairs) when this share of its hours is observed
 K0_WEEK = 2.0             # shrinkage of the lead-week weights towards 1/2
 ZERO_KW = 1e-6            # off-state threshold (kW)
 MICRO_KW = 1e-3           # micro-load threshold (kW, on |load|, compared in float64): the floor of the estimator's normalisation scale
@@ -168,8 +182,9 @@ def anchoring_record(parts, fm_means_pseudo: Mapping[int, float], w_level: Mappi
                                   normalised units over the completed pseudo-origins with a model forecast; negative = the unit's
                                   history beat the model at its earlier origins; NaN with fewer than two such pseudo-origins;
     pseudo_origins                the number of pseudo-origins behind the ratio.
-    Across the fourteen populations of the study the realised gain of ANKYRA over the foundation model fell monotonically with
-    both statistics (results/anchoring_gain_deciles.csv in the repository); the forecast itself does not use them."""
+    Across the fourteen populations of the study the realised gain of ANKYRA over the foundation model fell overall, but not
+    strictly monotonically, with both statistics (results/anchoring_gain_deciles.csv in the repository); the forecast itself
+    does not use them."""
     names = list(parts["names"]); K = parts["cfg"]["K"]; err = parts["err"]
     efm = []
     for k in range(1, K + 1):
@@ -308,6 +323,8 @@ def _check_pseudo_forecasts(T: dict, used, within_anchor: bool) -> None:
         shape = T[k].shape
         if shape != (HORIZON,) and (T[k].size != HORIZON or (within_anchor and k <= _analog.K_WITHIN)):
             raise ValueError(f"foundation forecast k={k} must have shape ({HORIZON},), got {shape}")
+        if not np.isfinite(np.asarray(T[k], dtype=np.float64)).all():                       # 2.2.1: a NaN here used to drop the
+            raise ValueError(f"foundation forecast k={k} must be finite")                     # pseudo-origin's evidence silently
 
 
 def forecast(history: History, *, group: str, temp_sigma_std: float, foundation: Optional[Foundation], dst_region: str = "none",
@@ -324,8 +341,11 @@ def forecast(history: History, *, group: str, temp_sigma_std: float, foundation:
                     computed it once per population, before the first origin, and kept it fixed: standardise the
                     temperature as (T - 15 degC) / 10 degC, take daily means, subtract a centred 31-day moving mean;
                     temp_sigma_std is the standard deviation of that anomaly, pooled over the units of the population,
-                    on the first 244 days of the record (15 days dropped at each end).  The per-population values are
-                    not listed in the repository.
+                    on a fit period that ends at or before the population's first scored origin (15 days dropped at
+                    each end): the first 244 days of the record for BDG2, the GoiEner non-household sets and the
+                    Suzhou park, and the complete days before the first scored origin for the other seven
+                    populations (docs/DATA.md lists the rule of each population).  The per-population values are not
+                    listed in the repository.
     foundation      either {k: (744,) forecast issued at o - 744k} for k = 0..6 (k = 0 required, finite), or a callable
                     that maps an (N, 1344) array of contexts to (N, 744) point forecasts (e.g.
                     ``ankyra.timesfm_adapter``), or None for the history-only configuration (no foundation model:
@@ -334,11 +354,21 @@ def forecast(history: History, *, group: str, temp_sigma_std: float, foundation:
     dst_region      daylight-saving rule used to match analog days: "EU", "US" or "none".  It is read only when the
                     within-day anchoring runs (not with within_anchor False or foundation None, and not on an off-state
                     or micro-load return)
-    within_anchor   False leaves the foundation model's within-day block unchanged (with micro_load_rule False: the 1.x forecast)
-    micro_load_rule False switches off the hand-over of contexts that stay within 1e-3 kW of zero (together with
-                    single_trust False: the 2.0.0 forecast)
-    single_trust    False reproduces the 2.0.1 forecast (the within-day trust estimated separately for each lead block;
-                    with micro_load_rule False as well: 2.0.0)
+    within_anchor   False leaves the foundation model's within-day block unchanged
+    micro_load_rule False switches off the hand-over of contexts that stay within 1e-3 kW of zero
+    single_trust    False estimates the within-day trust separately for each lead block (as up to 2.0.1) instead of one
+                    value per window (2.1)
+    gap_tolerance   the short-gap rule of 2.2.  True (default): the estimator reads a copy of the pre-origin record in
+                    which gaps of at most 6 hours inside one 744-hour block are interpolated (``fill_short_gaps``),
+                    and a pseudo-origin's target month counts for the seven-candidate level and the handover pairs
+                    when at least 90% of its hours are observed.  The context at the origin is never filled.  False
+                    gives the 2.1 forecast; on a record without gaps the two are identical.
+
+    Earlier versions are reproduced by these combinations (all other switches at their defaults):
+        2.1    gap_tolerance=False
+        2.0.1  gap_tolerance=False, single_trust=False
+        2.0.0  gap_tolerance=False, single_trust=False, micro_load_rule=False
+        1.x    gap_tolerance=False, within_anchor=False, micro_load_rule=False
 
     Returns an :class:`AnkyraForecast` (all values in kW).
 
@@ -380,8 +410,8 @@ def forecast(history: History, *, group: str, temp_sigma_std: float, foundation:
     _check_inputs(history, group, temp_sigma_std)                    # the estimator's own checks, before any computation
     if within_anchor and dst_region not in _analog.REGIONS:
         raise ValueError(f"dst_region must be one of {_analog.REGIONS}")
-    if gap_tolerance:                                                # 2.2: short gaps interpolated and partial pseudo targets accepted,
-        load = fill_short_gaps(load); obs = np.isfinite(load)         # for the pseudo-origin bookkeeping only (the origin context is raw)
+    if gap_tolerance:                                                # 2.2: short gaps interpolated in the whole pre-origin record that the
+        load = fill_short_gaps(load); obs = np.isfinite(load)         # estimator reads; the origin context has no gap (checked above)
         history = replace(history, load_kw=load, observed=obs)
     parts = _level_parts(history, group, temp_sigma_std, min_target_obs=TARGET_MIN_OBS if gap_tolerance else 1.0)
     _check_pseudo_forecasts(T, [k for k in range(1, K_FM + 1) if k in parts["pseudo"] and k in T], within_anchor)

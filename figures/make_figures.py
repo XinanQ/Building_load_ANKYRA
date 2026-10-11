@@ -544,7 +544,7 @@ def fig_operators():
     cx.legend(fontsize=5.5, loc="lower left", handlelength=1.0, borderaxespad=0.1)
     cx.set_title("c   Shrinkage bounds the weights", fontsize=7.4)
 
-    # d  nonnegativity: clipping versus any energy-preserving projection (P10, P11)
+    # d  nonnegativity: clipping versus any energy-preserving projection (P11, P12)
     dx = fig.add_subplot(gs[1, 0])
     p0, yt = np.array([-1.0, 3.0]), np.array([0.0, 4.0])
     dx.add_patch(Rectangle((0, 0), 6, 6.1, color="#F4F4F4", lw=0, zorder=0))
@@ -568,7 +568,7 @@ def fig_operators():
     dx.set_xlabel("hour 1 (kW)", fontsize=6.6); dx.set_ylabel("hour 2 (kW)", fontsize=6.6)
     dx.set_title("d   Energy: clip, never re-balance", fontsize=7.4)
 
-    # e  the peak operator on the test window (P14)
+    # e  the peak operator on the test window (P15)
     ex_ = fig.add_subplot(gs[1, 1])
     L = A.reshape(31, 24).mean(1); U = readouts.peak_readout(A, ctx[None], ct, tt)[0]
     d = np.arange(1, 32)
@@ -585,7 +585,7 @@ def fig_operators():
                columnspacing=0.7, borderaxespad=0.1, labelspacing=0.3)
     ex_.set_title(r"e   Peak: $U=\mathrm{max}_d(\hat L_d+A_{\tau_d})$", fontsize=7.4)
 
-    # f  the peak error decomposition on the same window (P15)
+    # f  the peak error decomposition on the same window (P16)
     fx = fig.add_subplot(gs[1, 2])
     dec = op.peak_error_decomposition(A, y, exc)
     terms = [("level", dec["level"], HIST), ("between-day", dec["between_day"], "#E8B67A"),

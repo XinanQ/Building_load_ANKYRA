@@ -8,7 +8,7 @@
 
 ANKYRA 预测一个单位（一栋楼、一块电表或一个用电点）未来 31 天（744 小时）的逐时用电负荷。它面向需要为许多单位做月前负荷或电量预测、又不想给每个单位单独训练或微调神经网络的研究者和从业者。它把预训练基础模型 TimesFM 2.5 的零样本预测，与由该单位自己过去的负荷、室外温度和日历得到的估计结合起来；两者的权重，取决于各自对这个单位此前各月预测得有多准。
 
-当前包版本：**2.2.0**；预测模型是 ANKYRA 2.2（2026-10-06）：在 2.1 的基础上，伪起报点记账容忍短缺口与部分观测的目标月（`gap_tolerance=False` 复现 2.1；`gap_tolerance=False, single_trust=False` 复现 2.0.1），其余部分不变；2.1 在 2.0.1 的基础上把日内信任改为每个窗口一个值（[2.1 改了什么](#21-改了什么) · [2.0 与 2.0.1 改了什么](#20-与-201-改了什么) · [版本历史](#版本历史)）。
+当前包版本：**2.2.1**（只加输入校验，预测与 2.2.0 相同）；预测模型是 ANKYRA 2.2（2026-10-06）：在 2.1 的基础上，伪起报点记账容忍短缺口与部分观测的目标月（`gap_tolerance=False` 复现 2.1；`gap_tolerance=False, single_trust=False` 复现 2.0.1），其余部分不变；2.1 在 2.0.1 的基础上把日内信任改为每个窗口一个值（[2.1 改了什么](#21-改了什么) · [2.0 与 2.0.1 改了什么](#20-与-201-改了什么) · [版本历史](#版本历史)）。
 
 ![ANKYRA 架构](figures/fig1_architecture.png)
 
@@ -24,7 +24,7 @@ ANKYRA 预测一个单位（一栋楼、一块电表或一个用电点）未来 
 - 三个**读出算子**复用同一套计算：
   - 电量取自水平（非负投影之前）；
   - 月峰值取自历史偏移包络；
-  - 预测区间取自伪预测残差。
+  - 预测区间取自同一单位的纯历史伪预测的残差。
 - 设计选择及其界限由**精确性质**解释：恒等式、界，以及标出适用边界的反例。它们单独放在 [theory/](theory/README.zh-CN.md) 文件夹，与 [ankyra/](ankyra/) 里的预测器分开；每条都有证明、算子和数值检验。
 
 ## 目录
@@ -104,7 +104,7 @@ python examples/quickstart.py --timesfm
 
 ## 预测你自己的单位
 
-`ankyra.forecast` 预测 `load_kw` 最后一个值之后的 744 小时。请先把这个单位的数据放到一张规则的逐时网格上：预测器不做重采样，不填补起报点的上下文，也不做时区或夏令时换算（[细节](docs/DATA.md#the-input-format-the-forecaster-expects)）。输入不符合下面的约定时会报错，不会悄悄修补。唯一写明的例外是 2.2 的缺测容忍（下面的 `gap_tolerance`）：只为伪起报点的记账，起报点之前的短缺口会被插值。
+`ankyra.forecast` 预测 `load_kw` 最后一个值之后的 744 小时。请先把这个单位的数据放到一张规则的逐时网格上：预测器不做重采样，不填补起报点的上下文，也不做时区或夏令时换算（[细节](docs/DATA.md#the-input-format-the-forecaster-expects)）。输入不符合下面的约定时会报错，不会悄悄修补。唯一写明的例外是 2.2 的缺测容忍（下面的 `gap_tolerance`）：位于起报点上下文之前的短缺口，会在估计器读取的那份记录副本里被插值，使带这类缺口的早先伪起报点仍然可用。
 
 ### 输入
 
@@ -167,7 +167,7 @@ print(f.trajectory_kw.shape, f.energy_kwh)        # (744,) 逐时预测，单位
   - 一个字典 `{k: forecast}`，存放在起报点（k = 0，必需）和早 744·k 小时的伪起报点（k = 1 … 6）发出的 744 小时预测。这样可以复用前几个月存下的预测；`ankyra.pseudo_origin_contexts(load_kw)` 返回对应的上下文。
   - `None`：不含基础模型的纯历史配置，关停规则和微负荷规则在这个配置下不适用。
 - `single_trust`（默认 `True`）：2.1 的日内信任，每个窗口一个值。设为 `False` 时每个提前期块一个信任值；`gap_tolerance=False, single_trust=False` 复现 2.0.1 的预测。
-- `gap_tolerance`（默认 `True`）：2.2 的缺测容忍（[定义](docs/METHOD.md#gap-tolerance-22)）。只用于伪起报点的记账：同一个 744 小时段内不超过 6 小时的缺口按两侧观测值线性插值；伪起报点的目标月只要有 90% 的小时有观测就算数。起报点的上下文从不填补：它必须完整，其中有缺口会报错（`ankyra.fill_short_gaps` 可对自己的记录做同样的填补，但碰到起报点或段边界、或长于 6 小时的缺口仍保持缺失）。设为 `False` 复现 2.1 的预测；没有缺口的记录两者逐位相同。
+- `gap_tolerance`（默认 `True`）：2.2 的缺测容忍（[定义](docs/METHOD.md#short-gap-rule-22)）。同一个 744 小时段内不超过 6 小时的缺口，在估计器读取的起报点前记录副本里按两侧观测值线性插值（伪起报点、起报点自己的历史候选和相似日都读这份副本）；伪起报点的目标月只要有 90% 的小时有观测，就可用于水平和交接。起报点的上下文从不填补：它必须完整，其中有缺口会报错（`ankyra.fill_short_gaps` 可对自己的记录做同样的填补，但碰到起报点或段边界、或长于 6 小时的缺口仍保持缺失）。设为 `False` 复现 2.1 的预测；没有缺口的记录两者逐位相同。
 - `micro_load_rule`（默认 `True`）：2.0.1 的微负荷规则（[定义](docs/METHOD.md#off-state-and-micro-load-rules)）。`gap_tolerance=False, single_trust=False, micro_load_rule=False` 复现 2.0.0 的预测。
 - `within_anchor`（默认 `True`）：2.0 的日内锚定。`gap_tolerance=False, within_anchor=False, micro_load_rule=False` 复现 1.x 的预测。
 
@@ -183,7 +183,7 @@ print(f.trajectory_kw.shape, f.energy_kwh)        # (744,) 逐时预测，单位
 | `trajectory_first_day_kw` | `trajectory_kw[:24]` | `trajectory_kw` 是逐时预测，单位 kW，共 744 个值；第 0 个元素是最后一个负荷值之后的那个小时。它非负，除非最后一行的两条规则之一原样返回了模型的预测。 |
 | `level_kw`、`energy_kwh` | 同名 | 水平是 744 个预测小时的均值，整月电量是 744 × 水平。两者都在把负值小时置零之前读出。 |
 | `peak_kw` | 由 `readouts.peak_readout` 计算 | 月峰值：“预测的日均值加上该日类型近期的最大偏移”在 31 天里的最大值。 |
-| `interval_80pct_first_hour_kw` | 由 `readouts.interval_bands` 计算 | 第一个预测小时的 80% 预测区间：下界和上界，单位 kW。区间是在预测上加上该单位自己伪预测残差的分位数。 |
+| `interval_80pct_first_hour_kw` | 由 `readouts.interval_bands` 计算 | 第一个预测小时的 80% 预测区间：下界和上界，单位 kW。区间是在预测上加上残差的分位数。残差来自不含基础模型的纯历史预测器（历史水平和日路径，加同日类型的日内默认形状）在该单位早先伪起报点上的预测，不是 ANKYRA 自己预测的残差。 |
 | `interval_pseudo_windows` | 由 `readouts.residual_quantiles` 返回 | 区间所用残差来自多少个已完成的伪起报点（至多 12 个）。 |
 | `lead_week_weights_on_model` | `lead_week_weights` | 交接：第 1–7、8–14、15–21、22–31 天里，基础模型日均值的权重。½ 表示没有证据。 |
 | `level_weights` | 同名 | 各水平候选的权重。`s`、`l`、`a` 分别是最近 7 天的均值、长期历史的均值和一年前同一窗口的均值；`_u` 表示不做天气调整，`_w` 表示做天气调整；`fm` 是基础模型自己的窗口均值。 |
@@ -192,7 +192,7 @@ print(f.trajectory_kw.shape, f.energy_kwh)        # (744,) 逐时预测，单位
 | `within_day_pseudo_origin_triples` | `within_pseudo_pairs` | 信任所依据的已完成伪起报点个数（至多 3 个）。 |
 | `analog_shape_kept` | `analog_kept` | 相似日形状大得不合理（超过上下文最大值的三倍）、整个窗口改用模型形状时为 `False`。 |
 | `off_state`、`micro_load` | 同名 | 关停规则或微负荷规则触发时为 `True`。此时原样返回基础模型的预测，不把负值小时置零。 |
-| `anchoring_record` | 同名 | 单位自身伪预测记录在水平块上的两个统计量，预测前算出、预测本身不用（2.2）：`carrier_level_weight`（水平块给基础模型窗口均值的权重，即 `level_weights['fm']`）和 `history_vs_carrier_log_ratio`（历史候选中最好者的伪起报点 RMS 误差对基础模型的对数比；负值表示该单位的历史在早先起报点上胜过模型），以及 `pseudo_origins`。在 14 个人群上，锚定对基础模型的实际收益随这两个量单调下降（[对照表](results/anchoring_gain_deciles.csv)）。关停与微负荷窗口上为空。 |
+| `anchoring_record` | 同名 | 单位自身伪预测记录在水平块上的两个统计量，预测前算出、预测本身不用（2.2）：`carrier_level_weight`（水平块给基础模型窗口均值的权重，即 `level_weights['fm']`）和 `history_vs_carrier_log_ratio`（历史候选中最好者的伪起报点 RMS 误差对基础模型的对数比；负值表示该单位的历史在早先起报点上胜过模型），以及 `pseudo_origins`。在 14 个人群上，锚定对基础模型的实际收益总体上随这两个量下降，但不严格单调（[对照表](results/anchoring_gain_deciles.csv)）。关停与微负荷窗口上为空。 |
 
 其余字段：`daily_means_kw`（交接之后的 31 个日均值）、`within_day_kw`（交付的日内块）、`foundation_within_day_kw` 与 `analog_shape_kw`（混合成日内块的两种形状），以及 `fixed_division_daily_means_kw`（没有交接时的日均值，留作消融用）。
 
@@ -247,7 +247,7 @@ ANKYRA 适合为有两年及以上历史的楼宇和非住户用电点做逐时�
 - **固定分工（fixed division，F0）**：历史侧的水平和日路径，加上模型的日内形状，没有交接。
 - **信任（trust）**：日内块里单位自己相似日形状的权重，介于 0 和 ½ 之间；自 2.1 起每个窗口一个值（2.0–2.0.1 为每个提前期块一个值）。
 - **训练截点、截点后窗口（training cutoff, late windows）**：训练型基线只在截点日期之前结束的目标上拟合，每个人群一个截点。*截点后*窗口（结果文件里记作 late）是截点之后的窗口，只有在这些窗口上 21 个预测器才都有预测。
-- **同信息基线（same-information baseline）**：拿到 ANKYRA 全部输入的五个基线之一（TiDE、iTransformer-X、GBT-T、Chronos-2-X、TimesFM-X）。
+- **同信息基线（baseline given the shared covariate set）**：拿到 ANKYRA 全部输入的五个基线之一（TiDE、iTransformer-X、GBT-T、Chronos-2-X、TimesFM-X）。
 - **显著（resolved）**：一个对比的 95% 区间不含零。
 - **层级（tier）**：一个人群在评估中的角色：*测试*（预测器定型之后只评一次）、*预览*（开发期间用于诊断）或*保留*（留出不用）。
 - **已见 / 首次读取（seen / first read）**：如果 ANKYRA 的某个组成部分写定时已经知道一个人群的结果，这个人群就是*已见*的。如果它是在交接定型之后才第一次评分，就是*首次读取*。*复用评估*（re-evaluation）是给此前评过分的窗口再评分。
@@ -286,7 +286,7 @@ ANKYRA 适合为有两年及以上历史的楼宇和非住户用电点做逐时�
 
 - 数据提供方的整理，例如补缺测（凡有记录的插补小时或补零小时都已屏蔽）；
 - 天气档案，其过去的数值可能在事后做过质量控制；
-- TimesFM 2.5 和 Chronos-2 的预训练语料，其中可能包含部分评估序列（语料清单里有七个 BDG2 站点）。这可能让所有建立在这些模型之上的预测器受益，ANKYRA 也在内（[局限](docs/EVALUATION.md#limitations)）。
+- TimesFM 2.5 和 Chronos-2 的预训练语料，其中可能包含部分评估序列（TimesFM 2.5 模型卡所列的 GIFT-Eval 预训练集合里有七个 BDG2 站点和伦敦住户 LCL；LCL 也在 Chronos 与 Chronos-2 的训练数据表中；2026-10-10 核对）。这可能让所有建立在这些模型之上的预测器受益，ANKYRA 也在内（[局限](docs/EVALUATION.md#limitations)）。
 
 信息集的详细说明见 [docs/METHOD.md](docs/METHOD.md#information-at-the-origin)。
 
@@ -338,7 +338,7 @@ ANKYRA 适合为有两年及以上历史的楼宇和非住户用电点做逐时�
 - TimesFM-X 通过线性回归使用协变量；
 - GBT-T 接收由这套信息派生的 21 个特征。它的第一版实现对平直或全零的上下文定错了尺度；这里报告的是修正后的版本（[细节](docs/EVALUATION.md#correction-of-the-gbt-t-baseline)）。
 
-PatchTST 是通道独立的，所以有没有这些输入，它的预测都相同。六个测试人群是为 1.x 评的分，**在模型定型之后只评了一次**；下面是 2.2 的数字，都是复用评估：2.2 在 2.1 之上只改了伪起报点的记账，2.1 是在所有人群用 2.0.1 评过分之后选定的，它与 2.0.1 只在日内块上不同；表中的显著个数、同信息个数、显著劣于和名次与 2.1 和 2.0.1 相同（2.1 的文件在 `results/ankyra_2_1/`，2.0.1 的在 `results/ankyra_2_0_1/`）。BDG2 一行（†）还包含微负荷规则，这条规则是看到该人群的 2.0.0 结果之后写的。
+PatchTST 是通道独立的，所以有没有这些输入，它的预测都相同。六个测试人群是为 1.x 评的分，**在模型定型之后只评了一次**；下面是 2.2 的数字，都是复用评估：2.2 在 2.1 之上只加了缺测容忍（短缺口规则），2.1 是在所有人群用 2.0.1 评过分之后选定的，它与 2.0.1 只在日内块上不同；表中的显著个数、同信息个数、显著劣于和名次与 2.1 和 2.0.1 相同（2.1 的文件在 `results/ankyra_2_1/`，2.0.1 的在 `results/ankyra_2_0_1/`）。BDG2 一行（†）还包含微负荷规则，这条规则是看到该人群的 2.0.0 结果之后写的。
 
 **主要估计目标（下称主指标）。** 对每个单位，取它各窗口逐时误差的 RMS。单位等权 log RMS 比 r，是 log(ANKYRA 的 RMS / 基线的 RMS) 在各单位上的均值。
 
@@ -608,7 +608,7 @@ PatchTST 是通道独立的，所以有没有这些输入，它的预测都相�
 - ANKYRA 2.2 在十个人群中的九个上相对固定分工有改进，每个都显著：八个上是 3.6–26.6%，BDG2 上含微负荷规则是 36.7%（2.0.0 下 8.7%）。在苏州园区上没有显著差别。固定分工（F0）是 1.x 时期的预测器，没有日内锚定，所以这份收益里有一部分来自日内锚定。
 - **哪一部分起作用。** 一个在运行之前写定的消融把各部分分开。在六个测试人群上：
   - 以固定的一半权重混入模型的日均值，已经拿到大部分收益（五个人群上 63–96%，剑桥 10%）；
-  - 按单位估计权重再增加 0.8–1.2%，在六个中的三个上显著，从未显著更差；
+  - 按单位估计权重再增加 0.2–2.0%（在收益显著的三个人群上是 0.8–1.2%），从未显著更差；
   - 每周单独的权重，相比每个单位每月一个权重，没有额外收益（在 GoiEner 非住户上差 0.2%）。
 
   带来收益的是按单位、按误差定权的混合。分周的权重描述的是平衡如何随提前期移动（[细节](docs/EVALUATION.md#what-the-handover-contributes)）。
@@ -666,7 +666,7 @@ $$U=\max_d(\hat L_d+A_{\tau_d}).$$
 取最大值的次序可以交换，所以它等于逐小时的包络。它满足 $U\ge\max_d\hat L_d\ge\bar F$，并在写明的工作分布下有精确的中位数性质。它的误差拆成水平、日路径、幅度和选日四项，所以 ANKYRA 在水平上的收益会传到峰值。
 
 - 相对同一条轨迹的最大值，它**在全部十个人群上把峰值误差降低 18–65%**。
-- 相对上月的实测峰值，它在规律运行的建筑上更好（Drammen、Oslo、HEEW：12–16%），在 CINELDI 的工业客户和 EWELD 上更差。
+- 相对上月的实测峰值，它在规律运行的建筑上更好（Drammen、Oslo、HEEW：12–16%，显著），在 CINELDI 的工业客户上更差（19%，显著）。在 EWELD 上点估计差 20%，但区间包含零。
 
 ![峰值算子](figures/fig5_peak_operator.png)
 
@@ -684,17 +684,17 @@ $$U=\max_d(\hat L_d+A_{\tau_d}).$$
 
 ![十个人群上的区间覆盖率](figures/fig16_intervals_ten_populations.png)
 
-*图 16. 十个人群上的区间覆盖率。*
+*图 16. 十个人群上的区间覆盖率。图内标题所说的合并残差，是纯历史预测器（不含基础模型）在各单位伪起报点上的残差，加在 ANKYRA 的预测上。*
 
 ## 锚定什么时候大概率有用
 
-每次预测都附带单位自身记录在月水平上的两个统计量，预测前算出、预测本身不用（`anchoring_record`，2.2）：水平块给基础模型窗口均值的权重（`carrier_level_weight`），以及历史候选中最好者的伪起报点 RMS 误差对基础模型的对数比（`history_vs_carrier_log_ratio`；负值表示该单位的历史在早先起报点上胜过模型）。在本仓库的 14 个人群上（上面十个、开发库、香港科大、赫尔辛基、UNICON），ANKYRA 对 TimesFM 的实际收益随这两个量下降。十分位按全部窗口划分；收益为单位等权对数 RMS 比及其 95% 单位与月份区间（[`results/anchoring_gain_deciles.csv`](results/anchoring_gain_deciles.csv)）。
+每次预测都附带单位自身记录在月水平上的两个统计量，预测前算出、预测本身不用（`anchoring_record`，2.2）：水平块给基础模型窗口均值的权重（`carrier_level_weight`），以及历史候选中最好者的伪起报点 RMS 误差对基础模型的对数比（`history_vs_carrier_log_ratio`；负值表示该单位的历史在早先起报点上胜过模型）。在本仓库的 14 个人群上（上面十个、开发库、香港科大、赫尔辛基、UNICON），ANKYRA 对 TimesFM 的实际收益总体上随这两个量下降，但不是每一档都比上一档低。十分位按全部窗口划分；收益为单位等权对数 RMS 比及其 95% 单位与月份区间（[`results/anchoring_gain_deciles.csv`](results/anchoring_gain_deciles.csv)）。
 
 | `history_vs_carrier_log_ratio` 十分位 | 范围 | 对 TimesFM 的月电量收益 | 对 TimesFM 的逐时收益 |
 |---|---|---|---|
 | 1（历史在伪起报点上远好于模型） | 低于 -1.15 | +32% [-0.502, -0.211] | +3% [-0.069, -0.010] |
 | 2–5 | -1.15 至 -0.30 | +25%、+18%、+17%、+9% | +3%、+3%、+2%、-0% |
-| 6–8（历史与模型相当） | -0.30 至 0 | -1%、-6%、-3% | +0%、-7% [-0.009, +0.157]、-4% |
+| 6–8（历史与模型相当） | -0.30 至 0 | -1%、-6%、-3% | +0%、-7%、-4% [-0.002, +0.123] |
 | 9–10（模型在伪起报点上更好） | 高于 0 | +1%、+5% | -1%、-1% |
 
 按 `carrier_level_weight` 看是同样的图景：月电量收益从最低两个十分位（权重低于 0.10）的 +29% 和 +25% 降到最高十分位（权重高于 0.34）的 -2%，那里逐时误差为 -5% [-0.000, +0.165]，未分辨（区间触及零）。
@@ -737,6 +737,8 @@ $$U=\max_d(\hat L_d+A_{\tau_d}).$$
 
 *图 7. 一个测试窗口上的精确性质。*
 
+*图 a 第三根条上的标注“(= ANKYRA)”对 ANKYRA 1.x 成立：1.x 的日内块就是基础模型的。2.0 起日内块也做锚定，所以“TimesFM 换上 ANKYRA 的水平和日路径”是投影前的 1.x 预测，不是现行版本的预测。*
+
 整个构造可以逐步核查，因为每一步都有写明的性质。这些数学贡献放在预测器旁边单独的文件夹 [theory/](theory/README.zh-CN.md) 里，预测器不引用它：
 
 - [theory/README.zh-CN.md](theory/README.zh-CN.md) 列出 P1–P20，写明每条的成立条件、ANKYRA 用它做什么、它的代码和检验；
@@ -752,13 +754,14 @@ $$U=\max_d(\hat L_d+A_{\tau_d}).$$
 - **电量（P11–P12）。** 截断到零不会增大任何一个小时的误差。没有映射能同时保持电量、返回非负负荷并保证误差不增。所以电量从水平读出。
 - **峰值（P15–P17）。** 峰值读出有标量形式，满足 $U\ge\max_d\hat L_d\ge\bar F$，并有四项误差分解和有限支撑中位数性质。反例标出每条性质在哪里失效。
 - **估计目标（P19）。** 合并汇总和单位等权汇总可能因代数原因符号相反，所以评估同时报告两者，以及平均排名和常规指标。
+- **证据界（P20）。** 七个水平候选只凭至多六个伪起报点误差，无法可靠地区分（已知的聚合极小极大速率，Nemirovski 2000、Tsybakov 2003，按量级在六个伪起报点时占误差方差的可观比例；在多数人群上，按伪起报点误差选出的候选命中目标月最优候选的比例，只略高于六个历史候选的机会水平 1/6）。权重因此要收缩；在人群之间指示锚定在哪里有收益的记录统计量，随每次预测一并报告（[`anchoring_record`](#输出)）。
 
 每条性质或写成 `theory/operators.py` 里的函数，或由预测器自身的函数承载（P1、P3、P15、P19），并由 `python -m unittest discover -s theory -t .` 检验。
 
 ## 可复现性
 
 - **参考实现复现了评估中的预测**：在七个人群的 484 个窗口上（其中包括 BDG2 的全部微负荷窗口和 EWELD 截点后窗口里的全部微负荷窗口，共 263 个），2.1 模式（`gap_tolerance=False`）与评分所用的 2.1 预测一致到其 float32 存储的精度（最大相对差 7.4×10⁻⁸），水平和日均值与 2.0.1 逐位相同，每个窗口只有一个信任值。默认的 2.2 预测在整段历史完整的 92 个窗口上与 2.1 模式逐位相同，在其余 392 个窗口中的 53 个上不同。2.0.1 模式（`gap_tolerance=False, single_trust=False`）与评分所用的 2.0.1 预测一致（6.6×10⁻⁸）；2.0.0 模式（再加 `micro_load_rule=False`）与 2.0.0 评估存下的预测一致（5.7×10⁻⁸），与评分面板里的 2.0.0 一臂直接比较也一致（6.6×10⁻⁸）。1.x 模式（`gap_tolerance=False, within_anchor=False, micro_load_rule=False`）与评估中的 1.x 预测精确一致（最大差 3.4×10⁻¹³ kW）。在微负荷窗口上，2.1 和 2.0.1 的预测都与 TimesFM 的预测逐位相同；在其余窗口上，2.0.1 模式与 2.0.0 模式逐位相同。TimesFM 适配器、峰值算子和区间函数没有改动，在 1.x 的记录里是精确一致的。
-  当前记录 [results/REPRODUCTION_CHECK.json](results/REPRODUCTION_CHECK.json) 是在包 2.2.0 上取的（2.2 在历史完整的窗口上与 2.1 逐位相同）；包 2.1.0 的记录保留为 [results/ankyra_2_1/REPRODUCTION_CHECK.json](results/ankyra_2_1/REPRODUCTION_CHECK.json)；包 2.0.3 的记录保留为 [results/ankyra_2_0_1/REPRODUCTION_CHECK.json](results/ankyra_2_0_1/REPRODUCTION_CHECK.json)；2.0.1 包的记录是 [results/REPRODUCTION_CHECK_2_0_1.json](results/REPRODUCTION_CHECK_2_0_1.json)；2.0.0 和 1.x 的记录是 [results/ankyra_2_0_0/REPRODUCTION_CHECK.json](results/ankyra_2_0_0/REPRODUCTION_CHECK.json) 和 [results/ankyra_1x/REPRODUCTION_CHECK.json](results/ankyra_1x/REPRODUCTION_CHECK.json)。
+  当前记录 [results/REPRODUCTION_CHECK.json](results/REPRODUCTION_CHECK.json) 是在包 2.2.1 上取的（[其中文件哈希的说明](results/README.md)；2.2.0 的记录为 `results/REPRODUCTION_CHECK_2_2_0.json`）（2.2 在历史完整的窗口上与 2.1 逐位相同）；包 2.1.0 的记录保留为 [results/ankyra_2_1/REPRODUCTION_CHECK.json](results/ankyra_2_1/REPRODUCTION_CHECK.json)；包 2.0.3 的记录保留为 [results/ankyra_2_0_1/REPRODUCTION_CHECK.json](results/ankyra_2_0_1/REPRODUCTION_CHECK.json)；2.0.1 包的记录是 [results/REPRODUCTION_CHECK_2_0_1.json](results/REPRODUCTION_CHECK_2_0_1.json)；2.0.0 和 1.x 的记录是 [results/ankyra_2_0_0/REPRODUCTION_CHECK.json](results/ankyra_2_0_0/REPRODUCTION_CHECK.json) 和 [results/ankyra_1x/REPRODUCTION_CHECK.json](results/ankyra_1x/REPRODUCTION_CHECK.json)。
 - `results/` 保存图和表背后的每一个评分统计量。多数文件对应 ANKYRA 2.2；没有按 2.2 重新导出的文件保留测量时的版本：换载体的三个文件（`carrier_swap.csv`、`carrier_swap_x.csv`、`carrier_swap_combined.csv`）、`component_contributions.csv`、`constants_sensitivity.csv`、`robustness.csv` 和 `intervals_winkler_contrasts.csv` 用 2.1 测得（缺测容忍关闭），`cost_per_window.csv` 用 2.0.0，`handover_granularity.csv` 用 1.x，`bdg2_micro_load_windows.csv` 对比 2.0.0 与 2.0.1。之后新增的两项实验（`long_context_carriers.csv`、`generic_combinations.csv`）用 2.2。每个文件的版本见 [results/README.md](results/README.md) 中它的条目。先 `pip install -e ".[figures]"`，再 `python figures/make_figures.py`，可由它重新生成全部图。2.1 的完整结果文件保留在 `results/ankyra_2_1/`，2.0.1 的在 `results/ankyra_2_0_1/`，2.0.0 的在 `results/ankyra_2_0_0/`，1.x 的在 `results/ankyra_1x/`。
   - **香港科大、赫尔辛基、LCL 和 UNICON**：`hkust_first_read.csv`、`hkust_by_day.csv`、`helsinki_confirmation.csv`、`helsinki_criteria.json`、`helsinki_by_day.csv`、`unicon_*` 和全部 `lcl_*` 文件现在是 2.2 对同一批目标的重读；用 2.0.1 做的原始检验文件在 `results/ankyra_2_0_1/`（`lcl_audit.json` 也移到了那里），2.1 的重读和 UNICON 的 2.1 首读在 `results/ankyra_2_1/`。[`reevaluation_2_2.json`](results/reevaluation_2_2.json) 把香港科大、赫尔辛基和 LCL 的 2.2 数字汇在一起（[`reevaluation_2_1.json`](results/reevaluation_2_1.json) 是 2.1 的）。
   - **2.1.0 之后新增**：[`lcl_by_day.csv`](results/lcl_by_day.csv)（图 9、9b 的 LCL 面板）；UNICON 外部检验的 [`unicon_external.csv`](results/unicon_external.csv)、[`unicon_criteria.json`](results/unicon_criteria.json)、[`unicon_by_day.csv`](results/unicon_by_day.csv)；[`component_contributions.csv`](results/component_contributions.csv)（每一步的贡献，含 B2 对比）；[`constants.csv`](results/constants.csv)（全部常数、定下的地方与敏感性）。
@@ -773,7 +776,7 @@ $$U=\max_d(\hat L_d+A_{\tau_d}).$$
   ```
 - 两组测试：
   - `python -m unittest discover -s tests -t .` 运行预测器的测试和评估模块的测试。预测器的测试检查：起报点之后的任何信息都进不了预测、权重、相似日形状或区间；交接的界限、关停规则和微负荷规则；日内锚定的界与不变性；各个读出；参考估计器在文档中记载的数值；
-  - `python -m unittest discover -s theory -t .` 运行精确性质的 29 项检验（[theory/](theory/README.zh-CN.md)），含反例。
+  - `python -m unittest discover -s theory -t .` 运行精确性质的 31 项检验（[theory/](theory/README.zh-CN.md)），含反例。
 - **完整性哈希。** `ankyra/history/provenance.json` 和 `results/ankyra_1x/REPRODUCTION_CHECK.json` 里的哈希，是在行尾为 CRLF 的 Windows 工作副本上取的。仓库存的是 LF，所以要先把检出文件的行尾转成 CRLF，哈希才对得上。
 - [`evaluation/`](evaluation/) 是结果表背后的评分代码（带自助区间的两两对比、名次、常规指标、排名检验、标度误差）。用研究中保存的预测运行，它能复现已发布的 BDG2、剑桥、GoiEner 住户和苏州园区的表。这些预测和训练型基线的代码不在仓库里，所以仅凭本仓库不能重新生成这些表。`python -m evaluation.run_example` 在十二栋人工建筑上用替身模型演示数据流程（不到一分钟）；它输出的数字没有意义。
 
@@ -802,6 +805,7 @@ $$U=\max_d(\hat L_d+A_{\tau_d}).$$
 
 每一条按当时的发布记述。条目里提到的开关是在那个包里复现更早版本的写法；在包 2.2.0 上还要加 `gap_tolerance=False`（2.2.0 下的写法见 [2.0 与 2.0.1 改了什么](#20-与-201-改了什么) 一节末尾）。
 
+- **2.2.1（2026-10-10；预测不变）**：伪起报点（k ≥ 1）的基础模型预测含非有限值时现在抛出 `ValueError`（`_check_pseudo_forecasts`）；此前会被静默接受并丢掉该伪起报点的证据，与文档约定不符。新增两个测试：拒绝非有限值；短缺口规则下的无未来信息性质（伪起报点上下文有缺口、目标月部分观测）。有限输入上 2.2.1 与 2.2.0 逐位相同（复现核对 v8，`results/REPRODUCTION_CHECK.json`；2.2.0 的记录保留为 `results/REPRODUCTION_CHECK_2_2_0.json`）。登记的前瞻赫尔辛基检验指向标签 `v2.2.0` 的代码，其预测与 2.2.1 相同。同一版本里还更正了文档：`ankyra/` 的文档字符串和注释（没有改任何可执行语句）、[METHOD.md](docs/METHOD.md)（日路径权重、短缺口规则作用的范围、常数）、[theory/PROOFS.md](theory/PROOFS.md)、`results/` 里的说明，以及理论检验的个数（31 项，直接运行 `theory/test_operators.py` 时全部执行）。复现记录取于这些更正之后，其中的 `package_files` 哈希就是本次发布的文件（[results/README.md](results/README.md)）。
 - **2.2.0（2026-10-06）**：模型 ANKYRA 2.2：伪起报点记账的缺测容忍（`ankyra/core.py` 的 `fill_short_gaps`、`forecast(..., gap_tolerance=True)`；`ankyra/history/api.py`）：同一个 744 小时段内不超过 6 小时的缺口按两侧观测值插值；伪起报点的目标月有 90% 的小时观测即可用（真值取观测小时的平均；观测不足 12 小时的日不进入交接的最小二乘和）。候选、权重、常数、读出和起报点上下文必须完整的要求都不变；没有缺口的记录给出与 2.1 逐位相同的预测（复现核对 v7）。新增输出字段 `anchoring_record` 及其背后的 `results/anchoring_gain_deciles.csv`。结果文件和图用 2.2 重做，没有按 2.2 重新导出的文件除外（其中包括换载体的三个文件，用 2.1 测得），这些文件在 `results/README.md` 中的条目写明了测量时的版本；2.1 的文件在 `results/ankyra_2_1/`。十个人群上 2.2 与 2.1 的差别在 ±0.5% 内（无一分辨）；UNICON 上每窗完成的伪起报点从 0.5 对升到 3.5 对；LCL 逐时误差下降 0.2%（分辨）。
 - **2.1.0 之后（2026-10-06；包版本仍是 2.1.0，预测器未改）**：只更新结果与文档。
   - 香港科大、赫尔辛基和 LCL 的结果文件改为 2.1 对同一批目标的重读，判定与 2.0.1 下相同；2.0.1 的原始检验文件在 `results/ankyra_2_0_1/`（`lcl_audit.json` 也移到那里）。新增 `lcl_by_day.csv`。
@@ -829,6 +833,6 @@ $$U=\max_d(\hat L_d+A_{\tau_d}).$$
 
 代码以 MIT 许可发布。TimesFM 2.5 版权归 Google（Apache-2.0），本仓库不重新分发。评估使用的公开数据集来自 GoiEner、COFACTOR 项目（Drammen、Oslo）、EWELD、剑桥大学校园能耗档案、CINELDI、HEEW、Building Data Genome Project 2、苏州工业园区数据集和伦敦的 Low Carbon London 项目；外部检验用的 UNICON 数据集来自拉筹伯大学（CC BY-NC-SA 4.0，只用于非商业研究，本仓库不重新分发）；参考文献见 [docs/EVALUATION.md](docs/EVALUATION.md)。`results/` 里的示例窗口来自剑桥大学校园能耗档案（CC BY 4.0）。
 
-引用本软件请用 [CITATION.cff](CITATION.cff)（包 2.2.0，标签 `v2.2.0`）；归档 DOI 尚未分配。
+引用本软件请用 [CITATION.cff](CITATION.cff)（包 2.2.1，标签 `v2.2.1`；前瞻检验登记的冻结代码是标签 `v2.2.0`，预测相同）；归档 DOI 尚未分配。
 
 提问和报告缺陷：请用[问题跟踪页](https://github.com/XinanQ/Building_load_ANKYRA/issues)。

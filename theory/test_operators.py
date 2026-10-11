@@ -290,10 +290,6 @@ class EstimandTests(unittest.TestCase):                                         
         self.assertLess(dec["unit_equal_log_ratio"], 0); self.assertGreater(dec["pooled_ratio"], 1)
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class EvidenceBoundTests(unittest.TestCase):                                      # P20
     def test_rates_for_the_study_sizes(self):
         self.assertAlmostEqual(op.aggregation_rate(7, 6), min(7 / 6, np.sqrt(np.log(7) / 6)), places=12)
@@ -307,3 +303,6 @@ class EvidenceBoundTests(unittest.TestCase):                                    
         self.assertAlmostEqual(op.exchangeable_hit_rate(7, 6, 40000, rng), 1 / 7, delta=0.01)
         self.assertAlmostEqual(op.exchangeable_hit_rate(6, 30, 40000, rng), 1 / 6, delta=0.01)
 
+
+if __name__ == "__main__":
+    unittest.main()

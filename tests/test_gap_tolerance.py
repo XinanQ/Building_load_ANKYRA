@@ -96,3 +96,43 @@ class ForecastTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PseudoForecastValidationTests(unittest.TestCase):                           # 2.2.1
+    def test_non_finite_pseudo_origin_forecast_is_refused(self):
+        h = synthetic_history(16000); fm = fm_for(np.asarray(h.load_kw, float))
+        bad = {k: v.copy() for k, v in fm.items()}; bad[4][100] = np.nan
+        with self.assertRaises(ValueError):
+            run(h, foundation=bad)
+        bad = {k: v.copy() for k, v in fm.items()}; bad[2][:] = np.inf
+        with self.assertRaises(ValueError):
+            run(h, foundation=bad)
+
+
+class NoFutureInformationUnderGapToleranceTests(unittest.TestCase):               # the 2.2 bookkeeping on a record with gaps
+    def test_pseudo_origin_bookkeeping_reads_nothing_at_or_after_each_pseudo_origin(self):
+        """A record with short gaps in pseudo contexts and partially observed pseudo targets: changing every value at or after
+        a pseudo-origin o_k leaves the level candidates' errors at all later pseudo-origins (j > k) unchanged, and the handover
+        and within-day evidence of the forecast made at o_k unchanged."""
+        import ankyra.core as C
+        h = synthetic_history(20000); load = np.array(h.load_kw, float); temp = np.array(h.temperature_c, float); ty = np.asarray(h.day_types); o = len(load)
+        for k in (3, 4, 5):                                                            # 3-hour gaps in three pseudo contexts
+            q = o - k * STEP; load[q - 600:q - 597] = np.nan
+        q = o - 6 * STEP; load[q + 50:q + 110] = np.nan                                 # a 92%-observed pseudo target
+        rng = np.random.default_rng(7)
+        for k in range(2, 7):
+            cut = o - k * STEP
+            load2 = load.copy(); load2[cut:] = np.where(np.isfinite(load[cut:]), load[cut:] * rng.uniform(0.5, 1.5, o - cut), np.nan)
+            temp2 = temp.copy(); temp2[cut:] += rng.normal(0, 5, o - cut)
+            # (a) the level candidates' pseudo-origin errors at j > k, with the 2.2 settings
+            fill1 = C.fill_short_gaps(load); fill2 = C.fill_short_gaps(load2)
+            np.testing.assert_array_equal(fill1[:cut], fill2[:cut])                      # the fill never reaches across a pseudo-origin
+            h1 = History(fill1, temp, ty, h.start_timestamp, observed=np.isfinite(fill1)); h2 = History(fill2, temp2, ty, h.start_timestamp, observed=np.isfinite(fill2))
+            e1 = C._level_parts(h1, "Office", 0.25, min_target_obs=C.TARGET_MIN_OBS)["err"]; e2 = C._level_parts(h2, "Office", 0.25, min_target_obs=C.TARGET_MIN_OBS)["err"]
+            for name in e1:
+                np.testing.assert_array_equal(e1[name][0, k:], e2[name][0, k:], err_msg=f"{name}, change at and after o_{k}")
+            # (b) the forecast issued at o_k itself (handover pairs, trust, level) from the two records truncated at o_k
+            hk1 = History(load[:cut], temp[:cut], ty[:cut + HORIZON], h.start_timestamp); hk2 = History(load2[:cut], temp2[:cut], ty[:cut + HORIZON], h.start_timestamp)
+            np.testing.assert_array_equal(np.asarray(hk1.load_kw), np.asarray(hk2.load_kw))  # truncation at o_k removes every changed value
+        f1 = run(History(load, temp, ty, h.start_timestamp)); self.assertTrue(np.isfinite(f1.trajectory_kw).all()); self.assertGreaterEqual(f1.pseudo_pairs, 5)
+

@@ -4,7 +4,7 @@ This page reports the Low Carbon London (LCL) households, the one population tha
 tables of [EVALUATION.md](EVALUATION.md). It also records two changes to the forecaster that were tried after 2.0.1
 and not adopted. All LCL numbers on this page are those of **ANKYRA 2.2**. LCL was first scored once with the frozen
 ANKYRA 2.0.1 (3 October 2026); 2.1 (one within-day trust per window), adopted later from a separate simplification
-study, and then 2.2 (gap tolerance in the pseudo-origin bookkeeping) were run on the same windows, so its numbers are a
+study, and then 2.2 (the short-gap rule in the pseudo-origin bookkeeping) were run on the same windows, so its numbers are a
 re-evaluation of targets already read. Every check and conclusion below is the same under 2.0.1 and 2.1, whose files
 are in [`results/ankyra_2_0_1/`](../results/ankyra_2_0_1/) and [`results/ankyra_2_1/`](../results/ankyra_2_1/); the
 one description that changed under 2.2 is noted where it appears (the by-day ranks).
@@ -38,10 +38,10 @@ LCL is the smart-meter record of London households published by UK Power Network
 
 ANKYRA 1.x was scored on LCL against the load-only forecasters: third of 14 by mean per-unit rank on the late
 windows, behind the per-unit ridge and iTransformer ([`results/ankyra_1x/`](../results/ankyra_1x/)). When the
-equal-information comparison was set up, LCL was held in reserve. The covariate-informed baselines were not scored
+shared-covariate-set comparison was set up, LCL was held in reserve. The covariate-informed baselines were not scored
 on it, and it was not read while the within-day rule of 2.0 and the micro-load rule of 2.0.1 were designed, selected
 and evaluated. The aim was to keep one population on which no 2.x rule had been chosen. The single trust of 2.1 and
-the gap tolerance of 2.2 were chosen after LCL had been scored with 2.0.1.
+the short-gap rule of 2.2 were chosen after LCL had been scored with 2.0.1.
 
 For that reason LCL is reported here and not merged into the ten-population tables and ranks. Those are unchanged.
 Its per-day curves are one panel of Figures 9 and 9b ([below](#daily-curves-and-conventional-errors)).
@@ -119,8 +119,8 @@ them L1, L3 and L2. They were fixed for the 2.0.1 scoring; under 2.1 and 2.2 the
 1. *No harm against 1.x on the same inputs (L1).* The upper end of the interval of the log ratio against
    matched-input 1.x had to be at most +0.01. It is −0.0064 on all windows and −0.0085 on the late windows. The
    check is met.
-2. *No same-information baseline significantly better (L3).* Six one-sided bootstrap tests asked whether a baseline
-   is better than ANKYRA on the late windows: the five same-information baselines (TiDE, iTransformer-X, GBT-T,
+2. *No baseline given the shared covariate set significantly better (L3).* Six one-sided bootstrap tests asked whether a baseline
+   is better than ANKYRA on the late windows: the five baselines given the shared covariate set (TiDE, iTransformer-X, GBT-T,
    Chronos-2-X, TimesFM-X) and the per-unit ridge, with Holm's correction over the six. No test rejects; every
    adjusted p-value is 1.0 ([`lcl_shared_information_holm.csv`](../results/lcl_shared_information_holm.csv)). This
    result has one direction only. It does not show that ANKYRA is equivalent to these baselines, non-inferior to every
@@ -184,8 +184,12 @@ description. They are not among the three items fixed before scoring.
   evidence ([`ankyra_2_0_1/lcl_audit.json`](../results/ankyra_2_0_1/lcl_audit.json)). The 2.1 and 2.2 files were
   written by the same code after it had reproduced the 2.0.1 files; no second-implementation re-check of the 2.1 or
   2.2 files is recorded.
-- **Pretraining.** LCL is a public data set that predates TimesFM 2.5 and Chronos-2. Whether it is in their
-  pretraining corpora was not established.
+- **Pretraining.** LCL is a public data set that predates TimesFM 2.5 and Chronos-2, and it is in their training data:
+  the GIFT-Eval pretraining collection named by the TimesFM 2.5 model card lists `lcl` and
+  `london_smart_meters_with_missing`, and London Smart Meters is in Table 3 of the Chronos report and Table 6 of the
+  Chronos-2 report (checked 10 October 2026). Every forecaster built on these carriers, ANKYRA included, could be favoured
+  on LCL; the contrast between ANKYRA and the version without within-day anchoring and the short-gap rule uses the same
+  carrier on both sides.
 - **Run (the 2.0.1 scoring).** The foundation model was run on 8,505 distinct contexts (8,537 forecasts, including 32
   repeated for a fixed check of batched against single inference; the two differ by at most 6.52253×10⁻⁶ in relative
   terms, so they are not bit-identical). The run took 147.85 s including model load. An earlier attempt was
@@ -208,7 +212,7 @@ the ten-population files (`RIDGE-L` is the per-unit ridge); the two versions of 
 | [`lcl_pairwise.csv`](../results/lcl_pairwise.csv) | ANKYRA against every forecaster and against both versions of 1.x, all windows |
 | [`lcl_pairwise_late.csv`](../results/lcl_pairwise_late.csv) | the same on the late windows |
 | [`lcl_mean_unit_rank_late.csv`](../results/lcl_mean_unit_rank_late.csv) | mean per-unit rank of the 21 forecasters, late windows |
-| [`lcl_shared_information_holm.csv`](../results/lcl_shared_information_holm.csv) | the six tests of the same-information check; the ratio is the baseline's error over ANKYRA's, the reverse of the pairwise files |
+| [`lcl_shared_information_holm.csv`](../results/lcl_shared_information_holm.csv) | the six tests of the shared-covariate-set check; the ratio is the baseline's error over ANKYRA's, the reverse of the pairwise files |
 | [`lcl_readouts.csv`](../results/lcl_readouts.csv) | the energy and peak readouts against TimesFM |
 | [`lcl_by_day.csv`](../results/lcl_by_day.csv) | the LCL panel of Figures 9 and 9b: hourly error and error of energy to date by forecast day, fixed unit set, late windows |
 | [`lcl_lead_day_metrics.csv`](../results/lcl_lead_day_metrics.csv), [`lcl_lead_day_metrics_late.csv`](../results/lcl_lead_day_metrics_late.csv) | hourly error, daily energy error and cumulative energy error by forecast day, every household |
