@@ -10,12 +10,54 @@ without training or fine-tuning a neural network on each of them. It combines th
 TimesFM 2.5, with estimates from the unit's own past load, outdoor temperature and calendar, and weights the two by how
 well each has forecast the unit's own earlier months.
 
-Current package version: **2.2.1** (input validation only; forecasts of 2.2.0); the forecasting model is ANKYRA 2.2 (6 October 2026; `gap_tolerance=False` reproduces 2.1; `gap_tolerance=False, single_trust=False` reproduces 2.0.1)
+Current package version: **2.2.1** (input validation only; forecasts of 2.2.0); the forecasting model is ANKYRA 2.2 (6 October 2026)
 ([what changed](#what-changed-in-20-201-21-and-22) · [version history](#version-history)).
 
 ![ANKYRA architecture](figures/fig1_architecture.png)
 
 *Figure 1. Architecture.*
+
+## At a glance
+
+**What it does.** For each unit, ANKYRA combines a frozen foundation model's zero-shot forecast with a forecast from the
+unit's own long history, with weights set by how each did on that unit's earlier months and shrunk when that evidence
+is thin.
+
+**What the evidence shows** (ANKYRA 2.2; [details](docs/EVALUATION.md)):
+
+| | Result | Scope |
+|---|---|---|
+| Rank among 21 forecasters | mean unit rank 5.86, next best 7.08 (per-unit ridge) | six test populations pooled, 1,762 units, late windows |
+| Hourly error against TimesFM alone | resolved lower on 7 of 10 populations, by 3.3–11.9% | all windows; one of the seven has only four series |
+| Monthly energy, Spanish households | 23–28% lower error than four foundation-model variants | late windows |
+| Monthly peak | envelope readout 18–65% better than the maximum of the forecast trajectory | ten populations; a comparison of readouts |
+| 80% interval, Spanish households | coverage 79.7%, against 36.1% for TimesFM's native interval | late windows |
+
+"Resolved" means that the 95% unit-and-month bootstrap interval excludes zero. These numbers come from populations that
+were already read when the last rules were fixed (re-evaluations).
+
+**Where it stops.**
+
+- On Spanish households TimesFM alone has the lower hourly error, by 3.5% (late windows, resolved).
+- Two external tests whose criteria were fixed before any load value was read, on Helsinki service buildings and an
+  Australian campus (UNICON), did not meet their primary criterion (monthly energy resolved below TimesFM). At
+  Helsinki, Chronos-2 with covariates was resolved better.
+- One whole-window weight per unit is within ±2% of ANKYRA's hourly error on twelve populations. Block-wise weighting
+  is therefore not shown to add accuracy; the three blocks serve explanation, the readouts and diagnosis.
+
+**Mathematics beside the forecaster** ([theory/](theory/)): twenty exact properties, each with a proof, an operator that
+applies to any forecaster's 744-hour trajectory, and a numerical check. Those that are not standard results include:
+
+- the exact replacement of a block and the level-share bound on what replacing the level can gain (P4), and why a
+  division that is optimal on pooled error can still lose for the typical unit (P5);
+- how many completed pseudo-origin errors a record of a given length supports (P7), and how far shrunk weights can
+  move, with the counterexample that marks where the bound stops (P8–P9);
+- that energy consistency, nonnegativity and no-harm cannot all hold at once (P12);
+- the peak operator: its scalar form and bounds, an exact decomposition of the peak error, and the quantity the
+  envelope estimates (P15–P17);
+- the identity linking pooled and unit-equal summaries (P19).
+
+None of these is an accuracy guarantee; accuracy is measured, not proved.
 
 With an eight-week (1,344-hour) context, as used here, pretrained time-series foundation models reproduce the shape
 of a day well, but over a 31-day horizon their monthly level follows the last few days and drifts; with a one-year
