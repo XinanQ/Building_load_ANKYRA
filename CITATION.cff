@@ -1,15 +1,19 @@
 cff-version: 1.2.0
 message: "If you use this software or its results, please cite it as below. A journal article is in preparation."
 type: software
-title: "ANKYRA: anchoring a time-series foundation model to each unit's own history for month-ahead load forecasting"
+title: "ANKYRA: anchoring month-ahead load forecasters to each unit's own history, and when the combination is worth making"
 abstract: >-
-  ANKYRA is a month-ahead hourly load forecaster for buildings, industrial meters and households. For each unit it
-  combines the zero-shot forecast of a frozen time-series foundation model (TimesFM 2.5) with a forecast built from
-  the unit's own history, using weights set by the unit's errors at its own completed pseudo-forecast origins. No
-  network is trained or fine-tuned. An exact decomposition of the 744-hour trajectory into monthly level, daily path
-  and within-day shape provides energy, peak and interval readouts. The repository contains the package, its tests
-  and exact properties, the scored results against 20 forecasters on ten populations and four external
-  populations, and the code that regenerates every figure.
+  In month-ahead load forecasting, the monthly-level error of several kinds of forecaster can be compensated from the
+  unit's own long history. The adaptation needs no retraining or fine-tuning of the forecaster (the carrier), and
+  whether the combination goes on to improve on a history-only forecast depends on the complementary information the
+  carrier supplies. ANKYRA is the tool that implements this finding for buildings, industrial meters and households.
+  It takes the forecasts of an existing forecaster (zero-shot TimesFM 2.5 in the released configuration), estimates
+  the combination weights from the unit's errors at its own completed pseudo-forecast origins, and returns the hourly
+  trajectory of the next 744 hours, the month's energy, the peak and a prediction interval. An exact decomposition of
+  the trajectory into monthly level, daily path and within-day shape serves as a diagnostic record. The repository
+  contains the package, its tests and exact properties, the evaluation evidence (scored results against 20
+  forecasters on ten populations and four external populations, and comparisons across carriers from two
+  foundation-model families and two trained models), and the code that regenerates every figure.
 authors:
   - family-names: Qin
     given-names: Xinan

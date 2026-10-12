@@ -38,7 +38,10 @@ model). See [EVALUATION.md](EVALUATION.md) for the estimand.
 
 ## Another foundation model
 
-**Question.** Does the gain from anchoring depend on TimesFM?
+**Question.** Does the gain from anchoring depend on TimesFM? This is contrast (i) of the README, the anchored
+forecaster against its carrier alone, with a second carrier. Contrast (ii), against the history-only configuration,
+was not computed in this run; it was computed later for the released TimesFM configuration and for two trained
+carriers ([EVALUATION.md](EVALUATION.md#trained-models-as-carriers)).
 
 **What was done.** `ankyra.forecast` takes the foundation model's forecasts as an argument. They were replaced by
 Chronos-2 point forecasts at the origin and at the six pseudo-origins; nothing else changed and no constant was
@@ -101,11 +104,17 @@ is 7 of 12 hourly (6 of ten in the table above, whose EWELD windows include near
 File: [`results/carrier_swap_combined.csv`](../results/carrier_swap_combined.csv) (intervals included, plus the finished forecasters
 against each other).
 
-**The method does not depend on its carrier.** Anchoring improves each of the three foundation-model configurations
+**The gain over the carrier appears with each of the three configurations; how good the finished forecaster is
+depends in part on the carrier.** Anchoring improves each of the three foundation-model configurations
 over the model alone, and is never resolvably worse. This bears on the closest competitor of the ten-population
 comparison, the covariate-informed Chronos-2-X: anchored to Chronos-2-X (ANKYRA-X), the method is resolvably better than
-Chronos-2-X on 8 of 12 populations for hourly error and on 8 of 12 for monthly energy error. The anchoring is the
-method; TimesFM is the carrier of the released forecaster.
+Chronos-2-X on 8 of 12 populations for hourly error and on 8 of 12 for monthly energy error. Counted without the
+four-unit Suzhou park, as in the README's first table, the anchored version is resolved better than its own
+foundation model on 6 of 11 populations with TimesFM, 6 of 9 with Chronos-2 and 7 of 11 with Chronos-2-X for hourly
+error, and on 7 of 11, 7 of 9 and 7 of 11 for monthly energy; the counts of the table above, the park included
+(7 of 12, 7 of 10 and 8 of 12; 8 of 12, 8 of 10 and 8 of 12), are descriptive. TimesFM is the carrier
+of the released forecaster. These runs show that the unit's history helps each of these carriers; they do not show
+what each carrier contributes beyond the history-only configuration, which was not a comparator here.
 
 ## A population never used before
 

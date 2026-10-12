@@ -6,7 +6,9 @@ the three carrier-swap files (`carrier_swap.csv`, `carrier_swap_x.csv`, `carrier
 `component_contributions.csv`, `constants_sensitivity.csv`, `robustness.csv` and `intervals_winkler_contrasts.csv` were
 measured with 2.1 (short-gap rule off; the Winkler file also has 2.0.1 and 2.0.0 rows), `cost_per_window.csv` with
 2.0.0 and `handover_granularity.csv` with 1.x, and `bdg2_micro_load_windows.csv` compares 2.0.0 with 2.0.1. The two
-experiments added afterwards, `long_context_carriers.csv` and `generic_combinations.csv`, use 2.2. `hkust_*`, `helsinki_*` and `lcl_*` were first scored with the frozen
+experiments added afterwards, `long_context_carriers.csv` and `generic_combinations.csv`, use 2.2, and so do the three
+files added on 12 October 2026, `training_budget_sensitivity.csv`, `trained_carriers.csv` and
+`trained_carriers_sensitivity.csv` (package 2.2.1, whose forecasts are those of 2.2.0). `hkust_*`, `helsinki_*` and `lcl_*` were first scored with the frozen
 2.0.1; the files here re-read the same targets with 2.2 (re-evaluations; the verdicts are those of the first scoring;
 two borderline HKUST contrasts whose 2.2 re-read intervals end just below zero are noted in its entry), the 2.1 re-readings are in [`ankyra_2_1/`](ankyra_2_1/) and the 2.0.1
 versions in [`ankyra_2_0_1/`](ankyra_2_0_1/). `unicon_*` was the external test of the frozen 2.1 (those files are in
@@ -28,7 +30,10 @@ entry below says which version a file was measured on. New summary: `reevaluatio
 `lcl_audit.json`, a record of the 2.0.1 scoring, to `ankyra_2_0_1/`. Figure 18 no longer exists: its per-day curves of
 HKUST and Helsinki are panels of Figures 9 and 9b, with LCL and UNICON. **Added afterwards** (ANKYRA 2.2):
 `long_context_carriers.csv` and `generic_combinations.csv`
-([below](#long-context-foundation-models-and-generic-combinations)).
+([below](#long-context-foundation-models-and-generic-combinations)). **Added on 12 October 2026** (ANKYRA 2.2,
+package 2.2.1; no existing file changed): `training_budget_sensitivity.csv`, `trained_carriers.csv` and
+`trained_carriers_sensitivity.csv`
+([below](#training-budget-of-the-trained-baselines-and-trained-models-as-carriers)).
 
 - **What differs from 2.0.1.** The within-day block and everything computed from the delivered trajectory: hourly
   errors, ranks, intervals, the trajectory peak, and delivered energy where the projection onto nonnegative load binds.
@@ -41,8 +46,22 @@ HKUST and Helsinki are panels of Figures 9 and 9b, with LCL and UNICON. **Added 
   describe what the rule changes; they are not a test of it
   ([details](../docs/EVALUATION.md#the-near-zero-meters-and-the-micro-load-rule-201)).
 
-The files hold the scored statistics behind the figures and tables. They were exported from the study's evaluation
-outputs. Raw data, saved forecasts, model weights and the code of the trained baselines are not in the repository.
+The files hold the scored statistics behind the figures and tables: the evaluation evidence of the repository. They
+were exported from the study's evaluation outputs. Raw data, saved forecasts, model weights and the code of the
+trained baselines are not in the repository.
+
+**Where the evidence for the README's finding is.** The finding is read from two contrasts: (i) the anchored
+forecaster against its carrier alone and (ii) against the history-only configuration. The README and
+[EVALUATION.md](../docs/EVALUATION.md) count resolved contrasts on the nine main populations excluding the four-unit
+Suzhou park (plus the HKUST campus and Helsinki where a file covers them); the files keep the rows of every
+population, and counts that include the park are descriptive.
+
+| Claim | Files (foundation models first, trained carriers after) |
+|---|---|
+| The unit's history compensates the carrier's error, contrast (i) | `carrier_swap_combined.csv` (TimesFM, Chronos-2, Chronos-2-X), `long_context_carriers.csv` (TimesFM with a one-year context); `trained_carriers.csv` (LSTM, PatchTST) |
+| The gain does not depend on block-wise weighting | `component_contributions.csv` (rows of B2, one whole-window weight per unit) |
+| The comparison verdicts held under one relaxation of the training budget | `training_budget_sensitivity.csv` |
+| The carrier has to contribute complementary information, contrast (ii) | `trained_carriers.csv` (rows `anchored vs history only`), `trained_carriers_sensitivity.csv` |
 
 - Three changes were made to the forecaster after the test populations were first scored (for 1.x): the within-day
   anchoring of 2.0, whose numbers are a re-evaluation under a frozen protocol, the micro-load rule above, and the
@@ -620,8 +639,9 @@ scored (one implementation each, no pass line, nothing tuned). Every population 
 are re-evaluations of read data, not tests. Interval: 95% unit-and-month bootstrap, 2,000 draws, seed **20261007**
 (a new generator per contrast). Both files are printed with full floating-point precision, copied exactly from the
 scoring records; the bootstrap does not support that many digits. `resolved` is `first better`, `second better` or
-`not resolved`; `improvement_pct` is positive when the first-named forecaster is better. README section:
-[Long-context foundation models and generic combinations](../README.md#long-context-foundation-models-and-generic-combinations).
+`not resolved`; `improvement_pct` is positive when the first-named forecaster is better. README sections:
+[A year of context for the foundation model](../README.md#a-year-of-context-for-the-foundation-model) and
+[Generic combination partners and three changes not adopted](../README.md#generic-combination-partners-and-three-changes-not-adopted).
 
 **`long_context_carriers.csv`** — Does the anchoring gain survive when the foundation model sees a year of history
 instead of 1,344 hours? Ten populations, the late windows of `datasets.csv` (`subset` = `late`; `windows`, `units` =
@@ -660,6 +680,95 @@ two), all windows of the B2 comparison (`subset` = `full`), hourly and monthly-e
   is given on the two rows whose candidates it affects.
 - `units` is blank: the scoring record holds the window counts only.
 - Other columns: `set`, `tier`, `windows`, `error`, `log_ratio`, `um_low`, `um_high`, `improvement_pct`, `resolved`.
+
+## Training budget of the trained baselines, and trained models as carriers
+
+Two analyses added on 12 October 2026, each run under a protocol fixed before its models were trained on the full
+data or scored (one setting each, no pass line, nothing chosen on evaluation targets). All ten populations had been
+scored before, so every number is a re-evaluation of read data, not a test. The package is unchanged (2.2.1, the
+forecasts of ANKYRA 2.2), and no table or figure of the main comparison was replaced. Windows are the late windows of
+`datasets.csv` (`subset` = `late`; `windows`, `units` = `windows_late`, `units_late`, except in the sensitivity file).
+Estimand and interval are those of the main tables: unit-equal log RMS ratio, 95% unit-and-month bootstrap, 2,000
+draws, with the scoring procedure and seeds of the main tables. Values are printed with six decimals
+(`improvement_pct` in the first file with three), as in the scoring records. Details:
+[Training budget of the trained baselines](../docs/EVALUATION.md#training-budget-of-the-trained-baselines) and
+[Trained models as carriers](../docs/EVALUATION.md#trained-models-as-carriers); README sections:
+[Robustness: training budget of the trained baselines](../README.md#robustness-training-budget-of-the-trained-baselines)
+and [Trained carriers: LSTM and PatchTST](../README.md#trained-carriers-lstm-and-patchtst).
+
+**`training_budget_sensitivity.csv`** — Were the four trained load-only baselines (`DLinear`, `iTransformer`, `LSTM`,
+`PatchTST`) held back by their training budget? Each was retrained on each of the ten populations with at most 30
+epochs and early-stopping patience 8, in place of at most 15 epochs and patience 3; cutoff, training pairs, selection
+set, learning-rate grid, seeds and scoring are unchanged. One row per population and model (40 rows). ANKYRA is the
+scored ANKYRA 2.2 forecast of the main tables. On the nine main populations excluding the four-unit Suzhou park
+`original_resolved` and `relaxed_resolved` agree on all 36 rows; with the park, on 39 of 40 (its `PatchTST` row goes
+from `ANKYRA better` to `not resolved`; descriptive).
+
+- `set`, `tier`, `subset`, `windows`, `units`, `model`: as in the main files.
+- `original_log_ratio`, `original_um_low`, `original_um_high`, `original_improvement_pct`: ANKYRA against the baseline
+  as trained for the main tables (15 epochs, patience 3). These columns reproduce the late rows of
+  `benchmark_pairwise.csv`.
+- `relaxed_log_ratio`, `relaxed_um_low`, `relaxed_um_high`, `relaxed_improvement_pct`: ANKYRA against the baseline
+  retrained with the relaxed budget (30 epochs, patience 8). Negative `log_ratio` and positive `improvement_pct`
+  favour ANKYRA.
+- `original_resolved`, `relaxed_resolved`: `ANKYRA better` when the interval lies below zero, `not resolved` when it
+  includes zero. No interval lies above zero.
+- `relaxed_vs_original_log_ratio`, `relaxed_vs_original_um_low`, `relaxed_vs_original_um_high`,
+  `relaxed_vs_original_improvement_pct`: the relaxed baseline against its original on the same windows; negative
+  `log_ratio` and positive `improvement_pct` mean that the relaxed model has the lower error.
+- `relaxed_vs_original_resolved`: `relaxed better`, `original better`, `not resolved` or `identical forecasts`.
+  Training is deterministic, so a relaxed run repeats the original run and then continues; where it selects the same
+  learning rate and epoch count, the forecasts are the same and the three values are zero (15 of the 40 models; 14
+  of the 36 without the Suzhou park).
+- `lr_original`, `epochs_original`, `lr_relaxed`, `epochs_relaxed`: the selected learning rate and number of epochs.
+- `selected_run_reached_30_epochs`: `True` when the selection run at the selected learning rate was not stopped early
+  and ran all 30 epochs (8 models; 6 without the Suzhou park). `selected_epoch_is_30`: `True` when the selected epoch
+  is the last one allowed (2 models), so 30 epochs may still be too few for that model.
+
+**`trained_carriers.csv`** — What happens when a model trained on the population takes the place of the foundation
+model inside ANKYRA? Two trained carriers, `LSTM` and `PatchTST`, each trained once per population (at most 30 epochs,
+patience 8) with a training cutoff 6 × 744 = 4,464 hours before the cutoff of the main comparison, so that the
+forecast month of each of the six pseudo-origins of every late window lies after the carrier's training cutoff. The
+unchanged package 2.2.1 with default settings receives the carrier's forecasts at the origin and at the six
+pseudo-origins. One row per population, carrier, contrast and error (160 rows). On the nine main populations
+excluding the four-unit Suzhou park, `anchored vs carrier alone` is `first better` in 15 of 18 paired comparisons for
+hourly error (`LSTM` 8 of 9, `PatchTST` 7 of 9) and in 9 of 18 for monthly energy (6 of 9, 3 of 9), and never
+`second better`; `anchored vs history only` reads first better / not resolved / second better 3 / 5 / 1 (hourly) and
+0 / 7 / 2 (energy) for `LSTM`, 7 / 2 / 0 and 3 / 6 / 0 for `PatchTST`, and 8 / 1 / 0 and 4 / 5 / 0 for the reference.
+With the park's rows the first contrast gives 17 of 20 and 11 of 20 (descriptive; the park has four units).
+
+- `carrier`: `LSTM`, `PatchTST` or `TimesFM (reference)`. The reference rows are the scored ANKYRA 2.2 forecast and
+  zero-shot TimesFM on the same windows; no training cutoff applies to them, and their `anchored vs carrier alone`
+  hourly rows reproduce the late TimesFM rows of `benchmark_pairwise.csv`.
+- `contrast` (first vs second):
+  - `anchored vs carrier alone`: the package with the carrier against the same carrier's own forecast;
+  - `anchored vs history only`: the package with the carrier against the package's history-only configuration
+    (`foundation=None`) on the same windows;
+  - `earlier-cutoff carrier vs same-budget carrier`: the carrier trained with the earlier cutoff against the same
+    model trained with the cutoff of the main comparison and the same budget (the relaxed baseline of
+    `training_budget_sensitivity.csv`), both alone. It measures what the earlier cutoff costs the carrier, and is not
+    given for the reference.
+- `error`: `hourly` or `energy` (monthly energy), as in `long_context_carriers.csv`.
+- `log_ratio`, `um_low`, `um_high`, `improvement_pct`: the first-named forecaster against the second; negative
+  `log_ratio` and positive `improvement_pct` favour the first.
+- `resolved`: `first better`, `second better` or `not resolved`.
+- These numbers are not on the footing of the main tables. The carriers were trained with an earlier cutoff and a
+  larger budget than the baselines of the same name there, so only the reference rows can be read beside
+  `benchmark_pairwise.csv`.
+- On a window where the off-state or the micro-load rule fires, the package returns the carrier's forecast unchanged,
+  so both sides of `anchored vs carrier alone` are the same there. This happens on 245 of the 523 late windows of
+  EWELD, 33 of 474 on BDG2, 35 of 696 on the GoiEner households and 13 of 890 on GoiEner non-household.
+
+**`trained_carriers_sensitivity.csv`** — The first two contrasts of `trained_carriers.csv` on three subsets fixed in
+advance (168 rows). The column `analysis` names the subset, `windows` and `units` give its size, and the other columns
+are as above:
+
+- `units with no observation before the carrier cutoff excluded`;
+- `units with fewer than 1,344 observed hours before the carrier cutoff excluded`;
+- `off-state and micro-load windows excluded`.
+
+A population has rows for an `analysis` only where that subset differs from the full set of its late windows; where
+it does not, the row of `trained_carriers.csv` applies.
 
 ## Two candidates examined after 2.0.1 and not adopted
 

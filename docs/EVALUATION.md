@@ -13,10 +13,20 @@ scoring code is in [`evaluation/`](../evaluation/README.md).
 The study's working protocols, scripts and saved forecasts are not part of this repository. Where this page says
 that a rule or an analysis was *fixed in advance*, it was written down in those working files before it was run.
 
+**How this page relates to the README.** The README states a finding and describes a tool. The finding is read from
+two contrasts, the anchored forecaster against its carrier alone and against the history-only configuration; the
+sections that bear on it directly are [Trained models as carriers](#trained-models-as-carriers),
+[Training budget of the trained baselines](#training-budget-of-the-trained-baselines),
+[What the parts buy](#what-the-parts-buy) and, for the foundation-model carriers,
+[FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md#another-foundation-model). The other sections document the main
+comparison of the released configuration (carrier: zero-shot TimesFM 2.5), the readouts, the evidence for each design
+choice and the limits.
+
 **Contents**
 
 - [Populations and tiers](#populations-and-tiers)
-- [Baselines](#baselines)
+- [Baselines](#baselines): [GBT-T correction](#correction-of-the-gbt-t-baseline) ·
+  [training budget](#training-budget-of-the-trained-baselines)
 - [Estimands](#estimands)
 - [Results](#results): [test populations](#test-populations-late-windows-21-forecasters) ·
   [rank tests](#rank-significance-tests) · [scaled errors](#scaled-errors) ·
@@ -35,7 +45,8 @@ that a rule or an analysis was *fixed in advance*, it was written down in those 
   [within-day anchoring](#within-day-anchoring-20) ·
   [one within-day trust per window](#one-within-day-trust-per-window-21) ·
   [micro-load rule](#the-near-zero-meters-and-the-micro-load-rule-201) ·
-  [shrinkage constants](#sensitivity-to-the-shrinkage-constants)
+  [shrinkage constants](#sensitivity-to-the-shrinkage-constants) ·
+  [trained models as carriers](#trained-models-as-carriers)
 - [Robustness to corrupted contexts](#robustness-to-corrupted-contexts)
 - [Cost](#cost)
 - [Limitations](#limitations)
@@ -152,7 +163,9 @@ PatchTST is channel-independent, so its load forecast is the same function with 
 - The cutoff is the first day of each population's median origin month.
 - All training targets end before the cutoff.
 - The learning rate is chosen from {1e-4, 3e-4, 1e-3} on the last 20% of training origins; at most 15 epochs with
-  patience 3.
+  patience 3. A larger budget (30 epochs, patience 8) was tried afterwards for the four load-only trained models
+  ([Training budget of the trained baselines](#training-budget-of-the-trained-baselines)); the tables on this page
+  keep the original budget.
 - Predictions are averaged over three seeds.
 - Trained models are scored on origins after the cutoff (the *late* windows), on the same windows as every other model.
 - Leakage checks (feature time indices, lag indices, normalisation statistics, training-target end) are implemented as
@@ -197,6 +210,53 @@ history is in [Populations and tiers](#populations-and-tiers)). On EWELD the
 per-window scaling still overshoots in 41% of windows. There the contexts are almost entirely zero with isolated spikes,
 so read GBT-T's EWELD result as a limit of that design, not as an advantage of ANKYRA. The Norwegian diagnostics below
 were recomputed with the corrected GBT-T.
+
+### Training budget of the trained baselines
+
+This section takes up one alternative explanation of the comparisons with trained models: that those models were
+held back by a small training budget. The trained baselines of the main tables were trained with at most 15 epochs
+and early-stopping patience 3, and several selected runs ended at or near that limit. To see whether the budget held
+them back, the four load-only
+trained families (DLinear, iTransformer, LSTM, PatchTST) were retrained on each of the ten populations with at most
+**30 epochs and patience 8**. Nothing else was changed: cutoff, training pairs, selection set, learning-rate grid,
+seeds, normalisation and scoring are those of the main comparison. The one new setting was fixed before any relaxed
+model was trained on the full data or scored, and there was no pass line. All ten populations had been scored before,
+so this is a re-evaluation of read data. The main tables were not replaced; ANKYRA is the scored 2.2 forecast
+([`results/training_budget_sensitivity.csv`](../results/training_budget_sensitivity.csv), late windows).
+
+Counts on the nine main populations excluding the four-unit Suzhou park. In square brackets, where it differs: the
+count over all ten populations, the park included (descriptive).
+
+| Model | ANKYRA resolved better, original → relaxed budget (of 9) | Relaxed against original: resolved better / not resolved / resolved worse / identical forecasts | Selected run used all 30 epochs |
+|---|---:|---:|---:|
+| DLinear | 8 → 8 | 1 / 3 / 2 / 3 [1 / 4 / 2 / 3] | 1 |
+| iTransformer | 6 → 6 | 0 / 3 / 1 / 5 [0 / 3 / 1 / 6] | 0 |
+| LSTM | 9 → 9 | 7 / 1 / 0 / 1 [7 / 2 / 0 / 1] | 4 [5] |
+| PatchTST | 6 → 6 [7 → 6] | 0 / 4 / 0 / 5 [0 / 5 / 0 / 5] | 1 [2] |
+
+- **ANKYRA against the retrained baselines.** All 36 verdicts on the nine populations were unchanged. With the Suzhou
+  park (4 units, 64 windows; descriptive) the count is 39 of 40: there the contrast with PatchTST goes from resolved
+  (24.0%, [−0.596, −0.042]) to not separated (19.8%, [−0.581, +0.036]). All 40 point estimates still favour ANKYRA,
+  and no contrast becomes resolved in favour of a baseline. The contrasts that were not separated under the original
+  budget stay not separated.
+- **LSTM gains from the larger budget.** Its own error falls resolvably on seven populations: Cambridge 3.4%, HEEW
+  7.6%, EWELD 7.6%, GoiEner non-household 5.0%, GoiEner households 2.0%, Drammen 9.3%, CINELDI 11.9%. ANKYRA's margin
+  over it shrinks accordingly and stays resolved, for example from 22.0% to 11.5% on CINELDI and from 22.5% to 14.6%
+  on Drammen.
+- **The other three families change little.** In 13 of their 27 cases on the nine populations (14 of 30 with the
+  Suzhou park) the relaxed run selects the same learning rate and epoch count as the original, so the forecasts are
+  identical. DLinear improves resolvably on Cambridge (2.6%).
+- **A larger budget is not always better on the evaluation windows.** By construction the relaxed model's error on
+  the selection set is no higher than the original's, but it is resolvably worse than its original on the late windows in three cases:
+  iTransformer on EWELD (14.0%), DLinear on EWELD (3.1%) and DLinear on the GoiEner households (0.5%). The relaxed
+  models are reported as they are; the better of the two budgets was not picked per population.
+
+Reading and limits. The comparison verdicts held under this one relaxation of the training budget: all 36 on the
+nine populations were unchanged. The larger budget may still be too small for LSTM: on Cambridge and
+GoiEner non-household the selected epoch is the 30th, and on six of the 36 models (eight of the 40 with the Suzhou
+park) the selected run was not stopped early. Only the budget was varied, with one alternative; architecture, context
+length and learning-rate grid were not. The covariate-informed trained models
+(TiDE, iTransformer-X, GBT-T) were not retrained.
 
 ## Estimands
 
@@ -886,9 +946,12 @@ information would not depend on how long the current departure had lasted. It do
 A summary of what each part adds comes first. Then one section per design choice, in the order in which the choices
 were made: the handover (1.x), a within-day extension that was rejected, the within-day anchoring (2.0), the
 micro-load rule (2.0.1), the single within-day trust (2.1), and the sensitivity of the result to the shrinkage
-constants.
+constants. The last section puts trained models in the place of the foundation model.
 
 ### What the parts buy
+
+This section also takes up one alternative explanation of the gain: that it comes from weighting the three blocks
+separately. The whole-window comparison at the end of the section (B2) speaks against it.
 
 [`results/component_contributions.csv`](../results/component_contributions.csv) gives, for each of the ten
 populations (all windows, hourly unit-equal log ratio, positive = the later version or the first-named arm better),
@@ -931,8 +994,11 @@ foundation model by the unit's own pseudo-forecast errors. Splitting those weigh
 these populations, in line with the handover result below (weekly weights add nothing over one weight per month) and
 with 2.1 (one within-day trust per window was non-inferior to one per lead block under a margin fixed before scoring). The block decomposition remains the exact identity
 used to attribute the error, to define the readouts and to diagnose failures (Figure 14,
-[METHOD.md](METHOD.md#three-orthogonal-blocks)); it is not, on this evidence, a source of accuracy by itself. B2 is in
+[METHOD.md](METHOD.md#three-orthogonal-blocks)); it is not, on this evidence, a source of accuracy by itself, and
+block-wise weighting is not a necessary explanation of the established gain. B2 is in
 effect a simpler special case of ANKYRA; these numbers are a re-evaluation and were not used to change the forecaster.
+The control compares ANKYRA's own block-wise weighting with its own whole-window special case; it does not test other
+ways of weighting by block.
 
 **Constants.** Every constant, its value, where it was fixed and, where measured, how much the nine-set mean moves
 when it is varied, is listed in [`results/constants.csv`](../results/constants.csv); the measured changes are at most
@@ -1301,10 +1367,137 @@ which was the [near-zero meters](#the-near-zero-meters-and-the-micro-load-rule-2
 −0.004 to +0.0003 and −0.0015 to −0.0005. The three within-day rows were the same in 2.0.0 and 2.0.1; in 2.1 they vary
 the single trust.
 
+### Trained models as carriers
+
+The carrier swaps of [FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md#another-foundation-model) and the
+[long-context run](../README.md#a-year-of-context-for-the-foundation-model) put the anchoring on
+zero-shot foundation models only. Here the carrier is a model trained on the population: an LSTM and a PatchTST, the
+architectures of the baselines of those names. Two questions are asked of each. Does the anchoring improve the
+carrier? And is the finished forecaster better than the package without any carrier, its history-only configuration
+(`foundation=None`)? The second question shows whether the carrier contributes anything to the result. Improving a
+carrier and the carrier contributing are different things, so the two contrasts are reported side by side.
+
+In the linear forecast-combination setting, one forecast encompasses another when the optimal combination assigns
+zero weight to the latter. The two contrasts here address the related question of incremental predictive value; they
+are not formal encompassing tests. An unresolved difference between two errors is not evidence of encompassing; the
+shrunk weights that ANKYRA uses are not test statistics for encompassing (on forecast encompassing: Chong and Hendry,
+1986; Harvey, Leybourne and Newbold, 1998; full entries in the
+[README](../README.md#license-and-acknowledgements)). Each contrast is read by its 95% unit-and-month interval, as
+elsewhere on this page.
+
+**Design.** ANKYRA needs the carrier's forecasts at the origin and at six pseudo-origins, 744 to 4,464 hours earlier.
+A model trained up to the cutoff of the main comparison would have seen the months it is asked to forecast at those
+pseudo-origins. Each carrier was therefore trained once per population with a cutoff 6 × 744 = 4,464 hours earlier
+(at most 30 epochs, patience 8; otherwise the training protocol of the [baselines](#baselines)), so that for every
+late window all six pseudo-origin forecasts are out of sample; assertions in the run check this. The windows are the
+late windows of the main comparison, and the package is 2.2.1, unchanged, with default settings. Carriers, contrasts,
+subsets and the reading rule were fixed before any carrier was trained on the full data or scored; there was no pass
+line. All ten populations had been scored before, so the numbers are
+re-evaluations of read data. They are not on the footing of the main tables: the carriers have an earlier cutoff
+and a larger budget than the baselines of the same name there. The reference row is the scored ANKYRA 2.2 with
+zero-shot TimesFM on the same windows
+([`results/trained_carriers.csv`](../results/trained_carriers.csv),
+[`results/trained_carriers_sensitivity.csv`](../results/trained_carriers_sensitivity.csv)).
+
+Counts on the nine main populations excluding the four-unit Suzhou park: first-named resolved better / not separated
+/ resolved worse.
+
+| Carrier | Anchored vs carrier alone, hourly | Anchored vs carrier alone, energy | Anchored vs history only, hourly | Anchored vs history only, energy |
+|---|---:|---:|---:|---:|
+| LSTM | 8 / 1 / 0 | 6 / 3 / 0 | 3 / 5 / 1 | 0 / 7 / 2 |
+| PatchTST | 7 / 2 / 0 | 3 / 6 / 0 | 7 / 2 / 0 | 3 / 6 / 0 |
+| TimesFM (reference, ANKYRA 2.2) | 4 / 4 / 1 | 6 / 3 / 0 | 8 / 1 / 0 | 4 / 5 / 0 |
+
+With the Suzhou park included (descriptive; four units), the counts of ten in the same column order are 9 / 1 / 0,
+7 / 3 / 0, 3 / 6 / 1 and 0 / 8 / 2 for the LSTM, 8 / 2 / 0, 4 / 6 / 0, 7 / 3 / 0 and 3 / 7 / 0 for PatchTST, and
+5 / 4 / 1, 6 / 4 / 0, 8 / 2 / 0 and 4 / 6 / 0 for the reference; for the two trained carriers together, 17 of 20
+paired comparisons resolved better against the carrier alone for hourly error and 11 of 20 for monthly energy.
+
+Hourly error by population (the complete table, the Suzhou park included): improvement of the anchored forecaster over the second-named one (`*`: the interval
+excludes zero; a negative value means the anchored forecaster has the higher error).
+
+| Population | Windows / units | vs carrier alone: LSTM | PatchTST | TimesFM | vs history only: LSTM | PatchTST | TimesFM |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| BDG2 2017 | 474 / 142 | +6.9% \* | +5.1% | +2.7% | +0.6% | +16.8% \* | +44.7% \* |
+| Cambridge | 730 / 108 | +20.3% \* | +5.4% \* | +8.3% \* | −2.3% | +6.1% \* | +7.9% \* |
+| HEEW Arizona | 658 / 138 | +20.6% \* | +4.6% \* | +3.7% | −1.1% | +11.6% \* | +14.9% \* |
+| EWELD | 523 / 197 | +6.4% \* | +2.2% \* | +2.6% | −83.1% \* | +10.3% | +36.9% \* |
+| GoiEner non-household | 890 / 481 | +12.5% \* | +7.1% \* | +5.5% | +10.3% \* | +15.9% \* | +24.9% \* |
+| GoiEner households | 696 / 696 | +1.8% | +0.3% | −3.5% \* | +5.0% \* | +8.4% \* | +17.3% \* |
+| Oslo | 581 / 41 | +23.2% \* | +7.4% \* | +11.0% \* | +0.7% | +10.5% \* | +7.6% \* |
+| Drammen | 689 / 43 | +14.7% \* | +7.8% \* | +12.7% \* | +5.0% \* | +11.3% \* | +8.8% \* |
+| CINELDI | 475 / 45 | +12.1% \* | +5.4% \* | +6.5% \* | −0.7% | +3.5% | +2.7% |
+| Suzhou park | 64 / 4 | +16.5% \* | +18.3% \* | +10.6% \* | +4.2% | +0.8% | +6.7% |
+
+- **The anchoring improves both trained carriers.** Against the carrier alone the anchored forecaster is resolved
+  better in hourly error on 8 of 9 populations with the LSTM and on 7 of 9 with PatchTST (15 of 18 paired
+  comparisons), and in no case resolved worse, for hourly error or for monthly energy. The hourly cases not separated
+  are the GoiEner households (both carriers) and BDG2 with PatchTST. For monthly energy 6 of 9 are resolved with the
+  LSTM and 3 of 9 with PatchTST (9 of 18).
+- **Only with PatchTST is the finished forecaster resolved better than the history-only configuration.** With the
+  PatchTST carrier it is resolved better on 7 of 9 populations in hourly error and never resolved worse, counts
+  close to those of the TimesFM reference (8 of 9). With the LSTM carrier it is not separated from the history-only
+  configuration on most populations (5 of 9 hourly, 7 of 9 for energy) and is resolved worse on EWELD (hourly and
+  energy) and on Oslo (energy).
+- **Reading.** With the LSTM carrier the gain over the carrier comes mainly from the history side: the same package
+  without any carrier is not separated from it on most populations. The anchoring improves each carrier it was
+  given, but whether the combination goes on to improve on the history-only forecast depends on the complementary
+  information the carrier supplies, as the finished forecasters also differed between foundation models
+  ([FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md#another-foundation-model)). History-side gains were observed
+  with both foundation-model families and both trained architectures tested. Under the single training-budget
+  relaxation examined, all 36 comparison verdicts for the four trained baselines on the nine populations excluding
+  the Suzhou park were unchanged. Fine-tuned foundation models were not compared, and some LSTM runs still reach the
+  training limit; this is not a statement about carriers that were not tested.
+- **Households.** Across the six carrier configurations, the GoiEner household population had the smallest point
+  estimate of hourly improvement over the carrier alone within each configuration's respective evaluation panel. This
+  is a descriptive summary; differences from the other populations were not tested, and it does not extend to the
+  separately evaluated LCL households. The six configurations are TimesFM, Chronos-2 and Chronos-2-X on all windows
+  (−0.0%, +0.3%, +0.1%; [`results/carrier_swap_combined.csv`](../results/carrier_swap_combined.csv)), TimesFM with a
+  one-year context on the late windows (−3.8%;
+  [`results/long_context_carriers.csv`](../results/long_context_carriers.csv)), and the LSTM and PatchTST on the late
+  windows (+1.8%, +0.3%; the table above).
+
+**EWELD and the state rules.** When the off-state or the micro-load rule fires, the package returns the carrier's
+forecast unchanged. The rules hand such a window to the carrier on the premise that the carrier forecasts a
+switched-off meter well, which was observed for the foundation models and not checked for trained models.
+On EWELD they fire on 245 of the 523 late windows, and on those windows the history-only configuration, to which the
+rules do not apply, is far ahead of the anchored trained carriers. With these windows excluded (278 windows, 139
+units; an analysis fixed in advance) the anchored forecaster is resolved better than the history-only configuration
+on EWELD with both carriers: 6.6% hourly and 20.2% for energy with the LSTM, 12.8% and 30.5% with PatchTST. Over the
+nine populations the counts against the history-only configuration then read 4 / 5 / 0 (hourly) and 1 / 7 / 1 (energy)
+for the LSTM and 8 / 1 / 0 and 4 / 5 / 0 for PatchTST (of ten, with the Suzhou park: 4 / 6 / 0, 1 / 8 / 1, 8 / 2 / 0
+and 4 / 6 / 0). This reading rests on that subset and on the window counts;
+the carriers' forecasts on the excluded windows were not inspected one by one. A user who puts a trained model in the
+carrier position should check what it forecasts for a meter that is off.
+
+**What the earlier cutoff costs.** The carrier alone, trained with the earlier cutoff, against the same model
+trained with the cutoff of the main comparison at the same budget: in hourly error the LSTM is resolved worse on 6
+populations (3.5–15.0%) and resolved better on one (Oslo, 6.6%); PatchTST is resolved worse on two (EWELD 27.5%,
+Drammen 2.8%) and resolved better on one (GoiEner households, 1.5%). Part of the gain over the carrier alone
+therefore belongs to a carrier that is half a year older than it would be in use.
+
+Limits.
+
+- Two trained carriers (LSTM, PatchTST), one training run each (three seeds averaged), one budget; this is not
+  evidence about trained models in general. The carriers' budget may be too small, as for the LSTM baseline
+  ([Training budget of the trained baselines](#training-budget-of-the-trained-baselines)).
+- The earlier cutoff makes most carriers weaker than the same model trained up to the cutoff of the main comparison,
+  by the amounts above.
+- ANKYRA's constants were selected under TimesFM and not re-selected.
+- The intervals of BDG2 and EWELD are wide: a few near-zero or switched-off units dominate their unit means, and
+  their percentages should not be quoted alone. The Suzhou park has four series.
+- 2 carriers × 9 populations × 2 errors give 36 intervals per contrast (40 with the Suzhou park); single resolved
+  cells are to be expected by chance, which is why the counts are reported.
+- Fine-tuned foundation models were not tried, as carriers or as baselines.
+- The anchoring is retraining-free, not free of computation: each window needs the carrier's forecasts at up to six
+  pseudo-origins besides the origin, and the history side is fitted on the unit's record ([Cost](#cost)).
+- The released forecaster is unchanged: ANKYRA 2.2 with zero-shot TimesFM, and no network trained on the target
+  population.
+
 ## Robustness to corrupted contexts
 
 The evaluation windows have complete, cleaned contexts. To see what happens when they are not, the 64 Drammen windows
-of the cost benchmark were re-forecast with the public package after corrupting only the context (the targets are
+of the timing run ([Cost](#cost)) were re-forecast with the public package after corrupting only the context (the targets are
 untouched); TimesFM alone is the comparator ([`results/robustness.csv`](../results/robustness.csv); a development
 population; one level of each corruption, fixed before the run).
 
@@ -1372,7 +1565,7 @@ ANKYRA's parts (2.0; the within-day anchoring adds the analog shapes at four ori
 
 The 1.x timings on the same machine (0.50 s first run, 0.11 s reused) are in
 [`results/ankyra_1x/cost_per_window.csv`](../results/ankyra_1x/cost_per_window.csv); the run-to-run spread of this
-benchmark is of the order of the difference.
+timing run is of the order of the difference.
 
 The two TimesFM configurations give forecasts within 3×10⁻⁵ kW of each other.
 
@@ -1434,7 +1627,31 @@ issued every 744 hours, or when a window is re-run.
 - **Block-wise weighting.** One whole-window combination weight per unit of the same two forecasts was within ±2%
   of ANKYRA in hourly error on twelve populations (resolvably better on two, worse on one); the accuracy gain is not attributable to splitting the weights by block
   ([What the parts buy](#what-the-parts-buy)).
-- **Interval.** The interval was scored for the benchmark on households only; on the ten populations it was applied
+- **Training budget of the trained baselines.** The main tables use baselines trained with at most 15 epochs. With 30
+  epochs and patience 8, all 36 verdicts of the contrasts with the four load-only trained families on the nine main
+  populations excluding the four-unit Suzhou park were unchanged (39 of 40 with the park, where the PatchTST contrast
+  goes from resolved to not separated); the LSTM improves resolvably on seven populations, and on
+  two of them its selected epoch is the 30th, so the budget may still be too small for it. The covariate-informed
+  trained models were not retrained
+  ([Training budget of the trained baselines](#training-budget-of-the-trained-baselines); a re-evaluation).
+- **Carriers tested.** Two foundation-model families (TimesFM; Chronos-2 without and with covariates) and two
+  trained carriers (LSTM, PatchTST) were tested, not forecasters in general. The trained carriers were each trained
+  with a cutoff half a year earlier than in the main comparison. The anchoring improves both over the carrier
+  alone (15 of 18 paired comparisons for hourly error and 9 of 18 for monthly energy on the nine main populations
+  excluding the four-unit Suzhou park), but only with PatchTST is the finished forecaster resolved better than the
+  history-only configuration on most populations; with the LSTM it is mostly not separated from it and resolved worse on EWELD, where the state
+  rules return the carrier's forecast on almost half the windows. Fine-tuned foundation models were not tried as
+  carriers or as baselines ([Trained models as carriers](#trained-models-as-carriers); a re-evaluation).
+- **What the carrier runs do not show.** History-side gains were observed with both foundation-model families and
+  both trained architectures tested. Under the single training-budget relaxation examined, all 36 comparison verdicts
+  for the four trained baselines on the nine populations excluding the Suzhou park were unchanged. Fine-tuned
+  foundation models were not compared, and some LSTM runs still reach the training limit; nothing is claimed beyond
+  that range. The monthly level has a gap
+  that the unit's history can compensate, but the anchoring also changes the daily path and the within-day shape, so
+  the gain is not attributed to the level alone ([block attribution](#where-the-error-sits-block-attribution)). The
+  adaptation needs no retraining or fine-tuning of the carrier, but each window needs up to six further inferences of
+  the carrier at pseudo-origins and a fit of the history side ([Cost](#cost)).
+- **Interval.** The interval was scored for the main evaluation on households only; on the ten populations it was applied
   afterwards as a description. It is not sharper than Chronos-2's native quantiles, its coverage falls with lead
   time, and it should not be used for units that switch off ([Readouts](#readouts)).
 

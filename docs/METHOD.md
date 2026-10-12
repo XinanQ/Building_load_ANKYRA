@@ -28,6 +28,14 @@ Two changes examined after 2.0.1, a daily path taken partly from a per-unit ridg
 rule, were not adopted and change nothing described here
 ([record](LCL_AND_CLOSEOUT.md#two-changes-that-were-tried-and-not-adopted)).
 
+**The carrier.** The forecaster passed as `foundation` is called the *carrier* in the README and in the evaluation.
+This document describes the released configuration, whose carrier is zero-shot TimesFM 2.5, and calls it "the
+foundation model". The equations take the carrier's forecasts at the origin and at the pseudo-origins as given and
+need no retraining or fine-tuning of the carrier; what was measured with other carriers (Chronos-2 with and without
+covariates, TimesFM with a one-year context, and a trained LSTM and PatchTST) is in
+[EVALUATION.md](EVALUATION.md#trained-models-as-carriers) and
+[FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md#another-foundation-model).
+
 Contents: [Information at the origin](#information-at-the-origin) ·
 [Inputs and features](#inputs-and-features-the-shared-information-set) ·
 [Three orthogonal blocks](#three-orthogonal-blocks) · [Level](#level) · [Centred daily path](#centred-daily-path) ·
@@ -142,7 +150,9 @@ These are orthogonal projections of ranks 1, 30 and 713, so for an error $e=F-y$
 $$\frac1T\sum_{d,h}e_{d,h}^2=\ell(e)^2+\frac1D\sum_d b_d(e)^2+\frac1T\sum_{d,h}w_{d,h}(e)^2 .$$
 
 Replacing one block of a forecast changes its mean squared error by exactly the change in that block's loss. ANKYRA
-uses this identity as a design rule: each block goes to the source that estimates it best.
+uses this identity to assemble the forecast block by block, to attribute its error and to define the readouts.
+Weighting the blocks separately was not shown to add accuracy over one whole-window weight per unit
+([EVALUATION.md](EVALUATION.md#what-the-parts-buy)).
 
 - Because 7 and 31 are coprime, the 744-hour window has no separate weekly Fourier subspace.
 - Weekly effects therefore enter the daily-path and within-day blocks and are represented by day types (Monday = 0 …
@@ -312,8 +322,9 @@ of data used before ([EVALUATION.md](EVALUATION.md#one-within-day-trust-per-wind
 **History-only configuration.** `forecast(..., foundation=None)` returns the history side alone: the six-candidate
 level and the daily path, with the same-day-type within-day default (eight most recent days of each type), no model
 candidate and no handover. It is a reduced configuration for ablation and for offline use without a foundation model.
-It was not part of the benchmark. The off-state and micro-load rules return the foundation model's forecast, so they
-do not apply in this configuration.
+It was not one of the 21 forecasters of the main comparison; it is the comparator that shows what a carrier
+contributes ([EVALUATION.md](EVALUATION.md#trained-models-as-carriers)). The off-state and micro-load rules return
+the foundation model's forecast, so they do not apply in this configuration.
 
 Code: `ankyra/analog.py` (`AnalogShapes`, `within_trust`, `anchored_within_day`), `ankyra/core.py` (`forecast`).
 

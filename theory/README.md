@@ -3,7 +3,9 @@
 [中文](README.zh-CN.md) · [Proofs](PROOFS.md) · [Operators](operators.py) · [Checks](test_operators.py) · [Back to the forecaster](../README.md)
 
 This folder holds the mathematical contributions that sit beside the forecaster. The forecaster is the package
-[`ankyra/`](../ankyra/), and nothing in it imports this folder. What is here explains and bounds its design:
+[`ankyra/`](../ankyra/), and nothing in it imports this folder. In the terms of the [README](../README.md), these
+properties belong to the tool: they make it inspectable. They are not evidence for the README's finding, which is
+measured. What is here explains and bounds the design:
 
 - why a month-ahead forecast is split into a level, a daily path and a within-day shape;
 - how much history the weights need, and how far they can move from equal;
@@ -62,8 +64,9 @@ P1, P3, P15 and P19. Check names are test classes in [test_operators.py](test_op
 
 ## How the properties enter the forecaster
 
-- **Blocks (P1–P3).** The forecast is assembled from three orthogonal blocks, so each can come from the source that
-  estimates it best, and energy is read from the level alone.
+- **Blocks (P1–P3).** The forecast is assembled from three orthogonal blocks, so each can be weighted, scored and
+  read out separately, and energy is read from the level alone. Weighting the blocks separately was not shown to add
+  accuracy over one whole-window weight ([evaluation](../docs/EVALUATION.md#what-the-parts-buy)).
 - **Division of labour (P4–P6).** Any division between two forecasters can be scored from block losses, but a division
   that is optimal on pooled error can still lose for the typical unit. ANKYRA therefore weights each unit by its own
   record.

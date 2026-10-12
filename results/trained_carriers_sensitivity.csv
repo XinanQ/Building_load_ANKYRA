@@ -1,0 +1,169 @@
+set,tier,subset,analysis,windows,units,carrier,contrast,error,log_ratio,um_low,um_high,improvement_pct,resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,TimesFM (reference),anchored vs carrier alone,hourly,-0.028082,-0.081896,0.288147,2.769162,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,TimesFM (reference),anchored vs history only,hourly,-0.109533,-0.207479,-0.05539,10.374767,first better
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,LSTM,anchored vs carrier alone,hourly,-0.072832,-0.120641,-0.031858,7.024309,first better
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,LSTM,anchored vs history only,hourly,-0.030415,-0.053983,-0.000312,2.995697,first better
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,PatchTST,anchored vs carrier alone,hourly,-0.053879,-0.102794,0.023945,5.245302,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,PatchTST,anchored vs history only,hourly,-0.042042,-0.088569,-0.014343,4.117031,first better
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,TimesFM (reference),anchored vs carrier alone,energy,-0.137089,-0.251506,0.211743,12.810715,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,TimesFM (reference),anchored vs history only,energy,-0.07476,-0.262333,0.225462,7.203348,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,LSTM,anchored vs carrier alone,energy,-0.019991,-0.290379,0.168367,1.979234,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,LSTM,anchored vs history only,energy,-0.076692,-0.193269,0.183169,7.382532,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,PatchTST,anchored vs carrier alone,energy,-0.115719,-0.251646,0.033653,10.927482,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,PatchTST,anchored vs history only,energy,-0.019689,-0.153795,0.26838,1.949654,not resolved
+Cambridge,test,late,units with no observation before the carrier cutoff excluded,695,101,TimesFM (reference),anchored vs carrier alone,hourly,-0.085021,-0.111858,-0.049153,8.150692,first better
+Cambridge,test,late,units with no observation before the carrier cutoff excluded,695,101,TimesFM (reference),anchored vs history only,hourly,-0.082637,-0.136435,-0.046681,7.931491,first better
+Cambridge,test,late,units with no observation before the carrier cutoff excluded,695,101,LSTM,anchored vs carrier alone,hourly,-0.174188,-0.226982,-0.126901,15.986103,first better
+Cambridge,test,late,units with no observation before the carrier cutoff excluded,695,101,LSTM,anchored vs history only,hourly,-0.007816,-0.04504,0.027623,0.778574,not resolved
+Cambridge,test,late,units with no observation before the carrier cutoff excluded,695,101,PatchTST,anchored vs carrier alone,hourly,-0.055884,-0.079031,-0.034163,5.435087,first better
+Cambridge,test,late,units with no observation before the carrier cutoff excluded,695,101,PatchTST,anchored vs history only,hourly,-0.06528,-0.11757,-0.025429,6.319495,first better
+Cambridge,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",695,101,TimesFM (reference),anchored vs carrier alone,hourly,-0.085021,-0.111858,-0.049153,8.150692,first better
+Cambridge,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",695,101,TimesFM (reference),anchored vs history only,hourly,-0.082637,-0.136435,-0.046681,7.931491,first better
+Cambridge,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",695,101,LSTM,anchored vs carrier alone,hourly,-0.174188,-0.226982,-0.126901,15.986103,first better
+Cambridge,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",695,101,LSTM,anchored vs history only,hourly,-0.007816,-0.04504,0.027623,0.778574,not resolved
+Cambridge,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",695,101,PatchTST,anchored vs carrier alone,hourly,-0.055884,-0.079031,-0.034163,5.435087,first better
+Cambridge,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",695,101,PatchTST,anchored vs history only,hourly,-0.06528,-0.11757,-0.025429,6.319495,first better
+Cambridge,test,late,units with no observation before the carrier cutoff excluded,695,101,TimesFM (reference),anchored vs carrier alone,energy,-0.145062,-0.25663,-0.056476,13.503119,first better
+Cambridge,test,late,units with no observation before the carrier cutoff excluded,695,101,TimesFM (reference),anchored vs history only,energy,-0.09684,-0.228213,0.011056,9.229873,not resolved
+Cambridge,test,late,units with no observation before the carrier cutoff excluded,695,101,LSTM,anchored vs carrier alone,energy,-0.242438,-0.401065,-0.134218,21.52876,first better
+Cambridge,test,late,units with no observation before the carrier cutoff excluded,695,101,LSTM,anchored vs history only,energy,0.001535,-0.13744,0.107506,-0.153653,not resolved
+Cambridge,test,late,units with no observation before the carrier cutoff excluded,695,101,PatchTST,anchored vs carrier alone,energy,-0.094494,-0.203674,0.010468,9.016708,not resolved
+Cambridge,test,late,units with no observation before the carrier cutoff excluded,695,101,PatchTST,anchored vs history only,energy,-0.111989,-0.257246,-0.005677,10.594584,first better
+Cambridge,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",695,101,TimesFM (reference),anchored vs carrier alone,energy,-0.145062,-0.25663,-0.056476,13.503119,first better
+Cambridge,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",695,101,TimesFM (reference),anchored vs history only,energy,-0.09684,-0.228213,0.011056,9.229873,not resolved
+Cambridge,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",695,101,LSTM,anchored vs carrier alone,energy,-0.242438,-0.401065,-0.134218,21.52876,first better
+Cambridge,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",695,101,LSTM,anchored vs history only,energy,0.001535,-0.13744,0.107506,-0.153653,not resolved
+Cambridge,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",695,101,PatchTST,anchored vs carrier alone,energy,-0.094494,-0.203674,0.010468,9.016708,not resolved
+Cambridge,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",695,101,PatchTST,anchored vs history only,energy,-0.111989,-0.257246,-0.005677,10.594584,first better
+HEEW Arizona,test,late,units with no observation before the carrier cutoff excluded,651,136,TimesFM (reference),anchored vs carrier alone,hourly,-0.037599,-0.063154,0.076092,3.69014,not resolved
+HEEW Arizona,test,late,units with no observation before the carrier cutoff excluded,651,136,TimesFM (reference),anchored vs history only,hourly,-0.157037,-0.247438,-0.112659,14.532767,first better
+HEEW Arizona,test,late,units with no observation before the carrier cutoff excluded,651,136,LSTM,anchored vs carrier alone,hourly,-0.211913,-0.27435,-0.171023,19.096468,first better
+HEEW Arizona,test,late,units with no observation before the carrier cutoff excluded,651,136,LSTM,anchored vs history only,hourly,-0.002053,-0.042599,0.048522,0.205113,not resolved
+HEEW Arizona,test,late,units with no observation before the carrier cutoff excluded,651,136,PatchTST,anchored vs carrier alone,hourly,-0.047298,-0.07348,-0.017405,4.619734,first better
+HEEW Arizona,test,late,units with no observation before the carrier cutoff excluded,651,136,PatchTST,anchored vs history only,hourly,-0.119639,-0.18592,-0.077557,11.275945,first better
+HEEW Arizona,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",651,136,TimesFM (reference),anchored vs carrier alone,hourly,-0.037599,-0.063154,0.076092,3.69014,not resolved
+HEEW Arizona,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",651,136,TimesFM (reference),anchored vs history only,hourly,-0.157037,-0.247438,-0.112659,14.532767,first better
+HEEW Arizona,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",651,136,LSTM,anchored vs carrier alone,hourly,-0.211913,-0.27435,-0.171023,19.096468,first better
+HEEW Arizona,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",651,136,LSTM,anchored vs history only,hourly,-0.002053,-0.042599,0.048522,0.205113,not resolved
+HEEW Arizona,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",651,136,PatchTST,anchored vs carrier alone,hourly,-0.047298,-0.07348,-0.017405,4.619734,first better
+HEEW Arizona,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",651,136,PatchTST,anchored vs history only,hourly,-0.119639,-0.18592,-0.077557,11.275945,first better
+HEEW Arizona,test,late,units with no observation before the carrier cutoff excluded,651,136,TimesFM (reference),anchored vs carrier alone,energy,-0.033845,-0.144557,0.148463,3.327872,not resolved
+HEEW Arizona,test,late,units with no observation before the carrier cutoff excluded,651,136,TimesFM (reference),anchored vs history only,energy,-0.190227,-0.378014,-0.022345,17.322871,first better
+HEEW Arizona,test,late,units with no observation before the carrier cutoff excluded,651,136,LSTM,anchored vs carrier alone,energy,-0.247165,-0.409191,-0.147172,21.898815,first better
+HEEW Arizona,test,late,units with no observation before the carrier cutoff excluded,651,136,LSTM,anchored vs history only,energy,0.006822,-0.101516,0.150406,-0.684488,not resolved
+HEEW Arizona,test,late,units with no observation before the carrier cutoff excluded,651,136,PatchTST,anchored vs carrier alone,energy,-0.052051,-0.181722,0.062215,5.071977,not resolved
+HEEW Arizona,test,late,units with no observation before the carrier cutoff excluded,651,136,PatchTST,anchored vs history only,energy,-0.173376,-0.33132,-0.022338,15.917853,first better
+HEEW Arizona,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",651,136,TimesFM (reference),anchored vs carrier alone,energy,-0.033845,-0.144557,0.148463,3.327872,not resolved
+HEEW Arizona,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",651,136,TimesFM (reference),anchored vs history only,energy,-0.190227,-0.378014,-0.022345,17.322871,first better
+HEEW Arizona,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",651,136,LSTM,anchored vs carrier alone,energy,-0.247165,-0.409191,-0.147172,21.898815,first better
+HEEW Arizona,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",651,136,LSTM,anchored vs history only,energy,0.006822,-0.101516,0.150406,-0.684488,not resolved
+HEEW Arizona,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",651,136,PatchTST,anchored vs carrier alone,energy,-0.052051,-0.181722,0.062215,5.071977,not resolved
+HEEW Arizona,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",651,136,PatchTST,anchored vs history only,energy,-0.173376,-0.33132,-0.022338,15.917853,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,TimesFM (reference),anchored vs carrier alone,hourly,-0.032121,-0.066884,0.072632,3.161084,not resolved
+EWELD,test,late,off-state and micro-load windows excluded,278,139,TimesFM (reference),anchored vs history only,hourly,-0.178062,-0.263033,-0.101777,16.310927,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,LSTM,anchored vs carrier alone,hourly,-0.099507,-0.146336,-0.066158,9.471676,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,LSTM,anchored vs history only,hourly,-0.068278,-0.128212,-0.001573,6.599907,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,PatchTST,anchored vs carrier alone,hourly,-0.035872,-0.067697,-0.001165,3.523606,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,PatchTST,anchored vs history only,hourly,-0.136693,-0.200104,-0.073818,12.776224,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,TimesFM (reference),anchored vs carrier alone,energy,-0.072837,-0.363205,0.183008,7.024786,not resolved
+EWELD,test,late,off-state and micro-load windows excluded,278,139,TimesFM (reference),anchored vs history only,energy,-0.467011,-0.701209,-0.179453,37.312676,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,LSTM,anchored vs carrier alone,energy,-0.110742,-0.319608,0.048804,10.483072,not resolved
+EWELD,test,late,off-state and micro-load windows excluded,278,139,LSTM,anchored vs history only,energy,-0.225455,-0.451509,-0.011308,20.184675,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,PatchTST,anchored vs carrier alone,energy,0.005702,-0.262392,0.229846,-0.571794,not resolved
+EWELD,test,late,off-state and micro-load windows excluded,278,139,PatchTST,anchored vs history only,energy,-0.364056,-0.592232,-0.140732,30.514755,first better
+GoiEner non-household,test,late,units with no observation before the carrier cutoff excluded,870,461,TimesFM (reference),anchored vs carrier alone,hourly,-0.057396,-0.083033,0.02833,5.578029,not resolved
+GoiEner non-household,test,late,units with no observation before the carrier cutoff excluded,870,461,TimesFM (reference),anchored vs history only,hourly,-0.264236,-0.348228,-0.199656,23.220742,first better
+GoiEner non-household,test,late,units with no observation before the carrier cutoff excluded,870,461,LSTM,anchored vs carrier alone,hourly,-0.127865,-0.164609,-0.085402,12.002781,first better
+GoiEner non-household,test,late,units with no observation before the carrier cutoff excluded,870,461,LSTM,anchored vs history only,hourly,-0.122679,-0.176836,-0.032654,11.54523,first better
+GoiEner non-household,test,late,units with no observation before the carrier cutoff excluded,870,461,PatchTST,anchored vs carrier alone,hourly,-0.074699,-0.096622,-0.023319,7.197742,first better
+GoiEner non-household,test,late,units with no observation before the carrier cutoff excluded,870,461,PatchTST,anchored vs history only,hourly,-0.176964,-0.240704,-0.070223,16.219014,first better
+GoiEner non-household,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",857,448,TimesFM (reference),anchored vs carrier alone,hourly,-0.059183,-0.084065,0.047487,5.746547,not resolved
+GoiEner non-household,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",857,448,TimesFM (reference),anchored vs history only,hourly,-0.257899,-0.332634,-0.199528,22.732702,first better
+GoiEner non-household,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",857,448,LSTM,anchored vs carrier alone,hourly,-0.130029,-0.168214,-0.085294,12.192996,first better
+GoiEner non-household,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",857,448,LSTM,anchored vs history only,hourly,-0.114107,-0.158057,-0.02858,10.783711,first better
+GoiEner non-household,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",857,448,PatchTST,anchored vs carrier alone,hourly,-0.078619,-0.099408,-0.016264,7.560821,first better
+GoiEner non-household,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",857,448,PatchTST,anchored vs history only,hourly,-0.181439,-0.242307,-0.066699,16.593052,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,TimesFM (reference),anchored vs carrier alone,hourly,-0.057178,-0.083021,0.0246,5.557377,not resolved
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,TimesFM (reference),anchored vs history only,hourly,-0.243757,-0.30422,-0.196511,21.632235,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,LSTM,anchored vs carrier alone,hourly,-0.136497,-0.173219,-0.099546,12.759112,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,LSTM,anchored vs history only,hourly,-0.092319,-0.143063,0.008702,8.818595,not resolved
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,PatchTST,anchored vs carrier alone,hourly,-0.07525,-0.097469,-0.026786,7.248834,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,PatchTST,anchored vs history only,hourly,-0.176768,-0.241604,-0.069862,16.202614,first better
+GoiEner non-household,test,late,units with no observation before the carrier cutoff excluded,870,461,TimesFM (reference),anchored vs carrier alone,energy,-0.305545,-0.523361,-0.110085,26.327834,first better
+GoiEner non-household,test,late,units with no observation before the carrier cutoff excluded,870,461,TimesFM (reference),anchored vs history only,energy,-0.24089,-0.43332,-0.049076,21.407163,first better
+GoiEner non-household,test,late,units with no observation before the carrier cutoff excluded,870,461,LSTM,anchored vs carrier alone,energy,-0.192847,-0.290506,-0.024289,17.539157,first better
+GoiEner non-household,test,late,units with no observation before the carrier cutoff excluded,870,461,LSTM,anchored vs history only,energy,-0.004864,-0.186283,0.271878,0.485238,not resolved
+GoiEner non-household,test,late,units with no observation before the carrier cutoff excluded,870,461,PatchTST,anchored vs carrier alone,energy,-0.191932,-0.367674,0.007116,17.463685,not resolved
+GoiEner non-household,test,late,units with no observation before the carrier cutoff excluded,870,461,PatchTST,anchored vs history only,energy,-0.152909,-0.378167,0.082515,14.179213,not resolved
+GoiEner non-household,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",857,448,TimesFM (reference),anchored vs carrier alone,energy,-0.313824,-0.521181,-0.121569,26.935227,first better
+GoiEner non-household,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",857,448,TimesFM (reference),anchored vs history only,energy,-0.247404,-0.420666,-0.049099,21.917483,first better
+GoiEner non-household,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",857,448,LSTM,anchored vs carrier alone,energy,-0.18786,-0.278186,-0.018353,17.126951,first better
+GoiEner non-household,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",857,448,LSTM,anchored vs history only,energy,0.014509,-0.163951,0.297768,-1.461477,not resolved
+GoiEner non-household,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",857,448,PatchTST,anchored vs carrier alone,energy,-0.210657,-0.379502,-0.032344,18.994853,first better
+GoiEner non-household,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",857,448,PatchTST,anchored vs history only,energy,-0.166901,-0.373993,0.066047,15.371627,not resolved
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,TimesFM (reference),anchored vs carrier alone,energy,-0.295582,-0.502619,-0.10861,25.590128,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,TimesFM (reference),anchored vs history only,energy,-0.248111,-0.413092,-0.052656,21.972705,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,LSTM,anchored vs carrier alone,energy,-0.237772,-0.410389,-0.053599,21.16174,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,LSTM,anchored vs history only,energy,0.02901,-0.152287,0.295705,-2.943518,not resolved
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,PatchTST,anchored vs carrier alone,energy,-0.207432,-0.381729,-0.021936,18.733115,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,PatchTST,anchored vs history only,energy,-0.175159,-0.389422,0.047066,16.067643,not resolved
+GoiEner households,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",677,677,TimesFM (reference),anchored vs carrier alone,hourly,0.035439,0.000953,0.09323,-3.607464,second better
+GoiEner households,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",677,677,TimesFM (reference),anchored vs history only,hourly,-0.192739,-0.264115,-0.128357,17.530295,first better
+GoiEner households,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",677,677,LSTM,anchored vs carrier alone,hourly,-0.017851,-0.0357,0.012355,1.769221,not resolved
+GoiEner households,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",677,677,LSTM,anchored vs history only,hourly,-0.059053,-0.097157,-0.02688,5.734363,first better
+GoiEner households,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",677,677,PatchTST,anchored vs carrier alone,hourly,-0.00272,-0.012607,0.009106,0.271658,not resolved
+GoiEner households,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",677,677,PatchTST,anchored vs history only,hourly,-0.088793,-0.118622,-0.063053,8.496515,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,TimesFM (reference),anchored vs carrier alone,hourly,0.036323,0.000632,0.096388,-3.69912,second better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,TimesFM (reference),anchored vs history only,hourly,-0.135495,-0.185082,-0.09197,12.671641,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,LSTM,anchored vs carrier alone,hourly,-0.018892,-0.036691,0.011652,1.871473,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,LSTM,anchored vs history only,hourly,-0.048255,-0.076027,-0.020554,4.71088,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,PatchTST,anchored vs carrier alone,hourly,-0.002864,-0.01291,0.009299,0.286014,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,PatchTST,anchored vs history only,hourly,-0.081719,-0.106192,-0.057531,7.846957,first better
+GoiEner households,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",677,677,TimesFM (reference),anchored vs carrier alone,energy,-0.292275,-0.410352,-0.152968,25.34368,first better
+GoiEner households,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",677,677,TimesFM (reference),anchored vs history only,energy,0.005722,-0.178643,0.179541,-0.573841,not resolved
+GoiEner households,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",677,677,LSTM,anchored vs carrier alone,energy,-0.125466,-0.233676,0.029297,11.791453,not resolved
+GoiEner households,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",677,677,LSTM,anchored vs history only,energy,0.074999,-0.042743,0.179799,-7.788265,not resolved
+GoiEner households,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",677,677,PatchTST,anchored vs carrier alone,energy,-0.038758,-0.155572,0.101737,3.801669,not resolved
+GoiEner households,test,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",677,677,PatchTST,anchored vs history only,energy,0.006157,-0.145301,0.143207,-0.617607,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,TimesFM (reference),anchored vs carrier alone,energy,-0.311458,-0.435489,-0.184894,26.762155,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,TimesFM (reference),anchored vs history only,energy,0.053261,-0.135742,0.228378,-5.470534,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,LSTM,anchored vs carrier alone,energy,-0.137634,-0.253925,0.024998,12.858207,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,LSTM,anchored vs history only,energy,0.065211,-0.048263,0.172313,-6.738369,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,PatchTST,anchored vs carrier alone,energy,-0.045232,-0.168275,0.091401,4.422426,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,PatchTST,anchored vs history only,energy,0.005839,-0.135964,0.152533,-0.585572,not resolved
+Oslo,preview,late,units with no observation before the carrier cutoff excluded,537,36,TimesFM (reference),anchored vs carrier alone,hourly,-0.115993,-0.150177,-0.079419,10.951869,first better
+Oslo,preview,late,units with no observation before the carrier cutoff excluded,537,36,TimesFM (reference),anchored vs history only,hourly,-0.075783,-0.143175,-0.014788,7.298261,first better
+Oslo,preview,late,units with no observation before the carrier cutoff excluded,537,36,LSTM,anchored vs carrier alone,hourly,-0.15706,-0.217032,-0.11199,14.534705,first better
+Oslo,preview,late,units with no observation before the carrier cutoff excluded,537,36,LSTM,anchored vs history only,hourly,-0.045636,-0.094824,0.007091,4.460998,not resolved
+Oslo,preview,late,units with no observation before the carrier cutoff excluded,537,36,PatchTST,anchored vs carrier alone,hourly,-0.07419,-0.106998,-0.042137,7.150435,first better
+Oslo,preview,late,units with no observation before the carrier cutoff excluded,537,36,PatchTST,anchored vs history only,hourly,-0.105678,-0.161091,-0.062441,10.028558,first better
+Oslo,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",537,36,TimesFM (reference),anchored vs carrier alone,hourly,-0.115993,-0.150177,-0.079419,10.951869,first better
+Oslo,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",537,36,TimesFM (reference),anchored vs history only,hourly,-0.075783,-0.143175,-0.014788,7.298261,first better
+Oslo,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",537,36,LSTM,anchored vs carrier alone,hourly,-0.15706,-0.217032,-0.11199,14.534705,first better
+Oslo,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",537,36,LSTM,anchored vs history only,hourly,-0.045636,-0.094824,0.007091,4.460998,not resolved
+Oslo,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",537,36,PatchTST,anchored vs carrier alone,hourly,-0.07419,-0.106998,-0.042137,7.150435,first better
+Oslo,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",537,36,PatchTST,anchored vs history only,hourly,-0.105678,-0.161091,-0.062441,10.028558,first better
+Oslo,preview,late,units with no observation before the carrier cutoff excluded,537,36,TimesFM (reference),anchored vs carrier alone,energy,-0.181913,-0.280985,-0.075813,16.632639,first better
+Oslo,preview,late,units with no observation before the carrier cutoff excluded,537,36,TimesFM (reference),anchored vs history only,energy,0.024488,-0.076726,0.135996,-2.479057,not resolved
+Oslo,preview,late,units with no observation before the carrier cutoff excluded,537,36,LSTM,anchored vs carrier alone,energy,-0.223189,-0.345539,-0.130914,20.003642,first better
+Oslo,preview,late,units with no observation before the carrier cutoff excluded,537,36,LSTM,anchored vs history only,energy,0.047451,-0.035241,0.163531,-4.859516,not resolved
+Oslo,preview,late,units with no observation before the carrier cutoff excluded,537,36,PatchTST,anchored vs carrier alone,energy,-0.098855,-0.200751,0.000394,9.412576,not resolved
+Oslo,preview,late,units with no observation before the carrier cutoff excluded,537,36,PatchTST,anchored vs history only,energy,-0.072521,-0.209557,0.061407,6.995378,not resolved
+Oslo,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",537,36,TimesFM (reference),anchored vs carrier alone,energy,-0.181913,-0.280985,-0.075813,16.632639,first better
+Oslo,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",537,36,TimesFM (reference),anchored vs history only,energy,0.024488,-0.076726,0.135996,-2.479057,not resolved
+Oslo,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",537,36,LSTM,anchored vs carrier alone,energy,-0.223189,-0.345539,-0.130914,20.003642,first better
+Oslo,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",537,36,LSTM,anchored vs history only,energy,0.047451,-0.035241,0.163531,-4.859516,not resolved
+Oslo,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",537,36,PatchTST,anchored vs carrier alone,energy,-0.098855,-0.200751,0.000394,9.412576,not resolved
+Oslo,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",537,36,PatchTST,anchored vs history only,energy,-0.072521,-0.209557,0.061407,6.995378,not resolved
+CINELDI,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",469,43,TimesFM (reference),anchored vs carrier alone,hourly,-0.066712,-0.106421,-0.032353,6.453542,first better
+CINELDI,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",469,43,TimesFM (reference),anchored vs history only,hourly,-0.031349,-0.088142,0.017617,3.086272,not resolved
+CINELDI,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",469,43,LSTM,anchored vs carrier alone,hourly,-0.125784,-0.191013,-0.079517,11.819445,first better
+CINELDI,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",469,43,LSTM,anchored vs history only,hourly,0.004767,-0.037974,0.052957,-0.477885,not resolved
+CINELDI,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",469,43,PatchTST,anchored vs carrier alone,hourly,-0.051245,-0.075544,-0.031007,4.995367,first better
+CINELDI,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",469,43,PatchTST,anchored vs history only,hourly,-0.037816,-0.071326,-0.002916,3.711036,first better
+CINELDI,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",469,43,TimesFM (reference),anchored vs carrier alone,energy,-0.174396,-0.272066,-0.066882,16.003603,first better
+CINELDI,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",469,43,TimesFM (reference),anchored vs history only,energy,-0.047668,-0.197304,0.064186,4.654944,not resolved
+CINELDI,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",469,43,LSTM,anchored vs carrier alone,energy,-0.119071,-0.210624,-0.03565,11.225563,first better
+CINELDI,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",469,43,LSTM,anchored vs history only,energy,-0.051795,-0.145969,0.028458,5.047688,not resolved
+CINELDI,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",469,43,PatchTST,anchored vs carrier alone,energy,-0.089215,-0.16225,-0.033228,8.535117,first better
+CINELDI,preview,late,"units with fewer than 1,344 observed hours before the carrier cutoff excluded",469,43,PatchTST,anchored vs history only,energy,-0.074541,-0.165938,0.022899,7.183066,not resolved

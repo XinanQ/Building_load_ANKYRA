@@ -1,0 +1,161 @@
+set,tier,subset,windows,units,carrier,contrast,error,log_ratio,um_low,um_high,improvement_pct,resolved
+BDG2 2017,test,late,474,142,TimesFM (reference),anchored vs carrier alone,hourly,-0.02768,-0.076971,0.252676,2.730084,not resolved
+BDG2 2017,test,late,474,142,TimesFM (reference),anchored vs history only,hourly,-0.592372,-1.567725,-0.105105,44.69858,first better
+BDG2 2017,test,late,474,142,LSTM,anchored vs carrier alone,hourly,-0.07201,-0.115665,-0.026663,6.947865,first better
+BDG2 2017,test,late,474,142,LSTM,anchored vs history only,hourly,-0.005999,-0.052171,0.040189,0.59813,not resolved
+BDG2 2017,test,late,474,142,PatchTST,anchored vs carrier alone,hourly,-0.05226,-0.097149,0.016479,5.091816,not resolved
+BDG2 2017,test,late,474,142,PatchTST,anchored vs history only,hourly,-0.183864,-0.520116,-0.041073,16.795096,first better
+BDG2 2017,test,late,474,142,LSTM,earlier-cutoff carrier vs same-budget carrier,hourly,-0.021813,-0.055663,0.002392,2.15772,not resolved
+BDG2 2017,test,late,474,142,PatchTST,earlier-cutoff carrier vs same-budget carrier,hourly,-0.014662,-0.038471,0.020484,1.45546,not resolved
+BDG2 2017,test,late,474,142,TimesFM (reference),anchored vs carrier alone,energy,-0.142104,-0.235848,0.215811,13.246915,not resolved
+BDG2 2017,test,late,474,142,TimesFM (reference),anchored vs history only,energy,-0.561111,-1.577988,-0.016933,42.942542,first better
+BDG2 2017,test,late,474,142,LSTM,anchored vs carrier alone,energy,-0.040057,-0.287642,0.165156,3.926541,not resolved
+BDG2 2017,test,late,474,142,LSTM,anchored vs history only,energy,-0.044227,-0.176832,0.204935,4.326359,not resolved
+BDG2 2017,test,late,474,142,PatchTST,anchored vs carrier alone,energy,-0.118023,-0.233168,0.030254,11.13247,not resolved
+BDG2 2017,test,late,474,142,PatchTST,anchored vs history only,energy,-0.18993,-0.629091,0.13335,17.298286,not resolved
+BDG2 2017,test,late,474,142,LSTM,earlier-cutoff carrier vs same-budget carrier,energy,-0.092184,-0.20041,0.056106,8.806261,not resolved
+BDG2 2017,test,late,474,142,PatchTST,earlier-cutoff carrier vs same-budget carrier,energy,0.012937,-0.133895,0.207417,-1.302154,not resolved
+Cambridge,test,late,730,108,TimesFM (reference),anchored vs carrier alone,hourly,-0.086381,-0.115062,-0.050769,8.275558,first better
+Cambridge,test,late,730,108,TimesFM (reference),anchored vs history only,hourly,-0.081772,-0.133914,-0.044171,7.851817,first better
+Cambridge,test,late,730,108,LSTM,anchored vs carrier alone,hourly,-0.226886,-0.297097,-0.163416,20.298856,first better
+Cambridge,test,late,730,108,LSTM,anchored vs history only,hourly,0.023014,-0.019237,0.071049,-2.328048,not resolved
+Cambridge,test,late,730,108,PatchTST,anchored vs carrier alone,hourly,-0.055591,-0.077324,-0.033373,5.407414,first better
+Cambridge,test,late,730,108,PatchTST,anchored vs history only,hourly,-0.063284,-0.114016,-0.024214,6.132343,first better
+Cambridge,test,late,730,108,LSTM,earlier-cutoff carrier vs same-budget carrier,hourly,-0.00321,-0.025442,0.015774,0.320533,not resolved
+Cambridge,test,late,730,108,PatchTST,earlier-cutoff carrier vs same-budget carrier,hourly,0.007669,-0.007347,0.024664,-0.769872,not resolved
+Cambridge,test,late,730,108,TimesFM (reference),anchored vs carrier alone,energy,-0.154635,-0.259327,-0.061125,14.327231,first better
+Cambridge,test,late,730,108,TimesFM (reference),anchored vs history only,energy,-0.09563,-0.22781,0.028051,9.120011,not resolved
+Cambridge,test,late,730,108,LSTM,anchored vs carrier alone,energy,-0.303194,-0.462101,-0.207508,26.154424,first better
+Cambridge,test,late,730,108,LSTM,anchored vs history only,energy,0.060046,-0.075817,0.190588,-6.188494,not resolved
+Cambridge,test,late,730,108,PatchTST,anchored vs carrier alone,energy,-0.096817,-0.211185,0.020086,9.227757,not resolved
+Cambridge,test,late,730,108,PatchTST,anchored vs history only,energy,-0.109748,-0.256349,-0.010827,10.394002,first better
+Cambridge,test,late,730,108,LSTM,earlier-cutoff carrier vs same-budget carrier,energy,3.3e-05,-0.08113,0.099283,-0.003254,not resolved
+Cambridge,test,late,730,108,PatchTST,earlier-cutoff carrier vs same-budget carrier,energy,-0.003639,-0.108691,0.07759,0.363196,not resolved
+HEEW Arizona,test,late,658,138,TimesFM (reference),anchored vs carrier alone,hourly,-0.037493,-0.06309,0.077701,3.679914,not resolved
+HEEW Arizona,test,late,658,138,TimesFM (reference),anchored vs history only,hourly,-0.160866,-0.250851,-0.116688,14.85937,first better
+HEEW Arizona,test,late,658,138,LSTM,anchored vs carrier alone,hourly,-0.230815,-0.301889,-0.181089,20.6114,first better
+HEEW Arizona,test,late,658,138,LSTM,anchored vs history only,hourly,0.010486,-0.03506,0.065265,-1.054159,not resolved
+HEEW Arizona,test,late,658,138,PatchTST,anchored vs carrier alone,hourly,-0.046794,-0.073348,-0.017604,4.571636,first better
+HEEW Arizona,test,late,658,138,PatchTST,anchored vs history only,hourly,-0.123453,-0.192449,-0.080872,11.613683,first better
+HEEW Arizona,test,late,658,138,LSTM,earlier-cutoff carrier vs same-budget carrier,hourly,0.083579,0.049225,0.143731,-8.717075,second better
+HEEW Arizona,test,late,658,138,PatchTST,earlier-cutoff carrier vs same-budget carrier,hourly,0.003265,-0.019901,0.031089,-0.327034,not resolved
+HEEW Arizona,test,late,658,138,TimesFM (reference),anchored vs carrier alone,energy,-0.039494,-0.146755,0.130345,3.872429,not resolved
+HEEW Arizona,test,late,658,138,TimesFM (reference),anchored vs history only,energy,-0.197868,-0.394901,-0.035223,17.952176,first better
+HEEW Arizona,test,late,658,138,LSTM,anchored vs carrier alone,energy,-0.266373,-0.425821,-0.15934,23.384659,first better
+HEEW Arizona,test,late,658,138,LSTM,anchored vs history only,energy,0.033427,-0.092453,0.186594,-3.399193,not resolved
+HEEW Arizona,test,late,658,138,PatchTST,anchored vs carrier alone,energy,-0.05406,-0.174833,0.067301,5.262479,not resolved
+HEEW Arizona,test,late,658,138,PatchTST,anchored vs history only,energy,-0.180294,-0.347545,-0.034673,16.497539,first better
+HEEW Arizona,test,late,658,138,LSTM,earlier-cutoff carrier vs same-budget carrier,energy,0.164344,0.015592,0.360473,-17.861998,second better
+HEEW Arizona,test,late,658,138,PatchTST,earlier-cutoff carrier vs same-budget carrier,energy,-0.024785,-0.158797,0.135732,2.448018,not resolved
+EWELD,test,late,523,197,TimesFM (reference),anchored vs carrier alone,hourly,-0.026236,-0.055586,0.06556,2.589469,not resolved
+EWELD,test,late,523,197,TimesFM (reference),anchored vs history only,hourly,-0.459953,-0.72777,-0.227749,36.868685,first better
+EWELD,test,late,523,197,LSTM,anchored vs carrier alone,hourly,-0.06565,-0.091174,-0.039405,6.354173,first better
+EWELD,test,late,523,197,LSTM,anchored vs history only,hourly,0.604971,0.232531,1.835164,-83.119838,second better
+EWELD,test,late,523,197,PatchTST,anchored vs carrier alone,hourly,-0.022497,-0.041575,-0.000816,2.224601,first better
+EWELD,test,late,523,197,PatchTST,anchored vs history only,hourly,-0.108606,-0.553331,0.845692,10.291601,not resolved
+EWELD,test,late,523,197,LSTM,earlier-cutoff carrier vs same-budget carrier,hourly,0.127722,0.101405,0.194284,-13.623755,second better
+EWELD,test,late,523,197,PatchTST,earlier-cutoff carrier vs same-budget carrier,hourly,0.242807,0.21936,0.425598,-27.482226,second better
+EWELD,test,late,523,197,TimesFM (reference),anchored vs carrier alone,energy,-0.068405,-0.279699,0.146966,6.611775,not resolved
+EWELD,test,late,523,197,TimesFM (reference),anchored vs history only,energy,-0.766078,-1.082062,-0.424148,53.516723,first better
+EWELD,test,late,523,197,LSTM,anchored vs carrier alone,energy,-0.10455,-0.208067,0.008592,9.927056,not resolved
+EWELD,test,late,523,197,LSTM,anchored vs history only,energy,0.518331,0.127724,1.773908,-67.922292,second better
+EWELD,test,late,523,197,PatchTST,anchored vs carrier alone,energy,0.007644,-0.160814,0.153433,-0.76735,not resolved
+EWELD,test,late,523,197,PatchTST,anchored vs history only,energy,-0.334025,-0.75825,0.661471,28.39642,not resolved
+EWELD,test,late,523,197,LSTM,earlier-cutoff carrier vs same-budget carrier,energy,0.13796,0.024461,0.228178,-14.792957,second better
+EWELD,test,late,523,197,PatchTST,earlier-cutoff carrier vs same-budget carrier,energy,0.293094,0.190558,0.535141,-34.056945,second better
+GoiEner non-household,test,late,890,481,TimesFM (reference),anchored vs carrier alone,hourly,-0.056125,-0.081633,0.033586,5.457875,not resolved
+GoiEner non-household,test,late,890,481,TimesFM (reference),anchored vs history only,hourly,-0.285705,-0.39132,-0.213152,24.851561,first better
+GoiEner non-household,test,late,890,481,LSTM,anchored vs carrier alone,hourly,-0.133934,-0.168917,-0.095371,12.53521,first better
+GoiEner non-household,test,late,890,481,LSTM,anchored vs history only,hourly,-0.108657,-0.161982,-0.017677,10.296206,first better
+GoiEner non-household,test,late,890,481,PatchTST,anchored vs carrier alone,hourly,-0.073624,-0.095916,-0.019964,7.097871,first better
+GoiEner non-household,test,late,890,481,PatchTST,anchored vs history only,hourly,-0.172682,-0.236417,-0.066602,15.859511,first better
+GoiEner non-household,test,late,890,481,LSTM,earlier-cutoff carrier vs same-budget carrier,hourly,0.140184,0.070897,0.219165,-15.048604,second better
+GoiEner non-household,test,late,890,481,PatchTST,earlier-cutoff carrier vs same-budget carrier,hourly,0.027956,-0.008991,0.104957,-2.835039,not resolved
+GoiEner non-household,test,late,890,481,TimesFM (reference),anchored vs carrier alone,energy,-0.286577,-0.4818,-0.06467,24.917091,first better
+GoiEner non-household,test,late,890,481,TimesFM (reference),anchored vs history only,energy,-0.274757,-0.474605,-0.069927,24.024334,first better
+GoiEner non-household,test,late,890,481,LSTM,anchored vs carrier alone,energy,-0.232652,-0.413644,-0.055192,20.757091,first better
+GoiEner non-household,test,late,890,481,LSTM,anchored vs history only,energy,0.016713,-0.149032,0.289291,-1.68533,not resolved
+GoiEner non-household,test,late,890,481,PatchTST,anchored vs carrier alone,energy,-0.202468,-0.372977,-0.001406,18.328752,first better
+GoiEner non-household,test,late,890,481,PatchTST,anchored vs history only,energy,-0.153363,-0.365016,0.085641,14.218188,not resolved
+GoiEner non-household,test,late,890,481,LSTM,earlier-cutoff carrier vs same-budget carrier,energy,0.225707,-0.016852,0.492217,-25.320833,not resolved
+GoiEner non-household,test,late,890,481,PatchTST,earlier-cutoff carrier vs same-budget carrier,energy,0.068398,-0.143561,0.254209,-7.079177,not resolved
+GoiEner households,test,late,696,696,TimesFM (reference),anchored vs carrier alone,hourly,0.034497,0.002615,0.090248,-3.509875,second better
+GoiEner households,test,late,696,696,TimesFM (reference),anchored vs history only,hourly,-0.189882,-0.25821,-0.126518,17.294339,first better
+GoiEner households,test,late,696,696,LSTM,anchored vs carrier alone,hourly,-0.017942,-0.035378,0.009858,1.778203,not resolved
+GoiEner households,test,late,696,696,LSTM,anchored vs history only,hourly,-0.051285,-0.08822,-0.011301,4.999244,first better
+GoiEner households,test,late,696,696,PatchTST,anchored vs carrier alone,hourly,-0.00272,-0.012459,0.008385,0.271651,not resolved
+GoiEner households,test,late,696,696,PatchTST,anchored vs history only,hourly,-0.087722,-0.113896,-0.061988,8.398438,first better
+GoiEner households,test,late,696,696,LSTM,earlier-cutoff carrier vs same-budget carrier,hourly,0.034691,0.012016,0.066065,-3.529954,second better
+GoiEner households,test,late,696,696,PatchTST,earlier-cutoff carrier vs same-budget carrier,hourly,-0.01511,-0.025309,-0.008349,1.499664,first better
+GoiEner households,test,late,696,696,TimesFM (reference),anchored vs carrier alone,energy,-0.295795,-0.414936,-0.179801,25.606045,first better
+GoiEner households,test,late,696,696,TimesFM (reference),anchored vs history only,energy,0.017592,-0.175579,0.184232,-1.774807,not resolved
+GoiEner households,test,late,696,696,LSTM,anchored vs carrier alone,energy,-0.130712,-0.242567,0.020016,12.252987,not resolved
+GoiEner households,test,late,696,696,LSTM,anchored vs history only,energy,0.087924,-0.034261,0.191768,-9.19049,not resolved
+GoiEner households,test,late,696,696,PatchTST,anchored vs carrier alone,energy,-0.042957,-0.159216,0.09903,4.204779,not resolved
+GoiEner households,test,late,696,696,PatchTST,anchored vs history only,energy,0.015705,-0.127226,0.149697,-1.582885,not resolved
+GoiEner households,test,late,696,696,LSTM,earlier-cutoff carrier vs same-budget carrier,energy,0.097534,-0.072378,0.220098,-10.244935,not resolved
+GoiEner households,test,late,696,696,PatchTST,earlier-cutoff carrier vs same-budget carrier,energy,-0.043829,-0.142695,0.039983,4.288284,not resolved
+Oslo,preview,late,581,41,TimesFM (reference),anchored vs carrier alone,hourly,-0.116303,-0.152771,-0.07962,10.979485,first better
+Oslo,preview,late,581,41,TimesFM (reference),anchored vs history only,hourly,-0.079112,-0.140088,-0.020665,7.606393,first better
+Oslo,preview,late,581,41,LSTM,anchored vs carrier alone,hourly,-0.263418,-0.377917,-0.168418,23.157958,first better
+Oslo,preview,late,581,41,LSTM,anchored vs history only,hourly,-0.006544,-0.075017,0.063706,0.652249,not resolved
+Oslo,preview,late,581,41,PatchTST,anchored vs carrier alone,hourly,-0.076686,-0.111856,-0.04408,7.381979,first better
+Oslo,preview,late,581,41,PatchTST,anchored vs history only,hourly,-0.111181,-0.16268,-0.064857,10.522335,first better
+Oslo,preview,late,581,41,LSTM,earlier-cutoff carrier vs same-budget carrier,hourly,-0.067971,-0.107627,-0.023274,6.571251,first better
+Oslo,preview,late,581,41,PatchTST,earlier-cutoff carrier vs same-budget carrier,hourly,0.019948,-0.008551,0.054133,-2.014861,not resolved
+Oslo,preview,late,581,41,TimesFM (reference),anchored vs carrier alone,energy,-0.180708,-0.279061,-0.049771,16.53208,first better
+Oslo,preview,late,581,41,TimesFM (reference),anchored vs history only,energy,0.016078,-0.07414,0.121081,-1.620824,not resolved
+Oslo,preview,late,581,41,LSTM,anchored vs carrier alone,energy,-0.374603,-0.576152,-0.238738,31.243769,first better
+Oslo,preview,late,581,41,LSTM,anchored vs history only,energy,0.122663,0.017117,0.260326,-13.050328,second better
+Oslo,preview,late,581,41,PatchTST,anchored vs carrier alone,energy,-0.100785,-0.209541,0.009551,9.58723,not resolved
+Oslo,preview,late,581,41,PatchTST,anchored vs history only,energy,-0.085237,-0.217472,0.053022,8.170495,not resolved
+Oslo,preview,late,581,41,LSTM,earlier-cutoff carrier vs same-budget carrier,energy,-0.043695,-0.11008,0.016197,4.275424,not resolved
+Oslo,preview,late,581,41,PatchTST,earlier-cutoff carrier vs same-budget carrier,energy,-0.020967,-0.112003,0.092138,2.074904,not resolved
+Drammen,preview,late,689,43,TimesFM (reference),anchored vs carrier alone,hourly,-0.135574,-0.197263,-0.075744,12.678578,first better
+Drammen,preview,late,689,43,TimesFM (reference),anchored vs history only,hourly,-0.091841,-0.160123,-0.037182,8.774994,first better
+Drammen,preview,late,689,43,LSTM,anchored vs carrier alone,hourly,-0.158827,-0.200566,-0.119104,14.685607,first better
+Drammen,preview,late,689,43,LSTM,anchored vs history only,hourly,-0.050952,-0.11473,-0.002837,4.967524,first better
+Drammen,preview,late,689,43,PatchTST,anchored vs carrier alone,hourly,-0.081486,-0.131139,-0.04541,7.82545,first better
+Drammen,preview,late,689,43,PatchTST,anchored vs history only,hourly,-0.11954,-0.187714,-0.069143,11.267141,first better
+Drammen,preview,late,689,43,LSTM,earlier-cutoff carrier vs same-budget carrier,hourly,0.042119,0.018365,0.06388,-4.301827,second better
+Drammen,preview,late,689,43,PatchTST,earlier-cutoff carrier vs same-budget carrier,hourly,0.027158,0.004577,0.054471,-2.753036,second better
+Drammen,preview,late,689,43,TimesFM (reference),anchored vs carrier alone,energy,-0.228848,-0.496252,-0.073593,20.455088,first better
+Drammen,preview,late,689,43,TimesFM (reference),anchored vs history only,energy,-0.022736,-0.178611,0.126677,2.247981,not resolved
+Drammen,preview,late,689,43,LSTM,anchored vs carrier alone,energy,-0.136098,-0.302659,-0.019698,12.724323,first better
+Drammen,preview,late,689,43,LSTM,anchored vs history only,energy,-0.021003,-0.124742,0.11576,2.078406,not resolved
+Drammen,preview,late,689,43,PatchTST,anchored vs carrier alone,energy,-0.09658,-0.301136,-0.008118,9.206302,first better
+Drammen,preview,late,689,43,PatchTST,anchored vs history only,energy,-0.15606,-0.342626,-0.052757,14.449183,first better
+Drammen,preview,late,689,43,LSTM,earlier-cutoff carrier vs same-budget carrier,energy,0.016263,-0.024982,0.087823,-1.639611,not resolved
+Drammen,preview,late,689,43,PatchTST,earlier-cutoff carrier vs same-budget carrier,energy,0.034579,-0.040703,0.164186,-3.5184,not resolved
+CINELDI,preview,late,475,45,TimesFM (reference),anchored vs carrier alone,hourly,-0.067445,-0.10515,-0.02914,6.522079,first better
+CINELDI,preview,late,475,45,TimesFM (reference),anchored vs history only,hourly,-0.027584,-0.088515,0.021446,2.720674,not resolved
+CINELDI,preview,late,475,45,LSTM,anchored vs carrier alone,hourly,-0.129018,-0.189944,-0.083004,12.104217,first better
+CINELDI,preview,late,475,45,LSTM,anchored vs history only,hourly,0.007114,-0.034886,0.0549,-0.713964,not resolved
+CINELDI,preview,late,475,45,PatchTST,anchored vs carrier alone,hourly,-0.055615,-0.086917,-0.032341,5.409635,first better
+CINELDI,preview,late,475,45,PatchTST,anchored vs history only,hourly,-0.03532,-0.066014,0.001487,3.470368,not resolved
+CINELDI,preview,late,475,45,LSTM,earlier-cutoff carrier vs same-budget carrier,hourly,0.04189,0.011541,0.085485,-4.27798,second better
+CINELDI,preview,late,475,45,PatchTST,earlier-cutoff carrier vs same-budget carrier,hourly,0.020667,-0.007621,0.054943,-2.088224,not resolved
+CINELDI,preview,late,475,45,TimesFM (reference),anchored vs carrier alone,energy,-0.175335,-0.267204,-0.043875,16.082391,first better
+CINELDI,preview,late,475,45,TimesFM (reference),anchored vs history only,energy,-0.034283,-0.196231,0.086201,3.370207,not resolved
+CINELDI,preview,late,475,45,LSTM,anchored vs carrier alone,energy,-0.124588,-0.223916,-0.039702,11.713954,first better
+CINELDI,preview,late,475,45,LSTM,anchored vs history only,energy,-0.047462,-0.1346,0.036041,4.635297,not resolved
+CINELDI,preview,late,475,45,PatchTST,anchored vs carrier alone,energy,-0.10614,-0.200238,-0.033053,10.070153,first better
+CINELDI,preview,late,475,45,PatchTST,anchored vs history only,energy,-0.066362,-0.154999,0.040321,6.420757,not resolved
+CINELDI,preview,late,475,45,LSTM,earlier-cutoff carrier vs same-budget carrier,energy,0.067872,-0.009849,0.338525,-7.022875,not resolved
+CINELDI,preview,late,475,45,PatchTST,earlier-cutoff carrier vs same-budget carrier,energy,0.061849,-0.049904,0.175941,-6.38021,not resolved
+Suzhou park,preview,late,64,4,TimesFM (reference),anchored vs carrier alone,hourly,-0.11214,-0.192149,-0.020398,10.608122,first better
+Suzhou park,preview,late,64,4,TimesFM (reference),anchored vs history only,hourly,-0.069,-0.17733,0.022506,6.667335,not resolved
+Suzhou park,preview,late,64,4,LSTM,anchored vs carrier alone,hourly,-0.179869,-0.41467,-0.041191,16.462073,first better
+Suzhou park,preview,late,64,4,LSTM,anchored vs history only,hourly,-0.04338,-0.181987,0.094214,4.245277,not resolved
+Suzhou park,preview,late,64,4,PatchTST,anchored vs carrier alone,hourly,-0.202078,-0.316164,-0.08035,18.296912,first better
+Suzhou park,preview,late,64,4,PatchTST,anchored vs history only,hourly,-0.008467,-0.145233,0.183717,0.843119,not resolved
+Suzhou park,preview,late,64,4,LSTM,earlier-cutoff carrier vs same-budget carrier,hourly,0.026539,-0.046319,0.089035,-2.689447,not resolved
+Suzhou park,preview,late,64,4,PatchTST,earlier-cutoff carrier vs same-budget carrier,hourly,0.042427,-0.13409,0.213996,-4.33395,not resolved
+Suzhou park,preview,late,64,4,TimesFM (reference),anchored vs carrier alone,energy,-0.171997,-0.390676,0.02965,15.801818,not resolved
+Suzhou park,preview,late,64,4,TimesFM (reference),anchored vs history only,energy,-0.020876,-0.291213,0.263621,2.065944,not resolved
+Suzhou park,preview,late,64,4,LSTM,anchored vs carrier alone,energy,-0.160832,-0.355485,-0.007066,14.856501,first better
+Suzhou park,preview,late,64,4,LSTM,anchored vs history only,energy,-0.030972,-0.381098,0.278446,3.04975,not resolved
+Suzhou park,preview,late,64,4,PatchTST,anchored vs carrier alone,energy,-0.301276,-0.526806,-0.045716,26.012617,first better
+Suzhou park,preview,late,64,4,PatchTST,anchored vs history only,energy,0.036334,-0.265089,0.470738,-3.700258,not resolved
+Suzhou park,preview,late,64,4,LSTM,earlier-cutoff carrier vs same-budget carrier,energy,0.034732,-0.182329,0.238424,-3.534225,not resolved
+Suzhou park,preview,late,64,4,PatchTST,earlier-cutoff carrier vs same-budget carrier,energy,0.037842,-0.259155,0.354554,-3.856686,not resolved
