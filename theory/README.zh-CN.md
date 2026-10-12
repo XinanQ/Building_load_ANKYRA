@@ -50,7 +50,7 @@ python -m unittest discover -s theory -t .
 | P17 | [有限支撑中位数性质](PROOFS.md#peak) | 同类型日内水平不变、独立抽取、$((m-1)/m)^n<1/2$ | 包络估计的是什么 | `operators.max_lower_median` | `PeakTests` |
 | P18 | [非对称的峰值成本](PROOFS.md#peak)（标准） | 总是 | 在给定成本下选择峰值方法 | `operators.asymmetric_peak_cost` | `PeakTests` |
 | P19 | [合并汇总与单位等权汇总](PROOFS.md#estimands) | 总是（恒等式） | 为什么并列报告几种估计目标 | `ankyra.metrics.pooled_ratio_decomposition` | `EstimandTests` |
-| P20 | [候选选择的证据界](PROOFS.md#evidence-bound)（标准结果；零基准为恒等式） | 每个候选有 T 个伪起报点误差 | 为什么水平权重要收缩、为什么预测锚定收益的是记录统计量而不是权重 | `operators.aggregation_rate`、`operators.exchangeable_hit_rate` | `EvidenceBoundTests` |
+| P20 | [候选选择的证据界](PROOFS.md#evidence-bound)（标准结果；零基准为恒等式） | 每个候选有 T 个伪起报点误差 | 为强收缩水平权重提供统计背景（最坏情形的速率，不是在这批数据上的测量） | `operators.aggregation_rate`、`operators.exchangeable_hit_rate` | `EvidenceBoundTests` |
 
 `operators.*` 指本文件夹里的 [operators.py](operators.py)；`ankyra.*` 是预测器，P1、P3、P15 和 P19 由它自身的函数承载。检验名是 [test_operators.py](test_operators.py) 里的测试类，注明了文件夹的除外。
 
@@ -62,6 +62,6 @@ python -m unittest discover -s theory -t .
 - **电量与非负（P11–P13）。** 截断不会让任何一个小时变差，但没有映射能同时保持电量、非负和不增误差，所以电量在截断之前读出。（在关停窗口和微负荷窗口上，预测器原样返回基础模型的轨迹，不做截断。）
 - **峰值（P14–P18）。** 平滑预测的最大值会低估峰值，所以峰值从历史偏移包络读出；它有精确的标量形式、误差分解，以及在写明的工作分布下的中位数性质。
 - **估计目标（P19）。** 合并汇总和单位等权汇总可能因代数原因符号相反，所以评估并列报告单位等权 log 比、平均单位排名、合并比和常规指标。
-- **证据界（P20）。** 七个水平候选只凭至多六个伪起报点误差，无法可靠地区分：聚合的极小极大速率与误差本身同量级，按伪起报点误差选出的候选，实测命中率接近机会水平。所以权重要收缩；预测器报告的是与锚定收益有关的记录统计量（`anchoring_record`），而不声称选出了最好的候选。
+- **证据界（P20）。** 聚合的极小极大速率是最坏情形的结果：七个水平候选、至多六个伪起报点误差时，它按量级占误差方差的可观比例。它为强收缩权重提供统计背景；它不是在这批数据上的测量，单凭它也不能说明这里的候选无法区分。按伪起报点误差选出的候选的实测命中率另行描述（[PROOFS.md](PROOFS.md#evidence-bound)）：在六个历史候选中，多数人群上只略高于机会水平。预测器报告的记录统计量（`anchoring_record`）是在已读数据上、主要在人群之间的描述性指标；它们选自九个候选统计量，没有被证明能逐窗口预测收益。预测器不声称选出了最好的候选。
 
 1.1.1 及以前的版本里，这些算子是包内的 `ankyra.operators`，证明是 `docs/THEORY.md`；从 1.2.0 起它们放在这里，与预测器分开。

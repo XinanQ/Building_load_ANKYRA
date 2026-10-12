@@ -24,8 +24,8 @@ criterion fixed in advance.
 
 - [Another foundation model](#another-foundation-model): Chronos-2 in place of TimesFM; with the Chronos-2-X run, two foundation-model families in three configurations on the same windows.
 - [A population never used before](#a-population-never-used-before): the HKUST campus; one original first read, then added comparators, a carrier exploration and a causal correction.
-- [A pre-registered confirmation test (Helsinki)](#a-pre-registered-confirmation-test-helsinki): criteria fixed in advance; not confirmed.
-- [An external test of ANKYRA 2.1 (UNICON)](#an-external-test-of-ankyra-21-unicon): five university campuses in Australia; criteria fixed in advance; not confirmed on the primary criterion.
+- [A locally fixed test (Helsinki)](#a-locally-fixed-test-helsinki): protocol fixed and hashed locally before any load value was parsed, not publicly registered; not confirmed.
+- [An external test of ANKYRA 2.1 (UNICON)](#an-external-test-of-ankyra-21-unicon): five university campuses in Australia; protocol fixed and hashed locally before consumption values were parsed from the downloaded test files, not publicly registered; not confirmed on the primary criterion.
 - [A post-hoc exploration: ANKYRA anchored to Chronos-2-X](#a-post-hoc-exploration-ankyra-anchored-to-chronos-2-x): twelve populations; not a test.
 
 Numbers are improvements in the unit-equal log RMS ratio (positive = the first model has the lower error) with the
@@ -114,7 +114,7 @@ foundation model on 6 of 11 populations with TimesFM, 6 of 9 with Chronos-2 and 
 error, and on 7 of 11, 7 of 9 and 7 of 11 for monthly energy; the counts of the table above, the park included
 (7 of 12, 7 of 10 and 8 of 12; 8 of 12, 8 of 10 and 8 of 12), are descriptive. TimesFM is the carrier
 of the released forecaster. These runs show that the unit's history helps each of these carriers; they do not show
-what each carrier contributes beyond the history-only configuration, which was not a comparator here.
+whether the carrier-enabled configurations improve on the history-only configuration, which was not a comparator here.
 
 ## A population never used before
 
@@ -205,10 +205,17 @@ column `resolved_at_seed_20261004` is the reading under one bootstrap seed; see 
 `units_better_strict` counts units with a strictly lower summed error and so includes the three all-zero units for
 Chronos-2 (25 of the 30 non-zero units are better).
 
-## A pre-registered confirmation test (Helsinki)
+## A locally fixed test (Helsinki)
 
 **Question.** Does the frozen forecaster's advantage hold on a new, large population under criteria written before
 any load value is read?
+
+**Status of the test.** The protocol was fixed and hashed locally before any load value was parsed; it was not
+publicly registered. This page and the README call such a test a *locally fixed test*. Earlier versions of this
+repository called it a pre-registered confirmation test; the archived result files in `results/ankyra_2_0_1/` and
+`results/ankyra_2_1/` keep that label in the `test` field of `helsinki_criteria.json`. A later, prospective test on
+the same properties is a different test: it is registered and hashed locally, its public deposit is not yet
+complete, and it has no result yet.
 
 **Data.** Energy consumption of the City of Helsinki's service properties, Nuuka Open API (City of Helsinki, Urban
 Environment Division; licence listed as CC BY 4.0 in the catalogue; not confirmed on the dataset page, access refused from the study's network). Hourly electricity,
@@ -286,8 +293,11 @@ Temperature is ERA5 at one point per campus; Victorian public holidays are day t
 
 **Procedure.** The protocol fixed the model (package 2.1.0, defaults), the units, the grid, the eligibility rule, the
 14 forecasters of the Helsinki test, four descriptive arms, the estimand and the criteria. It was frozen with the
-hashes of the raw files after only the metadata and the timestamp and identifier columns had been read; no
-consumption value had been parsed. All forecasts were saved with a hash before any target was read, and the targets
+hashes of the raw files after only the metadata and the timestamp and identifier columns of the downloaded files
+had been read; no consumption value had been parsed from them. Before the download, the dataset page had been seen:
+its description, its column histograms (building number, time span, readings) and its sample of about 50 rows of
+one building. Like the Helsinki protocol, it was fixed and hashed locally and was not publicly
+registered. All forecasts were saved with a hash before any target was read, and the targets
 were scored once, with the frozen ANKYRA 2.1. The numbers below are ANKYRA 2.2 on the same targets (a re-evaluation,
 not a second test); the decisions and every verdict are the same as under 2.1, whose files are in
 `results/ankyra_2_1/`.

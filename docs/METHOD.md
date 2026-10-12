@@ -322,9 +322,12 @@ of data used before ([EVALUATION.md](EVALUATION.md#one-within-day-trust-per-wind
 **History-only configuration.** `forecast(..., foundation=None)` returns the history side alone: the six-candidate
 level and the daily path, with the same-day-type within-day default (eight most recent days of each type), no model
 candidate and no handover. It is a reduced configuration for ablation and for offline use without a foundation model.
-It was not one of the 21 forecasters of the main comparison; it is the comparator that shows what a carrier
-contributes ([EVALUATION.md](EVALUATION.md#trained-models-as-carriers)). The off-state and micro-load rules return
-the foundation model's forecast, so they do not apply in this configuration.
+It was not one of the 21 forecasters of the main comparison; it is the comparator of contrast (ii), the anchored
+forecaster against the history-only configuration ([EVALUATION.md](EVALUATION.md#trained-models-as-carriers)). The
+off-state and micro-load rules return the foundation model's forecast, so they do not apply in this configuration.
+Contrast (ii) measures the incremental performance of the carrier-enabled configuration. It does not isolate the
+carrier forecast's information, because the history-only configuration uses the day-type default rather than the
+analog-day shape and omits the state rules.
 
 Code: `ankyra/analog.py` (`AnalogShapes`, `within_trust`, `anchored_within_day`), `ankyra/core.py` (`forecast`).
 

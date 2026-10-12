@@ -25,8 +25,8 @@ Current package version: **2.2.1** (input validation only; forecasts of 2.2.0); 
 **The finding.** Two contrasts are reported side by side, because they answer different questions:
 
 - **(i) the combination against the carrier alone**: does the unit's own history help?
-- **(ii) the combination against the history-only configuration** (`foundation=None`): does the carrier supply
-  anything worth keeping?
+- **(ii) the combination against the history-only configuration** (`foundation=None`): is the carrier-enabled
+  configuration better than the history-only one?
 
 Improving a carrier and the carrier contributing are not the same thing. In the linear forecast-combination setting,
 one forecast encompasses another when the optimal combination assigns zero weight to the latter. The two contrasts
@@ -78,10 +78,12 @@ TimesFM reference, 10, 5 / 4 / 1, 6 / 4 / 0, 8 / 2 / 0 and 4 / 6 / 0; LSTM, 10, 
   every point estimate kept its direction (39 of 40 with the Suzhou park, whose PatchTST contrast went from resolved
   to not separated). This is one alternative budget, and some LSTM runs still reach the limit
   ([Robustness](#robustness-training-budget-of-the-trained-baselines)).
-- **The carrier has to contribute complementary information.** Contrast (ii) separates the carriers. With PatchTST the
-  combination is resolved better than the history-only configuration on 7 of the nine populations for hourly error,
-  close to the TimesFM reference (8 of 9); with the LSTM it is resolved better on 3, not separated on 5 and resolved
-  worse on 1.
+- **Whether the carrier-enabled configuration improves on history-only varies by carrier.** In hourly error the
+  carrier-enabled configurations outperformed the history-only configuration, resolved, on 8 of the nine populations
+  with TimesFM (the reference), 7 with PatchTST and 3 with the LSTM; with the LSTM 5 more are not separated and 1 is
+  resolved worse. Contrast (ii) measures the incremental performance of the carrier-enabled configuration. It does
+  not isolate the carrier forecast's information, because the history-only configuration uses the day-type default
+  rather than the analog-day shape and omits the state rules.
 - **How far this goes.** History-side gains were observed with both foundation-model families and both trained
   architectures tested. Under the single training-budget relaxation examined, all 36 comparison verdicts for the four
   trained baselines on the nine populations excluding the Suzhou park were unchanged. Fine-tuned foundation models
@@ -124,9 +126,12 @@ units without training or fine-tuning a neural network on each of them ([use it]
 
 **Where it stops.**
 
-- Two external tests whose criteria were fixed before any load value was read, on Helsinki service buildings and an
-  Australian campus (UNICON), did not meet their primary criterion (monthly energy resolved below TimesFM). At
-  Helsinki, Chronos-2 with covariates was resolved better.
+- Two external tests, on Helsinki service buildings and an Australian campus (UNICON), did not meet their primary
+  criterion (monthly energy resolved below TimesFM). At Helsinki, Chronos-2 with covariates was resolved better. The
+  Helsinki protocol was fixed and hashed locally before any load value was parsed, the UNICON protocol before
+  consumption values were parsed from the downloaded test files (the dataset page's sample of about 50 rows of one building
+  and its histogram of the readings had been seen);
+  neither was publicly registered. This page calls them *locally fixed tests*.
 - On Spanish households TimesFM alone has the lower hourly error, by 3.5% (late windows, resolved).
 - The trained-carrier runs are not on the footing of the main comparison: the carriers' training cutoff was moved half
   a year earlier, and on EWELD the off-state and micro-load rules return the carrier's forecast unchanged on 245 of
@@ -330,8 +335,13 @@ print(f.trajectory_kw.shape, f.energy_kwh)        # (744,) hourly forecast in kW
 - 2,832 hours: the level weights leave equal weights (two completed pseudo-origins).
 - 10,248 hours (about 14 months): the candidates that use the window one year earlier can be weighted.
 - The study's windows had at least 10,248 hours before the origin (the exceptions are in
-  [docs/DATA.md](docs/DATA.md#common-window-rules)), and the gain over TimesFM alone is resolved only from two years
-  of history.
+  [docs/DATA.md](docs/DATA.md#common-window-rules)).
+
+These counts are what the code requires. What the study observed by history length is a separate, descriptive
+matter: in the history-length strata pooled over the ten populations, the gain over TimesFM alone was not separated
+in the two strata below two years and was resolved in the two strata above. The strata differ in which populations
+they contain, so two years should not be read as a threshold common to the populations
+([Short histories](#results-on-six-test-populations); [table](docs/EVALUATION.md#history-length)).
 
 The other arguments of `ankyra.forecast`:
 
@@ -449,21 +459,24 @@ Full timings are in [`results/cost_per_window.csv`](results/cost_per_window.csv)
 
 ### When not to use it
 
-Use ANKYRA for hourly, month-ahead forecasts of buildings and non-household supply points with two or more years of
-history, above all when the monthly energy or the later weeks of the month matter. On the evidence of this page it is
-not the better choice in these cases:
+Use ANKYRA for hourly, month-ahead forecasts of buildings and non-household supply points, above all when the monthly
+energy or the later weeks of the month matter. The code runs from 1,344 complete hours of history
+([how much history](#the-inputs)); what was observed by history length is described below and is not a requirement.
+On the evidence of this page it is not the better choice in these cases:
 
 - **Households.** On GoiEner households zero-shot TimesFM has the lower hourly error (3.5%, resolved, late windows); on LCL
   households the two are not separated. ANKYRA's monthly energy error is still lower. The weakness does not come from
   TimesFM: with Chronos-2 as the carrier it is the same
   ([Carriers](#foundation-models-two-families-three-configurations)).
 - **The first days of the month.** On day 1 the zero-shot foundation models are lower on every population.
-- **Less than two years of history.** ANKYRA is not separated from TimesFM alone on the ten populations. On the
-  HKUST blind test, where most windows have less than two years, the hourly gain is borderline and the energy gain
-  is resolved.
+- **Short histories (a descriptive pattern, not a threshold).** In the history-length strata pooled over the ten
+  populations, ANKYRA is not separated from TimesFM alone in the two strata below two years and is resolved better
+  in the two strata above. The strata differ in which populations they contain, so two years should not be read as a
+  threshold common to the populations. On the HKUST blind test, where most windows have less than two years, the
+  hourly gain is borderline and the energy gain is resolved.
 - **Coarsely quantised meters.** Where the meter's step is a quarter of the mean load or more (HKUST, 11 units),
   ANKYRA's hourly error does not differ from TimesFM's.
-- **Against a covariate-informed foundation model on a new population.** On the Helsinki confirmation test
+- **Against a covariate-informed foundation model on a new population.** On the Helsinki locally fixed test
   ANKYRA's hourly and monthly energy errors are 5.6% and 13.6% higher than those of Chronos-2-X with temperature
   and calendar covariates, both resolved, mainly because Chronos-2-X forecast the monthly level better. The
   temperature-sensitivity measures tested did not support that explanation; the cause is not known. On the UNICON
@@ -520,6 +533,9 @@ The evidence for the first eight points is in the results sections below. The la
   specified. It is a *first read* if it was scored for the first time after the handover had been fixed. A
   *re-evaluation* scores windows that had been scored before.
 - **Frozen protocol**: the rule, the windows and the pass criteria were written down before the scoring.
+- **Locally fixed test**: a test whose protocol was fixed and hashed locally before the load values of its test files
+  were parsed; not publicly registered. The Helsinki and UNICON tests are of this kind (for UNICON, a sample of about
+  50 rows and a histogram of the readings on the dataset page had been seen before).
 - **Design sets**: the data on which a rule was selected: the three development populations and the pre-cutoff
   windows of the six test populations.
 
@@ -568,7 +584,7 @@ At an origin, ANKYRA uses only what is known at that moment.
     unchanged by the rule. The rule itself reads only load before the origin.
   - The 2.1 change (one within-day trust value per window instead of four) was chosen after all twelve populations had
     been scored with 2.0.1. Every 2.1 number on this page re-evaluates windows that had been read before and is not a
-    test, with one exception: the UNICON external test scored the frozen 2.1 once, on data not read before.
+    test, with one exception: the UNICON external test scored the frozen 2.1 once, on a population the project had not used before.
 
 **What the tests show, and what they do not.** The tests establish input isolation in the implementation: nothing
 recorded after the origin reaches the computation. They do not by themselves show that the inputs are free of later
@@ -855,10 +871,12 @@ for BDG2 the statement holds only with the rule.
   signal there (mean trust 0.08; 2.1: 0.07) and leaves the forecast as in 1.x.
   By per-unit rank the per-unit ridge is ahead of ANKYRA there, significantly so in a paired test; by block, the
   deficit to TimesFM sits in the daily path (−9%), not in the within-day shape.
-- **Short histories.** With less than two years of history ANKYRA is not separated from the foundation model alone
-  (−0.8% and +2.3% in the two shortest strata, pooled over ten populations, neither resolved; the second was −1.4%
-  under 2.0.0, before the BDG2 micro-load windows were handed to the model); with two or more years it is 6–8% better,
-  resolved ([details](docs/EVALUATION.md#history-length)).
+- **Short histories.** In the history-length strata pooled over the ten populations, ANKYRA is not separated from the
+  foundation model alone in the two strata below two years (−0.8% and +2.3%, neither resolved; the second was −1.4%
+  under 2.0.0, before the BDG2 micro-load windows were handed to the model) and is 6–8% better, resolved, in the two
+  strata with two or more years. The strata differ in which populations they contain (the short ones are mostly the
+  Spanish supply points, the long ones the campuses and municipal buildings), so two years should not be read as a
+  threshold common to the populations ([details](docs/EVALUATION.md#history-length)).
 - **A single large spike in the context.** A stress test on corrupted contexts shows ANKYRA at least as robust as the
   foundation model to gaps, zero-filled blocks and clock shifts, and exactly scale-equivariant under the tested
   rescalings (×0.5 and ×2 on Drammen windows). The off-state and micro-load thresholds are absolute values in kW, so
@@ -949,11 +967,14 @@ The released forecaster uses zero-shot TimesFM 2.5. This section collects the ru
 models first, then two models trained on the population. Two contrasts are read side by side:
 
 - **(i) anchored against the carrier alone**: does the unit's own history help?
-- **(ii) anchored against the history-only configuration** (`foundation=None`): does the carrier supply anything worth
-  keeping?
+- **(ii) anchored against the history-only configuration** (`foundation=None`): is the carrier-enabled configuration
+  better than the history-only one?
 
 The anchoring can improve every carrier it is given and still owe its result to the history side, so (i) alone does
-not show that a carrier contributes. In the linear forecast-combination setting, one forecast encompasses another
+not show that a carrier contributes. Contrast (ii) measures the incremental performance of the carrier-enabled
+configuration. It does not isolate the carrier forecast's information, because the history-only configuration uses
+the day-type default rather than the analog-day shape and omits the state rules. In the linear
+forecast-combination setting, one forecast encompasses another
 when the optimal combination assigns zero weight to the latter. The two contrasts here address the related question
 of incremental predictive value; they are not formal encompassing tests. An unresolved difference between two errors
 is not evidence of encompassing; the shrunk weights that ANKYRA uses are not test statistics for encompassing (on
@@ -1006,7 +1027,7 @@ not run.
 - **The finished forecaster's accuracy depends in part on the foundation model.** Anchored to Chronos-2, which is about as accurate as
   TimesFM, it is not separated from the TimesFM-anchored ANKYRA on any population on these windows (on all household
   windows, near-zero meters included, it is 2.8% worse). Anchored to the stronger Chronos-2-X it is
-  resolvably better on Cambridge, Oslo, Drammen, Helsinki, and on Helsinki it closes the gap of the confirmation test
+  resolvably better on Cambridge, Oslo, Drammen, Helsinki, and on Helsinki it closes the gap of the locally fixed test
   (+6.4% hourly, +12.7% energy against the TimesFM-anchored version).
 - **Limits.** Two foundation-model families in three configurations, not foundation models in general; the constants
   were selected under TimesFM; every population had been scored before, and the Chronos-2-X run is post hoc. Contrast
@@ -1063,12 +1084,13 @@ paired comparisons resolved better in contrast (i) for hourly error and 11 of 20
 - **Contrast (i): the unit's history helps both trained carriers.** The anchored forecaster is resolved better than
   the carrier alone in hourly error on 8 of 9 populations with the LSTM and 7 of 9 with PatchTST (15 of 18 paired
   comparisons) and in monthly energy on 6 of 9 and 3 of 9 (9 of 18), and in no comparison resolved worse.
-- **Contrast (ii): the two carriers differ.** Only with PatchTST is the finished forecaster resolved better than the
-  history-only configuration (`foundation=None`) on most populations (7 of 9 for hourly error), with counts close to
-  the TimesFM reference (8 of 9).
-  With the LSTM it is not separated from that configuration on most populations and is resolved worse on EWELD
-  (hourly and energy) and Oslo (energy). There the improvement comes mainly from the history side, and how good the
-  finished forecaster is depends in part on the carrier.
+- **Contrast (ii): the carrier-enabled configurations differ.** In hourly error the carrier-enabled configurations
+  outperformed the history-only configuration (`foundation=None`), resolved, on 8 of the nine populations with
+  TimesFM (the reference), 7 with PatchTST and 3 with the LSTM.
+  With the LSTM the other six are not separated on 5 and resolved worse on 1 (EWELD); in monthly energy the LSTM
+  configuration is resolved worse on EWELD and Oslo. There the improvement over the carrier comes mainly from the
+  history side, and how good the finished forecaster is depends in part on the carrier. This contrast compares
+  configurations and does not isolate the carrier forecast's information (see the head of this section).
 - **EWELD and the state rules.** On EWELD the off-state and micro-load rules return the carrier's forecast on 245 of
   523 windows; without those windows the EWELD contrasts with the history-only configuration are resolved in favour
   of the anchored forecaster for both carriers.
@@ -1082,7 +1104,8 @@ paired comparisons resolved better in contrast (i) for hourly error and 11 of 20
 
 - The compensation gain of contrast (i) appears with four foundation-model configurations and two trained carriers,
   and across populations. Whether the combination also improves on the history-only forecast, contrast (ii),
-  depends on the complementary information the carrier supplies.
+  depends on the complementary information the carrier supplies. Contrast (i) was evaluated across all six carrier
+  configurations; contrast (ii) was evaluated for TimesFM, LSTM and PatchTST on the late windows.
 - History-side gains were observed with both foundation-model families and both trained architectures tested. Under
   the single training-budget relaxation examined, all 36 comparison verdicts for the four trained baselines on the
   nine populations excluding the Suzhou park were unchanged. That relaxation is described in the
@@ -1203,11 +1226,12 @@ a carrier exploration and a correction of one constant (below) were added afterw
 *Figure 17. Two checks with the forecaster frozen, ANKYRA 2.2 (a: anchoring on either foundation model, ten
 populations; b, c: HKUST, ANKYRA against each comparator).*
 
-**A pre-registered confirmation test (Helsinki).** On 5 October 2026 the frozen forecaster was scored once on the
+**A locally fixed test (Helsinki).** On 5 October 2026 the frozen forecaster was scored once on the
 electricity of Helsinki's city service buildings (300 property codes drawn by hash; 201 units, 1,168 windows, eleven
-origins from November 2025 to September 2026, after the public release of both foundation models). The success
-criteria were written before any load value was parsed: monthly energy error resolvably below TimesFM's, and hourly
-error not resolvably above it. **The confirmation was not established.**
+origins from November 2025 to September 2026, after the public release of both foundation models). The protocol,
+with its success criteria, was fixed and hashed locally before any load value was parsed; it was not publicly
+registered. The criteria: monthly energy error resolvably below TimesFM's, and hourly error not resolvably above it.
+**The confirmation was not established.**
 
 - Monthly energy error is 6.2% below TimesFM's, but the interval crosses zero ([−0.168, +0.106] in log units): the
   primary criterion **failed**.
@@ -1220,21 +1244,24 @@ error not resolvably above it. **The confirmation was not established.**
   error and on 25 for energy to date, below Chronos-2-X on 3 and 6.
 
 Together with UNICON ([below](#external-test-of-the-frozen-21-unicon)) this is one of the two tests of the project
-with criteria fixed in advance and enough units to resolve them. It does not confirm the energy advantage over
+with criteria fixed in advance and enough units to resolve them; both were fixed locally and neither was publicly
+registered. It does not confirm the energy advantage over
 TimesFM seen on the ten populations and on HKUST
-([details](docs/FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki); `results/helsinki_confirmation.csv`,
+([details](docs/FROZEN_MODEL_CHECKS.md#a-locally-fixed-test-helsinki); `results/helsinki_confirmation.csv`,
 `results/helsinki_criteria.json`, `results/helsinki_by_day.csv`).
 
 ## External test of the frozen 2.1 (UNICON)
 
 On 6 October 2026 the frozen ANKYRA 2.1 (package 2.1.0) was scored once on UNICON: 64 building meters on the five
 campuses of La Trobe University (Victoria, Australia), 15-minute readings from 2018 to 2022. It is the first test of
-2.1 on data not read before. The numbers below re-read the same targets with ANKYRA 2.2, and both verdicts are the
+2.1 on a population the project had not used before. The numbers below re-read the same targets with ANKYRA 2.2, and both verdicts are the
 same (the 2.1 files are in [`results/ankyra_2_1/`](results/ankyra_2_1/)). The data are licensed CC BY-NC-SA 4.0
 (research use only) and are not redistributed here.
 
 - **Protocol.** The sample, the window rules, the 14 forecasters of the full-window comparison, the estimand and the
-  criteria (seed 20261006) were frozen before any reading was parsed. ANKYRA ran with all its defaults (category
+  criteria (seed 20261006) were frozen and hashed locally before consumption values were parsed from the downloaded test files
+  (the dataset page's sample of about 50 rows of one building and its histogram of the readings had been seen); the protocol was not
+  publicly registered. ANKYRA ran with all its defaults (category
   `Public`, `dst_region="none"`, a fixed UTC+10 grid). All forecasts were saved before any target was read, and the
   targets were scored once.
 - **Amendment 01.** Under the frozen complete-window rule no window qualified: short gaps are dense. The amendment was
@@ -1479,22 +1506,29 @@ the fourteen populations of this repository (the ten above, the development stor
 windows, 14,006 where the log ratio is defined) the realised gain of ANKYRA over TimesFM falls overall with both, though not from every decile to the next. Deciles are global over all windows; gains are the
 unit-equal log RMS ratio with its 95% unit-and-month interval ([`results/anchoring_gain_deciles.csv`](results/anchoring_gain_deciles.csv)).
 
-| `history_vs_carrier_log_ratio` decile | range | monthly-energy gain over TimesFM | hourly gain over TimesFM |
+| `history_vs_carrier_log_ratio` decile | range | monthly-level gain over TimesFM | hourly gain over TimesFM |
 |---|---|---|---|
 | 1 (history far better than the model at the pseudo-origins) | below -1.15 | +32% [-0.502, -0.211] | +3% [-0.069, -0.010] |
 | 2–5 | -1.15 to -0.30 | +25%, +18%, +17%, +9% | +3%, +3%, +2%, -0% |
 | 6–8 (history about as good as the model) | -0.30 to 0 | -1%, -6%, -3% | +0%, -7%, -4% [-0.002, +0.123] |
 | 9–10 (the model better at the pseudo-origins) | above 0 | +1%, +5% | -1%, -1% |
 
-By `carrier_level_weight` the picture is the same: the energy gain goes from +29% and +25% in the two lowest
-deciles (weight below 0.10) to -2% in the highest (weight above 0.34), where the hourly error is -5%
+The level gain is the gain in the error of the monthly level, the quantity behind the energy readout (the
+`level_*` columns of the file); the energy of the delivered trajectory can differ from it where the nonnegativity
+clip binds. By `carrier_level_weight` the picture is the same: the level gain goes from +29% and +25% in the two
+lowest deciles (weight below 0.10) to -2% in the highest (weight above 0.34), where the hourly error is -5%
 [-0.000, +0.165], unresolved (the interval reaches zero).
 
-How to read it. The relation holds *between* populations and units: the two populations on which pre-registered tests
-failed (Helsinki, UNICON) sit in the lower-gain half. Within one population the
+How to read it. The table describes data that had already been read. The two statistics were selected from nine
+candidate statistics on these same populations, and the carrier weight is the forecaster's own weight, so its
+association with the gain is partly mechanical. The relation holds *between* populations and units: the two
+populations on which the locally fixed tests failed (Helsinki, UNICON) sit in the lower-gain half of the log ratio.
+The selection criterion that asked for this was written after the two failures were known, so the agreement holds
+by construction and is not independent support. Within one population the
 correlation is weak (Spearman 0.1–0.3 on most, about zero on Helsinki), so the statistics say where anchoring is likely
-to pay, not which window will. A value of `history_vs_carrier_log_ratio` near or above zero, or a carrier weight above
-about 0.2, means the unit's own record gives no reason to expect a gain over the foundation model alone. The forecaster
+to pay, not which window will. As a descriptive pointer, a `history_vs_carrier_log_ratio` above about −0.3, or a
+carrier weight above about 0.18, places the unit in the deciles where the level gain was small and unresolved. These
+are decile ranges of the table, not a use switch validated on independent data. The forecaster
 does not act on these statistics: a per-window shrinkage rule built on them improved the development store and failed
 the validation populations ([P20](theory/README.md)); the weights stay as they are and the statistics are reported.
 
@@ -1574,12 +1608,14 @@ forecaster in their own folder, [theory/](theory/), which the forecaster does no
   error decomposition and a finite-support median property. Counterexamples mark where each stops.
 - **Estimands (P19).** Pooled and unit-equal summaries can disagree in sign for an algebraic reason, so the evaluation
   reports both, with the mean rank and conventional metrics.
-- **Evidence bound (P20).** Seven level candidates judged on at most six pseudo-origin errors cannot be told apart
-  reliably (the known minimax rates of aggregation, Nemirovski 2000 and Tsybakov 2003, are in order of magnitude a
-  sizeable fraction of the error variance at six pseudo-origins; on most populations the measured hit rate of the
-  pseudo-selected candidate is only a little above the chance rate of 1/6 among the six historical candidates). The
-  weights are shrunk for this reason, and the record statistics that indicate, between populations, where
-  anchoring pays are reported with each forecast ([`anchoring_record`](#what-comes-out)).
+- **Evidence bound (P20).** The known minimax rates of aggregation (Nemirovski 2000, Tsybakov 2003) are worst-case
+  orders: for seven level candidates and at most six pseudo-origin errors they are, in order of magnitude, a
+  sizeable fraction of the error variance. They are the statistical background for shrinking the weights strongly,
+  not a finding about these data. Measured separately, on most populations the hit rate of the pseudo-selected
+  candidate is only a little above the chance rate of 1/6 among the six historical candidates. The record statistics
+  reported with each forecast ([`anchoring_record`](#what-comes-out)) are descriptive indicators on data already
+  read, mainly between populations; they were selected from nine candidate statistics and have not been shown to
+  predict the gain window by window.
 
 Each is written as a function in `theory/operators.py` or carried by the forecaster's own functions (P1, P3, P15, P19),
 and checked by `python -m unittest discover -s theory -t .`.
@@ -1732,14 +1768,21 @@ package; with package 2.2.0 add `gap_tolerance=False` (the commands for 2.2.0 ar
   [Robustness: training budget](#robustness-training-budget-of-the-trained-baselines), wording); no number changed.
   The counts of these two re-evaluations and of the first table are stated on the nine main populations excluding the
   four-unit Suzhou park (plus the HKUST campus and Helsinki where a run covers them), with the counts that include
-  the park kept in the complete tables and their notes; no result file changed.
+  the park kept in the complete tables and their notes; no result file changed. The documentation was
+  then revised after a review of its wording: the Helsinki and UNICON tests are named by what they were (protocol fixed and
+  hashed locally before the load values of the test files were parsed; not publicly registered), contrast (ii) is described as a
+  comparison of configurations that does not isolate the carrier forecast's information, the anchoring-record table
+  is labelled as the monthly-level gain with its limits stated, the history-length strata are separated from the
+  input requirements, and the P20 passage separates the worst-case rate from the measured hit rate. No number
+  changed.
 - **2.2.1 (10 October 2026; forecasts unchanged)** — a non-finite value in a pseudo-origin foundation forecast (k ≥ 1)
   now raises `ValueError` (`_check_pseudo_forecasts`); before, it was accepted and that pseudo-origin's evidence was
   dropped silently, against the documented contract. Two tests added: the refusal, and the no-future-information
   property under the short-gap rule (gaps in pseudo contexts and a partially observed pseudo target). On finite inputs
   2.2.1 equals 2.2.0 bit for bit (reproduction check v8, `results/REPRODUCTION_CHECK.json`; the 2.2.0 record is kept
-  as `results/REPRODUCTION_CHECK_2_2_0.json`). The registered prospective Helsinki test names the code of tag
-  `v2.2.0`, whose forecasts are identical.
+  as `results/REPRODUCTION_CHECK_2_2_0.json`). The prospective Helsinki test (registered and hashed locally; its
+  public deposit is not yet complete, and it has no result yet) names the code of tag `v2.2.0`, whose forecasts are
+  identical.
   Documentation was corrected in the same release: docstrings and comments in `ankyra/` (no executable statement
   changed), [METHOD.md](docs/METHOD.md) (daily-path weights, what the short-gap rule reaches, constants),
   [theory/PROOFS.md](theory/PROOFS.md), notes in `results/`, and the count of theory checks (31, all run when
@@ -1798,10 +1841,11 @@ package; with package 2.2.0 add `gap_tolerance=False` (the commands for 2.2.0 ar
   foundation-model families in three configurations on the same windows (`results/carrier_swap_x.csv`,
   `results/carrier_swap_combined.csv`;
   [docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md#a-post-hoc-exploration-ankyra-anchored-to-chronos-2-x)).
-- **Pre-registered confirmation test (5 October 2026; forecaster unchanged)** — Helsinki city service buildings,
+- **Locally fixed test on Helsinki (5 October 2026; forecaster unchanged)** — protocol fixed and hashed locally
+  before any load value was parsed, not publicly registered. Helsinki city service buildings,
   201 units, scored with the frozen 2.0.1: monthly energy vs TimesFM +6.0%, interval crosses zero (primary criterion failed); hourly +4.3%, not
   resolved (secondary passed); ANKYRA's errors resolvably higher than Chronos-2-X's on both. Not confirmed
-  ([docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki)).
+  ([docs/FROZEN_MODEL_CHECKS.md](docs/FROZEN_MODEL_CHECKS.md#a-locally-fixed-test-helsinki)).
 - **HKUST comparators added (4–5 October 2026; forecaster unchanged)** — Chronos-2-X and TimesFM-X, then Holt-Winters,
   MSTL and the zero-shot GBT, scored against the frozen ANKYRA forecasts; per-day curves (`results/hkust_by_day.csv`,
   now the HKUST panel of Figures 9 and 9b).
@@ -1861,7 +1905,7 @@ reanalysis: Contains modified Copernicus Climate Change Service information [202
 - Harvey, D. I., Leybourne, S. J., Newbold, P. (1998). Tests for forecast encompassing. *Journal of Business &
   Economic Statistics* 16(2), 254–259.
 
-To cite the software, use [CITATION.cff](CITATION.cff) (package 2.2.1, tag `v2.2.1`; the frozen code of the registered prospective test is tag `v2.2.0`, forecasts identical); an archive DOI has not been
+To cite the software, use [CITATION.cff](CITATION.cff) (package 2.2.1, tag `v2.2.1`; the frozen code of the prospective Helsinki test, which is registered and hashed locally, with its public deposit not yet complete and no result yet, is tag `v2.2.0`, forecasts identical); an archive DOI has not been
 assigned yet.
 
 Questions and bug reports: the [issue tracker](https://github.com/XinanQ/Building_load_ANKYRA/issues).

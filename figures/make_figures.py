@@ -766,7 +766,7 @@ def _day_figure(panels, ylabel, energy, stem, caption):
 
 
 DAGGER = ("LCL: 21 forecasters on its 710 common late windows. \u2020 HKUST, Helsinki: 14 forecasters (no trained baselines), the windows where the ridge is defined.",
-          "\u2021 UNICON: external test (registered with the frozen 2.1; curves show 2.2), 14 forecasters.")
+          "\u2021 UNICON: locally fixed external test (frozen 2.1; curves: 2.2), 14 forecasters.")
 
 
 def fig_lead_days():

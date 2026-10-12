@@ -57,7 +57,7 @@ The others hold under the conditions in the third column. None is an accuracy gu
 | P17 | [Finite-support median property](PROOFS.md#peak) | constant levels within type, independent draws, $((m-1)/m)^n<1/2$ | what the envelope estimates | `operators.max_lower_median` | `PeakTests` |
 | P18 | [Asymmetric peak costs](PROOFS.md#peak) (standard) | always | choosing a peak method under a cost | `operators.asymmetric_peak_cost` | `PeakTests` |
 | P19 | [Pooled versus unit-equal summaries](PROOFS.md#estimands) | always (identity) | why several estimands are reported | `ankyra.metrics.pooled_ratio_decomposition` | `EstimandTests` |
-| P20 | [Evidence bound for choosing among candidates](PROOFS.md#evidence-bound) (standard; null benchmark is an identity) | T pseudo-origin errors per candidate | why the level weights are shrunk and why the record statistics, not the weights, predict the gain | `operators.aggregation_rate`, `operators.exchangeable_hit_rate` | `EvidenceBoundTests` |
+| P20 | [Evidence bound for choosing among candidates](PROOFS.md#evidence-bound) (standard; null benchmark is an identity) | T pseudo-origin errors per candidate | statistical background for shrinking the level weights strongly (a worst-case rate, not a measurement on these data) | `operators.aggregation_rate`, `operators.exchangeable_hit_rate` | `EvidenceBoundTests` |
 
 `operators.*` is [operators.py](operators.py) in this folder; `ankyra.*` is the forecaster, whose own functions carry
 P1, P3, P15 and P19. Check names are test classes in [test_operators.py](test_operators.py) unless a folder is given.
@@ -81,10 +81,15 @@ P1, P3, P15 and P19. Check names are test classes in [test_operators.py](test_op
   distribution.
 - **Estimands (P19).** Pooled and unit-equal summaries can disagree in sign for an algebraic reason, so the evaluation
   reports the unit-equal log ratio, the mean per-unit rank, the pooled ratio and conventional metrics together.
-- **Evidence bound (P20).** Seven level candidates judged on at most six pseudo-origin errors cannot be told apart
-  reliably: the minimax rate of aggregation is of the order of the error itself, and the measured hit rate of the
-  pseudo-selected candidate is close to chance. The weights are therefore shrunk, and the forecaster reports the record
-  statistics that do predict the gain of anchoring (`anchoring_record`) instead of claiming to select the best candidate.
+- **Evidence bound (P20).** The minimax rate of aggregation is a worst-case result: for seven level candidates and at
+  most six pseudo-origin errors its order is a sizeable fraction of the error variance. It is the statistical
+  background for shrinking the weights strongly; it is not a measurement on these data and does not by itself show
+  that the candidates cannot be told apart here. The measured hit rate of the pseudo-selected candidate is described
+  separately ([PROOFS.md](PROOFS.md#evidence-bound)): among the six historical candidates it is only a little above
+  chance on most populations. The record statistics that the forecaster reports (`anchoring_record`) are descriptive
+  indicators on data that had already been read, mainly between populations; they were selected from nine candidate
+  statistics and have not been shown to predict the gain window by window. The forecaster does not claim to select
+  the best candidate.
 
 Until release 1.1.1 the operators were part of the package as `ankyra.operators` and the proofs were `docs/THEORY.md`;
 from 1.2.0 they are kept here, apart from the forecaster.

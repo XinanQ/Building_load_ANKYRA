@@ -1,6 +1,6 @@
 {
- "test": "external test of ANKYRA 2.2 (re-evaluation of the external test of the frozen 2.1) on UNICON (La Trobe University, five campuses, Victoria, Australia); protocol frozen before any consumption value was read; amendment 01 (causal filling of gaps of at most 6 h in the inputs, written after the missingness was seen and before any forecast)",
- "model": "ANKYRA 2.2 (package 2.2.0); registered and first scored with the frozen ANKYRA 2.1, re-read with 2.2 (same decisions)",
+ "test": "external test of ANKYRA 2.2 (re-evaluation of the external test of the frozen 2.1) on UNICON (La Trobe University, five campuses, Victoria, Australia); protocol frozen and hashed locally before parsing consumption values from the downloaded test files (not publicly registered); amendment 01 (causal filling of gaps of at most 6 h in the inputs, written after the missingness was seen and before any forecast)",
+ "model": "ANKYRA 2.2 (package 2.2.0); protocol fixed and first scored with the frozen ANKYRA 2.1, re-read with 2.2 (same decisions)",
  "seed": 20261006,
  "primary": {
   "what": "monthly energy error vs TimesFM 2.5, upper end of 95% unit-and-month interval < 0",

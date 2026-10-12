@@ -61,7 +61,7 @@ population, and counts that include the park are descriptive.
 | The unit's history compensates the carrier's error, contrast (i) | `carrier_swap_combined.csv` (TimesFM, Chronos-2, Chronos-2-X), `long_context_carriers.csv` (TimesFM with a one-year context); `trained_carriers.csv` (LSTM, PatchTST) |
 | The gain does not depend on block-wise weighting | `component_contributions.csv` (rows of B2, one whole-window weight per unit) |
 | The comparison verdicts held under one relaxation of the training budget | `training_budget_sensitivity.csv` |
-| The carrier has to contribute complementary information, contrast (ii) | `trained_carriers.csv` (rows `anchored vs history only`), `trained_carriers_sensitivity.csv` |
+| Whether the carrier-enabled configuration improves on the history-only one varies by carrier, contrast (ii) | `trained_carriers.csv` (rows `anchored vs history only`), `trained_carriers_sensitivity.csv` |
 
 - Three changes were made to the forecaster after the test populations were first scored (for 1.x): the within-day
   anchoring of 2.0, whose numbers are a re-evaluation under a frozen protocol, the micro-load rule above, and the
@@ -569,7 +569,11 @@ Columns of the other files:
 2.2 over TimesFM on fourteen populations (14,177 windows, 14,006 with a defined log ratio: the ten of the main comparison, the GoiEner development store, HKUST,
 Helsinki and UNICON). Columns: `statistic`, `decile` (global over all windows), `lower_edge`, `upper_edge`, `windows`, `populations`,
 then the unit-equal log RMS improvement in per cent and the 95% unit-and-month interval of the log ratio for the monthly level
-(= monthly energy) and for the hourly error ([README section](../README.md#when-anchoring-is-expected-to-help)).
+(`level_*`: the quantity behind the energy readout; the energy of the delivered trajectory can differ where the
+nonnegativity clip binds) and for the hourly error (`hourly_*`). The table is descriptive: the two statistics were
+selected from nine candidate statistics on these populations, which had been read before, and the carrier weight is
+the forecaster's own weight, so its association with the gain is partly mechanical
+([README section](../README.md#when-anchoring-is-expected-to-help)).
 
 ## Checks with the forecaster frozen
 
@@ -596,17 +600,23 @@ per-unit ridge is defined: `hourly_gm_cv_pct` (Figure 9 definition) and `energy_
 definition), geometric means over the fixed set of `units_in_fixed_set` units (29). The HKUST panels of Figures 9 and
 9b; computed after scoring.
 
-**`helsinki_confirmation.csv`** — the pre-registered confirmation test on Helsinki city service buildings (201 units,
-1,168 windows; 200 units with non-zero load are scored), registered and first scored with the frozen 2.0.1 (its files
-are in `ankyra_2_0_1/`, the 2.1 re-reading in `ankyra_2_1/`); the numbers here re-read the same targets with ANKYRA 2.2, with the same verdicts. ANKYRA
+**`helsinki_confirmation.csv`** — the locally fixed test on Helsinki city service buildings (201 units,
+1,168 windows; 200 units with non-zero load are scored): its protocol was fixed and hashed locally before any load
+value was parsed and was not publicly registered. The criteria were fixed and the test first scored with the frozen 2.0.1 (its files
+are in `ankyra_2_0_1/`, the 2.1 re-reading in `ankyra_2_1/`; the `test` field of the archived `helsinki_criteria.json`
+in those two folders keeps the label used in earlier versions of this repository, "pre-registered confirmation", a historical wording
+that should be read as a protocol fixed locally and not publicly registered); the numbers here re-read the same targets with ANKYRA 2.2, with the same verdicts. ANKYRA
 against each of the other 13 forecasters, hourly and monthly energy error, with the 95% unit-and-month interval at
 seed 20261005. `helsinki_criteria.json` holds the two criteria and their outcome (primary failed, secondary passed;
 not confirmed) and the mean unit ranks of the 14. `helsinki_by_day.csv` holds the per-day curves (the Helsinki panels
 of Figures 9 and 9b; columns as in `hkust_by_day.csv`).
-[Details](../docs/FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki).
+[Details](../docs/FROZEN_MODEL_CHECKS.md#a-locally-fixed-test-helsinki).
 
 **`unicon_external.csv`** — the external test of the frozen ANKYRA 2.1 on UNICON (La Trobe University, five campuses,
-Victoria, Australia; licence CC BY-NC-SA 4.0, data not redistributed): 843 windows, 60 units, a first read with 2.1
+Victoria, Australia; licence CC BY-NC-SA 4.0, data not redistributed), with a protocol fixed and hashed locally
+before consumption values were parsed from the downloaded test files and not publicly registered (the `test` field
+of the archived `ankyra_2_1/unicon_criteria.json` keeps the earlier wording, "before any consumption value was
+read", which should be read in this narrower sense: the dataset page's sample of about 50 rows of one building and its histogram of the readings had been seen): 843 windows, 60 units, a first read with 2.1
 (its file is `ankyra_2_1/unicon_external.csv`); the file here re-reads the same targets with 2.2 (a re-evaluation,
 with the same verdicts). Columns:
 `error` (`hourly` or `energy`), `comparator`, `role` (`comparator`: the 13 other forecasters of the Helsinki test;
@@ -743,7 +753,9 @@ With the park's rows the first contrast gives 17 of 20 and 11 of 20 (descriptive
 - `contrast` (first vs second):
   - `anchored vs carrier alone`: the package with the carrier against the same carrier's own forecast;
   - `anchored vs history only`: the package with the carrier against the package's history-only configuration
-    (`foundation=None`) on the same windows;
+    (`foundation=None`) on the same windows. Contrast (ii) measures the incremental performance of the
+    carrier-enabled configuration. It does not isolate the carrier forecast's information, because the history-only
+    configuration uses the day-type default rather than the analog-day shape and omits the state rules;
   - `earlier-cutoff carrier vs same-budget carrier`: the carrier trained with the earlier cutoff against the same
     model trained with the cutoff of the main comparison and the same budget (the relaxed baseline of
     `training_budget_sensitivity.csv`), both alone. It measures what the earlier cutoff costs the carrier, and is not

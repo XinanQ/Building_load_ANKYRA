@@ -860,9 +860,10 @@ strata are mostly the Spanish supply points, the long ones the campuses and muni
 pattern is the same but weaker: on GoiEner non-household ANKYRA is 1.2% behind TimesFM below 10,248 hours and 5.1%
 ahead above; on Cambridge it is 1.9% ahead with under two years and 8.8–10.7% ahead with more; on households it is
 behind in both strata. The within-day anchoring adds nothing below 10,248 hours, where analog days are not yet
-available. **With less than two years of history ANKYRA is not separated from the foundation model alone** (−0.8% and +2.3%,
-intervals including zero), although it already improves on the fixed division by 8–15% (8–12% in 2.0.0); with two or
-more years it is resolved better than the foundation model by 6–8%.
+available. **In the two pooled strata with less than two years of history ANKYRA is not separated from the foundation model alone** (−0.8% and +2.3%,
+intervals including zero), although it already improves on the fixed division by 8–15% (8–12% in 2.0.0); in the two
+strata with two or more years it is resolved better than the foundation model by 6–8%. Because the strata differ in
+which populations they contain, two years should not be read as a threshold common to the populations.
 
 ### Why ANKYRA loses on Norwegian schools
 
@@ -1374,8 +1375,13 @@ The carrier swaps of [FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md#another-fou
 zero-shot foundation models only. Here the carrier is a model trained on the population: an LSTM and a PatchTST, the
 architectures of the baselines of those names. Two questions are asked of each. Does the anchoring improve the
 carrier? And is the finished forecaster better than the package without any carrier, its history-only configuration
-(`foundation=None`)? The second question shows whether the carrier contributes anything to the result. Improving a
+(`foundation=None`)? The second question shows whether the carrier-enabled configuration improves on the
+history-only one. Improving a
 carrier and the carrier contributing are different things, so the two contrasts are reported side by side.
+
+Contrast (ii) measures the incremental performance of the carrier-enabled configuration. It does not isolate the
+carrier forecast's information, because the history-only configuration uses the day-type default rather than the
+analog-day shape and omits the state rules.
 
 In the linear forecast-combination setting, one forecast encompasses another when the optimal combination assigns
 zero weight to the latter. The two contrasts here address the related question of incremental predictive value; they
@@ -1434,16 +1440,21 @@ excludes zero; a negative value means the anchored forecaster has the higher err
   comparisons), and in no case resolved worse, for hourly error or for monthly energy. The hourly cases not separated
   are the GoiEner households (both carriers) and BDG2 with PatchTST. For monthly energy 6 of 9 are resolved with the
   LSTM and 3 of 9 with PatchTST (9 of 18).
-- **Only with PatchTST is the finished forecaster resolved better than the history-only configuration.** With the
-  PatchTST carrier it is resolved better on 7 of 9 populations in hourly error and never resolved worse, counts
-  close to those of the TimesFM reference (8 of 9). With the LSTM carrier it is not separated from the history-only
+- **Against the history-only configuration: TimesFM 8 of 9, PatchTST 7 of 9, LSTM 3 of 9 resolved better in hourly
+  error.** With the
+  PatchTST carrier the finished forecaster is resolved better on 7 of 9 populations in hourly error and never resolved
+  worse, counts close to those of the TimesFM reference (8 of 9). With the LSTM carrier it is resolved better on 3
+  (GoiEner non-household, GoiEner households, Drammen), not separated from the history-only
   configuration on most populations (5 of 9 hourly, 7 of 9 for energy) and is resolved worse on EWELD (hourly and
   energy) and on Oslo (energy).
 - **Reading.** With the LSTM carrier the gain over the carrier comes mainly from the history side: the same package
   without any carrier is not separated from it on most populations. The anchoring improves each carrier it was
   given, but whether the combination goes on to improve on the history-only forecast depends on the complementary
   information the carrier supplies, as the finished forecasters also differed between foundation models
-  ([FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md#another-foundation-model)). History-side gains were observed
+  ([FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md#another-foundation-model)). These are comparisons of
+  configurations: the carrier-enabled configurations outperformed the history-only configuration on the counts
+  above, and the contrast does not isolate the carrier forecast's information (see the head of this section).
+  History-side gains were observed
   with both foundation-model families and both trained architectures tested. Under the single training-budget
   relaxation examined, all 36 comparison verdicts for the four trained baselines on the nine populations excluding
   the Suzhou park were unchanged. Fine-tuned foundation models were not compared, and some LSTM runs still reach the
@@ -1486,8 +1497,9 @@ Limits.
 - ANKYRA's constants were selected under TimesFM and not re-selected.
 - The intervals of BDG2 and EWELD are wide: a few near-zero or switched-off units dominate their unit means, and
   their percentages should not be quoted alone. The Suzhou park has four series.
-- 2 carriers × 9 populations × 2 errors give 36 intervals per contrast (40 with the Suzhou park); single resolved
-  cells are to be expected by chance, which is why the counts are reported.
+- 2 carriers × 9 populations × 2 errors give 36 intervals per contrast (40 with the Suzhou park). The counts are
+  descriptive summaries of the pairwise intervals, not a multiplicity-adjusted test or independent replications
+  across carriers.
 - Fine-tuned foundation models were not tried, as carriers or as baselines.
 - The anchoring is retraining-free, not free of computation: each window needs the carrier's forecasts at up to six
   pseudo-origins besides the origin, and the history side is fitted on the unit's record ([Cost](#cost)).
@@ -1612,12 +1624,15 @@ issued every 744 hours, or when a window is re-run.
     against Chronos-2-X in 2.0.0, 2.0.1 and 2.1 (+2.8% and −1.8% in 2.2), neither resolved. The number of resolved contrasts in that reading still
     depends on the rule (14 of 20 under 2.0.1, 2.1 and 2.2, 11 under 2.0.0).
   A meter that reads low but above 10⁻³ kW anywhere in its context is not covered by either rule.
-- **A pre-registered confirmation was not established.** On Helsinki city service buildings (201 units) monthly
+- **The locally fixed test on Helsinki was not confirmed.** Its protocol was fixed and hashed locally before any
+  load value was parsed; it was not publicly registered. On Helsinki city service buildings (201 units) monthly
   energy error is 6.2% below TimesFM's with an interval that includes zero, and ANKYRA's hourly and monthly energy
   errors are 5.6% and 13.6% higher than those of the covariate-informed Chronos-2-X, both resolved
-  ([FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md#a-pre-registered-confirmation-test-helsinki); 2.2 numbers, same
+  ([FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md#a-locally-fixed-test-helsinki); 2.2 numbers, same
   decisions as in the 2.0.1 test; 2.1: 6.0%, 6.0% and 13.9%).
-- **The external test of 2.1 was not confirmed.** On UNICON (60 building meters on five Australian campuses) monthly
+- **The external test of 2.1 was not confirmed.** Its protocol was fixed and hashed locally before consumption
+  values were parsed from the downloaded test files and was not
+  publicly registered. On UNICON (60 building meters on five Australian campuses) monthly
   energy error was 6.7% below TimesFM's under the tested 2.1 (4.4% under the 2.2 re-read) with an interval that includes zero, so the primary criterion failed, as on
   Helsinki; hourly, ANKYRA ranks first of 14 and is resolvably better than both covariate-informed foundation models,
   but not than TimesFM or Chronos-2, under both versions. Dense gaps left 2.1 with 0.51 of its 6 pseudo-origin pairs on average, so its
@@ -1638,9 +1653,11 @@ issued every 744 hours, or when a window is re-run.
   trained carriers (LSTM, PatchTST) were tested, not forecasters in general. The trained carriers were each trained
   with a cutoff half a year earlier than in the main comparison. The anchoring improves both over the carrier
   alone (15 of 18 paired comparisons for hourly error and 9 of 18 for monthly energy on the nine main populations
-  excluding the four-unit Suzhou park), but only with PatchTST is the finished forecaster resolved better than the
-  history-only configuration on most populations; with the LSTM it is mostly not separated from it and resolved worse on EWELD, where the state
-  rules return the carrier's forecast on almost half the windows. Fine-tuned foundation models were not tried as
+  excluding the four-unit Suzhou park). Against the history-only configuration the finished forecaster is resolved
+  better in hourly error on 7 of 9 populations with PatchTST and on 3 of 9 with the LSTM (TimesFM reference: 8 of 9);
+  with the LSTM it is not separated on 5 and resolved worse on EWELD, where the state
+  rules return the carrier's forecast on almost half the windows. This contrast compares configurations and does not
+  isolate the carrier forecast's information. Fine-tuned foundation models were not tried as
   carriers or as baselines ([Trained models as carriers](#trained-models-as-carriers); a re-evaluation).
 - **What the carrier runs do not show.** History-side gains were observed with both foundation-model families and
   both trained architectures tested. Under the single training-budget relaxation examined, all 36 comparison verdicts
