@@ -83,7 +83,12 @@ TimesFM reference, 10, 5 / 4 / 1, 6 / 4 / 0, 8 / 2 / 0 and 4 / 6 / 0; LSTM, 10, 
   with TimesFM (the reference), 7 with PatchTST and 3 with the LSTM; with the LSTM 5 more are not separated and 1 is
   resolved worse. Contrast (ii) measures the incremental performance of the carrier-enabled configuration. It does
   not isolate the carrier forecast's information, because the history-only configuration uses the day-type default
-  rather than the analog-day shape and omits the state rules.
+  rather than the analog-day shape and omits the state rules. A control that runs the same procedure with the
+  history-only forecast in the carrier's place removes these differences (contrast (ii-c)): against it the
+  carrier-enabled configuration is resolved better in hourly error on 6 of the nine populations with TimesFM, 6 with
+  PatchTST and 1 with the LSTM. Split by block, the resolved gains of contrast (ii) are most frequent in the
+  within-day block (7, 6 and 3 populations, against 4, 3 and 0 in the level)
+  ([details](docs/EVALUATION.md#contrast-ii-by-block-and-a-carrier-free-control); both analyses are post hoc).
 - **How far this goes.** History-side gains were observed with both foundation-model families and both trained
   architectures tested. Under the single training-budget relaxation examined, all 36 comparison verdicts for the four
   trained baselines on the nine populations excluding the Suzhou park were unchanged. Fine-tuned foundation models
@@ -462,6 +467,12 @@ Full timings are in [`results/cost_per_window.csv`](results/cost_per_window.csv)
 Use ANKYRA for hourly, month-ahead forecasts of buildings and non-household supply points, above all when the monthly
 energy or the later weeks of the month matter. The code runs from 1,344 complete hours of history
 ([how much history](#the-inputs)); what was observed by history length is described below and is not a requirement.
+What the carrier adds depends on what is read from the forecast: with TimesFM, the resolved gain of the released
+configuration over a carrier-free control is more frequent for the hourly trajectory (6 of the nine populations)
+than for the monthly level (4 of 9), and when only the monthly energy is needed, the history-only configuration
+(`foundation=None`) is not separated from the released configuration on 5 of the nine populations and is resolved
+worse on 4. This does not show that the carrier can be left out
+([details](docs/EVALUATION.md#contrast-ii-by-block-and-a-carrier-free-control); post hoc).
 On the evidence of this page it is not the better choice in these cases:
 
 - **Households.** On GoiEner households zero-shot TimesFM has the lower hourly error (3.5%, resolved, late windows); on LCL
@@ -507,6 +518,10 @@ The evidence for the first eight points is in the results sections below. The la
 - **Carrier**: the forecaster whose forecasts ANKYRA anchors, passed to `ankyra.forecast` as `foundation`. In the
   released configuration it is zero-shot TimesFM 2.5, and "the foundation model" on this page means that carrier
   unless another one is named. Other carriers are reported under [Carriers](#carriers).
+- **Carrier-free control**: a control used in the evaluation, not a mode of the package: the same procedure with the
+  history-only configuration's own forecast (`foundation=None`) in the carrier's place, at the origin and at the six
+  pseudo-origins. *Contrast (ii-c)* is the carrier-enabled configuration against it; the two sides differ only in
+  the forecast in the carrier's place ([Carriers](#trained-carriers-lstm-and-patchtst)).
 - **Context**: the 1,344 hours (eight weeks) of load before an origin; the foundation model's only input.
 - **Window**: one origin of one unit, with its context and its 744-hour target.
 - **Pseudo-origin**: an earlier origin inside the unit's own record, 744, 1,488, … hours before the origin, whose
@@ -973,7 +988,9 @@ models first, then two models trained on the population. Two contrasts are read 
 The anchoring can improve every carrier it is given and still owe its result to the history side, so (i) alone does
 not show that a carrier contributes. Contrast (ii) measures the incremental performance of the carrier-enabled
 configuration. It does not isolate the carrier forecast's information, because the history-only configuration uses
-the day-type default rather than the analog-day shape and omits the state rules. In the linear
+the day-type default rather than the analog-day shape and omits the state rules. A control that runs the same
+procedure with the history-only forecast in the carrier's place removes these differences (contrast (ii-c),
+[below](#trained-carriers-lstm-and-patchtst)). In the linear
 forecast-combination setting, one forecast encompasses another
 when the optimal combination assigns zero weight to the latter. The two contrasts here address the related question
 of incremental predictive value; they are not formal encompassing tests. An unresolved difference between two errors
@@ -982,8 +999,9 @@ forecast encompassing: Chong and Hendry, 1986; Harvey, Leybourne and Newbold, 19
 [references](#license-and-acknowledgements)). Each contrast is read by its 95% unit-and-month interval, as everywhere
 on this page. Counts are given on the nine main populations excluding the four-unit Suzhou park, plus the HKUST campus
 and Helsinki where a run covers them; the counts that include the park are kept in the complete tables and their
-notes as descriptive statistics. Contrast (ii) was computed for the two trained carriers and
-for the released TimesFM configuration; for the other foundation-model configurations there is contrast (i) and the
+notes as descriptive statistics. Contrast (ii), its split by block and contrast (ii-c) were computed for the two
+trained carriers and for the released TimesFM configuration; for the other foundation-model configurations there is
+contrast (i) and the
 comparison of the finished forecasters with each other. Every number in this section re-evaluates populations that
 had been read before.
 
@@ -1091,6 +1109,25 @@ paired comparisons resolved better in contrast (i) for hourly error and 11 of 20
   configuration is resolved worse on EWELD and Oslo. There the improvement over the carrier comes mainly from the
   history side, and how good the finished forecaster is depends in part on the carrier. This contrast compares
   configurations and does not isolate the carrier forecast's information (see the head of this section).
+- **Contrast (ii) by block, and contrast (ii-c)** (added 13 October 2026; post hoc, each under a protocol fixed
+  before it was computed; re-evaluations). Split by block, the carrier-enabled configuration is resolved better than
+  the history-only configuration most often in the within-day block: on 7, 6 and 3 of the nine populations with
+  TimesFM, PatchTST and the LSTM (level: 4, 3 and 0; daily path: 4, 1 and 0). The *carrier-free control* is the same
+  procedure with the history-only configuration's own forecast in the carrier's place, at the origin and at the six
+  pseudo-origins; the package is called unchanged. It is resolved better than the history-only configuration in
+  hourly error on 8 of the nine populations (1.0–7.3%), so part of contrast (ii) is obtained without a carrier. In
+  contrast (ii-c), the carrier-enabled configuration against that control, both sides run the same procedure and
+  differ only in the forecast in the carrier's place. With TimesFM it is resolved better in hourly error on 6 of the
+  nine populations (5.3–43.7%; 5.3–15.3% without the windows on which a state rule fires) and not separated on Oslo,
+  Drammen and CINELDI; with PatchTST it is resolved better on 6; neither is resolved worse on any. With the LSTM as
+  carrier, anchoring lowered the carrier's error on eight of nine populations, but the same procedure run on the
+  history-only forecast was not resolved worse on eight (resolved better on three); the LSTM forecast itself added
+  to it on one. In contrast (ii-c) the forecast in the carrier's place enters the level, the handover and the
+  within-day mixture at once, and the contrast does not separate the three; the counts are descriptive summaries,
+  not multiplicity-adjusted tests
+  ([`results/contrast_ii_blocks.csv`](results/contrast_ii_blocks.csv),
+  [`results/contrast_ii_control.csv`](results/contrast_ii_control.csv);
+  [details](docs/EVALUATION.md#contrast-ii-by-block-and-a-carrier-free-control)).
 - **EWELD and the state rules.** On EWELD the off-state and micro-load rules return the carrier's forecast on 245 of
   523 windows; without those windows the EWELD contrasts with the history-only configuration are resolved in favour
   of the anchored forecaster for both carriers.
@@ -1105,7 +1142,10 @@ paired comparisons resolved better in contrast (i) for hourly error and 11 of 20
 - The compensation gain of contrast (i) appears with four foundation-model configurations and two trained carriers,
   and across populations. Whether the combination also improves on the history-only forecast, contrast (ii),
   depends on the complementary information the carrier supplies. Contrast (i) was evaluated across all six carrier
-  configurations; contrast (ii) was evaluated for TimesFM, LSTM and PatchTST on the late windows.
+  configurations; contrast (ii) was evaluated for TimesFM, LSTM and PatchTST on the late windows. Contrast (ii)
+  compares complete configurations (resolved better in hourly error on 8, 7 and 3 of the nine populations with
+  TimesFM, PatchTST and the LSTM); contrast (ii-c), in which both sides run the same procedure and only the forecast
+  in the carrier's place differs, gives 6, 6 and 1 on the same carriers and windows.
 - History-side gains were observed with both foundation-model families and both trained architectures tested. Under
   the single training-budget relaxation examined, all 36 comparison verdicts for the four trained baselines on the
   nine populations excluding the Suzhou park were unchanged. That relaxation is described in the
@@ -1642,7 +1682,7 @@ and checked by `python -m unittest discover -s theory -t .`.
   [results/REPRODUCTION_CHECK_2_0_1.json](results/REPRODUCTION_CHECK_2_0_1.json); the 2.0.0 and 1.x records are
   [results/ankyra_2_0_0/REPRODUCTION_CHECK.json](results/ankyra_2_0_0/REPRODUCTION_CHECK.json) and
   [results/ankyra_1x/REPRODUCTION_CHECK.json](results/ankyra_1x/REPRODUCTION_CHECK.json).
-- `results/` holds every scored statistic behind the figures and tables. Most files are ANKYRA 2.2; files not re-exported for 2.2 keep the version they were measured on: the three carrier-swap files (`carrier_swap.csv`, `carrier_swap_x.csv`, `carrier_swap_combined.csv`), `component_contributions.csv`, `constants_sensitivity.csv`, `robustness.csv` and `intervals_winkler_contrasts.csv` were measured with 2.1 (short-gap rule off), `cost_per_window.csv` with 2.0.0 and `handover_granularity.csv` with 1.x, and `bdg2_micro_load_windows.csv` compares 2.0.0 with 2.0.1. The two experiments added afterwards (`long_context_carriers.csv`, `generic_combinations.csv`) use 2.2, and so do the three files added on 12 October 2026 (`training_budget_sensitivity.csv`, `trained_carriers.csv`, `trained_carriers_sensitivity.csv`). Each file's entry in [results/README.md](results/README.md) names its version. The LCL (`lcl_*`), HKUST
+- `results/` holds every scored statistic behind the figures and tables. Most files are ANKYRA 2.2; files not re-exported for 2.2 keep the version they were measured on: the three carrier-swap files (`carrier_swap.csv`, `carrier_swap_x.csv`, `carrier_swap_combined.csv`), `component_contributions.csv`, `constants_sensitivity.csv`, `robustness.csv` and `intervals_winkler_contrasts.csv` were measured with 2.1 (short-gap rule off), `cost_per_window.csv` with 2.0.0 and `handover_granularity.csv` with 1.x, and `bdg2_micro_load_windows.csv` compares 2.0.0 with 2.0.1. The two experiments added afterwards (`long_context_carriers.csv`, `generic_combinations.csv`) use 2.2, and so do the three files added on 12 October 2026 (`training_budget_sensitivity.csv`, `trained_carriers.csv`, `trained_carriers_sensitivity.csv`) and the three added on 13 October 2026 (`contrast_ii_blocks.csv`, `contrast_ii_control.csv`, `contrast_ii_control_description.csv`). Each file's entry in [results/README.md](results/README.md) names its version. The LCL (`lcl_*`), HKUST
   (`hkust_*`), Helsinki (`helsinki_*`) and UNICON (`unicon_*`) files are 2.2 re-reads; the first three were first scored with
   2.0.1, whose files are in `results/ankyra_2_0_1/` (with `lcl_audit.json`, moved there), UNICON with 2.1, whose files
   are in `results/ankyra_2_1/` with every other 2.1 file;
@@ -1758,7 +1798,7 @@ Each entry describes its release as it was. A switch named in an entry reproduce
 package; with package 2.2.0 add `gap_tolerance=False` (the commands for 2.2.0 are under
 [What changed](#what-changed-in-20-201-21-and-22)).
 
-- **After 2.2.1 (12 October 2026; records only, the package is still 2.2.1 and the forecaster is unchanged)** — two
+- **After 2.2.1 (12 and 13 October 2026; records only, the package is still 2.2.1 and the forecaster is unchanged)** — two
   re-evaluations on the ten populations were added to the results and the documentation: the training budget of the
   four load-only trained baselines (`results/training_budget_sensitivity.csv`) and two trained models, LSTM and
   PatchTST, in the carrier position (`results/trained_carriers.csv`, `results/trained_carriers_sensitivity.csv`);
@@ -1774,7 +1814,11 @@ package; with package 2.2.0 add `gap_tolerance=False` (the commands for 2.2.0 ar
   comparison of configurations that does not isolate the carrier forecast's information, the anchoring-record table
   is labelled as the monthly-level gain with its limits stated, the history-length strata are separated from the
   input requirements, and the P20 passage separates the worst-case rate from the measured hit rate. No number
-  changed.
+  changed. On 13 October 2026 two post-hoc re-evaluations were added as records: contrast (ii) split by block
+  (`results/contrast_ii_blocks.csv`) and a carrier-free control with contrast (ii-c)
+  (`results/contrast_ii_control.csv`, `results/contrast_ii_control_description.csv`; new section in
+  [EVALUATION.md](docs/EVALUATION.md#contrast-ii-by-block-and-a-carrier-free-control) and entries in
+  [results/README.md](results/README.md)). The package and every existing number are unchanged.
 - **2.2.1 (10 October 2026; forecasts unchanged)** — a non-finite value in a pseudo-origin foundation forecast (k ≥ 1)
   now raises `ValueError` (`_check_pseudo_forecasts`); before, it was accepted and that pseudo-origin's evidence was
   dropped silently, against the documented contract. Two tests added: the refusal, and the no-future-information

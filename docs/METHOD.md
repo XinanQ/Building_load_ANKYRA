@@ -327,7 +327,12 @@ forecaster against the history-only configuration ([EVALUATION.md](EVALUATION.md
 off-state and micro-load rules return the foundation model's forecast, so they do not apply in this configuration.
 Contrast (ii) measures the incremental performance of the carrier-enabled configuration. It does not isolate the
 carrier forecast's information, because the history-only configuration uses the day-type default rather than the
-analog-day shape and omits the state rules.
+analog-day shape and omits the state rules. The evaluation therefore also uses a *carrier-free control*: the
+unchanged package called with this configuration's own forecasts, at the origin and at the six pseudo-origins, in
+the carrier's place (as the `foundation` mapping), so that the control runs the same procedure as a carrier-enabled
+configuration; on a window where a state rule fires it equals the history-only forecast. It is a control of the
+evaluation (contrast (ii-c): the carrier-enabled configuration against it), not a mode of the package
+([EVALUATION.md](EVALUATION.md#contrast-ii-by-block-and-a-carrier-free-control)).
 
 Code: `ankyra/analog.py` (`AnalogShapes`, `within_trust`, `anchored_within_day`), `ankyra/core.py` (`forecast`).
 

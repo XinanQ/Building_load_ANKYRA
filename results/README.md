@@ -8,7 +8,9 @@ measured with 2.1 (short-gap rule off; the Winkler file also has 2.0.1 and 2.0.0
 2.0.0 and `handover_granularity.csv` with 1.x, and `bdg2_micro_load_windows.csv` compares 2.0.0 with 2.0.1. The two
 experiments added afterwards, `long_context_carriers.csv` and `generic_combinations.csv`, use 2.2, and so do the three
 files added on 12 October 2026, `training_budget_sensitivity.csv`, `trained_carriers.csv` and
-`trained_carriers_sensitivity.csv` (package 2.2.1, whose forecasts are those of 2.2.0). `hkust_*`, `helsinki_*` and `lcl_*` were first scored with the frozen
+`trained_carriers_sensitivity.csv`, and the three added on 13 October 2026, `contrast_ii_blocks.csv`,
+`contrast_ii_control.csv` and `contrast_ii_control_description.csv` (package 2.2.1, whose forecasts are those of
+2.2.0). `hkust_*`, `helsinki_*` and `lcl_*` were first scored with the frozen
 2.0.1; the files here re-read the same targets with 2.2 (re-evaluations; the verdicts are those of the first scoring;
 two borderline HKUST contrasts whose 2.2 re-read intervals end just below zero are noted in its entry), the 2.1 re-readings are in [`ankyra_2_1/`](ankyra_2_1/) and the 2.0.1
 versions in [`ankyra_2_0_1/`](ankyra_2_0_1/). `unicon_*` was the external test of the frozen 2.1 (those files are in
@@ -33,7 +35,10 @@ HKUST and Helsinki are panels of Figures 9 and 9b, with LCL and UNICON. **Added 
 ([below](#long-context-foundation-models-and-generic-combinations)). **Added on 12 October 2026** (ANKYRA 2.2,
 package 2.2.1; no existing file changed): `training_budget_sensitivity.csv`, `trained_carriers.csv` and
 `trained_carriers_sensitivity.csv`
-([below](#training-budget-of-the-trained-baselines-and-trained-models-as-carriers)).
+([below](#training-budget-of-the-trained-baselines-and-trained-models-as-carriers)). **Added on 13 October 2026**
+(ANKYRA 2.2, package 2.2.1; post-hoc re-evaluations; no existing file changed): `contrast_ii_blocks.csv`,
+`contrast_ii_control.csv` and `contrast_ii_control_description.csv`
+([below](#contrast-ii-by-block-and-a-carrier-free-control)).
 
 - **What differs from 2.0.1.** The within-day block and everything computed from the delivered trajectory: hourly
   errors, ranks, intervals, the trajectory peak, and delivered energy where the projection onto nonnegative load binds.
@@ -54,14 +59,16 @@ trained baselines are not in the repository.
 forecaster against its carrier alone and (ii) against the history-only configuration. The README and
 [EVALUATION.md](../docs/EVALUATION.md) count resolved contrasts on the nine main populations excluding the four-unit
 Suzhou park (plus the HKUST campus and Helsinki where a file covers them); the files keep the rows of every
-population, and counts that include the park are descriptive.
+population, and counts that include the park are descriptive. Contrast (ii) compares two complete configurations;
+a control that runs the same procedure with the history-only forecast in the carrier's place gives contrast (ii-c),
+in which only the forecast in the carrier's place differs.
 
 | Claim | Files (foundation models first, trained carriers after) |
 |---|---|
 | The unit's history compensates the carrier's error, contrast (i) | `carrier_swap_combined.csv` (TimesFM, Chronos-2, Chronos-2-X), `long_context_carriers.csv` (TimesFM with a one-year context); `trained_carriers.csv` (LSTM, PatchTST) |
 | The gain does not depend on block-wise weighting | `component_contributions.csv` (rows of B2, one whole-window weight per unit) |
 | The comparison verdicts held under one relaxation of the training budget | `training_budget_sensitivity.csv` |
-| Whether the carrier-enabled configuration improves on the history-only one varies by carrier, contrast (ii) | `trained_carriers.csv` (rows `anchored vs history only`), `trained_carriers_sensitivity.csv` |
+| Whether the carrier-enabled configuration improves on the history-only one varies by carrier, contrast (ii) | `trained_carriers.csv` (rows `anchored vs history only`), `trained_carriers_sensitivity.csv`; by block: `contrast_ii_blocks.csv`; with the same procedure on both sides, contrast (ii-c): `contrast_ii_control.csv` (rows `anchored vs carrier-free control`) |
 
 - Three changes were made to the forecaster after the test populations were first scored (for 1.x): the within-day
   anchoring of 2.0, whose numbers are a re-evaluation under a frozen protocol, the micro-load rule above, and the
@@ -781,6 +788,104 @@ are as above:
 
 A population has rows for an `analysis` only where that subset differs from the full set of its late windows; where
 it does not, the row of `trained_carriers.csv` applies.
+
+## Contrast (ii) by block, and a carrier-free control
+
+Two descriptive analyses added on 13 October 2026. Both were made after contrast (ii) had been seen (the second
+after the first), each under a protocol fixed and hashed before it was computed (one implementation each, no pass
+line, nothing tuned). All ten populations had been scored before, so every number is a re-evaluation of read data,
+not a test. Nothing was trained; the package is unchanged (2.2.1, the forecasts of ANKYRA 2.2) and no existing file,
+table or figure was replaced. Windows, carriers, estimand and interval are those of `trained_carriers.csv`: the late
+windows of `datasets.csv`; `TimesFM` (the scored ANKYRA 2.2 and zero-shot TimesFM, the `TimesFM (reference)` of that
+file), `LSTM` and `PatchTST` (the trained carriers of that file, with their earlier training cutoff); the unit-equal
+log RMS ratio with its 95% unit-and-month bootstrap interval, 2,000 draws, a new generator for each contrast. Values
+are copied from the scoring records as printed there (six decimals; `improvement_pct` with four). Details:
+[Contrast (ii) by block, and a carrier-free control](../docs/EVALUATION.md#contrast-ii-by-block-and-a-carrier-free-control).
+
+The two result files have the same columns:
+
+- `set`, `tier`, `subset` (`late` on every row), `windows`, `units`: as in the main files.
+- `analysis`: `all late windows`, or `off-state and micro-load windows excluded`. A population has rows for the
+  second value only where one of the two state rules fires on some late window (BDG2, EWELD and the two GoiEner
+  populations: 33, 245, 13 and 35 windows); for the other six populations the rows on all late windows apply.
+- `carrier`: `TimesFM`, `LSTM` or `PatchTST`; `none` on the rows of the two contrasts that involve no carrier.
+- `contrast` (first vs second): see each file below.
+- `block`: `hourly` (the hourly squared error of the window), or one of its three parts, `level`, `daily path` and
+  `within-day`. The three parts add up to the hourly squared error in every window (property P1 in
+  [theory](../theory/PROOFS.md)). The squared level error is the squared monthly-energy error divided by 744², so a
+  `level` row is the contrast on monthly energy.
+- `log_ratio`, `um_low`, `um_high`, `improvement_pct`: the first-named forecaster against the second, on the RMS over
+  a unit's windows of the block's error; negative `log_ratio` and positive `improvement_pct` favour the first.
+- `resolved`: `first better`, `second better` or `not resolved` (the interval includes zero). `not resolved` does not
+  mean that the two are equally good.
+
+Counts in the documentation are on the nine main populations excluding the four-unit Suzhou park; the park's rows
+are kept in the files and are descriptive. The counts are summaries of the pairwise intervals, not
+multiplicity-adjusted tests, and the three carriers on one population are not independent replications.
+
+**`contrast_ii_blocks.csv`** — In which block do the configurations differ? Three contrasts in each block, computed
+from the stored forecasts (504 rows: ten populations, three carriers, three contrasts, four values of `block`, and
+the second `analysis` for four populations).
+
+- `contrast`:
+  - `anchored vs history only`: contrast (ii), the package with the carrier against its history-only configuration
+    (`foundation=None`);
+  - `anchored vs carrier alone`: contrast (i);
+  - `carrier alone vs history only`: the carrier's own forecast against the history-only configuration (a
+    description of where each of the two sources is the stronger).
+- The `hourly` and `level` rows of the first two contrasts reproduce the `hourly` and `energy` rows of
+  `trained_carriers.csv` and, without the state-rule windows, of `trained_carriers_sensitivity.csv` (to the printed
+  precision).
+- On the nine populations, contrast (ii) reads first better / not resolved / second better, in the order level, daily
+  path, within-day: `TimesFM` 4 / 5 / 0, 4 / 5 / 0 and 7 / 2 / 0; `PatchTST` 3 / 6 / 0, 1 / 7 / 1 and 6 / 3 / 0;
+  `LSTM` 0 / 7 / 2, 0 / 6 / 3 and 3 / 6 / 0.
+- Limit. The split shows in which block two configurations differ. It does not turn contrast (ii) into a measure of
+  the carrier forecast's information: the within-day block of the carrier-enabled configuration mixes the carrier's
+  shape with the unit's analog-day shape, which the history-only configuration does not use.
+
+**`contrast_ii_control.csv`** — What is left of contrast (ii) when both sides run the same procedure? The
+*carrier-free control* is the unchanged package called with the history-only configuration's own forecasts in the
+carrier's place: the forecast of `foundation=None` at the origin and at each of the six pseudo-origins, each computed
+from the record up to that pseudo-origin only, passed as the `foundation` mapping. It runs everything the
+carrier-enabled configuration runs (the level with its seventh candidate, the handover, the analog-day shape with its
+capped trust, the state rules, the short-gap rule). On a window where a state rule fires the package returns what
+stands in the carrier's place, so the control equals the history-only forecast there. The control is a construct of
+this evaluation, not a mode of the package. 448 rows.
+
+- `contrast`:
+  - `carrier-free control vs history only`: what the procedure adds to the history-only configuration without any
+    carrier (`carrier` = `none`);
+  - `anchored vs carrier-free control`: **contrast (ii-c)**, the carrier-enabled configuration against the control.
+    Both sides run the same procedure and differ only in the forecast that stands in the carrier's place;
+  - `anchored vs history only with the full analog-day shape`: a sensitivity check against a second control, the
+    history-only configuration with its day-type default replaced outright by the analog-day shape of the control's
+    call (no trust weight and no cap; days without enough analog days keep the default; on a state-rule window it
+    equals the history-only forecast);
+  - `history only with the full analog-day shape vs history only`: that second control against the history-only
+    configuration (`carrier` = `none`).
+- On the nine populations, hourly error: the carrier-free control against the history-only configuration reads
+  8 / 1 / 0; contrast (ii-c) reads 6 / 3 / 0 with `TimesFM`, 6 / 3 / 0 with `PatchTST` and 1 / 5 / 3 with `LSTM`
+  (contrast (ii): 8 / 1 / 0, 7 / 2 / 0 and 3 / 5 / 1).
+- Limits. In contrast (ii-c) the forecast in the carrier's place enters the level candidates, the handover of the
+  daily means and the within-day mixture at once; the contrast does not separate the three, and the rows by block
+  give a rough location only. The trained carriers have the earlier cutoff of `trained_carriers.csv`. On BDG2 and
+  EWELD a few near-zero or switched-off units dominate the unit means and the intervals are wide; on a state-rule
+  window the two sides of contrast (ii-c) are the carrier's forecast and the history-only forecast.
+
+**`contrast_ii_control_description.csv`** — One row per population describing the calls of the carrier-free control
+(10 rows). `set`, `tier`, `subset` as above; `windows`: late windows; `state_rule_windows`: windows on which the
+off-state or the micro-load rule fired. Of the other columns the first two cover all windows and the rest are means
+over the windows on which no state rule fired:
+
+- `pseudo_origin_forecasts_supplied_mean`: history-only forecasts supplied at pseudo-origins, per window (6.0
+  everywhere); `pseudo_origins_not_defined`: pseudo-origins at which the history-only forecast could not be computed
+  (0 everywhere);
+- `handover_pairs_mean`, `within_day_triples_mean`: completed pseudo-origins behind the handover weights and behind
+  the within-day trust (the fields `pseudo_pairs` and `within_pseudo_pairs`);
+- `within_day_trust_mean`: the weight on the analog-day shape (`within_trust`; at most one half);
+- `analog_shape_kept_share`: share of windows on which the analog-day shape was kept (`analog_kept`);
+- `level_weight_on_history_only_forecast_mean`: the weight of the seventh level candidate (`level_weights['fm']`),
+  which in the control is the window mean of the history-only forecast.
 
 ## Two candidates examined after 2.0.1 and not adopted
 

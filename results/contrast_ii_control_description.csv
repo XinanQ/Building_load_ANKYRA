@@ -1,0 +1,11 @@
+set,tier,subset,windows,state_rule_windows,pseudo_origin_forecasts_supplied_mean,pseudo_origins_not_defined,handover_pairs_mean,within_day_triples_mean,within_day_trust_mean,analog_shape_kept_share,level_weight_on_history_only_forecast_mean
+BDG2 2017,test,late,474,33,6.0,0,6.0,3.0,0.2485,0.9909,0.1768
+Cambridge,test,late,730,0,6.0,0,6.0,3.0,0.2873,0.9986,0.2098
+HEEW Arizona,test,late,658,0,6.0,0,6.0,3.0,0.2893,1.0,0.1959
+EWELD,test,late,523,245,6.0,0,6.0,3.0,0.2563,0.9353,0.2423
+GoiEner non-household,test,late,890,13,6.0,0,6.0,3.0,0.2612,0.9795,0.1925
+GoiEner households,test,late,696,35,6.0,0,6.0,3.0,0.1154,0.9864,0.2303
+Oslo,preview,late,581,0,6.0,0,6.0,3.0,0.3556,1.0,0.2212
+Drammen,preview,late,689,0,6.0,0,6.0,3.0,0.4287,1.0,0.1972
+CINELDI,preview,late,475,0,6.0,0,6.0,3.0,0.2797,1.0,0.2126
+Suzhou park,preview,late,64,0,6.0,0,6.0,3.0,0.4001,1.0,0.2544

@@ -16,6 +16,7 @@ that a rule or an analysis was *fixed in advance*, it was written down in those 
 **How this page relates to the README.** The README states a finding and describes a tool. The finding is read from
 two contrasts, the anchored forecaster against its carrier alone and against the history-only configuration; the
 sections that bear on it directly are [Trained models as carriers](#trained-models-as-carriers),
+[Contrast (ii) by block, and a carrier-free control](#contrast-ii-by-block-and-a-carrier-free-control),
 [Training budget of the trained baselines](#training-budget-of-the-trained-baselines),
 [What the parts buy](#what-the-parts-buy) and, for the foundation-model carriers,
 [FROZEN_MODEL_CHECKS.md](FROZEN_MODEL_CHECKS.md#another-foundation-model). The other sections document the main
@@ -46,7 +47,8 @@ choice and the limits.
   [one within-day trust per window](#one-within-day-trust-per-window-21) ·
   [micro-load rule](#the-near-zero-meters-and-the-micro-load-rule-201) ·
   [shrinkage constants](#sensitivity-to-the-shrinkage-constants) ·
-  [trained models as carriers](#trained-models-as-carriers)
+  [trained models as carriers](#trained-models-as-carriers) ·
+  [contrast (ii) by block and a carrier-free control](#contrast-ii-by-block-and-a-carrier-free-control)
 - [Robustness to corrupted contexts](#robustness-to-corrupted-contexts)
 - [Cost](#cost)
 - [Limitations](#limitations)
@@ -1506,6 +1508,193 @@ Limits.
 - The released forecaster is unchanged: ANKYRA 2.2 with zero-shot TimesFM, and no network trained on the target
   population.
 
+### Contrast (ii) by block, and a carrier-free control
+
+Added on 13 October 2026: two descriptive analyses made after contrast (ii) of the
+[previous section](#trained-models-as-carriers) had been seen, the second after the first. Each ran under a protocol
+fixed in advance and hashed before it was computed (one implementation, no pass line, nothing tuned). All ten
+populations had been scored before, so every number is a re-evaluation of read data, not a test. Nothing was
+trained, the package is 2.2.1, called unchanged, and no table of the main comparison was replaced.
+
+Contrast (ii) compares two complete configurations. Besides the carrier's forecasts, the carrier-enabled
+configuration uses the unit's analog-day shape and the state rules, which the history-only configuration
+(`foundation=None`) does not. The first analysis asks in which block the two configurations differ. The second holds
+the procedure the same on both sides, so that only the forecast in the carrier's place differs.
+
+Windows, carriers, estimand and interval are those of the previous section: the late windows of the ten populations;
+TimesFM (the scored ANKYRA 2.2), the LSTM and PatchTST (the stored forecasts of that section, trained with the
+earlier cutoff); the unit-equal log RMS ratio with its 95% unit-and-month interval (2,000 draws, a new generator for
+each contrast). Counts are on the nine main populations excluding the four-unit Suzhou park and read first-named
+resolved better / not separated / resolved worse; the park's rows are in the files and are descriptive
+([`results/contrast_ii_blocks.csv`](../results/contrast_ii_blocks.csv),
+[`results/contrast_ii_control.csv`](../results/contrast_ii_control.csv),
+[`results/contrast_ii_control_description.csv`](../results/contrast_ii_control_description.csv)).
+
+**Contrast (ii) by block.** The hourly squared error of every window splits exactly into a level, a daily-path and a
+within-day part ([METHOD.md](METHOD.md#three-orthogonal-blocks)). Each contrast was computed in each block from the
+stored forecasts; no forecast was made for this analysis. For contrasts (i) and (ii) the hourly and level columns
+repeat the hourly and energy counts of the previous section (the level error is the monthly-energy error divided by
+744).
+
+| Contrast | Carrier | Hourly | Level | Daily path | Within-day |
+|---|---|---:|---:|---:|---:|
+| (ii) Anchored vs history only | TimesFM | 8 / 1 / 0 | 4 / 5 / 0 | 4 / 5 / 0 | 7 / 2 / 0 |
+| | PatchTST | 7 / 2 / 0 | 3 / 6 / 0 | 1 / 7 / 1 | 6 / 3 / 0 |
+| | LSTM | 3 / 5 / 1 | 0 / 7 / 2 | 0 / 6 / 3 | 3 / 6 / 0 |
+| Carrier alone vs history only | TimesFM | 5 / 4 / 0 | 1 / 7 / 1 | 4 / 1 / 4 | 4 / 5 / 0 |
+| | PatchTST | 3 / 6 / 0 | 0 / 9 / 0 | 1 / 2 / 6 | 5 / 4 / 0 |
+| | LSTM | 0 / 3 / 6 | 0 / 5 / 4 | 0 / 1 / 8 | 1 / 3 / 5 |
+| (i) Anchored vs carrier alone | TimesFM | 4 / 4 / 1 | 6 / 3 / 0 | 4 / 4 / 1 | 6 / 3 / 0 |
+| | PatchTST | 7 / 2 / 0 | 3 / 6 / 0 | 7 / 2 / 0 | 8 / 1 / 0 |
+| | LSTM | 8 / 1 / 0 | 6 / 3 / 0 | 8 / 1 / 0 | 8 / 1 / 0 |
+
+- **Where the configurations differ.** The carrier-enabled configuration is resolved better than the history-only
+  configuration most often in the within-day block: on 7, 6 and 3 of the nine populations with TimesFM, PatchTST and
+  the LSTM, and on none resolved worse. In the level the counts are 4, 3 and 0, in the daily path 4, 1 and 0. With
+  the trained carriers some populations are resolved worse in those two blocks: with the LSTM, EWELD and Oslo in the
+  level and BDG2, HEEW and EWELD in the daily path; with PatchTST, EWELD in the daily path.
+- **The carrier alone against the history-only configuration.** In the level no carrier is resolved better on more
+  than one population (TimesFM on EWELD; on the GoiEner households TimesFM alone is resolved worse). In the daily
+  path TimesFM is resolved better on 4 and worse on 4, PatchTST worse on 6 and the LSTM worse on 8. In the within-day
+  block TimesFM and PatchTST are resolved better on 4 and 5 and on none worse; the LSTM is resolved better on 1 and
+  worse on 5.
+- **Without the windows on which a state rule fires**, contrast (ii) reads, in the column order of the table,
+  8 / 1 / 0, 3 / 6 / 0, 3 / 6 / 0 and 8 / 1 / 0 with TimesFM, 8 / 1 / 0, 4 / 5 / 0, 1 / 8 / 0 and 7 / 2 / 0 with
+  PatchTST, and 4 / 5 / 0, 1 / 7 / 1, 0 / 8 / 1 and 2 / 7 / 0 with the LSTM.
+- **What the split does not show.** It locates the difference between two configurations; it does not make contrast
+  (ii) a measure of the carrier forecast's information. With TimesFM on Oslo, Drammen and Cambridge the carrier
+  alone is not separated from the history-only configuration in the within-day block (+5.9%, +6.9%, +2.0%), while
+  the carrier-enabled configuration is resolved better there (+15.5%, +16.4%, +7.9%). The within-day block of the
+  carrier-enabled configuration mixes the carrier's shape with the unit's analog-day shape, and the history-only
+  configuration uses neither. The control below addresses this.
+
+**The carrier-free control.** The *carrier-free control* is the same procedure with the history-only
+configuration's own forecast in the carrier's place. For each window the forecast of `foundation=None` is computed
+at the origin and at each of the six pseudo-origins, each from the record up to that pseudo-origin only, and the
+seven forecasts are passed to the unchanged package as its `foundation` argument. The control therefore runs
+everything the carrier-enabled configuration runs: the level with its seventh candidate, the handover of the daily
+means, the analog-day shape mixed in with a trust capped at one half, the state rules and the short-gap rule. On a
+window where a state rule fires, the package returns what stands in the carrier's place, so the control equals the
+history-only forecast there. A pseudo-origin at which the history-only forecast could not be computed was to be
+left out of the mapping; this did not happen on any window. The control is a construct of this evaluation, not a
+mode of the package. With the released package it is:
+
+```python
+import ankyra
+
+kw = dict(group="Office", temp_sigma_std=0.25, dst_region="EU")     # the unit's own settings
+
+def record_up_to(h, q):          # the record as it stood at hour q, with the calendar of the 744 hours after it
+    return ankyra.History(h.load_kw[:q], h.temperature_c[:q], h.day_types[:q + 744], h.start_timestamp,
+                          None if h.observed is None else h.observed[:q])
+
+o = len(history.load_kw)                                            # history: an ankyra.History that ends at the origin
+own = {0: ankyra.forecast(history, foundation=None, **kw).trajectory_kw}
+for k in range(1, 7):                                               # the pseudo-origins o - 744 k
+    q = o - 744 * k
+    if q >= 1344:
+        own[k] = ankyra.forecast(record_up_to(history, q), foundation=None, **kw).trajectory_kw
+control = ankyra.forecast(history, foundation=own, **kw)            # the carrier-free control
+```
+
+Three contrasts use it:
+
+- *the carrier-free control against the history-only configuration*: what the procedure adds without any carrier;
+- ***contrast (ii-c)***, *the carrier-enabled configuration against the carrier-free control*: both sides run the
+  same procedure and differ only in the forecast that stands in the carrier's place;
+- a sensitivity check against a second control, the history-only configuration with its day-type default replaced
+  outright by the analog-day shape (no trust weight and no cap), in case the cap of one half understates what the
+  analog-day shape can do.
+
+| Contrast | Carrier | Hourly | Level | Daily path | Within-day |
+|---|---|---:|---:|---:|---:|
+| Carrier-free control vs history only | — | 8 / 1 / 0 | 0 / 9 / 0 | 1 / 8 / 0 | 8 / 1 / 0 |
+| (ii-c) Anchored vs carrier-free control | TimesFM | 6 / 3 / 0 | 4 / 5 / 0 | 4 / 5 / 0 | 4 / 5 / 0 |
+| | PatchTST | 6 / 3 / 0 | 3 / 6 / 0 | 1 / 6 / 2 | 4 / 5 / 0 |
+| | LSTM | 1 / 5 / 3 | 0 / 7 / 2 | 0 / 6 / 3 | 1 / 5 / 3 |
+| Anchored vs history only with the full analog-day shape | TimesFM | 6 / 3 / 0 | 4 / 5 / 0 | 4 / 5 / 0 | 5 / 4 / 0 |
+| | PatchTST | 8 / 1 / 0 | 3 / 6 / 0 | 1 / 6 / 2 | 7 / 2 / 0 |
+| | LSTM | 1 / 6 / 2 | 0 / 7 / 2 | 0 / 6 / 3 | 1 / 7 / 1 |
+| History only with the full analog-day shape vs history only | — | 2 / 6 / 1 | 0 / 9 / 0 | 0 / 8 / 1 | 2 / 5 / 2 |
+
+By population (the complete table, the Suzhou park included): improvement of the first-named forecaster over the
+second (`*`: the interval excludes zero; a negative value means the first-named has the higher error).
+
+| Population | Control vs history only: hourly | within-day | (ii-c) TimesFM: hourly | level | daily path | within-day | (ii-c) PatchTST: hourly | (ii-c) LSTM: hourly |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| BDG2 2017 | +1.8% \* | +4.3% \* | +43.7% \* | +41.9% \* | +37.4% \* | +9.6% | +15.3% \* | −1.2% |
+| Cambridge | +2.7% \* | +5.6% \* | +5.3% \* | +9.5% | +1.4% | +2.4% | +3.5% | −5.2% \* |
+| HEEW Arizona | +3.1% \* | +7.1% \* | +12.1% \* | +17.6% \* | +0.8% | +9.1% \* | +8.8% \* | −4.3% \* |
+| EWELD | +1.0% \* | +2.4% \* | +36.1% \* | +52.9% \* | +18.5% \* | +28.2% \* | +9.4% | −84.9% \* |
+| GoiEner non-household | +7.3% \* | +8.4% \* | +18.9% \* | +21.4% \* | +7.3% \* | +18.7% \* | +9.2% \* | +3.2% |
+| GoiEner households | +0.5% | +0.4% | +16.9% \* | −1.5% | +8.1% \* | +22.2% \* | +7.9% \* | +4.5% \* |
+| Oslo | +5.6% \* | +11.1% \* | +2.1% | −1.5% | +0.6% | +4.9% | +5.2% \* | −5.3% |
+| Drammen | +5.8% \* | +13.3% \* | +3.2% | +2.3% | +2.6% | +3.5% | +5.8% \* | −0.9% |
+| CINELDI | +2.2% \* | +4.0% \* | +0.5% | +3.1% | −1.4% | −1.1% | +1.3% | −3.0% |
+| Suzhou park | +5.5% \* | +12.2% \* | +1.2% | +1.8% | −3.1% | +4.6% | −5.0% | −1.4% |
+
+- **Part of contrast (ii) is obtained without a carrier.** The carrier-free control is resolved better than the
+  history-only configuration in hourly error on 8 of the nine populations (1.0–7.3%). The gain lies in the within-day
+  block (8 of 9, 2.4–13.3%); in the level none of the nine is separated, and in the daily path one is resolved
+  (GoiEner non-household, 1.1%). The population not separated is the GoiEner households, where the mean trust on the
+  analog-day shape is 0.12, against 0.25–0.43 on the other eight.
+- **Contrast (ii-c) with TimesFM, the released configuration.** The carrier-enabled configuration is resolved better
+  than the carrier-free control in hourly error on 6 of the nine populations (BDG2, Cambridge, HEEW, EWELD and the
+  two GoiEner populations; 5.3–43.7%), is not separated from it on Oslo, Drammen and CINELDI, and is resolved worse
+  on none. Contrast (ii) counts 8: the two that are no longer resolved are Oslo and Drammen, where the control alone
+  lowers the within-day error by 11.1% and 13.3%. By block the counts are 4 / 5 / 0 in the level (as in contrast
+  (ii): the control is not separated from the history-only configuration there), 4 / 5 / 0 in the daily path and
+  4 / 5 / 0 in the within-day block (7 / 2 / 0 in contrast (ii)).
+- **BDG2 and EWELD.** On a window where a state rule fires, the two sides of contrast (ii-c) are the TimesFM
+  forecast and the history-only forecast, and on BDG2 and EWELD a few near-zero or switched-off units dominate the
+  unit means. Without those windows the hourly values are 8.7% (BDG2) and 15.0% (EWELD), both still resolved, and
+  the six resolved improvements span 5.3–15.3%.
+- **Contrast (ii-c) with PatchTST.** Resolved better in hourly error on 6 of nine (5.2–15.3%), not separated on
+  Cambridge, EWELD and CINELDI, resolved worse on none; by block 3 / 6 / 0, 1 / 6 / 2 (the daily path is resolved
+  worse on EWELD and GoiEner non-household) and 4 / 5 / 0.
+- **Contrast (ii-c) with the LSTM.** With the LSTM as carrier, anchoring lowered the carrier's error on eight of
+  nine populations, but the same procedure run on the history-only forecast was not resolved worse on eight
+  (resolved better on three); the LSTM forecast itself added to it on one.
+- **The second control.** Replacing the day-type default outright by the analog-day shape does not give a better
+  history-only forecast: against the history-only configuration it reads 2 / 6 / 1 in hourly error (8 / 1 / 0 for
+  the carrier-free control, whose trust is estimated and capped). Against it the carrier-enabled configurations read
+  6 / 3 / 0, 8 / 1 / 0 and 1 / 6 / 2 (TimesFM, PatchTST, LSTM), in the same direction as contrast (ii-c).
+- **Without the windows on which a state rule fires**, the carrier-free control against the history-only
+  configuration reads 8 / 1 / 0 in hourly error, and contrast (ii-c) 6 / 3 / 0, 6 / 3 / 0 and 1 / 6 / 2 in hourly
+  error and 5 / 4 / 0, 4 / 5 / 0 and 1 / 5 / 3 in the within-day block.
+
+**Reading.** The claim that the carrier-enabled configuration improves on the history-only one now has two layers.
+Contrast (ii) compares complete configurations: resolved better in hourly error on 8, 7 and 3 of the nine
+populations with TimesFM, PatchTST and the LSTM. Contrast (ii-c) changes one thing, the forecast in the carrier's
+place: 6, 6 and 1, with 3 resolved worse for the LSTM. The difference between the two layers is what the procedure
+gives without a carrier.
+
+- **For use.** With TimesFM, the resolved gain over the carrier-free control is more frequent for the hourly
+  trajectory (6 of the nine populations) than for the monthly level (4 of 9). When only the monthly energy is
+  needed, the history-only configuration is not separated from the released configuration on 5 of the nine
+  populations and is resolved worse on 4 (contrast (ii), level). This does not show that the carrier can be left
+  out: where the two are separated, the carrier-enabled configuration is the better one.
+- **For the tool.** The carrier-free control needs no carrier and is resolved better than the package's
+  `foundation=None` on 8 of the nine populations. The package was not changed; whether to offer the control as a
+  carrier-free mode is left for later work.
+
+Limits.
+
+- Both analyses are post hoc: they were designed after contrast (ii) had been seen, and the control after the split
+  by block. Their protocols were fixed and hashed before anything was computed, and all numbers re-evaluate read
+  data.
+- Contrast (ii-c) holds the procedure fixed, but the forecast in the carrier's place enters three places at once:
+  the level candidates, the handover of the daily means and the within-day mixture. The contrast does not separate
+  them; the counts by block give a rough location only.
+- The trained carriers were trained with a cutoff half a year earlier than in the main comparison, as in the
+  previous section, so their rows are not on the footing of the main tables.
+- 3 carriers × 9 populations × 4 quantities give 108 intervals per contrast. The counts are descriptive summaries of
+  the pairwise intervals, not a multiplicity-adjusted test, and the carriers on one population are not independent
+  replications. "Not separated" does not mean equally good.
+- The intervals of BDG2 and EWELD are wide and their percentages should not be quoted alone. The Suzhou park has
+  four series.
+- Three carriers with the package's default settings; the control was not computed for Chronos-2 or Chronos-2-X.
+
 ## Robustness to corrupted contexts
 
 The evaluation windows have complete, cleaned contexts. To see what happens when they are not, the 64 Drammen windows
@@ -1657,7 +1846,12 @@ issued every 744 hours, or when a window is re-run.
   better in hourly error on 7 of 9 populations with PatchTST and on 3 of 9 with the LSTM (TimesFM reference: 8 of 9);
   with the LSTM it is not separated on 5 and resolved worse on EWELD, where the state
   rules return the carrier's forecast on almost half the windows. This contrast compares configurations and does not
-  isolate the carrier forecast's information. Fine-tuned foundation models were not tried as
+  isolate the carrier forecast's information. A control that runs the same procedure with the history-only forecast
+  in the carrier's place removes these differences (contrast (ii-c), post hoc): against it the carrier-enabled
+  configuration is resolved better in hourly error on 6 of the nine populations with TimesFM, 6 with PatchTST and 1
+  with the LSTM (3 resolved worse), and the control itself is resolved better than the history-only configuration on
+  8 ([Contrast (ii) by block, and a carrier-free control](#contrast-ii-by-block-and-a-carrier-free-control)).
+  Fine-tuned foundation models were not tried as
   carriers or as baselines ([Trained models as carriers](#trained-models-as-carriers); a re-evaluation).
 - **What the carrier runs do not show.** History-side gains were observed with both foundation-model families and
   both trained architectures tested. Under the single training-budget relaxation examined, all 36 comparison verdicts

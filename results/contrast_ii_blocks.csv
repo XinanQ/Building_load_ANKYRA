@@ -1,0 +1,505 @@
+set,tier,subset,analysis,windows,units,carrier,contrast,block,log_ratio,um_low,um_high,improvement_pct,resolved
+BDG2 2017,test,late,all late windows,474,142,TimesFM,anchored vs history only,hourly,-0.592372,-1.567725,-0.105105,44.6986,first better
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,TimesFM,anchored vs history only,hourly,-0.109533,-0.207479,-0.05539,10.3748,first better
+BDG2 2017,test,late,all late windows,474,142,TimesFM,anchored vs history only,level,-0.561111,-1.577988,-0.016933,42.9425,first better
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,TimesFM,anchored vs history only,level,-0.07476,-0.262333,0.225462,7.2033,not resolved
+BDG2 2017,test,late,all late windows,474,142,TimesFM,anchored vs history only,daily path,-0.469017,-1.308968,-0.050363,37.4383,first better
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,TimesFM,anchored vs history only,daily path,-0.052119,-0.081649,-0.00324,5.0784,first better
+BDG2 2017,test,late,all late windows,474,142,TimesFM,anchored vs history only,within-day,-0.14521,-0.34216,0.020121,13.516,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,TimesFM,anchored vs history only,within-day,-0.151307,-0.343038,-0.059196,14.0416,first better
+BDG2 2017,test,late,all late windows,474,142,TimesFM,anchored vs carrier alone,hourly,-0.02768,-0.076971,0.252676,2.7301,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,TimesFM,anchored vs carrier alone,hourly,-0.028082,-0.081896,0.288147,2.7692,not resolved
+BDG2 2017,test,late,all late windows,474,142,TimesFM,anchored vs carrier alone,level,-0.142104,-0.235848,0.215811,13.2469,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,TimesFM,anchored vs carrier alone,level,-0.137089,-0.251506,0.211743,12.8107,not resolved
+BDG2 2017,test,late,all late windows,474,142,TimesFM,anchored vs carrier alone,daily path,-0.00652,-0.074948,0.292896,0.6499,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,TimesFM,anchored vs carrier alone,daily path,-0.008798,-0.078201,0.272089,0.8759,not resolved
+BDG2 2017,test,late,all late windows,474,142,TimesFM,anchored vs carrier alone,within-day,-0.016488,-0.117946,0.035197,1.6353,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,TimesFM,anchored vs carrier alone,within-day,-0.017458,-0.118719,0.037446,1.7306,not resolved
+BDG2 2017,test,late,all late windows,474,142,TimesFM,carrier alone vs history only,hourly,-0.564691,-1.666152,-0.066017,43.1464,first better
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,TimesFM,carrier alone vs history only,hourly,-0.081451,-0.445845,0.019981,7.8222,not resolved
+BDG2 2017,test,late,all late windows,474,142,TimesFM,carrier alone vs history only,level,-0.419007,-1.651111,0.139983,34.2301,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,TimesFM,carrier alone vs history only,level,0.062329,-0.383454,0.40009,-6.4313,not resolved
+BDG2 2017,test,late,all late windows,474,142,TimesFM,carrier alone vs history only,daily path,-0.462497,-1.507214,-0.027368,37.0291,first better
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,TimesFM,carrier alone vs history only,daily path,-0.043321,-0.29969,0.067525,4.2396,not resolved
+BDG2 2017,test,late,all late windows,474,142,TimesFM,carrier alone vs history only,within-day,-0.128366,-0.377962,0.134205,12.0469,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,TimesFM,carrier alone vs history only,within-day,-0.133849,-0.384329,0.012072,12.5278,not resolved
+BDG2 2017,test,late,all late windows,474,142,LSTM,anchored vs history only,hourly,-0.005999,-0.052171,0.040189,0.5981,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,LSTM,anchored vs history only,hourly,-0.030415,-0.053983,-0.000312,2.9957,first better
+BDG2 2017,test,late,all late windows,474,142,LSTM,anchored vs history only,level,-0.044227,-0.176832,0.204935,4.3264,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,LSTM,anchored vs history only,level,-0.076692,-0.193269,0.183169,7.3825,not resolved
+BDG2 2017,test,late,all late windows,474,142,LSTM,anchored vs history only,daily path,0.092624,0.003294,0.262451,-9.7049,second better
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,LSTM,anchored vs history only,daily path,0.00805,-0.014225,0.048629,-0.8083,not resolved
+BDG2 2017,test,late,all late windows,474,142,LSTM,anchored vs history only,within-day,-0.016662,-0.077259,0.704144,1.6524,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,LSTM,anchored vs history only,within-day,-0.021153,-0.09079,0.326469,2.0931,not resolved
+BDG2 2017,test,late,all late windows,474,142,LSTM,anchored vs carrier alone,hourly,-0.07201,-0.115665,-0.026663,6.9479,first better
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,LSTM,anchored vs carrier alone,hourly,-0.072832,-0.120641,-0.031858,7.0243,first better
+BDG2 2017,test,late,all late windows,474,142,LSTM,anchored vs carrier alone,level,-0.040057,-0.287642,0.165156,3.9265,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,LSTM,anchored vs carrier alone,level,-0.019991,-0.290379,0.168367,1.9792,not resolved
+BDG2 2017,test,late,all late windows,474,142,LSTM,anchored vs carrier alone,daily path,-0.073417,-0.117969,-0.048848,7.0787,first better
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,LSTM,anchored vs carrier alone,daily path,-0.07887,-0.128203,-0.051353,7.584,first better
+BDG2 2017,test,late,all late windows,474,142,LSTM,anchored vs carrier alone,within-day,-0.077244,-0.100314,-0.061711,7.4336,first better
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,LSTM,anchored vs carrier alone,within-day,-0.079505,-0.104382,-0.065274,7.6427,first better
+BDG2 2017,test,late,all late windows,474,142,LSTM,carrier alone vs history only,hourly,0.066011,-0.008363,0.135461,-6.8238,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,LSTM,carrier alone vs history only,hourly,0.042417,-0.003674,0.106592,-4.333,not resolved
+BDG2 2017,test,late,all late windows,474,142,LSTM,carrier alone vs history only,level,-0.00417,-0.269566,0.411186,0.4162,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,LSTM,carrier alone vs history only,level,-0.056702,-0.274057,0.379831,5.5124,not resolved
+BDG2 2017,test,late,all late windows,474,142,LSTM,carrier alone vs history only,daily path,0.166041,0.064266,0.368429,-18.0622,second better
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,LSTM,carrier alone vs history only,daily path,0.08692,0.043491,0.169128,-9.081,second better
+BDG2 2017,test,late,all late windows,474,142,LSTM,carrier alone vs history only,within-day,0.062249,0.012669,0.784327,-6.4227,second better
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,LSTM,carrier alone vs history only,within-day,0.058352,-0.000253,0.411792,-6.0089,not resolved
+BDG2 2017,test,late,all late windows,474,142,PatchTST,anchored vs history only,hourly,-0.183864,-0.520116,-0.041073,16.7951,first better
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,PatchTST,anchored vs history only,hourly,-0.042042,-0.088569,-0.014343,4.117,first better
+BDG2 2017,test,late,all late windows,474,142,PatchTST,anchored vs history only,level,-0.18993,-0.629091,0.13335,17.2983,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,PatchTST,anchored vs history only,level,-0.019689,-0.153795,0.26838,1.9497,not resolved
+BDG2 2017,test,late,all late windows,474,142,PatchTST,anchored vs history only,daily path,-0.073138,-0.306807,0.007715,7.0527,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,PatchTST,anchored vs history only,daily path,0.012285,-0.013736,0.033019,-1.2361,not resolved
+BDG2 2017,test,late,all late windows,474,142,PatchTST,anchored vs history only,within-day,-0.072009,-0.118105,0.538227,6.9478,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,PatchTST,anchored vs history only,within-day,-0.074959,-0.124546,0.215325,7.2219,not resolved
+BDG2 2017,test,late,all late windows,474,142,PatchTST,anchored vs carrier alone,hourly,-0.05226,-0.097149,0.016479,5.0918,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,PatchTST,anchored vs carrier alone,hourly,-0.053879,-0.102794,0.023945,5.2453,not resolved
+BDG2 2017,test,late,all late windows,474,142,PatchTST,anchored vs carrier alone,level,-0.118023,-0.233168,0.030254,11.1325,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,PatchTST,anchored vs carrier alone,level,-0.115719,-0.251646,0.033653,10.9275,not resolved
+BDG2 2017,test,late,all late windows,474,142,PatchTST,anchored vs carrier alone,daily path,-0.037305,-0.0857,0.016605,3.6618,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,PatchTST,anchored vs carrier alone,daily path,-0.041487,-0.089377,0.015098,4.0638,not resolved
+BDG2 2017,test,late,all late windows,474,142,PatchTST,anchored vs carrier alone,within-day,-0.041142,-0.068422,-0.026469,4.0307,first better
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,PatchTST,anchored vs carrier alone,within-day,-0.042369,-0.073217,-0.028709,4.1484,first better
+BDG2 2017,test,late,all late windows,474,142,PatchTST,carrier alone vs history only,hourly,-0.131604,-0.500125,0.020704,12.3312,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,PatchTST,carrier alone vs history only,hourly,0.011837,-0.096214,0.060707,-1.1907,not resolved
+BDG2 2017,test,late,all late windows,474,142,PatchTST,carrier alone vs history only,level,-0.071907,-0.603827,0.30931,6.9382,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,PatchTST,carrier alone vs history only,level,0.09603,-0.146104,0.461101,-10.0792,not resolved
+BDG2 2017,test,late,all late windows,474,142,PatchTST,carrier alone vs history only,daily path,-0.035833,-0.28396,0.063294,3.5199,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,PatchTST,carrier alone vs history only,daily path,0.053772,-0.006242,0.11437,-5.5244,not resolved
+BDG2 2017,test,late,all late windows,474,142,PatchTST,carrier alone vs history only,within-day,-0.029979,-0.056106,0.57549,2.9534,not resolved
+BDG2 2017,test,late,off-state and micro-load windows excluded,441,138,PatchTST,carrier alone vs history only,within-day,-0.032591,-0.059543,0.252573,3.2065,not resolved
+Cambridge,test,late,all late windows,730,108,TimesFM,anchored vs history only,hourly,-0.081772,-0.133914,-0.044171,7.8518,first better
+Cambridge,test,late,all late windows,730,108,TimesFM,anchored vs history only,level,-0.09563,-0.22781,0.028051,9.12,not resolved
+Cambridge,test,late,all late windows,730,108,TimesFM,anchored vs history only,daily path,-0.015403,-0.038249,0.005957,1.5285,not resolved
+Cambridge,test,late,all late windows,730,108,TimesFM,anchored vs history only,within-day,-0.082005,-0.127356,-0.043369,7.8732,first better
+Cambridge,test,late,all late windows,730,108,TimesFM,anchored vs carrier alone,hourly,-0.086381,-0.115062,-0.050769,8.2756,first better
+Cambridge,test,late,all late windows,730,108,TimesFM,anchored vs carrier alone,level,-0.154635,-0.259327,-0.061125,14.3272,first better
+Cambridge,test,late,all late windows,730,108,TimesFM,anchored vs carrier alone,daily path,-0.066561,-0.088394,-0.03979,6.4394,first better
+Cambridge,test,late,all late windows,730,108,TimesFM,anchored vs carrier alone,within-day,-0.06157,-0.083968,-0.035229,5.9713,first better
+Cambridge,test,late,all late windows,730,108,TimesFM,carrier alone vs history only,hourly,0.004609,-0.074679,0.061495,-0.462,not resolved
+Cambridge,test,late,all late windows,730,108,TimesFM,carrier alone vs history only,level,0.059005,-0.111075,0.228145,-6.078,not resolved
+Cambridge,test,late,all late windows,730,108,TimesFM,carrier alone vs history only,daily path,0.051158,0.01548,0.080029,-5.2489,second better
+Cambridge,test,late,all late windows,730,108,TimesFM,carrier alone vs history only,within-day,-0.020434,-0.083521,0.027523,2.0227,not resolved
+Cambridge,test,late,all late windows,730,108,LSTM,anchored vs history only,hourly,0.023014,-0.019237,0.071049,-2.328,not resolved
+Cambridge,test,late,all late windows,730,108,LSTM,anchored vs history only,level,0.060046,-0.075817,0.190588,-6.1885,not resolved
+Cambridge,test,late,all late windows,730,108,LSTM,anchored vs history only,daily path,0.001604,-0.013102,0.029611,-0.1605,not resolved
+Cambridge,test,late,all late windows,730,108,LSTM,anchored vs history only,within-day,0.025127,-0.014716,0.072044,-2.5445,not resolved
+Cambridge,test,late,all late windows,730,108,LSTM,anchored vs carrier alone,hourly,-0.226886,-0.297097,-0.163416,20.2989,first better
+Cambridge,test,late,all late windows,730,108,LSTM,anchored vs carrier alone,level,-0.303194,-0.462101,-0.207508,26.1544,first better
+Cambridge,test,late,all late windows,730,108,LSTM,anchored vs carrier alone,daily path,-0.135004,-0.183548,-0.101131,12.6287,first better
+Cambridge,test,late,all late windows,730,108,LSTM,anchored vs carrier alone,within-day,-0.11798,-0.148984,-0.092584,11.1286,first better
+Cambridge,test,late,all late windows,730,108,LSTM,carrier alone vs history only,hourly,0.2499,0.157366,0.355837,-28.3897,second better
+Cambridge,test,late,all late windows,730,108,LSTM,carrier alone vs history only,level,0.36324,0.202841,0.585419,-43.798,second better
+Cambridge,test,late,all late windows,730,108,LSTM,carrier alone vs history only,daily path,0.136607,0.099799,0.196852,-14.6378,second better
+Cambridge,test,late,all late windows,730,108,LSTM,carrier alone vs history only,within-day,0.143107,0.094279,0.208239,-15.3853,second better
+Cambridge,test,late,all late windows,730,108,PatchTST,anchored vs history only,hourly,-0.063284,-0.114016,-0.024214,6.1323,first better
+Cambridge,test,late,all late windows,730,108,PatchTST,anchored vs history only,level,-0.109748,-0.256349,-0.010827,10.394,first better
+Cambridge,test,late,all late windows,730,108,PatchTST,anchored vs history only,daily path,-0.012528,-0.028002,0.008338,1.2449,not resolved
+Cambridge,test,late,all late windows,730,108,PatchTST,anchored vs history only,within-day,-0.052449,-0.085772,-0.02165,5.1097,first better
+Cambridge,test,late,all late windows,730,108,PatchTST,anchored vs carrier alone,hourly,-0.055591,-0.077324,-0.033373,5.4074,first better
+Cambridge,test,late,all late windows,730,108,PatchTST,anchored vs carrier alone,level,-0.096817,-0.211185,0.020086,9.2278,not resolved
+Cambridge,test,late,all late windows,730,108,PatchTST,anchored vs carrier alone,daily path,-0.047097,-0.070925,-0.021747,4.6005,first better
+Cambridge,test,late,all late windows,730,108,PatchTST,anchored vs carrier alone,within-day,-0.050181,-0.064906,-0.037605,4.8942,first better
+Cambridge,test,late,all late windows,730,108,PatchTST,carrier alone vs history only,hourly,-0.007693,-0.064899,0.04119,0.7664,not resolved
+Cambridge,test,late,all late windows,730,108,PatchTST,carrier alone vs history only,level,-0.012931,-0.183793,0.11715,1.2848,not resolved
+Cambridge,test,late,all late windows,730,108,PatchTST,carrier alone vs history only,daily path,0.034569,0.008638,0.067373,-3.5174,second better
+Cambridge,test,late,all late windows,730,108,PatchTST,carrier alone vs history only,within-day,-0.002268,-0.033171,0.031079,0.2265,not resolved
+HEEW Arizona,test,late,all late windows,658,138,TimesFM,anchored vs history only,hourly,-0.160866,-0.250851,-0.116688,14.8594,first better
+HEEW Arizona,test,late,all late windows,658,138,TimesFM,anchored vs history only,level,-0.197868,-0.394901,-0.035223,17.9522,first better
+HEEW Arizona,test,late,all late windows,658,138,TimesFM,anchored vs history only,daily path,-0.008563,-0.053523,0.018827,0.8527,not resolved
+HEEW Arizona,test,late,all late windows,658,138,TimesFM,anchored vs history only,within-day,-0.168794,-0.302693,-0.127013,15.5317,first better
+HEEW Arizona,test,late,all late windows,658,138,TimesFM,anchored vs carrier alone,hourly,-0.037493,-0.06309,0.077701,3.6799,not resolved
+HEEW Arizona,test,late,all late windows,658,138,TimesFM,anchored vs carrier alone,level,-0.039494,-0.146755,0.130345,3.8724,not resolved
+HEEW Arizona,test,late,all late windows,658,138,TimesFM,anchored vs carrier alone,daily path,-0.028547,-0.04997,0.052616,2.8143,not resolved
+HEEW Arizona,test,late,all late windows,658,138,TimesFM,anchored vs carrier alone,within-day,-0.024861,-0.039869,-0.010395,2.4554,first better
+HEEW Arizona,test,late,all late windows,658,138,TimesFM,carrier alone vs history only,hourly,-0.123373,-0.295582,-0.067971,11.6066,first better
+HEEW Arizona,test,late,all late windows,658,138,TimesFM,carrier alone vs history only,level,-0.158374,-0.442075,0.047164,14.6469,not resolved
+HEEW Arizona,test,late,all late windows,658,138,TimesFM,carrier alone vs history only,daily path,0.019984,-0.103333,0.059715,-2.0185,not resolved
+HEEW Arizona,test,late,all late windows,658,138,TimesFM,carrier alone vs history only,within-day,-0.143933,-0.277002,-0.09974,13.4055,first better
+HEEW Arizona,test,late,all late windows,658,138,LSTM,anchored vs history only,hourly,0.010486,-0.03506,0.065265,-1.0542,not resolved
+HEEW Arizona,test,late,all late windows,658,138,LSTM,anchored vs history only,level,0.033427,-0.092453,0.186594,-3.3992,not resolved
+HEEW Arizona,test,late,all late windows,658,138,LSTM,anchored vs history only,daily path,0.035461,0.011079,0.084066,-3.6097,second better
+HEEW Arizona,test,late,all late windows,658,138,LSTM,anchored vs history only,within-day,-0.004972,-0.047944,0.074536,0.496,not resolved
+HEEW Arizona,test,late,all late windows,658,138,LSTM,anchored vs carrier alone,hourly,-0.230815,-0.301889,-0.181089,20.6114,first better
+HEEW Arizona,test,late,all late windows,658,138,LSTM,anchored vs carrier alone,level,-0.266373,-0.425821,-0.15934,23.3847,first better
+HEEW Arizona,test,late,all late windows,658,138,LSTM,anchored vs carrier alone,daily path,-0.184966,-0.264094,-0.153026,16.8868,first better
+HEEW Arizona,test,late,all late windows,658,138,LSTM,anchored vs carrier alone,within-day,-0.140133,-0.168519,-0.118925,13.0757,first better
+HEEW Arizona,test,late,all late windows,658,138,LSTM,carrier alone vs history only,hourly,0.241302,0.163523,0.353478,-27.2905,second better
+HEEW Arizona,test,late,all late windows,658,138,LSTM,carrier alone vs history only,level,0.2998,0.14314,0.553302,-34.9589,second better
+HEEW Arizona,test,late,all late windows,658,138,LSTM,carrier alone vs history only,daily path,0.220427,0.172982,0.336539,-24.6609,second better
+HEEW Arizona,test,late,all late windows,658,138,LSTM,carrier alone vs history only,within-day,0.135161,0.08658,0.227687,-14.4721,second better
+HEEW Arizona,test,late,all late windows,658,138,PatchTST,anchored vs history only,hourly,-0.123453,-0.192449,-0.080872,11.6137,first better
+HEEW Arizona,test,late,all late windows,658,138,PatchTST,anchored vs history only,level,-0.180294,-0.347545,-0.034673,16.4975,first better
+HEEW Arizona,test,late,all late windows,658,138,PatchTST,anchored vs history only,daily path,0.007072,-0.012141,0.038313,-0.7097,not resolved
+HEEW Arizona,test,late,all late windows,658,138,PatchTST,anchored vs history only,within-day,-0.118028,-0.150585,-0.073929,11.1329,first better
+HEEW Arizona,test,late,all late windows,658,138,PatchTST,anchored vs carrier alone,hourly,-0.046794,-0.073348,-0.017604,4.5716,first better
+HEEW Arizona,test,late,all late windows,658,138,PatchTST,anchored vs carrier alone,level,-0.05406,-0.174833,0.067301,5.2625,not resolved
+HEEW Arizona,test,late,all late windows,658,138,PatchTST,anchored vs carrier alone,daily path,-0.047945,-0.07478,-0.025409,4.6814,first better
+HEEW Arizona,test,late,all late windows,658,138,PatchTST,anchored vs carrier alone,within-day,-0.03486,-0.049721,-0.023773,3.4259,first better
+HEEW Arizona,test,late,all late windows,658,138,PatchTST,carrier alone vs history only,hourly,-0.076659,-0.159982,-0.020201,7.3794,first better
+HEEW Arizona,test,late,all late windows,658,138,PatchTST,carrier alone vs history only,level,-0.126234,-0.355175,0.080197,11.8591,not resolved
+HEEW Arizona,test,late,all late windows,658,138,PatchTST,carrier alone vs history only,daily path,0.055017,0.025415,0.100748,-5.6558,second better
+HEEW Arizona,test,late,all late windows,658,138,PatchTST,carrier alone vs history only,within-day,-0.083168,-0.115077,-0.037894,7.9804,first better
+EWELD,test,late,all late windows,523,197,TimesFM,anchored vs history only,hourly,-0.459953,-0.72777,-0.227749,36.8687,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,TimesFM,anchored vs history only,hourly,-0.178062,-0.263033,-0.101777,16.3109,first better
+EWELD,test,late,all late windows,523,197,TimesFM,anchored vs history only,level,-0.766078,-1.082062,-0.424148,53.5167,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,TimesFM,anchored vs history only,level,-0.467011,-0.701209,-0.179453,37.3127,first better
+EWELD,test,late,all late windows,523,197,TimesFM,anchored vs history only,daily path,-0.206827,-0.404676,-0.04488,18.6839,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,TimesFM,anchored vs history only,daily path,-0.00938,-0.047611,0.020218,0.9336,not resolved
+EWELD,test,late,all late windows,523,197,TimesFM,anchored vs history only,within-day,-0.355636,-0.684459,-0.156703,29.9272,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,TimesFM,anchored vs history only,within-day,-0.088334,-0.201581,-0.047942,8.4545,first better
+EWELD,test,late,all late windows,523,197,TimesFM,anchored vs carrier alone,hourly,-0.026236,-0.055586,0.06556,2.5895,not resolved
+EWELD,test,late,off-state and micro-load windows excluded,278,139,TimesFM,anchored vs carrier alone,hourly,-0.032121,-0.066884,0.072632,3.1611,not resolved
+EWELD,test,late,all late windows,523,197,TimesFM,anchored vs carrier alone,level,-0.068405,-0.279699,0.146966,6.6118,not resolved
+EWELD,test,late,off-state and micro-load windows excluded,278,139,TimesFM,anchored vs carrier alone,level,-0.072837,-0.363205,0.183008,7.0248,not resolved
+EWELD,test,late,all late windows,523,197,TimesFM,anchored vs carrier alone,daily path,-0.033701,-0.058109,0.047519,3.314,not resolved
+EWELD,test,late,off-state and micro-load windows excluded,278,139,TimesFM,anchored vs carrier alone,daily path,-0.038631,-0.067205,0.056485,3.7894,not resolved
+EWELD,test,late,all late windows,523,197,TimesFM,anchored vs carrier alone,within-day,-0.01125,-0.025761,0.002447,1.1187,not resolved
+EWELD,test,late,off-state and micro-load windows excluded,278,139,TimesFM,anchored vs carrier alone,within-day,-0.015393,-0.032304,0.001411,1.5275,not resolved
+EWELD,test,late,all late windows,523,197,TimesFM,carrier alone vs history only,hourly,-0.433717,-0.715982,-0.194257,35.1905,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,TimesFM,carrier alone vs history only,hourly,-0.145941,-0.28741,-0.048536,13.5791,first better
+EWELD,test,late,all late windows,523,197,TimesFM,carrier alone vs history only,level,-0.697673,-1.064617,-0.295942,50.2258,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,TimesFM,carrier alone vs history only,level,-0.394174,-0.728231,0.023689,32.5763,not resolved
+EWELD,test,late,all late windows,523,197,TimesFM,carrier alone vs history only,daily path,-0.173125,-0.403533,-0.013946,15.8968,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,TimesFM,carrier alone vs history only,daily path,0.029251,-0.088605,0.067957,-2.9683,not resolved
+EWELD,test,late,all late windows,523,197,TimesFM,carrier alone vs history only,within-day,-0.344385,-0.674964,-0.138963,29.1344,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,TimesFM,carrier alone vs history only,within-day,-0.072942,-0.186997,-0.029732,7.0345,first better
+EWELD,test,late,all late windows,523,197,LSTM,anchored vs history only,hourly,0.604971,0.232531,1.835164,-83.1198,second better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,LSTM,anchored vs history only,hourly,-0.068278,-0.128212,-0.001573,6.5999,first better
+EWELD,test,late,all late windows,523,197,LSTM,anchored vs history only,level,0.518331,0.127724,1.773908,-67.9223,second better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,LSTM,anchored vs history only,level,-0.225455,-0.451509,-0.011308,20.1847,first better
+EWELD,test,late,all late windows,523,197,LSTM,anchored vs history only,daily path,1.199417,0.773747,2.690656,-231.8183,second better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,LSTM,anchored vs history only,daily path,0.002533,-0.043592,0.033431,-0.2536,not resolved
+EWELD,test,late,all late windows,523,197,LSTM,anchored vs history only,within-day,0.054102,-0.052534,0.122045,-5.5592,not resolved
+EWELD,test,late,off-state and micro-load windows excluded,278,139,LSTM,anchored vs history only,within-day,0.02197,-0.058293,0.083532,-2.2213,not resolved
+EWELD,test,late,all late windows,523,197,LSTM,anchored vs carrier alone,hourly,-0.06565,-0.091174,-0.039405,6.3542,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,LSTM,anchored vs carrier alone,hourly,-0.099507,-0.146336,-0.066158,9.4717,first better
+EWELD,test,late,all late windows,523,197,LSTM,anchored vs carrier alone,level,-0.10455,-0.208067,0.008592,9.9271,not resolved
+EWELD,test,late,off-state and micro-load windows excluded,278,139,LSTM,anchored vs carrier alone,level,-0.110742,-0.319608,0.048804,10.4831,not resolved
+EWELD,test,late,all late windows,523,197,LSTM,anchored vs carrier alone,daily path,-0.060229,-0.088171,-0.02524,5.8451,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,LSTM,anchored vs carrier alone,daily path,-0.092775,-0.140295,-0.044496,8.8602,first better
+EWELD,test,late,all late windows,523,197,LSTM,anchored vs carrier alone,within-day,-0.071318,-0.089344,-0.049972,6.8835,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,LSTM,anchored vs carrier alone,within-day,-0.107312,-0.139979,-0.084847,10.1754,first better
+EWELD,test,late,all late windows,523,197,LSTM,carrier alone vs history only,hourly,0.672331,0.301619,1.900331,-95.8797,second better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,LSTM,carrier alone vs history only,hourly,0.03123,-0.042678,0.120642,-3.1722,not resolved
+EWELD,test,late,all late windows,523,197,LSTM,carrier alone vs history only,level,0.625604,0.234639,1.841318,-86.9375,second better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,LSTM,carrier alone vs history only,level,-0.114712,-0.368109,0.160827,10.8377,not resolved
+EWELD,test,late,all late windows,523,197,LSTM,carrier alone vs history only,daily path,1.261215,0.831653,2.76312,-252.9708,second better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,LSTM,carrier alone vs history only,daily path,0.095308,0.018092,0.153359,-9.9998,second better
+EWELD,test,late,all late windows,523,197,LSTM,carrier alone vs history only,within-day,0.141367,0.031691,0.217132,-15.1848,second better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,LSTM,carrier alone vs history only,within-day,0.129281,0.050293,0.204083,-13.801,second better
+EWELD,test,late,all late windows,523,197,PatchTST,anchored vs history only,hourly,-0.108606,-0.553331,0.845692,10.2916,not resolved
+EWELD,test,late,off-state and micro-load windows excluded,278,139,PatchTST,anchored vs history only,hourly,-0.136693,-0.200104,-0.073818,12.7762,first better
+EWELD,test,late,all late windows,523,197,PatchTST,anchored vs history only,level,-0.334025,-0.75825,0.661471,28.3964,not resolved
+EWELD,test,late,off-state and micro-load windows excluded,278,139,PatchTST,anchored vs history only,level,-0.364056,-0.592232,-0.140732,30.5148,first better
+EWELD,test,late,all late windows,523,197,PatchTST,anchored vs history only,daily path,0.47461,0.063261,1.633597,-60.7387,second better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,PatchTST,anchored vs history only,daily path,0.022653,-0.013522,0.051264,-2.2911,not resolved
+EWELD,test,late,all late windows,523,197,PatchTST,anchored vs history only,within-day,-0.039065,-0.092152,0.004297,3.8312,not resolved
+EWELD,test,late,off-state and micro-load windows excluded,278,139,PatchTST,anchored vs history only,within-day,-0.046506,-0.111593,-0.003639,4.5441,first better
+EWELD,test,late,all late windows,523,197,PatchTST,anchored vs carrier alone,hourly,-0.022497,-0.041575,-0.000816,2.2246,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,PatchTST,anchored vs carrier alone,hourly,-0.035872,-0.067697,-0.001165,3.5236,first better
+EWELD,test,late,all late windows,523,197,PatchTST,anchored vs carrier alone,level,0.007644,-0.160814,0.153433,-0.7674,not resolved
+EWELD,test,late,off-state and micro-load windows excluded,278,139,PatchTST,anchored vs carrier alone,level,0.005702,-0.262392,0.229846,-0.5718,not resolved
+EWELD,test,late,all late windows,523,197,PatchTST,anchored vs carrier alone,daily path,-0.046785,-0.067394,-0.015885,4.5708,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,PatchTST,anchored vs carrier alone,daily path,-0.068675,-0.102567,-0.028504,6.637,first better
+EWELD,test,late,all late windows,523,197,PatchTST,anchored vs carrier alone,within-day,-0.022446,-0.033071,-0.011225,2.2196,first better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,PatchTST,anchored vs carrier alone,within-day,-0.034416,-0.051528,-0.019457,3.383,first better
+EWELD,test,late,all late windows,523,197,PatchTST,carrier alone vs history only,hourly,-0.085523,-0.536191,0.869399,8.1968,not resolved
+EWELD,test,late,off-state and micro-load windows excluded,278,139,PatchTST,carrier alone vs history only,hourly,-0.100821,-0.180341,-0.021959,9.5906,first better
+EWELD,test,late,all late windows,523,197,PatchTST,carrier alone vs history only,level,-0.341868,-0.794185,0.723504,28.9558,not resolved
+EWELD,test,late,off-state and micro-load windows excluded,278,139,PatchTST,carrier alone vs history only,level,-0.369757,-0.650551,-0.028929,30.9098,first better
+EWELD,test,late,all late windows,523,197,PatchTST,carrier alone vs history only,daily path,0.522614,0.10223,1.68252,-68.643,second better
+EWELD,test,late,off-state and micro-load windows excluded,278,139,PatchTST,carrier alone vs history only,daily path,0.091327,0.033015,0.138186,-9.5628,second better
+EWELD,test,late,all late windows,523,197,PatchTST,carrier alone vs history only,within-day,-0.011601,-0.066888,0.03379,1.1534,not resolved
+EWELD,test,late,off-state and micro-load windows excluded,278,139,PatchTST,carrier alone vs history only,within-day,-0.01209,-0.078141,0.031937,1.2017,not resolved
+GoiEner non-household,test,late,all late windows,890,481,TimesFM,anchored vs history only,hourly,-0.285705,-0.39132,-0.213152,24.8516,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,TimesFM,anchored vs history only,hourly,-0.243757,-0.30422,-0.196511,21.6322,first better
+GoiEner non-household,test,late,all late windows,890,481,TimesFM,anchored vs history only,level,-0.274757,-0.474605,-0.069927,24.0243,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,TimesFM,anchored vs history only,level,-0.248111,-0.413092,-0.052656,21.9727,first better
+GoiEner non-household,test,late,all late windows,890,481,TimesFM,anchored vs history only,daily path,-0.086198,-0.187813,-0.028125,8.2587,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,TimesFM,anchored vs history only,daily path,-0.046169,-0.091945,-0.013744,4.512,first better
+GoiEner non-household,test,late,all late windows,890,481,TimesFM,anchored vs history only,within-day,-0.294378,-0.425614,-0.206927,25.5005,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,TimesFM,anchored vs history only,within-day,-0.23987,-0.29571,-0.190083,21.327,first better
+GoiEner non-household,test,late,all late windows,890,481,TimesFM,anchored vs carrier alone,hourly,-0.056125,-0.081633,0.033586,5.4579,not resolved
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,TimesFM,anchored vs carrier alone,hourly,-0.057178,-0.083021,0.0246,5.5574,not resolved
+GoiEner non-household,test,late,all late windows,890,481,TimesFM,anchored vs carrier alone,level,-0.286577,-0.4818,-0.06467,24.9171,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,TimesFM,anchored vs carrier alone,level,-0.295582,-0.502619,-0.10861,25.5901,first better
+GoiEner non-household,test,late,all late windows,890,481,TimesFM,anchored vs carrier alone,daily path,-0.002799,-0.028689,0.061298,0.2795,not resolved
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,TimesFM,anchored vs carrier alone,daily path,-0.002884,-0.028619,0.066828,0.288,not resolved
+GoiEner non-household,test,late,all late windows,890,481,TimesFM,anchored vs carrier alone,within-day,-0.045908,-0.06933,-0.001753,4.487,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,TimesFM,anchored vs carrier alone,within-day,-0.046777,-0.071132,-0.00268,4.57,first better
+GoiEner non-household,test,late,all late windows,890,481,TimesFM,carrier alone vs history only,hourly,-0.22958,-0.419353,-0.14905,20.5133,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,TimesFM,carrier alone vs history only,hourly,-0.18658,-0.299277,-0.137548,17.0208,first better
+GoiEner non-household,test,late,all late windows,890,481,TimesFM,carrier alone vs history only,level,0.01182,-0.370184,0.358835,-1.189,not resolved
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,TimesFM,carrier alone vs history only,level,0.04747,-0.239043,0.388548,-4.8615,not resolved
+GoiEner non-household,test,late,all late windows,890,481,TimesFM,carrier alone vs history only,daily path,-0.083399,-0.238358,-0.014593,8.0016,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,TimesFM,carrier alone vs history only,daily path,-0.043285,-0.152384,0.001365,4.2361,not resolved
+GoiEner non-household,test,late,all late windows,890,481,TimesFM,carrier alone vs history only,within-day,-0.24847,-0.428874,-0.15861,22.0007,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,TimesFM,carrier alone vs history only,within-day,-0.193092,-0.261361,-0.148147,17.5594,first better
+GoiEner non-household,test,late,all late windows,890,481,LSTM,anchored vs history only,hourly,-0.108657,-0.161982,-0.017677,10.2962,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,LSTM,anchored vs history only,hourly,-0.092319,-0.143063,0.008702,8.8186,not resolved
+GoiEner non-household,test,late,all late windows,890,481,LSTM,anchored vs history only,level,0.016713,-0.149032,0.289291,-1.6853,not resolved
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,LSTM,anchored vs history only,level,0.02901,-0.152287,0.295705,-2.9435,not resolved
+GoiEner non-household,test,late,all late windows,890,481,LSTM,anchored vs history only,daily path,0.010921,-0.043944,0.0742,-1.0981,not resolved
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,LSTM,anchored vs history only,daily path,0.02964,-0.007527,0.086312,-3.0083,not resolved
+GoiEner non-household,test,late,all late windows,890,481,LSTM,anchored vs history only,within-day,-0.124855,-0.187973,-0.010939,11.7375,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,LSTM,anchored vs history only,within-day,-0.104526,-0.16397,0.019732,9.9249,not resolved
+GoiEner non-household,test,late,all late windows,890,481,LSTM,anchored vs carrier alone,hourly,-0.133934,-0.168917,-0.095371,12.5352,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,LSTM,anchored vs carrier alone,hourly,-0.136497,-0.173219,-0.099546,12.7591,first better
+GoiEner non-household,test,late,all late windows,890,481,LSTM,anchored vs carrier alone,level,-0.232652,-0.413644,-0.055192,20.7571,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,LSTM,anchored vs carrier alone,level,-0.237772,-0.410389,-0.053599,21.1617,first better
+GoiEner non-household,test,late,all late windows,890,481,LSTM,anchored vs carrier alone,daily path,-0.136783,-0.197456,-0.082619,12.7841,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,LSTM,anchored vs carrier alone,daily path,-0.139467,-0.204502,-0.083336,13.0179,first better
+GoiEner non-household,test,late,all late windows,890,481,LSTM,anchored vs carrier alone,within-day,-0.09886,-0.132629,-0.044737,9.413,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,LSTM,anchored vs carrier alone,within-day,-0.100742,-0.135226,-0.046898,9.5833,first better
+GoiEner non-household,test,late,all late windows,890,481,LSTM,carrier alone vs history only,hourly,0.025277,-0.051152,0.107246,-2.5599,not resolved
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,LSTM,carrier alone vs history only,hourly,0.044178,-0.031015,0.143182,-4.5168,not resolved
+GoiEner non-household,test,late,all late windows,890,481,LSTM,carrier alone vs history only,level,0.249365,-0.054691,0.573036,-28.321,not resolved
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,LSTM,carrier alone vs history only,level,0.266782,-0.051279,0.601971,-30.5756,not resolved
+GoiEner non-household,test,late,all late windows,890,481,LSTM,carrier alone vs history only,daily path,0.147705,0.070473,0.252708,-15.9171,second better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,LSTM,carrier alone vs history only,daily path,0.169107,0.086869,0.274076,-18.4247,second better
+GoiEner non-household,test,late,all late windows,890,481,LSTM,carrier alone vs history only,within-day,-0.025995,-0.099753,0.059341,2.566,not resolved
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,LSTM,carrier alone vs history only,within-day,-0.003785,-0.067662,0.077472,0.3777,not resolved
+GoiEner non-household,test,late,all late windows,890,481,PatchTST,anchored vs history only,hourly,-0.172682,-0.236417,-0.066602,15.8595,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,PatchTST,anchored vs history only,hourly,-0.176768,-0.241604,-0.069862,16.2026,first better
+GoiEner non-household,test,late,all late windows,890,481,PatchTST,anchored vs history only,level,-0.153363,-0.365016,0.085641,14.2182,not resolved
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,PatchTST,anchored vs history only,level,-0.175159,-0.389422,0.047066,16.0676,not resolved
+GoiEner non-household,test,late,all late windows,890,481,PatchTST,anchored vs history only,daily path,0.033657,-0.008013,0.0961,-3.423,not resolved
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,PatchTST,anchored vs history only,daily path,0.027981,-0.009348,0.096851,-2.8376,not resolved
+GoiEner non-household,test,late,all late windows,890,481,PatchTST,anchored vs history only,within-day,-0.173242,-0.228417,-0.05817,15.9066,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,PatchTST,anchored vs history only,within-day,-0.173903,-0.231859,-0.052821,15.9621,first better
+GoiEner non-household,test,late,all late windows,890,481,PatchTST,anchored vs carrier alone,hourly,-0.073624,-0.095916,-0.019964,7.0979,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,PatchTST,anchored vs carrier alone,hourly,-0.07525,-0.097469,-0.026786,7.2488,first better
+GoiEner non-household,test,late,all late windows,890,481,PatchTST,anchored vs carrier alone,level,-0.202468,-0.372977,-0.001406,18.3288,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,PatchTST,anchored vs carrier alone,level,-0.207432,-0.381729,-0.021936,18.7331,first better
+GoiEner non-household,test,late,all late windows,890,481,PatchTST,anchored vs carrier alone,daily path,-0.121019,-0.172003,-0.059939,11.3983,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,PatchTST,anchored vs carrier alone,daily path,-0.124841,-0.173858,-0.057519,11.7362,first better
+GoiEner non-household,test,late,all late windows,890,481,PatchTST,anchored vs carrier alone,within-day,-0.059633,-0.079499,-0.028311,5.789,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,PatchTST,anchored vs carrier alone,within-day,-0.06083,-0.081945,-0.030303,5.9017,first better
+GoiEner non-household,test,late,all late windows,890,481,PatchTST,carrier alone vs history only,hourly,-0.099059,-0.15856,-0.026967,9.431,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,PatchTST,carrier alone vs history only,hourly,-0.101518,-0.162657,-0.034801,9.6536,first better
+GoiEner non-household,test,late,all late windows,890,481,PatchTST,carrier alone vs history only,level,0.049105,-0.245564,0.266051,-5.0331,not resolved
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,PatchTST,carrier alone vs history only,level,0.032273,-0.264876,0.234734,-3.2799,not resolved
+GoiEner non-household,test,late,all late windows,890,481,PatchTST,carrier alone vs history only,daily path,0.154677,0.116779,0.195415,-16.728,second better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,PatchTST,carrier alone vs history only,daily path,0.152822,0.110953,0.196988,-16.5117,second better
+GoiEner non-household,test,late,all late windows,890,481,PatchTST,carrier alone vs history only,within-day,-0.113609,-0.157331,-0.026974,10.7393,first better
+GoiEner non-household,test,late,off-state and micro-load windows excluded,877,472,PatchTST,carrier alone vs history only,within-day,-0.113073,-0.159209,-0.021601,10.6914,first better
+GoiEner households,test,late,all late windows,696,696,TimesFM,anchored vs history only,hourly,-0.189882,-0.25821,-0.126518,17.2943,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,TimesFM,anchored vs history only,hourly,-0.135495,-0.185082,-0.09197,12.6716,first better
+GoiEner households,test,late,all late windows,696,696,TimesFM,anchored vs history only,level,0.017592,-0.175579,0.184232,-1.7748,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,TimesFM,anchored vs history only,level,0.053261,-0.135742,0.228378,-5.4705,not resolved
+GoiEner households,test,late,all late windows,696,696,TimesFM,anchored vs history only,daily path,-0.085253,-0.138992,-0.040028,8.172,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,TimesFM,anchored vs history only,daily path,-0.041126,-0.073962,-0.016483,4.0292,first better
+GoiEner households,test,late,all late windows,696,696,TimesFM,anchored vs history only,within-day,-0.255253,-0.375799,-0.165275,22.5279,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,TimesFM,anchored vs history only,within-day,-0.18539,-0.274977,-0.116189,16.922,first better
+GoiEner households,test,late,all late windows,696,696,TimesFM,anchored vs carrier alone,hourly,0.034497,0.002615,0.090248,-3.5099,second better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,TimesFM,anchored vs carrier alone,hourly,0.036323,0.000632,0.096388,-3.6991,second better
+GoiEner households,test,late,all late windows,696,696,TimesFM,anchored vs carrier alone,level,-0.295795,-0.414936,-0.179801,25.606,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,TimesFM,anchored vs carrier alone,level,-0.311458,-0.435489,-0.184894,26.7622,first better
+GoiEner households,test,late,all late windows,696,696,TimesFM,anchored vs carrier alone,daily path,0.087731,0.038962,0.169069,-9.1695,second better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,TimesFM,anchored vs carrier alone,daily path,0.092377,0.037489,0.168496,-9.6778,second better
+GoiEner households,test,late,all late windows,696,696,TimesFM,anchored vs carrier alone,within-day,0.0043,-0.003925,0.025506,-0.4309,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,TimesFM,anchored vs carrier alone,within-day,0.004527,-0.004648,0.023835,-0.4538,not resolved
+GoiEner households,test,late,all late windows,696,696,TimesFM,carrier alone vs history only,hourly,-0.224379,-0.331459,-0.143774,20.0988,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,TimesFM,carrier alone vs history only,hourly,-0.171818,-0.267565,-0.097848,15.7868,first better
+GoiEner households,test,late,all late windows,696,696,TimesFM,carrier alone vs history only,level,0.313388,0.109738,0.503548,-36.8052,second better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,TimesFM,carrier alone vs history only,level,0.364719,0.149413,0.565129,-44.011,second better
+GoiEner households,test,late,all late windows,696,696,TimesFM,carrier alone vs history only,daily path,-0.172984,-0.283718,-0.09692,15.8849,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,TimesFM,carrier alone vs history only,daily path,-0.133503,-0.229744,-0.06359,12.4975,first better
+GoiEner households,test,late,all late windows,696,696,TimesFM,carrier alone vs history only,within-day,-0.259552,-0.384994,-0.166514,22.8603,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,TimesFM,carrier alone vs history only,within-day,-0.189918,-0.288311,-0.116133,17.2973,first better
+GoiEner households,test,late,all late windows,696,696,LSTM,anchored vs history only,hourly,-0.051285,-0.08822,-0.011301,4.9992,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,LSTM,anchored vs history only,hourly,-0.048255,-0.076027,-0.020554,4.7109,first better
+GoiEner households,test,late,all late windows,696,696,LSTM,anchored vs history only,level,0.087924,-0.034261,0.191768,-9.1905,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,LSTM,anchored vs history only,level,0.065211,-0.048263,0.172313,-6.7384,not resolved
+GoiEner households,test,late,all late windows,696,696,LSTM,anchored vs history only,daily path,-0.025973,-0.069342,0.009019,2.5638,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,LSTM,anchored vs history only,daily path,-0.02024,-0.052471,0.006294,2.0036,not resolved
+GoiEner households,test,late,all late windows,696,696,LSTM,anchored vs history only,within-day,-0.078533,-0.129083,-0.029868,7.5528,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,LSTM,anchored vs history only,within-day,-0.06908,-0.106434,-0.034045,6.6748,first better
+GoiEner households,test,late,all late windows,696,696,LSTM,anchored vs carrier alone,hourly,-0.017942,-0.035378,0.009858,1.7782,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,LSTM,anchored vs carrier alone,hourly,-0.018892,-0.036691,0.011652,1.8715,not resolved
+GoiEner households,test,late,all late windows,696,696,LSTM,anchored vs carrier alone,level,-0.130712,-0.242567,0.020016,12.253,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,LSTM,anchored vs carrier alone,level,-0.137634,-0.253925,0.024998,12.8582,not resolved
+GoiEner households,test,late,all late windows,696,696,LSTM,anchored vs carrier alone,daily path,-0.011935,-0.042183,0.042374,1.1864,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,LSTM,anchored vs carrier alone,daily path,-0.012567,-0.045341,0.040942,1.2488,not resolved
+GoiEner households,test,late,all late windows,696,696,LSTM,anchored vs carrier alone,within-day,-0.004936,-0.015489,0.02126,0.4924,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,LSTM,anchored vs carrier alone,within-day,-0.005197,-0.016379,0.019307,0.5184,not resolved
+GoiEner households,test,late,all late windows,696,696,LSTM,carrier alone vs history only,hourly,-0.033343,-0.083053,0.009194,3.2794,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,LSTM,carrier alone vs history only,hourly,-0.029362,-0.072269,0.005052,2.8936,not resolved
+GoiEner households,test,late,all late windows,696,696,LSTM,carrier alone vs history only,level,0.218636,-4.3e-05,0.380346,-24.4378,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,LSTM,carrier alone vs history only,level,0.202844,-0.015421,0.359205,-22.4881,not resolved
+GoiEner households,test,late,all late windows,696,696,LSTM,carrier alone vs history only,daily path,-0.014038,-0.09556,0.038385,1.394,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,LSTM,carrier alone vs history only,daily path,-0.007673,-0.083022,0.044828,0.7644,not resolved
+GoiEner households,test,late,all late windows,696,696,LSTM,carrier alone vs history only,within-day,-0.073597,-0.131087,-0.027136,7.0954,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,LSTM,carrier alone vs history only,within-day,-0.063883,-0.107658,-0.024604,6.1885,first better
+GoiEner households,test,late,all late windows,696,696,PatchTST,anchored vs history only,hourly,-0.087722,-0.113896,-0.061988,8.3984,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,PatchTST,anchored vs history only,hourly,-0.081719,-0.106192,-0.057531,7.847,first better
+GoiEner households,test,late,all late windows,696,696,PatchTST,anchored vs history only,level,0.015705,-0.127226,0.149697,-1.5829,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,PatchTST,anchored vs history only,level,0.005839,-0.135964,0.152533,-0.5856,not resolved
+GoiEner households,test,late,all late windows,696,696,PatchTST,anchored vs history only,daily path,-0.033886,-0.057065,-0.017821,3.3318,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,PatchTST,anchored vs history only,daily path,-0.026939,-0.044066,-0.013339,2.6579,first better
+GoiEner households,test,late,all late windows,696,696,PatchTST,anchored vs history only,within-day,-0.093485,-0.118129,-0.06985,8.9249,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,PatchTST,anchored vs history only,within-day,-0.082896,-0.105971,-0.060453,7.9553,first better
+GoiEner households,test,late,all late windows,696,696,PatchTST,anchored vs carrier alone,hourly,-0.00272,-0.012459,0.008385,0.2717,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,PatchTST,anchored vs carrier alone,hourly,-0.002864,-0.01291,0.009299,0.286,not resolved
+GoiEner households,test,late,all late windows,696,696,PatchTST,anchored vs carrier alone,level,-0.042957,-0.159216,0.09903,4.2048,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,PatchTST,anchored vs carrier alone,level,-0.045232,-0.168275,0.091401,4.4224,not resolved
+GoiEner households,test,late,all late windows,696,696,PatchTST,anchored vs carrier alone,daily path,0.011072,-0.004193,0.0349,-1.1134,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,PatchTST,anchored vs carrier alone,daily path,0.011659,-0.004194,0.035638,-1.1727,not resolved
+GoiEner households,test,late,all late windows,696,696,PatchTST,anchored vs carrier alone,within-day,-0.00426,-0.009115,0.003742,0.4251,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,PatchTST,anchored vs carrier alone,within-day,-0.004486,-0.009569,0.003783,0.4476,not resolved
+GoiEner households,test,late,all late windows,696,696,PatchTST,carrier alone vs history only,hourly,-0.085002,-0.116264,-0.056667,8.1489,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,PatchTST,carrier alone vs history only,hourly,-0.078855,-0.108271,-0.05147,7.5826,first better
+GoiEner households,test,late,all late windows,696,696,PatchTST,carrier alone vs history only,level,0.058662,-0.16536,0.231329,-6.0417,not resolved
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,PatchTST,carrier alone vs history only,level,0.051071,-0.158432,0.25756,-5.2397,not resolved
+GoiEner households,test,late,all late windows,696,696,PatchTST,carrier alone vs history only,daily path,-0.044958,-0.082548,-0.020894,4.3963,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,PatchTST,carrier alone vs history only,daily path,-0.038597,-0.07225,-0.015855,3.7862,first better
+GoiEner households,test,late,all late windows,696,696,PatchTST,carrier alone vs history only,within-day,-0.089225,-0.115019,-0.068016,8.536,first better
+GoiEner households,test,late,off-state and micro-load windows excluded,661,661,PatchTST,carrier alone vs history only,within-day,-0.07841,-0.10129,-0.057563,7.5415,first better
+Oslo,preview,late,all late windows,581,41,TimesFM,anchored vs history only,hourly,-0.079112,-0.140088,-0.020665,7.6064,first better
+Oslo,preview,late,all late windows,581,41,TimesFM,anchored vs history only,level,0.016078,-0.07414,0.121081,-1.6208,not resolved
+Oslo,preview,late,all late windows,581,41,TimesFM,anchored vs history only,daily path,-0.005744,-0.029056,0.017515,0.5728,not resolved
+Oslo,preview,late,all late windows,581,41,TimesFM,anchored vs history only,within-day,-0.168328,-0.259414,-0.060063,15.4923,first better
+Oslo,preview,late,all late windows,581,41,TimesFM,anchored vs carrier alone,hourly,-0.116303,-0.152771,-0.07962,10.9795,first better
+Oslo,preview,late,all late windows,581,41,TimesFM,anchored vs carrier alone,level,-0.180708,-0.279061,-0.049771,16.5321,first better
+Oslo,preview,late,all late windows,581,41,TimesFM,anchored vs carrier alone,daily path,-0.06282,-0.101685,-0.032062,6.0888,first better
+Oslo,preview,late,all late windows,581,41,TimesFM,anchored vs carrier alone,within-day,-0.107291,-0.133625,-0.079184,10.1736,first better
+Oslo,preview,late,all late windows,581,41,TimesFM,carrier alone vs history only,hourly,0.037191,-0.044387,0.116634,-3.7891,not resolved
+Oslo,preview,late,all late windows,581,41,TimesFM,carrier alone vs history only,level,0.196786,-0.004562,0.378609,-21.7484,not resolved
+Oslo,preview,late,all late windows,581,41,TimesFM,carrier alone vs history only,daily path,0.057076,0.01241,0.111416,-5.8736,second better
+Oslo,preview,late,all late windows,581,41,TimesFM,carrier alone vs history only,within-day,-0.061036,-0.162027,0.060983,5.9211,not resolved
+Oslo,preview,late,all late windows,581,41,LSTM,anchored vs history only,hourly,-0.006544,-0.075017,0.063706,0.6522,not resolved
+Oslo,preview,late,all late windows,581,41,LSTM,anchored vs history only,level,0.122663,0.017117,0.260326,-13.0503,second better
+Oslo,preview,late,all late windows,581,41,LSTM,anchored vs history only,daily path,0.000114,-0.023766,0.030922,-0.0114,not resolved
+Oslo,preview,late,all late windows,581,41,LSTM,anchored vs history only,within-day,-0.070703,-0.176493,0.060715,6.8262,not resolved
+Oslo,preview,late,all late windows,581,41,LSTM,anchored vs carrier alone,hourly,-0.263418,-0.377917,-0.168418,23.158,first better
+Oslo,preview,late,all late windows,581,41,LSTM,anchored vs carrier alone,level,-0.374603,-0.576152,-0.238738,31.2438,first better
+Oslo,preview,late,all late windows,581,41,LSTM,anchored vs carrier alone,daily path,-0.151574,-0.239757,-0.085672,14.0646,first better
+Oslo,preview,late,all late windows,581,41,LSTM,anchored vs carrier alone,within-day,-0.182435,-0.229226,-0.135469,16.6762,first better
+Oslo,preview,late,all late windows,581,41,LSTM,carrier alone vs history only,hourly,0.256874,0.119649,0.414182,-29.2883,second better
+Oslo,preview,late,all late windows,581,41,LSTM,carrier alone vs history only,level,0.497266,0.287331,0.79583,-64.4219,second better
+Oslo,preview,late,all late windows,581,41,LSTM,carrier alone vs history only,daily path,0.151688,0.076674,0.256734,-16.3797,second better
+Oslo,preview,late,all late windows,581,41,LSTM,carrier alone vs history only,within-day,0.111732,-0.021269,0.271402,-11.8214,not resolved
+Oslo,preview,late,all late windows,581,41,PatchTST,anchored vs history only,hourly,-0.111181,-0.16268,-0.064857,10.5223,first better
+Oslo,preview,late,all late windows,581,41,PatchTST,anchored vs history only,level,-0.085237,-0.217472,0.053022,8.1705,not resolved
+Oslo,preview,late,all late windows,581,41,PatchTST,anchored vs history only,daily path,-0.010904,-0.035038,0.012416,1.0845,not resolved
+Oslo,preview,late,all late windows,581,41,PatchTST,anchored vs history only,within-day,-0.175484,-0.25359,-0.081997,16.0949,first better
+Oslo,preview,late,all late windows,581,41,PatchTST,anchored vs carrier alone,hourly,-0.076686,-0.111856,-0.04408,7.382,first better
+Oslo,preview,late,all late windows,581,41,PatchTST,anchored vs carrier alone,level,-0.100785,-0.209541,0.009551,9.5872,not resolved
+Oslo,preview,late,all late windows,581,41,PatchTST,anchored vs carrier alone,daily path,-0.050499,-0.084345,-0.024333,4.9245,first better
+Oslo,preview,late,all late windows,581,41,PatchTST,anchored vs carrier alone,within-day,-0.07388,-0.097482,-0.05298,7.1217,first better
+Oslo,preview,late,all late windows,581,41,PatchTST,carrier alone vs history only,hourly,-0.034495,-0.104798,0.031057,3.3907,not resolved
+Oslo,preview,late,all late windows,581,41,PatchTST,carrier alone vs history only,level,0.015548,-0.198947,0.23246,-1.567,not resolved
+Oslo,preview,late,all late windows,581,41,PatchTST,carrier alone vs history only,daily path,0.039594,-0.001029,0.087709,-4.0389,not resolved
+Oslo,preview,late,all late windows,581,41,PatchTST,carrier alone vs history only,within-day,-0.101603,-0.174754,-0.011316,9.6612,first better
+Drammen,preview,late,all late windows,689,43,TimesFM,anchored vs history only,hourly,-0.091841,-0.160123,-0.037182,8.775,first better
+Drammen,preview,late,all late windows,689,43,TimesFM,anchored vs history only,level,-0.022736,-0.178611,0.126677,2.248,not resolved
+Drammen,preview,late,all late windows,689,43,TimesFM,anchored vs history only,daily path,-0.025777,-0.070283,0.017884,2.5448,not resolved
+Drammen,preview,late,all late windows,689,43,TimesFM,anchored vs history only,within-day,-0.179193,-0.265105,-0.089235,16.4056,first better
+Drammen,preview,late,all late windows,689,43,TimesFM,anchored vs carrier alone,hourly,-0.135574,-0.197263,-0.075744,12.6786,first better
+Drammen,preview,late,all late windows,689,43,TimesFM,anchored vs carrier alone,level,-0.228848,-0.496252,-0.073593,20.4551,first better
+Drammen,preview,late,all late windows,689,43,TimesFM,anchored vs carrier alone,daily path,-0.076245,-0.098433,-0.054221,7.3411,first better
+Drammen,preview,late,all late windows,689,43,TimesFM,anchored vs carrier alone,within-day,-0.107208,-0.141805,-0.072619,10.1661,first better
+Drammen,preview,late,all late windows,689,43,TimesFM,carrier alone vs history only,hourly,0.043733,-0.045674,0.12429,-4.4704,not resolved
+Drammen,preview,late,all late windows,689,43,TimesFM,carrier alone vs history only,level,0.206112,-0.017823,0.53639,-22.8891,not resolved
+Drammen,preview,late,all late windows,689,43,TimesFM,carrier alone vs history only,daily path,0.050468,0.004949,0.101932,-5.1763,second better
+Drammen,preview,late,all late windows,689,43,TimesFM,carrier alone vs history only,within-day,-0.071985,-0.168463,0.027216,6.9455,not resolved
+Drammen,preview,late,all late windows,689,43,LSTM,anchored vs history only,hourly,-0.050952,-0.11473,-0.002837,4.9675,first better
+Drammen,preview,late,all late windows,689,43,LSTM,anchored vs history only,level,-0.021003,-0.124742,0.11576,2.0784,not resolved
+Drammen,preview,late,all late windows,689,43,LSTM,anchored vs history only,daily path,0.011152,-0.021707,0.049364,-1.1214,not resolved
+Drammen,preview,late,all late windows,689,43,LSTM,anchored vs history only,within-day,-0.106792,-0.210994,-0.002172,10.1288,first better
+Drammen,preview,late,all late windows,689,43,LSTM,anchored vs carrier alone,hourly,-0.158827,-0.200566,-0.119104,14.6856,first better
+Drammen,preview,late,all late windows,689,43,LSTM,anchored vs carrier alone,level,-0.136098,-0.302659,-0.019698,12.7243,first better
+Drammen,preview,late,all late windows,689,43,LSTM,anchored vs carrier alone,daily path,-0.116096,-0.178742,-0.05189,10.961,first better
+Drammen,preview,late,all late windows,689,43,LSTM,anchored vs carrier alone,within-day,-0.21463,-0.251781,-0.170354,19.316,first better
+Drammen,preview,late,all late windows,689,43,LSTM,carrier alone vs history only,hourly,0.107876,0.016347,0.182746,-11.3909,second better
+Drammen,preview,late,all late windows,689,43,LSTM,carrier alone vs history only,level,0.115095,-0.082358,0.40086,-12.198,not resolved
+Drammen,preview,late,all late windows,689,43,LSTM,carrier alone vs history only,daily path,0.127248,0.033174,0.22482,-13.5698,second better
+Drammen,preview,late,all late windows,689,43,LSTM,carrier alone vs history only,within-day,0.107837,-0.024313,0.236108,-11.3866,not resolved
+Drammen,preview,late,all late windows,689,43,PatchTST,anchored vs history only,hourly,-0.11954,-0.187714,-0.069143,11.2671,first better
+Drammen,preview,late,all late windows,689,43,PatchTST,anchored vs history only,level,-0.15606,-0.342626,-0.052757,14.4492,first better
+Drammen,preview,late,all late windows,689,43,PatchTST,anchored vs history only,daily path,-0.00295,-0.037403,0.026114,0.2946,not resolved
+Drammen,preview,late,all late windows,689,43,PatchTST,anchored vs history only,within-day,-0.196767,-0.286248,-0.112565,17.8618,first better
+Drammen,preview,late,all late windows,689,43,PatchTST,anchored vs carrier alone,hourly,-0.081486,-0.131139,-0.04541,7.8255,first better
+Drammen,preview,late,all late windows,689,43,PatchTST,anchored vs carrier alone,level,-0.09658,-0.301136,-0.008118,9.2063,first better
+Drammen,preview,late,all late windows,689,43,PatchTST,anchored vs carrier alone,daily path,-0.067227,-0.106522,-0.029057,6.5017,first better
+Drammen,preview,late,all late windows,689,43,PatchTST,anchored vs carrier alone,within-day,-0.091748,-0.119422,-0.066908,8.7665,first better
+Drammen,preview,late,all late windows,689,43,PatchTST,carrier alone vs history only,hourly,-0.038054,-0.107161,0.019963,3.7339,not resolved
+Drammen,preview,late,all late windows,689,43,PatchTST,carrier alone vs history only,level,-0.059479,-0.232381,0.158967,5.7745,not resolved
+Drammen,preview,late,all late windows,689,43,PatchTST,carrier alone vs history only,daily path,0.064276,0.00126,0.123678,-6.6387,second better
+Drammen,preview,late,all late windows,689,43,PatchTST,carrier alone vs history only,within-day,-0.105019,-0.198155,-0.017139,9.9693,first better
+CINELDI,preview,late,all late windows,475,45,TimesFM,anchored vs history only,hourly,-0.027584,-0.088515,0.021446,2.7207,not resolved
+CINELDI,preview,late,all late windows,475,45,TimesFM,anchored vs history only,level,-0.034283,-0.196231,0.086201,3.3702,not resolved
+CINELDI,preview,late,all late windows,475,45,TimesFM,anchored vs history only,daily path,0.01231,-0.01024,0.041616,-1.2386,not resolved
+CINELDI,preview,late,all late windows,475,45,TimesFM,anchored vs history only,within-day,-0.029831,-0.087019,0.024814,2.939,not resolved
+CINELDI,preview,late,all late windows,475,45,TimesFM,anchored vs carrier alone,hourly,-0.067445,-0.10515,-0.02914,6.5221,first better
+CINELDI,preview,late,all late windows,475,45,TimesFM,anchored vs carrier alone,level,-0.175335,-0.267204,-0.043875,16.0824,first better
+CINELDI,preview,late,all late windows,475,45,TimesFM,anchored vs carrier alone,daily path,-0.052915,-0.094664,-0.019494,5.1539,first better
+CINELDI,preview,late,all late windows,475,45,TimesFM,anchored vs carrier alone,within-day,-0.048044,-0.075614,-0.024937,4.6908,first better
+CINELDI,preview,late,all late windows,475,45,TimesFM,carrier alone vs history only,hourly,0.039861,-0.046961,0.120175,-4.0666,not resolved
+CINELDI,preview,late,all late windows,475,45,TimesFM,carrier alone vs history only,level,0.141052,-0.112497,0.318803,-15.1484,not resolved
+CINELDI,preview,late,all late windows,475,45,TimesFM,carrier alone vs history only,daily path,0.065225,0.01658,0.129084,-6.7399,second better
+CINELDI,preview,late,all late windows,475,45,TimesFM,carrier alone vs history only,within-day,0.018213,-0.048541,0.089718,-1.8379,not resolved
+CINELDI,preview,late,all late windows,475,45,LSTM,anchored vs history only,hourly,0.007114,-0.034886,0.0549,-0.714,not resolved
+CINELDI,preview,late,all late windows,475,45,LSTM,anchored vs history only,level,-0.047462,-0.1346,0.036041,4.6353,not resolved
+CINELDI,preview,late,all late windows,475,45,LSTM,anchored vs history only,daily path,0.015646,-0.012001,0.056546,-1.5769,not resolved
+CINELDI,preview,late,all late windows,475,45,LSTM,anchored vs history only,within-day,0.011527,-0.042666,0.070266,-1.1593,not resolved
+CINELDI,preview,late,all late windows,475,45,LSTM,anchored vs carrier alone,hourly,-0.129018,-0.189944,-0.083004,12.1042,first better
+CINELDI,preview,late,all late windows,475,45,LSTM,anchored vs carrier alone,level,-0.124588,-0.223916,-0.039702,11.714,first better
+CINELDI,preview,late,all late windows,475,45,LSTM,anchored vs carrier alone,daily path,-0.115048,-0.198498,-0.056371,10.8677,first better
+CINELDI,preview,late,all late windows,475,45,LSTM,anchored vs carrier alone,within-day,-0.109276,-0.143757,-0.079392,10.3517,first better
+CINELDI,preview,late,all late windows,475,45,LSTM,carrier alone vs history only,hourly,0.136133,0.057117,0.236837,-14.5834,second better
+CINELDI,preview,late,all late windows,475,45,LSTM,carrier alone vs history only,level,0.077126,-0.055211,0.22865,-8.0179,not resolved
+CINELDI,preview,late,all late windows,475,45,LSTM,carrier alone vs history only,daily path,0.130694,0.050252,0.25162,-13.962,second better
+CINELDI,preview,late,all late windows,475,45,LSTM,carrier alone vs history only,within-day,0.120803,0.054161,0.201148,-12.8402,second better
+CINELDI,preview,late,all late windows,475,45,PatchTST,anchored vs history only,hourly,-0.03532,-0.066014,0.001487,3.4704,not resolved
+CINELDI,preview,late,all late windows,475,45,PatchTST,anchored vs history only,level,-0.066362,-0.154999,0.040321,6.4208,not resolved
+CINELDI,preview,late,all late windows,475,45,PatchTST,anchored vs history only,daily path,0.005087,-0.012304,0.034896,-0.51,not resolved
+CINELDI,preview,late,all late windows,475,45,PatchTST,anchored vs history only,within-day,-0.028269,-0.073747,0.015172,2.7873,not resolved
+CINELDI,preview,late,all late windows,475,45,PatchTST,anchored vs carrier alone,hourly,-0.055615,-0.086917,-0.032341,5.4096,first better
+CINELDI,preview,late,all late windows,475,45,PatchTST,anchored vs carrier alone,level,-0.10614,-0.200238,-0.033053,10.0702,first better
+CINELDI,preview,late,all late windows,475,45,PatchTST,anchored vs carrier alone,daily path,-0.056747,-0.111698,-0.027809,5.5167,first better
+CINELDI,preview,late,all late windows,475,45,PatchTST,anchored vs carrier alone,within-day,-0.051267,-0.072673,-0.034915,4.9975,first better
+CINELDI,preview,late,all late windows,475,45,PatchTST,carrier alone vs history only,hourly,0.020294,-0.024418,0.076013,-2.0502,not resolved
+CINELDI,preview,late,all late windows,475,45,PatchTST,carrier alone vs history only,level,0.039779,-0.090728,0.219523,-4.058,not resolved
+CINELDI,preview,late,all late windows,475,45,PatchTST,carrier alone vs history only,daily path,0.061835,0.022593,0.142501,-6.3787,second better
+CINELDI,preview,late,all late windows,475,45,PatchTST,carrier alone vs history only,within-day,0.022998,-0.024623,0.073208,-2.3265,not resolved
+Suzhou park,preview,late,all late windows,64,4,TimesFM,anchored vs history only,hourly,-0.069,-0.17733,0.022506,6.6673,not resolved
+Suzhou park,preview,late,all late windows,64,4,TimesFM,anchored vs history only,level,-0.020876,-0.291213,0.263621,2.0659,not resolved
+Suzhou park,preview,late,all late windows,64,4,TimesFM,anchored vs history only,daily path,0.030993,-0.030211,0.110347,-3.1478,not resolved
+Suzhou park,preview,late,all late windows,64,4,TimesFM,anchored vs history only,within-day,-0.177376,-0.287272,-0.094104,16.2535,first better
+Suzhou park,preview,late,all late windows,64,4,TimesFM,anchored vs carrier alone,hourly,-0.11214,-0.192149,-0.020398,10.6081,first better
+Suzhou park,preview,late,all late windows,64,4,TimesFM,anchored vs carrier alone,level,-0.171997,-0.390676,0.02965,15.8018,not resolved
+Suzhou park,preview,late,all late windows,64,4,TimesFM,anchored vs carrier alone,daily path,-0.070568,-0.195092,0.028033,6.8135,not resolved
+Suzhou park,preview,late,all late windows,64,4,TimesFM,anchored vs carrier alone,within-day,-0.088412,-0.187304,-0.022687,8.4616,first better
+Suzhou park,preview,late,all late windows,64,4,TimesFM,carrier alone vs history only,hourly,0.04314,-0.123378,0.181448,-4.4084,not resolved
+Suzhou park,preview,late,all late windows,64,4,TimesFM,carrier alone vs history only,level,0.151121,-0.191254,0.539808,-16.3137,not resolved
+Suzhou park,preview,late,all late windows,64,4,TimesFM,carrier alone vs history only,daily path,0.101561,-0.006076,0.279824,-10.6897,not resolved
+Suzhou park,preview,late,all late windows,64,4,TimesFM,carrier alone vs history only,within-day,-0.088964,-0.221961,0.066228,8.5122,not resolved
+Suzhou park,preview,late,all late windows,64,4,LSTM,anchored vs history only,hourly,-0.04338,-0.181987,0.094214,4.2453,not resolved
+Suzhou park,preview,late,all late windows,64,4,LSTM,anchored vs history only,level,-0.030972,-0.381098,0.278446,3.0498,not resolved
+Suzhou park,preview,late,all late windows,64,4,LSTM,anchored vs history only,daily path,0.010405,-0.063299,0.098134,-1.0459,not resolved
+Suzhou park,preview,late,all late windows,64,4,LSTM,anchored vs history only,within-day,-0.072161,-0.232645,0.09423,6.9619,not resolved
+Suzhou park,preview,late,all late windows,64,4,LSTM,anchored vs carrier alone,hourly,-0.179869,-0.41467,-0.041191,16.4621,first better
+Suzhou park,preview,late,all late windows,64,4,LSTM,anchored vs carrier alone,level,-0.160832,-0.355485,-0.007066,14.8565,first better
+Suzhou park,preview,late,all late windows,64,4,LSTM,anchored vs carrier alone,daily path,-0.171665,-0.54399,0.046906,15.7738,not resolved
+Suzhou park,preview,late,all late windows,64,4,LSTM,anchored vs carrier alone,within-day,-0.213425,-0.378678,-0.092751,19.2187,first better
+Suzhou park,preview,late,all late windows,64,4,LSTM,carrier alone vs history only,hourly,0.136489,-0.107197,0.492166,-14.6243,not resolved
+Suzhou park,preview,late,all late windows,64,4,LSTM,carrier alone vs history only,level,0.12986,-0.330672,0.610525,-13.8669,not resolved
+Suzhou park,preview,late,all late windows,64,4,LSTM,carrier alone vs history only,daily path,0.18207,-0.096716,0.645224,-19.9698,not resolved
+Suzhou park,preview,late,all late windows,64,4,LSTM,carrier alone vs history only,within-day,0.141263,-0.086839,0.456095,-15.1728,not resolved
+Suzhou park,preview,late,all late windows,64,4,PatchTST,anchored vs history only,hourly,-0.008467,-0.145233,0.183717,0.8431,not resolved
+Suzhou park,preview,late,all late windows,64,4,PatchTST,anchored vs history only,level,0.036334,-0.265089,0.470738,-3.7003,not resolved
+Suzhou park,preview,late,all late windows,64,4,PatchTST,anchored vs history only,daily path,0.050237,-0.041365,0.176471,-5.152,not resolved
+Suzhou park,preview,late,all late windows,64,4,PatchTST,anchored vs history only,within-day,-0.094214,-0.211895,0.052795,8.9912,not resolved
+Suzhou park,preview,late,all late windows,64,4,PatchTST,anchored vs carrier alone,hourly,-0.202078,-0.316164,-0.08035,18.2969,first better
+Suzhou park,preview,late,all late windows,64,4,PatchTST,anchored vs carrier alone,level,-0.301276,-0.526806,-0.045716,26.0126,first better
+Suzhou park,preview,late,all late windows,64,4,PatchTST,anchored vs carrier alone,daily path,-0.13378,-0.316623,0.017838,12.5218,not resolved
+Suzhou park,preview,late,all late windows,64,4,PatchTST,anchored vs carrier alone,within-day,-0.127096,-0.227216,-0.057398,11.9351,first better
+Suzhou park,preview,late,all late windows,64,4,PatchTST,carrier alone vs history only,hourly,0.193611,0.005593,0.443546,-21.3625,second better
+Suzhou park,preview,late,all late windows,64,4,PatchTST,carrier alone vs history only,level,0.33761,-0.121834,0.877238,-40.1594,not resolved
+Suzhou park,preview,late,all late windows,64,4,PatchTST,carrier alone vs history only,daily path,0.184017,-0.013908,0.42051,-20.2037,not resolved
+Suzhou park,preview,late,all late windows,64,4,PatchTST,carrier alone vs history only,within-day,0.032883,-0.114422,0.212708,-3.3429,not resolved
