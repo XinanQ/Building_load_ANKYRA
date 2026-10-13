@@ -176,13 +176,15 @@ is not normalised by its own scale; since 2.0.1 it is handled by the
 - the long-history mean over at most 8,760 hours;
 - the mean of the 744-hour window one year earlier.
 
-Unadjusted candidates add a day-type offset estimated from the last eight weeks. Adjusted candidates replace the
-temperature response of their own window by the expected response over the target days. No observed future weather
-is used.
+Every candidate adds a day-type offset estimated from the last eight weeks (the offsets of the target days). Adjusted
+candidates in addition replace the temperature response of their own window by the expected response over the target
+days. No observed future weather is used.
 
 **Temperature signature.** The response is the unit's *temperature signature*: a convex piecewise-linear function of
 the daily-mean temperature, with hinges every 5 °C from −10 °C to 40 °C. It is fitted on the unit's last 365 days
-before the origin and shrunk towards the fixed prior curve of the unit's category. With fewer than 60 observed days
+before the origin and shrunk towards the fixed prior curve of the unit's category. The fit uses the days whose 24 hours
+are all observed, removes the mean of each day type from the daily means first, and is a ridge regression towards the
+prior curve with nonnegative hinge slopes, which is what makes the curve convex. With fewer than 60 such days
 the prior curve is used as it is.
 
 **Foundation-model candidate.** One further candidate, TimesFM's own window mean, is origin-normalised with the
@@ -195,7 +197,9 @@ $$\widetilde w_j=\frac{I_j/\max(s_j,10^{-6})^2}{\sum_r I_r/\max(s_r,10^{-6})^2},
 w_j=\frac{K_{\rm eff}\,\widetilde w_j+K_0\,w_{0j}}{K_{\rm eff}+K_0},\quad K_0=8,$$
 
 where $I_j=1$ if candidate $j$ has at least two pseudo-origin errors and 0 otherwise, $w_0$ is uniform over the
-supported candidates ($I_j=1$), and $K_{\rm eff}$ counts pseudo-origins with complete evidence.
+supported candidates ($I_j=1$), and $K_{\rm eff}$ counts the pseudo-origins (at most 12) at which both the unadjusted recent and the unadjusted
+long-history candidate have an error. Candidates with fewer errors (the annual ones, and the model candidate with at
+most six) are shrunk with the same $K_{\rm eff}$.
 
 - With complete records $K_{\rm eff}(m)=\min\lbrace12,\lfloor(m-1344)/744\rfloor\rbrace_+$ for a history of $m$ hours.
 - Below two errors the weights are equal.
@@ -378,7 +382,9 @@ Code: `ankyra/core.py` (`lead_week_weights`, `lead_week_transition`, `forecast`)
 Two rules return the TimesFM forecast unchanged. Both look only at load before the origin.
 
 **Off-state rule.** If the last 168 hours before the origin are all at most $10^{-6}$ kW, the TimesFM forecast is
-returned.
+returned. The test is on the largest observed value of those hours: unobserved hours are ignored, and the value
+itself is compared, not its absolute value (the micro-load rule below compares absolute values and needs a complete
+context).
 
 - The rule adds no new constant.
 - It follows from a measured property of the load: a departure from normal operation is more likely to continue the
@@ -475,7 +481,8 @@ and `ankyra/history/api.py` (the partially observed pseudo targets).
 
 **Peak.** Let $\hat L_d$ be the forecast mean of day $d$, $\tau_d$ its day type and $\bar F$ the forecast window
 mean. Let $a_j=\max_h x_{j,h}-\bar x_j$ be the excursion of context day $j$ above its own mean ($x_{j,h}$ is the load
-of hour $h$ of that day), and $A_t$ the largest excursion among the four most recent context days of type $t$. Then
+of hour $h$ of that day), and $A_t$ the largest excursion among the four most recent context days of type $t$ (if the context has no day of
+type $t$, the largest excursion of all its days; if it has no holiday, the holiday entry takes the Sunday value). Then
 
 $$U=\max_d\,(\hat L_d+A_{\tau_d}),\qquad \hat P_\kappa=\bar F+\kappa\,(U-\bar F)\quad(\kappa=1).$$
 
@@ -496,7 +503,11 @@ This operator has four properties:
 same-day-type within-day default, no foundation model), not from ANKYRA's own forecasts. Its hourly residuals at up
 to 12 completed pseudo-origins are normalised by
 each pseudo-window's origin scale and pooled by hour of day and workday status. Their empirical quantiles are added to
-the forecast and scaled by the origin's scale.
+the forecast and scaled by the origin's scale. Three details of the implementation: a class and hour with fewer than
+five residuals takes the quantiles of the other class at that hour; the quantile trajectories are clipped at zero and
+made non-crossing across levels; and the band is not centred on the point forecast, because the residual quantiles
+of the history-only forecaster need not straddle zero (a bound can lie on the same side of the point forecast as the
+median).
 
 Proofs, counterexamples and an optional day-level projection are P11–P18 in [theory/PROOFS.md](../theory/PROOFS.md).
 
@@ -509,7 +520,7 @@ Code: `ankyra/readouts.py`; the properties as operators: `theory/operators.py`.
 | Field | Meaning |
 |---|---|
 | `trajectory_kw` | the 744 delivered hourly values; nonnegative, except on off-state and micro-load windows, where the foundation model's trajectory is returned as it is |
-| `level_kw` | the window mean before the projection onto nonnegative load |
+| `level_kw` | the window mean before the projection onto nonnegative load: the mean of the 31 daily means after the week-by-week handover. It is not the seven-candidate level of the [Level](#level) section, which is the historical side's input to the handover |
 | `energy_kwh` | the energy readout, $744\times$ `level_kw` |
 | `daily_means_kw` | the 31 daily means after the week-by-week handover |
 | `within_day_kw` | the final within-day block (zero mean on each day), with the analog-day anchoring where it acts |

@@ -627,7 +627,7 @@ category) and forms its own quantities from it; the baselines given the shared c
 |---|---|:---:|:---:|---|---|
 | 1 | load | observed | — | per-unit z-score; statistics from the context or from before the training cutoff | level and daily-path candidates, analog-day shapes, pseudo-origin errors, the foundation model's context |
 | 2 | temperature | observed | climatology | horizon values are an annual harmonic fitted on pre-origin temperature; **observed future temperature is never used** | weather-adjusted level and path candidates, analog-day selection |
-| 3 | load one year earlier | ✓ | ✓ | $t-8{,}736$ h (52 weeks, weekday-aligned; always before the origin), 0 where missing | the annual level and path candidates |
+| 3 | load one year earlier | ✓ | ✓ | $t-8{,}736$ h (52 weeks, weekday-aligned; always before the origin), 0 where missing | not used as constructed: ANKYRA's annual level and path candidates read the window 8,760 h (365 days) before the origin from the raw record; the 8,736-hour lag is the baselines' feature |
 | 4 | availability of 3 | ✓ | ✓ | 1 where feature 3 is observed | annual candidates switched off without support |
 | 5–6 | hour of day | sin, cos | sin, cos | period 24 | the hour grid of every block |
 | 7–8 | weekday | sin, cos | sin, cos | period 7 | day types Monday … Sunday |
